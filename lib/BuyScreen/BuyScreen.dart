@@ -50,7 +50,7 @@ class _BuyScreenState extends State<BuyScreen> {
                         borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
                           imagePath,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           width: Get.width * 1.30,
                         ),
                       );
@@ -100,7 +100,7 @@ class _BuyScreenState extends State<BuyScreen> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Image.asset("assets/images/sellBanner.png",
-                  height: Get.height * 0.18, fit: BoxFit.cover),
+                  height: Get.height * 0.18, fit: BoxFit.contain),
             ),
 
             //Hot Deals
@@ -665,39 +665,42 @@ class _BuyScreenState extends State<BuyScreen> {
   }
 
   Widget networkType({required List<Map<String, String>> networks}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            "Network Type",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return Container(
+      color:ColorConstants.appGreyColor2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              "Network Type",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: networks.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    networks[index]['imagePath']!,
-                    width: 120,
-                    height: 80,
-                    fit: BoxFit.cover,
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: networks.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      networks[index]['imagePath']!,
+                      width: 120,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

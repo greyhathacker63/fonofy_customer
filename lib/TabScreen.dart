@@ -11,7 +11,8 @@ class TabScreen extends StatefulWidget {
   State<TabScreen> createState() => _TabScreenState();
 }
 
-class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMixin {
+class _TabScreenState extends State<TabScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0; // Track the selected tab index
 
@@ -19,7 +20,7 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    
+
     // Add listener to update UI when the tab changes
     _tabController.addListener(() {
       setState(() {
@@ -41,7 +42,10 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
       appBar: AppBar(
         leading: Image.asset("assets/images/Logo.png", height: 30),
         centerTitle: true,
-        title: const Text("Sell", style: TextStyle(color: Colors.black)),
+        title: Text(
+          _getTitle(_selectedIndex),
+          style: const TextStyle(color: Colors.black),
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Container(
@@ -49,7 +53,8 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: ColorConstants.appBlueColor3, // Selected tab background color
+                color: ColorConstants
+                    .appBlueColor3, // Selected tab background color
               ),
               unselectedLabelColor: Colors.white70,
               tabs: [
@@ -75,7 +80,9 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
         width: 150,
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: _selectedIndex == index ? ColorConstants.appBlueColor3 : Colors.transparent,
+          color: _selectedIndex == index
+              ? ColorConstants.appBlueColor3
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
@@ -89,5 +96,18 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
         ),
       ),
     );
+  }
+}
+
+String _getTitle(int index) {
+  switch (index) {
+    case 0:
+      return "Buy";
+    case 1:
+      return "Sell";
+    case 2:
+      return "Repair";
+    default:
+      return "Sell";
   }
 }

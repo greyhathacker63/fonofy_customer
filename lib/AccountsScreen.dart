@@ -87,6 +87,8 @@ class _AccountScreenState extends State<AccountScreen> {
 
             // Other Options
             _buildMenuItem("REFER & EARN"),
+            
+            
             _buildMenuItem("NEW OFFERS"),
             _buildMenuItem("MY EARNINGS"),
             _buildMenuItem("HELP"),

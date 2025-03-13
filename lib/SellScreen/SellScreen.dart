@@ -13,7 +13,7 @@ class _SellscreenState extends State<Sellscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -123,7 +123,7 @@ class _SellscreenState extends State<Sellscreen> {
             //             color: Colors.white),
             //       ),
             //       const SizedBox(height: 15),
-                
+
             //       Container(
             //         padding: const EdgeInsets.all(12),
             //         margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -176,40 +176,43 @@ class _SellscreenState extends State<Sellscreen> {
             //   ),
             // ),
             Container(
-  color: Colors.blue.shade900,
-  padding: const EdgeInsets.all(20),
-  child: Column(
-    children: [
-      const Text(
-        "WHAT OUR CLIENT SAYS",
-        style: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
-      const SizedBox(height: 15),
+              color: Colors.blue.shade900,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Text(
+                    "WHAT OUR CLIENT SAYS",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(height: 15),
 
-      // Carousel Slider for Testimonials
-      CarouselSlider(
-        items: List.generate(
-          3, // Change to the number of testimonials
-          (index) => testimonialCard(
-            name: "Jane Doe",
-            role: "CEO, Example Company",
-            text:
-                "\"Some quick example text to build on the card title and make up the bulk of the card's content.\"",
-          ),
-        ),
-        options: CarouselOptions(
-          height: 200,
-          enlargeCenterPage: true,
-          viewportFraction: 0.8, // Controls how much of other cards are visible
-          enableInfiniteScroll: true,
-          autoPlay: false, // Keep it false as you don’t want auto sliding
-        ),
-      ),
-    ],
-  ),
-),
-
+                  // Carousel Slider for Testimonials
+                  CarouselSlider(
+                    items: List.generate(
+                      3, // Change to the number of testimonials
+                      (index) => testimonialCard(
+                        name: "Jane Doe",
+                        role: "CEO, Example Company",
+                        text:
+                            "\"Some quick example text to build on the card title and make up the bulk of the card's content.\"",
+                      ),
+                    ),
+                    options: CarouselOptions(
+                      height: 200,
+                      enlargeCenterPage: true,
+                      viewportFraction:
+                          0.8, // Controls how much of other cards are visible
+                      enableInfiniteScroll: true,
+                      autoPlay:
+                          false, // Keep it false as you don’t want auto sliding
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
             const SizedBox(height: 20),
           ],
@@ -351,36 +354,37 @@ class _SellscreenState extends State<Sellscreen> {
       ),
     );
   }
-  Widget testimonialCard({required String name, required String role, required String text}) {
-  return Container(
-    padding: const EdgeInsets.all(12),
-    margin: const EdgeInsets.symmetric(horizontal: 8),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
-        const SizedBox(height: 10),
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 14, color: Colors.black54),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          name,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          role,
-          style: const TextStyle(fontSize: 12, color: Colors.black54),
-        ),
-      ],
-    ),
-  );
-}
 
+  Widget testimonialCard(
+      {required String name, required String role, required String text}) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
+          const SizedBox(height: 10),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            role,
+            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }
 }

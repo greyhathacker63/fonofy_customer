@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/AllBrands.dart';
+import 'package:fonofy/BuyRefurbishedProductScreen';
 import 'package:fonofy/DeviceDetailsScreen4.dart';
 import 'package:fonofy/EmptyCartScreen.dart';
 import 'package:fonofy/DeviceDetailsScreen.dart';
 import 'package:fonofy/DeviceDetailsScreen2.dart';
 import 'package:fonofy/DeviceDetailsScreen3.dart';
+import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
+import 'package:fonofy/RepairServiceScreen.dart';
+import 'package:fonofy/SelectAddressScreen.dart';
+import 'package:fonofy/SelectProduct2.dart';
 import 'package:fonofy/SelectProductScreen.dart';
+import 'package:fonofy/SelectProductScreen3';
 import 'package:fonofy/SideBarMenuScreen.dart';
 import 'package:fonofy/YourDevice.dart';
+import 'package:fonofy/YourDeviceScreen2.dart';
+import 'package:fonofy/YourDeviceScreen3.dart';
 import 'package:get/get.dart';
 
 class Screens extends StatefulWidget {
@@ -78,6 +86,33 @@ class _ScreensState extends State<Screens> {
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
+           GestureDetector(
+            onTap: () {
+              Get.to(SelectAddressScreen()); // Fixed class name
+            },
+            child: const Text(
+              "SelectAddressScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+           GestureDetector(
+            onTap: () {
+              Get.to(SelectProductScreen3()); // Fixed class name
+            },
+            child: const Text(
+              "SelectProduct",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+           GestureDetector(
+            onTap: () {
+              Get.to(SelectProduct2()); // Fixed class name
+            },
+            child: const Text(
+              "SelectProduct2",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
           GestureDetector(
             onTap: () {
               Get.to(EmptyCartScreen()); // Fixed class name
@@ -96,6 +131,53 @@ class _ScreensState extends State<Screens> {
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              Get.to(YourDeviceScreen2()); // Fixed class name
+            },
+            child: const Text(
+              "YourDeviceScreen2",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+          //  GestureDetector(
+          //   onTap: () {
+          //     Get.to(YourDeviceScreen3()); // Fixed class name
+          //   },
+          //   child: const Text(
+          //     "YourDeviceScreen3",
+          //     style: TextStyle(color: Colors.black, fontSize: 20),
+          //   ),
+          // ),
+           GestureDetector(
+            onTap: () {
+              Get.to(ReferAndEarnScreen()); // Fixed class name
+            },
+            child: const Text(
+              "Refer&Earn",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+           
+          GestureDetector(
+            onTap: () {
+              Get.to(RepairServiceScreen()); // Fixed class name
+            },
+            child: const Text(
+              "RepairServiceScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Get.to(BuyRefurbishedProductScreen()); // Fixed class name
+            },
+            child: const Text(
+              "BuyRefurbishedScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+         
         ],
       ),
     );

@@ -36,7 +36,7 @@ class MainScreen extends StatelessWidget {
               onTap: () => Get.to(BottomNavigation()),
               child: _buildCard(
                   "Buy",
-                  "Get the best price for your old phone within 60 Seconds",
+                  "Shop for certified refusrbished devices with 6 months warranty",
                   context),
             ),
 
@@ -50,10 +50,18 @@ class MainScreen extends StatelessWidget {
             ),
 
             // Repair Card
-            _buildCard(
-                "Repair",
-                "Expert Phone repair with 6-month warranty at doorstep or at store",
-                context),
+             GestureDetector(
+              onTap: () => Get.to(BottomNavigation()),
+              child: _buildCard(
+                  "Repair",
+                  "Expert Phone repair with 6 months warranty at doorstep or at store",
+                  context),
+            ),
+            // GestureDetector
+            // _buildCard(
+            //     "Repair",
+            //     "Expert Phone repair with 6-month warranty at doorstep or at store",
+            //     context),
           ],
         ),
       ),
