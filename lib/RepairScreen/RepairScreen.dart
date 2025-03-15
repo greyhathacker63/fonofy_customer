@@ -11,7 +11,14 @@ class RepairScreen extends StatefulWidget {
 }
 
 class _RepairScreenState extends State<RepairScreen> {
-  int _currentIndex = 0; // Corrected placement
+  int _currentIndex = 0; 
+
+  final List<String> demoImages = [
+    "assets/images/banner.png",
+    "assets/images/banner.png",
+    "assets/images/banner.png",
+    "assets/images/banner.png"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -131,49 +138,58 @@ class _RepairScreenState extends State<RepairScreen> {
                   const Text(
                     "WHAT OUR CLIENT SAYS",
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   const SizedBox(height: 15),
-                  CarouselSlider(
-                    items: List.generate(
-                      3,
-                      (index) => testimonialCard(
-                        name: "Jane Doe",
-                        role: "CEO, Example Company",
-                        text:
-                            "\"Some quick example text to build on the card title and make up the bulk of the card's content.\"",
-                      ),
-                    ),
+                  CarouselSlider.builder(
+                    itemCount: demoImages.length,
                     options: CarouselOptions(
-                      height: 220, // Increased height for spacing
-                      enlargeCenterPage: true,
-                      viewportFraction: 0.8,
-                      enableInfiniteScroll: true,
+                      height: 250,
                       autoPlay: false,
+                      enlargeCenterPage: true,
+                      viewportFraction: 1,
+                      aspectRatio: 2.5,
+                      initialPage: 2,
                       onPageChanged: (index, reason) {
                         setState(() {
                           _currentIndex = index;
                         });
                       },
                     ),
+                    itemBuilder: (context, index, realIndex) {
+                      return testimonialCard(
+                        name: "Jane Doe",
+                        role: "CEO, Example Company",
+                        text:
+                            "\"Some quick example text to build on the card title and make up the bulk of the card's content.\"",
+                      );
+                    },
                   ),
-                  const SizedBox(height: 10),
-                  AnimatedSmoothIndicator(
-                    activeIndex: _currentIndex,
-                    count: 3,
-                    effect: ExpandingDotsEffect(
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      activeDotColor: Colors.white,
-                      dotColor: Colors.white54,
-                    ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: demoImages.asMap().entries.map((entry) {
+                      return Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentIndex == entry.key
+                              ? Colors.blueAccent
+                              : Colors.grey,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
             ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -181,215 +197,220 @@ class _RepairScreenState extends State<RepairScreen> {
   }
 }
 
-Widget topBrands({required List<Map<String, String>> brands}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // Title
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Text(
-          "Top Brands",
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-      ),
-      const SizedBox(height: 8),
-
-      // Grid View for Brands
-      GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(), // Disable grid scrolling
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, // 3 columns per row
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 1.2, // Adjust this based on your design
-        ),
-        itemCount: brands.length,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              // Brand Image
-              Container(
-                height: Get.height * 0.10,
-                width: Get.width * 0.30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  border: Border.all(color: Colors.grey, width: 1),
-                ),
-                child: ClipRect(
-                  child: Image.asset(
-                    brands[index]['imagePath']!,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 5),
-
-              // Brand Name
-              Text(
-                brands[index]['brandName']!,
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          );
-        },
-      ),
-    ],
-  );
-}
-
-// Process Step Widget
-Widget _processStep(int number, String title, String description) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      CircleAvatar(
-        backgroundColor: Colors.blue,
-        radius: 14,
-        child: Text("$number",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-      const SizedBox(width: 12),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            Text(description,
-                style: const TextStyle(fontSize: 14, color: Colors.black54)),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-
-// Why Us Card Widget
-Widget _whyUsCard(String iconPath, String title, String description) {
-  return Container(
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.grey.shade300),
-      borderRadius: BorderRadius.circular(8),
-      color: Colors.white,
-    ),
-    child: Column(
+  Widget topBrands({required List<Map<String, String>> brands}) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.asset(iconPath, height: 32, width: 32),
+        // Title
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            "Top Brands",
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
         const SizedBox(height: 8),
-        Text(title,
-            style: const TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue)),
-        Text(description,
-            style: const TextStyle(fontSize: 12, color: Colors.black54)),
-      ],
-    ),
-  );
-}
 
-Widget testimonialCard(
-    {required String name, required String role, required String text}) {
-  return Column(
-    children: [
-      Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
-            const SizedBox(height: 10),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: Colors.black54),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              name,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              role,
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 10), // Extra space for dot indicators
-    ],
-  );
-
-}
-Widget serviceAvailable() {
-  List<Map<String, String>> services = [
-    {"iconPath": "assets/images/screen.png", "serviceName": "Screen"},
-    {"iconPath": "assets/images/batter.png", "serviceName": "Battery"},
-    {"iconPath": "assets/images/mic.png", "serviceName": "Mic"},
-    {"iconPath": "assets/images/receiver.png", "serviceName": "Receiver"},
-  ];
-
-  return Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "SERVICE AVAILABLE",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: services.map((service) {
-            return Container(
-              width: 80,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
+        // Grid View for Brands
+        GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(), // Disable grid scrolling
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // 3 columns per row
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+            childAspectRatio: 1.2, // Adjust this based on your design
+          ),
+          itemCount: brands.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                // Brand Image
+                Container(
+                  height: Get.height * 0.10,
+                  width: Get.width * 0.30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(color: Colors.grey, width: 1),
                   ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Image.asset(service["iconPath"]!, height: 40), // Add your icons
-                  const SizedBox(height: 8),
-                  Text(
-                    service["serviceName"]!,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.blue,
+                  child: ClipRect(
+                    child: Image.asset(
+                      brands[index]['imagePath']!,
+                      fit: BoxFit.fill,
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                const SizedBox(height: 5),
+
+                // Brand Name
+                Text(
+                  brands[index]['brandName']!,
+                  style: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             );
-          }).toList(),
+          },
         ),
       ],
-    ),
-  );
-}
+    );
+  }
+
+// Process Step Widget
+  Widget _processStep(int number, String title, String description) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.blue,
+          radius: 14,
+          child: Text("$number",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
+              Text(description,
+                  style: const TextStyle(fontSize: 14, color: Colors.black54)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+// Why Us Card Widget
+  Widget _whyUsCard(String iconPath, String title, String description) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(iconPath, height: 32, width: 32),
+          const SizedBox(height: 8),
+          Text(title,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue)),
+          Text(description,
+              style: const TextStyle(fontSize: 12, color: Colors.black54)),
+        ],
+      ),
+    );
+  }
+
+  Widget testimonialCard(
+      {required String name, required String role, required String text}) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
+              const SizedBox(height: 10),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                role,
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10), // Extra space for dot indicators
+      ],
+    );
+  }
+
+  Widget serviceAvailable() {
+    List<Map<String, String>> services = [
+      {"iconPath": "assets/images/screen.png", "serviceName": "Screen"},
+      {"iconPath": "assets/images/batter.png", "serviceName": "Battery"},
+      {"iconPath": "assets/images/mic.png", "serviceName": "Mic"},
+      {"iconPath": "assets/images/receiver.png", "serviceName": "Receiver"},
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "SERVICE AVAILABLE",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: services.map((service) {
+              return Container(
+                width: 80,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Image.asset(service["iconPath"]!,
+                        height: 40), // Add your icons
+                    const SizedBox(height: 8),
+                    Text(
+                      service["serviceName"]!,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
 

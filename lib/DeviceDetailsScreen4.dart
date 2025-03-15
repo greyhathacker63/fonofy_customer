@@ -112,7 +112,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imagePath, height: 50, color: isSelected ? Colors.white : Colors.black),
+            Image.asset(imagePath, height: 100),
             const SizedBox(height: 10),
             Text(
               label,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fonofy/SelectProductScreen.dart';
+import 'package:fonofy/SelectProductScreen3';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 
@@ -106,7 +108,7 @@ class _BuyScreenState extends State<BuyScreen> {
             //Hot Deals
             hotdeal(
                 imagePath: "assets/images/phone.png",
-                text1: "Latest Devices Available"),
+                text1: "Apple IPhone 36 GB"),
 
             //By Brands
             byBrands(brands: [
@@ -133,7 +135,7 @@ class _BuyScreenState extends State<BuyScreen> {
                 "brandName": 'Apple'
               }
             ]),
-            //Hot Deals
+            //Deal of the day
             dealOfTheDay(
                 imagePath: "assets/images/phone.png",
                 text1: "Latest Devices Available"),
@@ -213,91 +215,116 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 
-  Widget hotdeal({String? imagePath, String? text1}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Heading
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            "Hot Deal",
-            style: TextStyle(
-                fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ),
-        const SizedBox(height: 8),
-
-        // Scrollable List of Deals
-        SizedBox(
-          height: Get.height * 0.25, // Increased height to avoid overflow
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 5,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 120, // Fixed width to keep all items aligned
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Image
-                      Image.asset(
-                        imagePath!,
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover,
-                      ),
-
-                      // Text
-                      Text(
-                        text1!,
-                        style:
-                            const TextStyle(color: Colors.blue, fontSize: 12),
-                        textAlign: TextAlign.center,
-                      ),
-                      const Text(
-                        "Best Deals",
-                        style: TextStyle(color: Colors.blue, fontSize: 10),
-                      ),
-
-                      // Button
-                      ElevatedButton(
-                        onPressed: () {
-                          print("Add Pressed");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          "Add",
-                          style: TextStyle(
-                              fontSize: 11, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
+ Widget hotdeal({String? imagePath, String? text1}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Heading with "View All" on Right
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Hot Deal",
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                print("View All Pressed");
+              },
+              child: const Text(
+                "View All",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue, // Blue Color
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: 8),
+
+      // Scrollable List of Deals
+      SizedBox(
+        height: Get.height * 0.25, // Increased height to avoid overflow
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 5,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 120, // Fixed width to keep all items aligned
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Image
+                    Image.asset(
+                      imagePath!,
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    ),
+
+                    // Text
+                    Text(
+                      text1!,
+                      style: const TextStyle(color: Colors.black, fontSize: 12),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Text(
+                      "Free 6 months warranty",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 10,
+                      ),
+                    ),
+
+                    // Button
+                    ElevatedButton(
+                      onPressed: () {
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Add",
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+  );
+}
+
 
   featuredCategory({String? imagePath, String? text1}) {
     return SizedBox(
@@ -345,9 +372,8 @@ class _BuyScreenState extends State<BuyScreen> {
                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
-        const SizedBox(height: 8),
-
-        // Scrollable Brand List
+        const SizedBox(height: 12),
+// Scrollable Brand List
         SizedBox(
           height: 110, // Increased height to fit text
           child: ListView.builder(
@@ -358,18 +384,23 @@ class _BuyScreenState extends State<BuyScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
                   children: [
-                    // Brand Image
-                    Container(
-                      height: Get.height * 0.10,
-                      width: Get.width * 0.35,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.grey, width: 1),
-                      ),
-                      child: ClipRect(
-                        child: Image.asset(
-                          brands[index]['imagePath']!,
-                          fit: BoxFit.fill,
+                    // Clickable Brand Image
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => SelectProductScreen3()); // Navigate on tap
+                      },
+                      child: Container(
+                        height: Get.height * 0.10,
+                        width: Get.width * 0.35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: Border.all(color: Colors.grey, width: 1),
+                        ),
+                        child: ClipRect(
+                          child: Image.asset(
+                            brands[index]['imagePath']!,
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
                     ),
@@ -380,7 +411,7 @@ class _BuyScreenState extends State<BuyScreen> {
                     Text(
                       brands[index]['brandName']!,
                       style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500),
+                          fontSize: 15, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -394,93 +425,96 @@ class _BuyScreenState extends State<BuyScreen> {
   }
 
   Widget dealOfTheDay({String? imagePath, String? text1}) {
-    return Container(
-      color: ColorConstants.appBlueColor4,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Heading
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              "Deal of the day",
-              style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        color: ColorConstants.appBlueColor4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Heading
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "Deal of the day",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
+            const SizedBox(height: 8),
 
-          // Scrollable List of Deals
-          SizedBox(
-            height: Get.height * 0.25, // Increased height to avoid overflow
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 120, // Fixed width to keep all items aligned
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // Image
-                        Image.asset(
-                          imagePath!,
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
-                        ),
+            // Scrollable List of Deals
+            SizedBox(
+              height: Get.height * 0.25, // Increased height to avoid overflow
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 120, // Fixed width to keep all items aligned
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Image
+                          Image.asset(
+                            imagePath!,
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.cover,
+                          ),
 
-                        // Text
-                        Text(
-                          text1!,
-                          style:
-                              const TextStyle(color: Colors.blue, fontSize: 12),
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          "Best Deals",
-                          style: TextStyle(color: Colors.blue, fontSize: 10),
-                        ),
+                          // Text
+                          Text(
+                            text1!,
+                            style: const TextStyle(
+                                color: Colors.blue, fontSize: 12),
+                            textAlign: TextAlign.center,
+                          ),
+                          const Text(
+                            "Best Deals",
+                            style: TextStyle(color: Colors.blue, fontSize: 10),
+                          ),
 
-                        // Button
-                        ElevatedButton(
-                          onPressed: () {
-                            print("Add Pressed");
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                          // Button
+                          ElevatedButton(
+                            onPressed: () {
+                              print("Add Pressed");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              "Add",
+                              style: TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          child: const Text(
-                            "Add",
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -571,59 +605,61 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 
- Widget shopByRAM({required List<Map<String, String>> ramOptions}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Text(
-          "Shop By RAM",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  Widget shopByRAM({required List<Map<String, String>> ramOptions}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            "Shop By RAM",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
-      const SizedBox(height: 8),
-      SizedBox(
-        height: 100,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: ramOptions.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Container(
-                width: 120,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: ColorConstants.appBlueColor5,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all( // 🔹 Adds border around each item
-                    color: Colors.grey.shade400,
-                    width: 1.5,
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: ramOptions.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  width: 120,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.appBlueColor5,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      // 🔹 Adds border around each item
+                      color: Colors.grey.shade400,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        ramOptions[index]['ramSize']!,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ramOptions[index]['price']!,
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      ramOptions[index]['ramSize']!,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      ramOptions[index]['price']!,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 
   Widget byGrade({required List<Map<String, String>> grades}) {
     return Column(
@@ -666,7 +702,7 @@ class _BuyScreenState extends State<BuyScreen> {
 
   Widget networkType({required List<Map<String, String>> networks}) {
     return Container(
-      color:ColorConstants.appGreyColor2,
+      color: ColorConstants.appGreyColor2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -767,15 +803,15 @@ class _BuyScreenState extends State<BuyScreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Center(child: Image.asset(
-                    osList[index]['imagePath']!,
-                    width: 120,
-                    height: Get.height * 0.15,
-                    fit: BoxFit.cover,
-                  ),)
-                  
-                ),
+                    borderRadius: BorderRadius.circular(10),
+                    child: Center(
+                      child: Image.asset(
+                        osList[index]['imagePath']!,
+                        width: 120,
+                        height: Get.height * 0.15,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
               );
             },
           ),

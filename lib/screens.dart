@@ -6,13 +6,13 @@ import 'package:fonofy/EmptyCartScreen.dart';
 import 'package:fonofy/DeviceDetailsScreen.dart';
 import 'package:fonofy/DeviceDetailsScreen2.dart';
 import 'package:fonofy/DeviceDetailsScreen3.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
 import 'package:fonofy/RepairServiceScreen.dart';
 import 'package:fonofy/SelectAddressScreen.dart';
 import 'package:fonofy/SelectProduct2.dart';
 import 'package:fonofy/SelectProductScreen.dart';
 import 'package:fonofy/SelectProductScreen3';
-import 'package:fonofy/SideBarMenuScreen.dart';
 import 'package:fonofy/YourDevice.dart';
 import 'package:fonofy/YourDeviceScreen2.dart';
 import 'package:fonofy/YourDeviceScreen3.dart';
@@ -43,7 +43,7 @@ class _ScreensState extends State<Screens> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(DeviceDetailScreen2()); // Fixed class name
+              Get.to(DeviceDetailScreen2()); 
             },
             child: const Text(
               "DeviceDetailsScreen2",
@@ -88,7 +88,7 @@ class _ScreensState extends State<Screens> {
           ),
            GestureDetector(
             onTap: () {
-              Get.to(SelectAddressScreen()); // Fixed class name
+              Get.to(SelectAddressScreen()); 
             },
             child: const Text(
               "SelectAddressScreen",
@@ -97,7 +97,7 @@ class _ScreensState extends State<Screens> {
           ),
            GestureDetector(
             onTap: () {
-              Get.to(SelectProductScreen3()); // Fixed class name
+              Get.to(SelectProductScreen3()); 
             },
             child: const Text(
               "SelectProduct",
@@ -106,7 +106,7 @@ class _ScreensState extends State<Screens> {
           ),
            GestureDetector(
             onTap: () {
-              Get.to(SelectProduct2()); // Fixed class name
+              Get.to(SelectProduct2()); 
             },
             child: const Text(
               "SelectProduct2",
@@ -115,7 +115,7 @@ class _ScreensState extends State<Screens> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(EmptyCartScreen()); // Fixed class name
+              Get.to(EmptyCartScreen()); 
             },
             child: const Text(
               "EmptyCart",
@@ -124,7 +124,7 @@ class _ScreensState extends State<Screens> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(YourDeviceScreen()); // Fixed class name
+              Get.to(YourDeviceScreen());
             },
             child: const Text(
               "YourDeviceScreen",
@@ -133,25 +133,25 @@ class _ScreensState extends State<Screens> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(YourDeviceScreen2()); // Fixed class name
+              Get.to(YourDeviceScreen2()); 
             },
             child: const Text(
               "YourDeviceScreen2",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
-          //  GestureDetector(
-          //   onTap: () {
-          //     Get.to(YourDeviceScreen3()); // Fixed class name
-          //   },
-          //   child: const Text(
-          //     "YourDeviceScreen3",
-          //     style: TextStyle(color: Colors.black, fontSize: 20),
-          //   ),
-          // ),
            GestureDetector(
             onTap: () {
-              Get.to(ReferAndEarnScreen()); // Fixed class name
+              Get.to(YourDeviceScreen3()); 
+            },
+            child: const Text(
+              "YourDeviceScreen3",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+           GestureDetector(
+            onTap: () {
+              Get.to(ReferAndEarnScreen()); 
             },
             child: const Text(
               "Refer&Earn",
@@ -161,7 +161,7 @@ class _ScreensState extends State<Screens> {
            
           GestureDetector(
             onTap: () {
-              Get.to(RepairServiceScreen()); // Fixed class name
+              Get.to(RepairServiceScreen()); 
             },
             child: const Text(
               "RepairServiceScreen",
@@ -170,10 +170,20 @@ class _ScreensState extends State<Screens> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(BuyRefurbishedProductScreen()); // Fixed class name
+              Get.to(BuyRefurbishedProductScreen()); 
             },
             child: const Text(
               "BuyRefurbishedScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+
+          GestureDetector(
+            onTap: () {
+              Get.to(ProductScreen()); 
+            },
+            child: const Text(
+              "ProductScreen",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),

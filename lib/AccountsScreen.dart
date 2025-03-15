@@ -124,36 +124,39 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Widget _buildExpandableSection(String title, bool isExpanded, VoidCallback onTap, List<String> subItems) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-              Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.black),
-            ],
-          ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      GestureDetector(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+            Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.black),
+          ],
         ),
-        if (isExpanded)
-          Column(
-            children: subItems
-                .map((item) => Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 5),
-                      child: Text(
-                        item,
-                        style: const TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ))
-                .toList(),
-          ),
-        const SizedBox(height: 10),
-      ],
-    );
-  }
+      ),
+      if (isExpanded)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Align items to the right
+          children: subItems
+              .map((item) => Padding(
+                    padding: const EdgeInsets.only(right: 10, top: 5), // Adjust padding for alignment
+                    child: Text(
+                      item,
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      textAlign: TextAlign.end, // Align text to the right
+                    ),
+                  ))
+              .toList(),
+        ),
+      const SizedBox(height: 10),
+    ],
+  );
+}
+
 }

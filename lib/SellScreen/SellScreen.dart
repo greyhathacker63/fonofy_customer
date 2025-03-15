@@ -10,6 +10,13 @@ class Sellscreen extends StatefulWidget {
 }
 
 class _SellscreenState extends State<Sellscreen> {
+  int _currentIndex = 0;
+  final List<String> demoImages = [
+    "assets/images/banner.png",
+    "assets/images/banner.png",
+    "assets/images/banner.png",
+    "assets/images/banner.png"
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +34,7 @@ class _SellscreenState extends State<Sellscreen> {
             sellDevice(
                 imagePath: "assets/images/phone.png", text1: "fdhfjgfkicoic"),
 
-            //     // Sell for Cash Section
+            // Sell for Cash Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -60,7 +67,7 @@ class _SellscreenState extends State<Sellscreen> {
 
             const SizedBox(height: 20),
 
-            //     // Featured Categories Section
+            // Featured Categories Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -78,7 +85,7 @@ class _SellscreenState extends State<Sellscreen> {
 
             const SizedBox(height: 20),
 
-            //     // Other Section
+            // Other Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -188,27 +195,47 @@ class _SellscreenState extends State<Sellscreen> {
                         color: Colors.white),
                   ),
                   const SizedBox(height: 15),
-
-                  // Carousel Slider for Testimonials
-                  CarouselSlider(
-                    items: List.generate(
-                      3, // Change to the number of testimonials
-                      (index) => testimonialCard(
+                  CarouselSlider.builder(
+                    itemCount: demoImages.length,
+                    options: CarouselOptions(
+                      height: 250,
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                      viewportFraction: 1,
+                      aspectRatio: 2.5,
+                      initialPage: 2,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                    ),
+                    itemBuilder: (context, index, realIndex) {
+                      return testimonialCard(
                         name: "Jane Doe",
                         role: "CEO, Example Company",
                         text:
                             "\"Some quick example text to build on the card title and make up the bulk of the card's content.\"",
-                      ),
-                    ),
-                    options: CarouselOptions(
-                      height: 200,
-                      enlargeCenterPage: true,
-                      viewportFraction:
-                          0.8, // Controls how much of other cards are visible
-                      enableInfiniteScroll: true,
-                      autoPlay:
-                          false, // Keep it false as you don’t want auto sliding
-                    ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: demoImages.asMap().entries.map((entry) {
+                      return Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentIndex == entry.key
+                              ? Colors.blueAccent
+                              : Colors.grey,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
@@ -337,6 +364,7 @@ class _SellscreenState extends State<Sellscreen> {
                     border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Image.asset(
                       imagePath!,
