@@ -116,72 +116,6 @@ class _SellscreenState extends State<Sellscreen> {
 
             const SizedBox(height: 20),
 
-            //     // Client Testimonial Section
-            // Container(
-            //   color: Colors.blue.shade900,
-            //   padding: const EdgeInsets.all(20),
-            //   child: Column(
-            //     children: [
-            //       const Text(
-            //         "WHAT OUR CLIENT SAYS",
-            //         style: TextStyle(
-            //             fontSize: 16,
-            //             fontWeight: FontWeight.bold,
-            //             color: Colors.white),
-            //       ),
-            //       const SizedBox(height: 15),
-
-            //       Container(
-            //         padding: const EdgeInsets.all(12),
-            //         margin: const EdgeInsets.symmetric(horizontal: 16),
-            //         decoration: BoxDecoration(
-            //           color: Colors.white,
-            //           borderRadius: BorderRadius.circular(10),
-            //         ),
-            //         child: Column(
-            //           children: [
-            //             const CircleAvatar(
-            //                 radius: 30, backgroundColor: Colors.grey),
-            //             const SizedBox(height: 10),
-            //             const Text(
-            //               "\"Some quick example text to build on the card title and make up the bulk of the card's content.\"",
-            //               textAlign: TextAlign.center,
-            //               style: TextStyle(fontSize: 14, color: Colors.black54),
-            //             ),
-            //             const SizedBox(height: 8),
-            //             const Text(
-            //               "Jane Doe",
-            //               style: TextStyle(
-            //                   fontSize: 14, fontWeight: FontWeight.bold),
-            //             ),
-            //             const Text(
-            //               "CEO, Example Company",
-            //               style: TextStyle(fontSize: 12, color: Colors.black54),
-            //             ),
-            //             const SizedBox(height: 10),
-            //             Row(
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               children: List.generate(
-            //                 3,
-            //                 (index) => Container(
-            //                   margin: const EdgeInsets.symmetric(horizontal: 3),
-            //                   width: 8,
-            //                   height: 8,
-            //                   decoration: BoxDecoration(
-            //                     color: index == 0
-            //                         ? Colors.blue
-            //                         : Colors.grey.shade300,
-            //                     shape: BoxShape.circle,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             Container(
               color: Colors.blue.shade900,
               padding: const EdgeInsets.all(20),
@@ -372,7 +306,7 @@ class _SellscreenState extends State<Sellscreen> {
                       width: 70,
                     ),
                     Text(
-                      text1 ?? "Deal",
+                      text1 ?? "Deal of the day",
                       style: TextStyle(color: Colors.black, fontSize: 10),
                     ),
                   ],

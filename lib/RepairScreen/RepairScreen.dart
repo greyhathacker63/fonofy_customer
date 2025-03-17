@@ -237,7 +237,7 @@ class _RepairScreenState extends State<RepairScreen> {
                   child: ClipRect(
                     child: Image.asset(
                       brands[index]['imagePath']!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -350,7 +350,7 @@ class _RepairScreenState extends State<RepairScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 10), // Extra space for dot indicators
+        const SizedBox(height: 10), 
       ],
     );
   }
