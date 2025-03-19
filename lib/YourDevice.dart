@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/widgets/Colors.dart';
 
 class YourDeviceScreen extends StatelessWidget {
   const YourDeviceScreen({super.key});
@@ -28,11 +29,14 @@ class YourDeviceScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [BoxShadow(color: Colors.grey.shade300, blurRadius: 5)],
+                boxShadow: [
+                  BoxShadow(color: Colors.grey.shade300, blurRadius: 5)
+                ],
               ),
               child: Row(
                 children: [
-                  Image.asset("assets/images/iphone.png", height: 80), // iPhone Image
+                  Image.asset("assets/images/iphone.png",
+                      height: 80), // iPhone Image
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -40,18 +44,23 @@ class YourDeviceScreen extends StatelessWidget {
                       children: [
                         const Text(
                           "Apple iPhone 6 Plus\n(1 GB/64 GB)",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         Row(
                           children: [
                             const Text(
                               "Selling Price: ",
-                              style: TextStyle(fontSize: 14, color: Colors.black54),
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.black54),
                             ),
                             const Text(
                               "₹ 3,130",
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
                             ),
                             const Spacer(),
                             GestureDetector(
@@ -60,7 +69,10 @@ class YourDeviceScreen extends StatelessWidget {
                               },
                               child: const Text(
                                 "Recalculate",
-                                style: TextStyle(color: Colors.blue, fontSize: 14, decoration: TextDecoration.underline),
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline),
                               ),
                             ),
                           ],
@@ -98,9 +110,12 @@ class YourDeviceScreen extends StatelessWidget {
                 children: const [
                   Icon(Icons.local_offer, color: Colors.blue),
                   SizedBox(width: 10),
-                  Text("Apply Coupons", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                  Text("Apply Coupons",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                   Spacer(),
-                  Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
+                  Icon(Icons.arrow_forward_ios,
+                      size: 16, color: Colors.black54),
                 ],
               ),
             ),
@@ -108,8 +123,10 @@ class YourDeviceScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Special Offers Section
-            const Text("Special Offers*", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const Text("Earn more with these offers and smile wider!", style: TextStyle(fontSize: 14, color: Colors.black54)),
+            const Text("Special Offers*",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text("Earn more with these offers and smile wider!",
+                style: TextStyle(fontSize: 14, color: Colors.black54)),
 
             const SizedBox(height: 12),
 
@@ -117,15 +134,18 @@ class YourDeviceScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _OfferCard("assets/images/iphone.png", "iPhone Voucher", "₹ 5,340"),
-                _OfferCard("assets/images/amazon.png", "Amazon Pay Gift Card", "₹ 5,340"),
+                _OfferCard(
+                    "assets/images/iphone.png", "iPhone Voucher", "₹ 5,340"),
+                _OfferCard("assets/images/amazon.png", "Amazon Pay Gift Card",
+                    "₹ 5,340"),
               ],
             ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _OfferCard("assets/images/flipkart.png", "Flipkart Gift Card", "₹ 5,340"),
+                _OfferCard("assets/images/flipkart.png", "Flipkart Gift Card",
+                    "₹ 5,340"),
                 _OfferCard("assets/images/croma.png", "Croma", "₹ 5,340"),
               ],
             ),
@@ -135,24 +155,58 @@ class YourDeviceScreen extends StatelessWidget {
             // WhatsApp Toggle
             Row(
               children: [
-                const Expanded(child: Text("Get price alerts & updates on Whatsapp", style: TextStyle(fontSize: 14))),
-                Switch(value: true, onChanged: (bool value) {}),
+                const Expanded(
+                    child: Text("Get price alerts & updates on Whatsapp",
+                        style: TextStyle(fontSize: 14))),
+                Switch(
+                    value: true,
+                    activeColor: ColorConstants.appBlueColor3,
+                    onChanged: (bool value) {}),
               ],
             ),
 
             const SizedBox(height: 12),
 
-            // FAQs
-            _FAQItem("How did you calculate my device price?"),
-            _FAQItem("Is it safe to sell my phone on Fonofy?"),
-            _FAQItem("How does Voucher Payment work?"),
-            const SizedBox(height: 6),
-            const Text(
-              "Load More FAQs",
-              style: TextStyle(fontSize: 14, color: Colors.blue, decoration: TextDecoration.underline),
-            ),
+            // FAQs Section
+// FAQs Section
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16), // Proper padding
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Align items to left
+                children: [
+                  const Text(
+                    "FAQs",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10), // Space after title
+                  Align(
+                    alignment: Alignment.centerLeft, // Align items to left
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _FAQItem("How did you calculate my device price?"),
+                        _FAQItem("Is it safe to sell my phone on Fonofy?"),
+                        _FAQItem("How does Voucher Payment work?"),
+                        const SizedBox(
+                            height: 6), // Space before "Load More FAQs"
+                      ],
+                    ),
+                  ),
 
-            const SizedBox(height: 16),
+                  const Text(
+                    "Load More FAQs",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
 
             // Bottom Bar
             Container(
@@ -160,7 +214,9 @@ class YourDeviceScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [BoxShadow(color: Colors.grey.shade300, blurRadius: 5)],
+                boxShadow: [
+                  BoxShadow(color: Colors.grey.shade300, blurRadius: 5)
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,8 +224,13 @@ class YourDeviceScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("₹ 5,340", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
-                      const Text("View Breakups", style: TextStyle(fontSize: 14, color: Colors.blue)),
+                      const Text("₹ 5,340",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)),
+                      const Text("View Breakups",
+                          style: TextStyle(fontSize: 14, color: Colors.blue)),
                     ],
                   ),
                   ElevatedButton(
@@ -177,10 +238,12 @@ class YourDeviceScreen extends StatelessWidget {
                       // Sell Now Action
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                      backgroundColor: ColorConstants.appBlueColor3,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
                     ),
-                    child: const Text("Sell Now", style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: const Text("Sell Now",
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                 ],
               ),
@@ -204,7 +267,8 @@ class _FeatureIcon extends StatelessWidget {
       children: [
         Icon(icon, color: Colors.blue, size: 30),
         const SizedBox(height: 5),
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        Text(label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
       ],
     );
   }
@@ -231,9 +295,16 @@ class _OfferCard extends StatelessWidget {
         children: [
           Image.asset(imagePath, height: 40), // Offer Logo
           const SizedBox(height: 10),
-          Text(label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          Text(label,
+              textAlign: TextAlign.center,
+              style:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 5),
-          Text(price, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black)),
+          Text(price,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
         ],
       ),
     );
@@ -251,7 +322,8 @@ class _FAQItem extends StatelessWidget {
       children: [
         ListTile(
           title: Text(question, style: const TextStyle(fontSize: 14)),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
+          trailing: const Icon(Icons.arrow_forward_ios,
+              size: 16, color: Colors.black54),
         ),
         Divider(color: Colors.grey.shade300),
       ],

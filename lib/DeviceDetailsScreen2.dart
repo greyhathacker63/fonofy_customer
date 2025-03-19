@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/DeviceDetailsScreen3.dart';
+import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 class DeviceDetailScreen2 extends StatefulWidget {
   const DeviceDetailScreen2({Key? key}) : super(key: key);
@@ -62,14 +65,13 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF19628B), // Button color
+                  backgroundColor: ColorConstants.appBlueColor3, // Button color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 onPressed: () {
-                  // Navigate to next screen (replace with your screen)
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => NextScreen()));
+                 Get.to(() => DeviceDetailsScreen3());
                 },
                 child: const Text(
                   "Continue",
@@ -101,7 +103,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imagePath, height: 80), // Image
+            Image.asset(imagePath, height: 95,width: 70,), // Image
             const SizedBox(height: 8),
             Container(
               width: double.infinity,

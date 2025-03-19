@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/DeviceDetailsScreen4.dart';
+import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 class DeviceDetailsScreen3 extends StatefulWidget {
   @override
@@ -64,14 +67,13 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF19628B), // Button color
+                  backgroundColor: ColorConstants.appBlueColor3, 
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 onPressed: () {
-                  // Navigate to next screen (replace with your screen)
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => NextScreen()));
+                  Get.to(() => DeviceDetailsScreen4());
                 },
                 child: const Text(
                   "Continue",

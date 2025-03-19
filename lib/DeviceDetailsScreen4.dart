@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/widgets/Colors.dart';
 
 class DeviceDetailsScreen4 extends StatefulWidget {
   const DeviceDetailsScreen4({super.key});
@@ -85,8 +86,8 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                       }
                     : null, // Disable button if nothing is selected
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,
-                  disabledBackgroundColor: Colors.blueGrey.shade200,
+                  backgroundColor: ColorConstants.appBlueColor3,
+                  disabledBackgroundColor: ColorConstants.appBlueColor3,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 child: const Text("Continue", style: TextStyle(fontSize: 16, color: Colors.white)),
@@ -105,7 +106,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
         width: 140,
         height: 160,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+        
           border: Border.all(color: Colors.grey.shade300),
           color: isSelected ? Colors.blueGrey : Colors.white,
         ),

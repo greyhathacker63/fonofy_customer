@@ -298,7 +298,7 @@ class _BuyScreenState extends State<BuyScreen> {
                       onPressed: () {
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: ColorConstants.appBlueColor3,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
@@ -492,7 +492,7 @@ class _BuyScreenState extends State<BuyScreen> {
                               print("Add Pressed");
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: ColorConstants.appBlueColor3,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -580,7 +580,7 @@ class _BuyScreenState extends State<BuyScreen> {
                           print("Add Pressed");
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: ColorConstants.appBlueColor3,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),

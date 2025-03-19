@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/DeviceDetailsScreen2.dart';
+import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 class DeviceDetailsScreen extends StatefulWidget {
   const DeviceDetailsScreen({Key? key}) : super(key: key);
@@ -72,7 +75,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF19628B), // Button color
+                  backgroundColor: ColorConstants.appBlueColor3,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -80,7 +83,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                 onPressed: () {
                   if (callStatus != null && touchStatus != null && screenStatus != null) {
                     // Navigate to next screen (Modify as needed)
-                    Navigator.pushNamed(context, "/nextScreen");
+                    Get.to(() => DeviceDetailScreen2());
                   } else {
                     // Show error message if any question is unanswered
                     ScaffoldMessenger.of(context).showSnackBar(

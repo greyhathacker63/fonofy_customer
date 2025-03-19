@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/DeviceDetailsScreen.dart';
+import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 class SelectProduct2 extends StatelessWidget {
   const SelectProduct2({super.key});
@@ -156,18 +159,23 @@ class SelectProduct2 extends StatelessWidget {
             const SizedBox(height: 10),
 
             // Get Exact Value Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-                onPressed: () {},
-                child: const Text("Get Exact Value", style: TextStyle(color: Colors.white, fontSize: 16)),
-              ),
-            ),
-          ],
+SizedBox(
+  width: double.infinity,
+  child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor:ColorConstants.appBlueColor3,
+      padding: const EdgeInsets.symmetric(vertical: 12),
+    ),
+    onPressed: () {
+      Get.to(() => DeviceDetailsScreen()); // ✅ Navigate to DeviceDetailsScreen
+    },
+    child: const Text(
+      "Get Exact Value",
+      style: TextStyle(color: Colors.white, fontSize: 16),
+    ),
+  ),
+),
+          ]
         ),
       ),
     );

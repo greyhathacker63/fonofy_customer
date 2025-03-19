@@ -7,6 +7,7 @@ import 'package:fonofy/ServicesScreen.dart';
 import 'package:fonofy/SupportScreen.dart';
 import 'package:fonofy/TabScreen.dart';
 import 'package:fonofy/screens.dart';
+import 'package:fonofy/widgets/Colors.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({
@@ -39,7 +40,7 @@ List <Widget> screens=[TabScreen(),InfoScreen(),ServicesScreen(),SupportScreen()
         onTap(index);
       },
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.blue,
+      selectedItemColor: ColorConstants.appBlueColor3,
       unselectedItemColor: Colors.grey,
       items: const [
         BottomNavigationBarItem(
