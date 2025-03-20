@@ -19,6 +19,5 @@ class ColorConstants {
   static Color lightColor = hexToColor('#DCFBFF');
   static Color greenColor = hexToColor('#B6FFB8');
   static Color appBlueColor5 = hexToColor('#5892B0');
-    static Color appGreyColor2 = hexToColor('#F5F5F5');
-  
+  static Color appGreyColor2 = hexToColor('#F5F5F5');
 }
