@@ -302,11 +302,11 @@ class _SellscreenState extends State<Sellscreen> {
                   ElevatedButton(
                     onPressed: () {
                       Get.to(() =>
-                          SelectProduct2()); // ✅ Navigate to SelectProduct2
+                          AllBrandsScreen()); 
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstants.appBlueColor3, // Button color
-                      foregroundColor: Colors.white, // Text color
+                      backgroundColor: ColorConstants.appBlueColor3, 
+                      foregroundColor: Colors.white, 
                       padding: const EdgeInsets.all(10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

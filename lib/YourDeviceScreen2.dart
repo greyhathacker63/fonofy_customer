@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/YourDeviceScreen3.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -99,6 +101,7 @@ class YourDeviceScreen2 extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+                  Get.to(() => YourDeviceScreen3());
                   // Navigate to next step
                 },
                 child: const Text("Continue", style: TextStyle(fontSize: 16, color: Colors.white)),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/SelectProductScreen.dart';
+import 'package:fonofy/SelectProductScreen3';
+import 'package:get/get.dart'; // GetX for navigation
+
 
 void main() {
   runApp(const MyApp());
@@ -9,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp( // GetX enable karne ke liye
       debugShowCheckedModeBanner: false,
       home: AllBrandsScreen(),
     );
@@ -37,11 +41,11 @@ class AllBrandsScreen extends StatelessWidget {
         actions: const [Icon(Icons.search)],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0), // Adds spacing from screen edges
+        padding: const EdgeInsets.all(8.0),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Colors.grey.shade300, width: 1), // Outer border
+            side: BorderSide(color: Colors.grey.shade300, width: 1),
           ),
           elevation: 3,
           child: Padding(
@@ -49,26 +53,31 @@ class AllBrandsScreen extends StatelessWidget {
             child: GridView.builder(
               itemCount: brands.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // 3 items per row
-                crossAxisSpacing: 0, // No extra space needed
+                crossAxisCount: 3,
+                crossAxisSpacing: 0,
                 mainAxisSpacing: 0,
-                childAspectRatio: 1.0, // Perfect square items
+                childAspectRatio: 1.0,
               ),
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300, width: 1), // Border for each item
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(imagePath, height: 50, width: 50, fit: BoxFit.cover),
-                      const SizedBox(height: 5),
-                      Text(
-                        brands[index],
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(() => SelectProductScreen3()); 
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300, width: 1),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(imagePath, height: 50, width: 50, fit: BoxFit.cover),
+                        const SizedBox(height: 5),
+                        Text(
+                          brands[index],
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

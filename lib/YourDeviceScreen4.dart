@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/YourDevice.dart';
+import 'package:fonofy/RepairServiceScreen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
-import 'package:fonofy/YourDeviceScreen4.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,13 +14,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: YourDeviceScreen3(),
+      home: YourDeviceScreen4(),
     );
   }
 }
 
-class YourDeviceScreen3 extends StatelessWidget {
-  const YourDeviceScreen3({super.key});
+class YourDeviceScreen4 extends StatelessWidget {
+  const YourDeviceScreen4({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +137,7 @@ class YourDeviceScreen3 extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () {
-                  Get.to(() => YourDeviceScreen4());
+                  Get.to(() => RepairServiceScreen());
                 },
                 child: const Text("Book Now", style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
@@ -188,34 +187,102 @@ class YourDeviceScreen3 extends StatelessWidget {
   }
 
   // Styled Price Summary Section
-  Widget _buildPriceSummary() {
-    return Center(
-      child: Container(
-        width: Get.width * 0.90,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black26, width: 2),
-          
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+ Widget _buildPriceSummary() {
+  return Center(
+    child: Container(
+      width: Get.width * 0.90,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black26, width: 1),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Price Summary",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+
+          // Service Name (Clickable)
+          GestureDetector(
+            onTap: () {
+              // Handle service click
+            },
+            child: const Text(
+              "OnePlus 11r 5G Motherboard Repair",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // Apply Coupon Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Price Summary", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(child: const Text("No Service Selected", style: TextStyle(fontSize: 14, color: Colors.grey))),
+              const Text(
+                "Apply Coupon",
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Handle apply coupon click
+                },
+                child: const Text(
+                  "Apply",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
+          const SizedBox(height: 12),
 
+          // Total Amount Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Total Amount",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade300,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Text(
+                      "Saved ₹409",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  const Text(
+                    "₹99",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
   Widget _buildWhyChooseUs() {
   return Card(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

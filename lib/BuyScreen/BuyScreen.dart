@@ -36,11 +36,11 @@ class _BuyScreenState extends State<BuyScreen> {
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                      height: Get.height * 0.15, // Adjust height as per UI
+                      height: Get.height * 0.15, 
                       enlargeCenterPage: true,
                       viewportFraction: 1.0,
                       enableInfiniteScroll: true,
-                      autoPlay: false, // No autoplay as requested
+                      autoPlay: false, 
                       onPageChanged: (index, reason) {
                         setState(() {
                           _currentIndex = index;
