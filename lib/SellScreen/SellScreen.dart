@@ -56,7 +56,7 @@ class _SellscreenState extends State<Sellscreen> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
-                      crossAxisSpacing: 10,
+                      crossAxisSpacing: 0,
                       mainAxisSpacing: 10,
                     ),
                     itemCount: 8,

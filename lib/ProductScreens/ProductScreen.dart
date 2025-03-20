@@ -135,13 +135,13 @@ class ProductScreen extends StatelessWidget {
                           children: [
                             Text(
                               "₹${product.price.toStringAsFixed(0)}",
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                              style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 5),
                             Text(
                               "M.R.P: ₹${product.oldPrice.toStringAsFixed(0)}",
                               style: const TextStyle(
-                                fontSize: 14,
+                                fontSize: 8,
                                 color: Colors.grey,
                                 decoration: TextDecoration.lineThrough,
                               ),

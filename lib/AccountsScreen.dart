@@ -39,7 +39,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   children: const [
                     Text(
                       "FONOFY TECHNOLOGIES PVT.LTD.",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "kuldeep@fonofy.in",

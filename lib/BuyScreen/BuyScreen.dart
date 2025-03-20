@@ -274,8 +274,8 @@ class _BuyScreenState extends State<BuyScreen> {
                     // Image
                     Image.asset(
                       imagePath!,
-                      height: 50,
-                      width: 50,
+                      height: 39,
+                      width: 39,
                       fit: BoxFit.cover,
                     ),
 
@@ -661,6 +661,7 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 
+
   Widget byGrade({required List<Map<String, String>> grades}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -679,7 +680,7 @@ class _BuyScreenState extends State<BuyScreen> {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 11),
                 decoration: BoxDecoration(
                   color: grade['color'] == "blue"
                       ? ColorConstants.lightColor
@@ -820,3 +821,4 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 }
+
