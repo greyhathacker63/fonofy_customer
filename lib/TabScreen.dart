@@ -3,6 +3,8 @@ import 'package:fonofy/BuyScreen/BuyScreen.dart';
 import 'package:fonofy/RepairScreen/RepairScreen.dart';
 import 'package:fonofy/SellScreen/SellScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart'; // Import GetX for navigation
+import 'package:fonofy/CartScreen.dart'; // Import Cart Screen
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -46,6 +48,15 @@ class _TabScreenState extends State<TabScreen>
           _getTitle(_selectedIndex),
           style: const TextStyle(color: Colors.black),
         ),
+        actions: [
+          if (_selectedIndex == 0) 
+            IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.black),
+              onPressed: () {
+                Get.to(() => const CartScreen()); 
+              },
+            ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Container(
@@ -53,8 +64,7 @@ class _TabScreenState extends State<TabScreen>
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: ColorConstants
-                    .appBlueColor3, // Selected tab background color
+                color: ColorConstants.appBlueColor3, // Selected tab background color
               ),
               unselectedLabelColor: Colors.white70,
               tabs: [
