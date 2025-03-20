@@ -17,7 +17,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Image.asset("assets/images/Logo.png", height: 40), // Update with your logo path
+        title: Image.asset("assets/images/Logo.png", height: 30), // Update with your logo path
         elevation: 0,
         backgroundColor: Colors.white,
       ),
