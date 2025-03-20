@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/YourDeviceScreen3.dart';
+import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -94,7 +95,7 @@ class YourDeviceScreen2 extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: ColorConstants.appBlueColor3,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

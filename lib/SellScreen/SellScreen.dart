@@ -42,16 +42,13 @@ class _SellscreenState extends State<Sellscreen> {
               brands: [
                 {
                   "brandName": "Apple",
-                  "imagePath": "assets/images/AppleMobiles.png"
+                  "imagePath": "assets/images/applephone.png"
                 },
                 {
                   "brandName": "Samsung",
                   "imagePath": "assets/images/samsung.png"
                 },
-                {
-                  "brandName": "OnePlus",
-                  "imagePath": "assets/images/oneplus.png"
-                },
+             
                 {"brandName": "Xiaomi", "imagePath": "assets/images/xiomi.png"},
                 {"brandName": "Vivo", "imagePath": "assets/images/vivo.png"},
                 {"brandName": "Oppo", "imagePath": "assets/images/oppo.png"},
@@ -429,7 +426,7 @@ Widget sellForCash({required List<Map<String, String>> brands}) {
                     child: ClipRect(
                       child: Image.asset(
                         brands[index]['imagePath']!,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),

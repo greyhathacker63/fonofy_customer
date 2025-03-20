@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/CartScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
@@ -32,7 +33,8 @@ class SelectAddressScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text("Select Address", style: TextStyle(color: Colors.black)),
+        title:
+            const Text("Select Address", style: TextStyle(color: Colors.black)),
       ),
       body: Column(
         children: [
@@ -44,7 +46,7 @@ class SelectAddressScreen extends StatelessWidget {
             children: [
               _buildStepBox("1", true),
               Container(
-                width:Get.width * 0.55, // Shorter Line
+                width: Get.width * 0.55, // Shorter Line
                 height: 1.5,
                 color: Colors.black26,
               ),
@@ -59,25 +61,33 @@ class SelectAddressScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                Text("Address", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                Text("Time Slot", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black45)),
+                Text("Address",
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                Text("Time Slot",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black45)),
               ],
             ),
           ),
 
           const SizedBox(height: 30),
 
-         ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.blueGrey,
-    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 40),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  ),
-  onPressed: () {},
-  child: Text("+Add New Address", 
-    style: TextStyle(fontSize: 16, color: ColorConstants.appBlueColor3),
-  ),
-),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorConstants.appBlueColor3,
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 40),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () {},
+            child: Text(
+              "+Add New Address",
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
+          ),
 
           const Spacer(),
 
@@ -94,18 +104,26 @@ class SelectAddressScreen extends StatelessWidget {
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("₹99", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text("Apply Coupon", style: TextStyle(fontSize: 12, color: Colors.green)),
+                    Text("₹99",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text("Apply Coupon",
+                        style: TextStyle(fontSize: 12, color: Colors.green)),
                   ],
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueGrey,
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    backgroundColor: ColorConstants.appBlueColor3,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                   ),
-                  onPressed: () {},
-                  child: const Text("Book Now", style: TextStyle(fontSize: 16, color: Colors.white)),
+                  onPressed: () {
+                    Get.to(() => CartScreen());
+                  },
+                  child: const Text("Book Now",
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ],
             ),

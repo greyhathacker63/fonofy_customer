@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/YourDevice.dart';
+import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:fonofy/YourDeviceScreen4.dart';
@@ -133,7 +134,7 @@ class YourDeviceScreen3 extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: ColorConstants.appBlueColor3,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
@@ -178,7 +179,7 @@ class YourDeviceScreen3 extends StatelessWidget {
           Text(oldPrice, style: const TextStyle(fontSize: 12, color: Colors.black54, decoration: TextDecoration.lineThrough)),
           const SizedBox(width: 10),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6)),
+            style: ElevatedButton.styleFrom(backgroundColor:ColorConstants.appBlueColor3, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6)),
             onPressed: () {},
             child: const Text("Add +", style: TextStyle(fontSize: 14, color: Colors.white)),
           ),

@@ -53,7 +53,7 @@ class _TabScreenState extends State<TabScreen>
             IconButton(
               icon: const Icon(Icons.shopping_cart, color: Colors.black),
               onPressed: () {
-                Get.to(() => const CartScreen()); 
+                Get.to(() =>  CartScreen()); 
               },
             ),
         ],
