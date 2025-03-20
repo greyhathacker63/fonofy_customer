@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/AllBrands.dart';
-import 'package:fonofy/BuyRefurbishedProductScreen';
+// import 'package:fonofy/BuyRefurbishedProductScreen';
 import 'package:fonofy/DeviceDetailsScreen4.dart';
 import 'package:fonofy/EmptyCartScreen.dart';
 import 'package:fonofy/DeviceDetailsScreen.dart';
@@ -17,6 +17,8 @@ import 'package:fonofy/YourDevice.dart';
 import 'package:fonofy/YourDeviceScreen2.dart';
 import 'package:fonofy/YourDeviceScreen3.dart';
 import 'package:get/get.dart';
+
+import 'BuyRefurbishedProductScreen.dart';
 
 class Screens extends StatefulWidget {
   const Screens({super.key});
