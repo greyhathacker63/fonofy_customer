@@ -148,13 +148,6 @@ class _BuyRefurbishedProductScreenState extends State<BuyRefurbishedProductScree
               "(Refurbished) Redmi 6 Pro Max (Champagne Gold, 6GB RAM, 128GB Storage) - 64MP Quad...",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
             ),
-          
-        
-        
-      
-    
-  
-
 
               // Product Image, Price, and Highlights (from previous code)
               _buildPricingCard(),

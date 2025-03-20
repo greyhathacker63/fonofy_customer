@@ -214,32 +214,35 @@ class YourDeviceScreen3 extends StatelessWidget {
 
   Widget _buildWhyChooseUs() {
   return Card(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
     elevation: 3,
     child: Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Align title to the left
         children: [
           // Title: "Why Choose Us?"
           const Padding(
-            padding: EdgeInsets.only(bottom: 8), // Space below the title
+            padding: EdgeInsets.only(bottom: 10), // Space below the title
             child: Text(
               "Why Choose Us?", 
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(children: [Image.asset("assets/images/Rupee.png", height: 24), const Text("Pay after service")]),
-              Column(children: [Image.asset("assets/images/HomeRepair.png", height: 24), const Text("Home Repair")]),
-              Column(children: [Image.asset("assets/images/DataSecurity.png", height: 24), const Text("Data Security")]),
+              Column(children: [Image.asset("assets/images/Rupee.png", height: 20,), const Text("Pay after service"),
+                SizedBox.fromSize(size: Size(1, 1))]),
+              Column(children: [Image.asset("assets/images/HomeRepair.png", height: 20), const Text("Home Repair"),
+                SizedBox.fromSize(size: Size(1, 1))]),
+              Column(children: [Image.asset("assets/images/DataSecurity.png", height: 20), const Text("Data Security"),
+                SizedBox.fromSize(size: Size(1, 1))]),
             ],
           ),
 
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
 
           // Stats section
           Container(
@@ -251,8 +254,8 @@ class YourDeviceScreen3 extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: const [
-                Text("46K+ Device Repaired", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text("4.3+ Rated Products", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text("46K+ Device Repaired", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                Text("4.3+ Rated Products", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -261,8 +264,6 @@ class YourDeviceScreen3 extends StatelessWidget {
     ),
   );
 }
-
-
   Widget _buildFaqItem(String question) {
     return ListTile(title: Text(question, style: const TextStyle(fontSize: 14)), trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54));
   }

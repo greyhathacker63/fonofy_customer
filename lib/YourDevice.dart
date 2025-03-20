@@ -36,8 +36,8 @@ class YourDeviceScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset("assets/images/iphone.png",
-                      height: 80), // iPhone Image
-                  const SizedBox(width: 12),
+                      height: 73), // iPhone Image
+                  const SizedBox(width: 0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +45,7 @@ class YourDeviceScreen extends StatelessWidget {
                         const Text(
                           "Apple iPhone 6 Plus\n(1 GB/64 GB)",
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 13, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         Row(
@@ -58,7 +58,7 @@ class YourDeviceScreen extends StatelessWidget {
                             const Text(
                               "₹ 3,130",
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red),
                             ),
@@ -71,7 +71,7 @@ class YourDeviceScreen extends StatelessWidget {
                                 "Recalculate",
                                 style: TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 14,
+                                    fontSize: 11,
                                     decoration: TextDecoration.underline),
                               ),
                             ),

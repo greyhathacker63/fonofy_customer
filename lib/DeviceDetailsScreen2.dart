@@ -32,7 +32,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -103,7 +103,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imagePath, height: 95,width: 70,), // Image
+            Image.asset(imagePath, height: 80,width: 70,), // Image
             const SizedBox(height: 8),
             Container(
               width: double.infinity,

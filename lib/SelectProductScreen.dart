@@ -35,7 +35,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
         leading: const Icon(Icons.arrow_back),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,7 +46,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                 padding: const EdgeInsets.all(12.0),
                 child: Row(
                   children: [
-                    Image.asset(imagePath, height: 60, width: 60, fit: BoxFit.cover),
+                    Image.asset(imagePath, height: 50, width: 50, fit: BoxFit.cover),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
@@ -59,7 +59,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                           const SizedBox(height: 5),
                           const Text(
                             "7400+ already sold on Fonofy",
-                            style: TextStyle(fontSize: 14, color: Colors.green),
+                            style: TextStyle(fontSize: 12, color: Colors.green),
                           ),
                         ],
                       ),
@@ -68,7 +68,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 12),
             const Text("Choose a variant", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Row(
@@ -81,7 +81,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                     });
                   },
                   child: Container(
-                    width: 100,
+                    width: 106,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -118,13 +118,13 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 15),
-            const Text("FAQs", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            const Text("FAQs", style: TextStyle(fontSize: 2, fontWeight: FontWeight.bold)),
             const Divider(),
             faqItem("How did you calculate my device price?"),
             faqItem("Is it safe to sell my phone on Fonofy?"),
             faqItem("How does Voucher Payment work?"),
-            const SizedBox(height: 10),
+            const SizedBox(height: 1),
             Center(
               child: TextButton(
                 onPressed: () {},
