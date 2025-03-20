@@ -54,7 +54,7 @@ class _AccountScreenState extends State<AccountScreen> {
             // My Orders
             const Text(
               "MY ORDERS",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             const SizedBox(height: 10),
 
