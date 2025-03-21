@@ -45,14 +45,14 @@ class RegisterScreen extends StatelessWidget {
               // Email Field
               _buildTextField("Enter email id"),
 
-              // PAN Number Field with Verify Button inside
-              _buildTextFieldWithVerify("Enter PAN No."),
+              // // PAN Number Field with Verify Button inside
+              // _buildTextFieldWithVerify("Enter PAN No."),
 
-              // Aadhaar Number Field with Verify Button inside
-              _buildTextFieldWithVerify("Enter Aadhaar No."),
+              // // Aadhaar Number Field with Verify Button inside
+              // _buildTextFieldWithVerify("Enter Aadhaar No."),
 
-              // GST Field with Verify Button inside
-              _buildTextFieldWithVerify("GST"),
+              // // GST Field with Verify Button inside
+              // _buildTextFieldWithVerify("GST"),
 
               // Password Field
               _buildTextField("Create Password"),
