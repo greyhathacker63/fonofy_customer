@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/YourDevice.dart';
 import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 class DeviceDetailsScreen4 extends StatefulWidget {
   const DeviceDetailsScreen4({super.key});
@@ -22,7 +24,8 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
             Navigator.pop(context);
           },
         ),
-        title: const Text("Device Details", style: TextStyle(color: Colors.black)),
+        title:
+            const Text("Device Details", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -51,7 +54,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildAccessoryCard(
-                  "assets/images/charger.png", 
+                  "assets/images/charger.png",
                   "Original charger of device",
                   isChargerSelected,
                   () {
@@ -62,7 +65,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                 ),
                 const SizedBox(width: 16),
                 _buildAccessoryCard(
-                  "assets/images/boximei.png", 
+                  "assets/images/boximei.png",
                   "Box with same IMEI",
                   isBoxSelected,
                   () {
@@ -76,21 +79,23 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
 
             const Spacer(),
 
-           
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: (isChargerSelected || isBoxSelected)
                     ? () {
-                        // Navigate to next screen or perform action
+                        Get.to(() => YourDeviceScreen());
                       }
-                    : null, // Disable button if nothing is selected
+                    : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorConstants.appBlueColor3,
                   disabledBackgroundColor: ColorConstants.appBlueColor3,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text("Continue", style: TextStyle(fontSize: 16, color: Colors.white)),
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -99,14 +104,14 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
     );
   }
 
-  Widget _buildAccessoryCard(String imagePath, String label, bool isSelected, VoidCallback onTap) {
+  Widget _buildAccessoryCard(
+      String imagePath, String label, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 140,
         height: 160,
         decoration: BoxDecoration(
-        
           border: Border.all(color: Colors.grey.shade300),
           color: isSelected ? Colors.blueGrey : Colors.white,
         ),
@@ -118,7 +123,9 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
             Text(
               label,
               textAlign: TextAlign.center,
-              style: TextStyle(color: isSelected ? Colors.white : Colors.black, fontSize: 14),
+              style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontSize: 14),
             ),
           ],
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/YourDeviceScreen2.dart';
 import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 class YourDeviceScreen extends StatelessWidget {
   const YourDeviceScreen({super.key});
@@ -235,6 +237,8 @@ class YourDeviceScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
+
+                      Get.to(() => YourDeviceScreen2());
                       // Sell Now Action
                     },
                     style: ElevatedButton.styleFrom(

@@ -34,50 +34,34 @@ class _SellscreenState extends State<Sellscreen> {
               child: Image.asset("assets/images/banner.png",
                   height: 120, fit: BoxFit.cover),
             ),
-
-            sellDevice(
+               sellDevice(
                 imagePath: "assets/images/phone.png",
                 text1: "Sell this device"),
 
-            // Sell for Cash Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "SELL FOR CASH",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: 8,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          // ✅ Navigate to AllBrands screen on tap
-                          Get.to(() => AllBrandsScreen());
-                        },
-                        child: categoryCard(
-                          imagePath: "assets/images/phone.png",
-                          label: "Brand ${index + 1}",
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+            sellForCash(
+              brands: [
+                {
+                  "brandName": "Apple",
+                  "imagePath": "assets/images/applephone.png"
+                },
+                {
+                  "brandName": "Samsung",
+                  "imagePath": "assets/images/samsung.png"
+                },
+             
+                {"brandName": "Xiaomi", "imagePath": "assets/images/xiomi.png"},
+                {"brandName": "Vivo", "imagePath": "assets/images/vivo.png"},
+                {"brandName": "Oppo", "imagePath": "assets/images/oppo.png"},
+                {
+                  "brandName": "Realme",
+                  "imagePath": "assets/images/realme.png"
+                },
+                {
+                  "brandName": "Lenovo",
+                  "imagePath": "assets/images/Lenovo.png"
+                },
+              ],
             ),
-
-            const SizedBox(height: 20),
 
             // Featured Categories Section
             Padding(
@@ -133,14 +117,12 @@ class _SellscreenState extends State<Sellscreen> {
                       GestureDetector(
                         onTap: () {
                           if ("Repair Phone" == "Repair Phone") {
-                          
                             Get.to(() => RepairScreen());
                           }
                         },
                         child: featureCard(
                           imagePath: "assets/images/phone.png",
-                          label:
-                              "Repair Phone", 
+                          label: "Repair Phone",
                         ),
                       ),
                       featureCard(
@@ -301,12 +283,11 @@ class _SellscreenState extends State<Sellscreen> {
                   SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(() =>
-                          SelectProduct2()); // ✅ Navigate to SelectProduct2
+                      Get.to(() => AllBrandsScreen());
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstants.appBlueColor3, // Button color
-                      foregroundColor: Colors.white, // Text color
+                      backgroundColor: ColorConstants.appBlueColor3,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.all(10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -398,4 +379,70 @@ class _SellscreenState extends State<Sellscreen> {
       ),
     );
   }
+}
+
+Widget sellForCash({required List<Map<String, String>> brands}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Title
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text(
+          "SELL FOR CASH",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
+      const SizedBox(height: 10),
+
+      // GridView for brands
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4, // 4 columns
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.8, // Adjusts item height
+          ),
+          itemCount: brands.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                // Navigate to AllBrandsScreen on tap
+                Get.to(() => AllBrandsScreen());
+              },
+              child: Column(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: ClipRect(
+                      child: Image.asset(
+                        brands[index]['imagePath']!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    brands[index]['brandName']!,
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+  );
 }

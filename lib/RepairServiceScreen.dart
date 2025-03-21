@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/SelectAddressScreen.dart';
+import 'package:get/get.dart';
 
 class RepairServiceScreen extends StatelessWidget {
   const RepairServiceScreen({super.key});
@@ -116,6 +118,8 @@ class RepairServiceScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+
+                  Get.to (() => SelectAddressScreen());
                   // Submit action
                 },
                 child: const Text("Submit", style: TextStyle(fontSize: 16, color: Colors.white)),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/SelectProduct2.dart';
+import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -132,18 +135,21 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
               ),
             ),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: null, // Disabled button
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey.shade300,
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: const Text("Get Exact Value"),
-              ),
-            ),
+         SizedBox(
+  width: double.infinity,
+  child: ElevatedButton(
+    onPressed: () {
+      Get.to(() => SelectProduct2()); 
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: ColorConstants.appBlueColor3, 
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+    ),
+    child: const Text("Get Exact Value"),
+  ),
+),
+
           ],
         ),
       ),

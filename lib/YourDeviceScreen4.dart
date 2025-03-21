@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/YourDevice.dart';
+import 'package:fonofy/RepairServiceScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
-import 'package:fonofy/YourDeviceScreen4.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,13 +15,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: YourDeviceScreen3(),
+      home: YourDeviceScreen4(),
     );
   }
 }
 
-class YourDeviceScreen3 extends StatelessWidget {
-  const YourDeviceScreen3({super.key});
+class YourDeviceScreen4 extends StatelessWidget {
+  const YourDeviceScreen4({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -134,12 +133,12 @@ class YourDeviceScreen3 extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorConstants.appBlueColor3,
+                  backgroundColor:ColorConstants.appBlueColor3,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () {
-                  Get.to(() => YourDeviceScreen4());
+                  Get.to(() => RepairServiceScreen());
                 },
                 child: const Text("Book Now", style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
@@ -179,7 +178,7 @@ class YourDeviceScreen3 extends StatelessWidget {
           Text(oldPrice, style: const TextStyle(fontSize: 12, color: Colors.black54, decoration: TextDecoration.lineThrough)),
           const SizedBox(width: 10),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor:ColorConstants.appBlueColor3, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6)),
+            style: ElevatedButton.styleFrom(backgroundColor: ColorConstants.appBlueColor3, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6)),
             onPressed: () {},
             child: const Text("Add +", style: TextStyle(fontSize: 14, color: Colors.white)),
           ),
@@ -189,65 +188,130 @@ class YourDeviceScreen3 extends StatelessWidget {
   }
 
   // Styled Price Summary Section
-  Widget _buildPriceSummary() {
-    return Center(
-      child: Container(
-        width: Get.width * 0.90,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black26, width: 2),
-          
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+ Widget _buildPriceSummary() {
+  return Center(
+    child: Container(
+      width: Get.width * 0.90,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black26, width: 1),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Price Summary",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+
+          // Service Name (Clickable)
+          GestureDetector(
+            onTap: () {
+              // Handle service click
+            },
+            child: const Text(
+              "OnePlus 11r 5G Motherboard Repair",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // Apply Coupon Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Price Summary", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(child: const Text("No Service Selected", style: TextStyle(fontSize: 14, color: Colors.grey))),
+              const Text(
+                "Apply Coupon",
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Handle apply coupon click
+                },
+                child: const Text(
+                  "Apply",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
+          const SizedBox(height: 12),
 
+          // Total Amount Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Total Amount",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: ColorConstants.appBlueColor3,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Text(
+                      "Saved ₹409",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  const Text(
+                    "₹99",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
   Widget _buildWhyChooseUs() {
   return Card(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     elevation: 3,
     child: Padding(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Align title to the left
         children: [
           // Title: "Why Choose Us?"
           const Padding(
-            padding: EdgeInsets.only(bottom: 10), // Space below the title
+            padding: EdgeInsets.only(bottom: 8), // Space below the title
             child: Text(
               "Why Choose Us?", 
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(children: [Image.asset("assets/images/Rupee.png", height: 20,), const Text("Pay after service"),
-                SizedBox.fromSize(size: Size(1, 1))]),
-              Column(children: [Image.asset("assets/images/HomeRepair.png", height: 20), const Text("Home Repair"),
-                SizedBox.fromSize(size: Size(1, 1))]),
-              Column(children: [Image.asset("assets/images/DataSecurity.png", height: 20), const Text("Data Security"),
-                SizedBox.fromSize(size: Size(1, 1))]),
+              Column(children: [Image.asset("assets/images/Rupee.png", height: 24), const Text("Pay after service")]),
+              Column(children: [Image.asset("assets/images/HomeRepair.png", height: 24), const Text("Home Repair")]),
+              Column(children: [Image.asset("assets/images/DataSecurity.png", height: 24), const Text("Data Security")]),
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
 
           // Stats section
           Container(
@@ -259,8 +323,8 @@ class YourDeviceScreen3 extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: const [
-                Text("46K+ Device Repaired", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                Text("4.3+ Rated Products", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                Text("46K+ Device Repaired", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text("4.3+ Rated Products", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -269,6 +333,8 @@ class YourDeviceScreen3 extends StatelessWidget {
     ),
   );
 }
+
+
   Widget _buildFaqItem(String question) {
     return ListTile(title: Text(question, style: const TextStyle(fontSize: 14)), trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54));
   }
