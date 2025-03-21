@@ -48,7 +48,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15),
-
               // OTP Input Field
               TextField(
                 keyboardType: TextInputType.number,
