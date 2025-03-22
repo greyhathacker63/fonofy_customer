@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/BuyScreen/BuyScreen.dart';
 import 'package:get/get.dart';
 import 'MainScreen.dart';
 import 'LoginScreen.dart';
