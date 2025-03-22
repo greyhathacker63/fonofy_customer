@@ -7,7 +7,8 @@ import 'package:get/get.dart'; // Import GetX for navigation
 import 'package:fonofy/CartScreen.dart'; // Import Cart Screen
 
 class TabScreen extends StatefulWidget {
-  const TabScreen({super.key});
+  final int upperTabIndex;
+  const TabScreen({super.key, required this.upperTabIndex});
 
   @override
   State<TabScreen> createState() => _TabScreenState();
@@ -16,18 +17,26 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedIndex = 0; // Track the selected tab index
+  late int _selectedIndex; // Change from int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _selectedIndex = widget.upperTabIndex; // ✅ Set initial selected index
 
-    // Add listener to update UI when the tab changes
+    _tabController = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: _selectedIndex, // ✅ Set initial index for TabController
+    );
+
+    // Listen to tab changes and update _selectedIndex
     _tabController.addListener(() {
-      setState(() {
-        _selectedIndex = _tabController.index;
-      });
+      if (_tabController.indexIsChanging) {
+        setState(() {
+          _selectedIndex = _tabController.index;
+        });
+      }
     });
   }
 
@@ -53,7 +62,7 @@ class _TabScreenState extends State<TabScreen>
             IconButton(
               icon: const Icon(Icons.shopping_cart, color: Colors.black),
               onPressed: () {
-                Get.to(() =>  CartScreen()); 
+                Get.to(() => CartScreen()); 
               },
             ),
         ],

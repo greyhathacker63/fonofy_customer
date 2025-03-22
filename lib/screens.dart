@@ -3,6 +3,7 @@ import 'package:fonofy/BuyRefurbishedProductScreen';
 import 'package:fonofy/EmptyCartScreen.dart';
 import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
+import 'package:fonofy/SelectSlotScreen.dart';
 import 'package:get/get.dart';
 
 class Screens extends StatefulWidget {
@@ -55,6 +56,16 @@ class _ScreensState extends State<Screens> {
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              Get.to(SelectSlotScreen());
+            },
+            child: const Text(
+              "SelectSlotScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+          
         ],
       ),
     );

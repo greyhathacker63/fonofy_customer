@@ -33,7 +33,7 @@ class MainScreen extends StatelessWidget {
             // ),
             // Buy Card
             GestureDetector(
-              onTap: () => Get.to(BottomNavigation()),
+              onTap: () => Get.to(BottomNavigation(upperTabIndex:0)),
               child: _buildCard(
                   "Buy",
                   "Shop for certified refusrbished devices with 6 months warranty",
@@ -42,7 +42,7 @@ class MainScreen extends StatelessWidget {
 
             // Sell Card
             GestureDetector(
-              onTap: () => Get.to(BottomNavigation()),
+              onTap: () => Get.to(BottomNavigation(upperTabIndex: 1)),
               child: _buildCard(
                   "Sell",
                   "Get the best price for your old phone within 60 Seconds",
@@ -51,7 +51,7 @@ class MainScreen extends StatelessWidget {
 
             // Repair Card
              GestureDetector(
-              onTap: () => Get.to(BottomNavigation()),
+              onTap: () => Get.to(BottomNavigation(upperTabIndex: 2)),
               child: _buildCard(
                   "Repair",
                   "Expert Phone repair with 6 months warranty at doorstep or at store",

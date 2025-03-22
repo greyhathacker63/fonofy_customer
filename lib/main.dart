@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: MainScreen(),
     //   initialRoute: '/', // Default route
     //   routes: {
     //     '/': (context) => const DeviceDetailScreen2(),
