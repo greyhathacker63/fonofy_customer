@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:fonofy/SelectProductScreen.dart';
+import 'package:fonofy/CartScreen.dart';
 import 'package:fonofy/SelectProductScreen3';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
@@ -118,7 +118,7 @@ class _BuyScreenState extends State<BuyScreen> {
               ),
             ),
 
-            SizedBox(height: Get.height * 0.03), // Responsive spacing
+            SizedBox(height: Get.height * 0.03), 
             // Banner Image
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -189,7 +189,7 @@ class _BuyScreenState extends State<BuyScreen> {
                 {"ramSize": "6GB RAM", "price": "₹6,000"},
                 {"ramSize": "8GB RAM", "price": "₹10,000"},
               ],
-              selectedIndex: -1, // No selection initially
+              selectedIndex: -1, 
             ),
 
             byGrade(
@@ -274,9 +274,8 @@ class _BuyScreenState extends State<BuyScreen> {
         ),
         const SizedBox(height: 8),
 
-        // Scrollable List of Deals
         SizedBox(
-          height: Get.height * 0.25, // Increased height to avoid overflow
+          height: Get.height * 0.25,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: 5,
@@ -285,7 +284,7 @@ class _BuyScreenState extends State<BuyScreen> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: 120, // Fixed width to keep all items aligned
+                  width: 120,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey, width: 1),
@@ -319,7 +318,9 @@ class _BuyScreenState extends State<BuyScreen> {
 
                       // Button
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => CartScreen());
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorConstants.appBlueColor3,
                           foregroundColor: Colors.white,
@@ -367,28 +368,28 @@ class _BuyScreenState extends State<BuyScreen> {
                 borderRadius: BorderRadius.circular(Get.width * 0.03),
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min, // Prevents extra spacing
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Image.asset(
                     categories[index]["imagePath"]!,
-                    height: Get.height * 0.08, // Responsive image size
+                    height: Get.height * 0.08, 
                     width: Get.width * 0.18,
                     fit: BoxFit.contain,
                   ),
                   SizedBox(
-                      height: Get.height * 0.01), // Space between image & text
+                      height: Get.height * 0.01), 
                   SizedBox(
-                    width: Get.width * 0.18, // Responsive text width
+                    width: Get.width * 0.18, 
                     child: Text(
                       categories[index]["text1"]!,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: Get.width * 0.03, // Responsive font size
+                        fontSize: Get.width * 0.03, 
                       ),
-                      textAlign: TextAlign.center, // Centered text
-                      maxLines: 2, // Prevents text overflow
-                      overflow: TextOverflow.ellipsis, // Adds "..." if too long
+                      textAlign: TextAlign.center, 
+                      maxLines: 2, 
+                      overflow: TextOverflow.ellipsis, 
                     ),
                   ),
                 ],
@@ -414,9 +415,9 @@ class _BuyScreenState extends State<BuyScreen> {
           ),
         ),
         const SizedBox(height: 12),
-// Scrollable Brand List
+       // Scrollable Brand List
         SizedBox(
-          height: 110, // Increased height to fit text
+          height: 110, 
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: brands.length,
@@ -428,7 +429,7 @@ class _BuyScreenState extends State<BuyScreen> {
                     // Clickable Brand Image
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => SelectProductScreen3()); // Navigate on tap
+                        Get.to(() => SelectProductScreen3()); 
                       },
                       child: Container(
                         height: Get.height * 0.10,
@@ -504,7 +505,7 @@ class _BuyScreenState extends State<BuyScreen> {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      width: 120, // Fixed width to keep all items aligned
+                      width: 120, 
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -584,7 +585,7 @@ class _BuyScreenState extends State<BuyScreen> {
 
         // Scrollable List of Deals
         SizedBox(
-          height: Get.height * 0.25, // Increased height to avoid overflow
+          height: Get.height * 0.25, 
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: 5,
@@ -593,7 +594,7 @@ class _BuyScreenState extends State<BuyScreen> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: 120, // Fixed width to keep all items aligned
+                  width: 120, 
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey, width: 1),
@@ -819,7 +820,7 @@ class _BuyScreenState extends State<BuyScreen> {
               height: 100,
               child: Row(
                 mainAxisAlignment:
-                    MainAxisAlignment.spaceEvenly, // Align items to the start
+                    MainAxisAlignment.spaceEvenly, 
                 children: networks.map((network) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -906,7 +907,7 @@ class _BuyScreenState extends State<BuyScreen> {
             width: Get.width,
             child: Row(
               mainAxisAlignment:
-                  MainAxisAlignment.spaceAround, // Align items to the start
+                  MainAxisAlignment.spaceAround, 
               children: osList.map((item) {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(10),

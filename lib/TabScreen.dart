@@ -14,10 +14,9 @@ class TabScreen extends StatefulWidget {
   State<TabScreen> createState() => _TabScreenState();
 }
 
-class _TabScreenState extends State<TabScreen>
-    with SingleTickerProviderStateMixin {
+class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late int _selectedIndex; // Change from int _selectedIndex = 0;
+  late int _selectedIndex; // ✅ Tracks selected tab index
 
   @override
   void initState() {
@@ -30,9 +29,9 @@ class _TabScreenState extends State<TabScreen>
       initialIndex: _selectedIndex, // ✅ Set initial index for TabController
     );
 
-    // Listen to tab changes and update _selectedIndex
+    // ✅ Properly listen to tab changes (swipe & tap both update UI)
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
+      if (_tabController.index != _selectedIndex) {
         setState(() {
           _selectedIndex = _tabController.index;
         });
@@ -73,7 +72,7 @@ class _TabScreenState extends State<TabScreen>
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: ColorConstants.appBlueColor3, // Selected tab background color
+                color: ColorConstants.appBlueColor3, // ✅ Selected tab background color
               ),
               unselectedLabelColor: Colors.white70,
               tabs: [
@@ -92,7 +91,7 @@ class _TabScreenState extends State<TabScreen>
     );
   }
 
-  // Helper function to build tab with dynamic background color
+  // ✅ Helper function to build tabs dynamically
   Widget _buildTab(String title, int index) {
     return Tab(
       child: Container(
@@ -118,6 +117,7 @@ class _TabScreenState extends State<TabScreen>
   }
 }
 
+// ✅ Function to get title based on tab index
 String _getTitle(int index) {
   switch (index) {
     case 0:
