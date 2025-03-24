@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Api_Service/MobileOtpSend.dart';
+import 'package:fonofy/Api_Service/login_service.dart';
 import 'package:fonofy/EmailLoginScreen.dart';
 import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/RegisterScreen.dart';
 import 'package:fonofy/bottom_navgation.dart';
-import 'package:fonofy/otp_screen.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'ViewModel/MobileOtpSend.dart';
+import 'otp_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  // final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController mobileNumberController = TextEditingController();
   // final TextEditingController otpNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     int status = 0;
+    final String otp;
     return Scaffold(
       backgroundColor: Colors.white, // Setting the background color to white
       body:  ChangeNotifierProvider(
@@ -54,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.phone),
                       ),
-                      // controller: mobileNumberController,
+                      controller: mobileNumberController,
                     ),
                     const SizedBox(height: 15),
 
@@ -83,38 +86,99 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        onPressed: () {
-                          // if(status == 0){
-                          //   if(mobileNumberController.text.toString().isNotEmpty){
-                          //     final mobileNumber = mobileNumberController.text;
-                          //     viewModel.sendOtp(mobileNumber);
-                          //     if(viewModel.statusMessage == "Otp Sent Succesfully."){
-                          //       status = 1;
-                          //     }
-                          //
-                          //   }else{
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(content: Text('Mobile Number Can not Empty...'), duration: Duration(seconds: 2),)
-                          //     );
-                          //   }
-                          // }else{
-                          //   if(otpNumberController.text.toString().isNotEmpty){
-                          //     final mobileNumber = otpNumberController.text;
-                          //     viewModel.sendOtp(mobileNumber);
-                          //     if(viewModel.statusMessage == "Otp Sent Succesfully."){
-                          //       status = 0;
-                          //     }
-                          //
-                          //   }else{
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(content: Text('Otp Field Can not Empty...'), duration: Duration(seconds: 2),)
-                          //     );
-                          //   }
+                        // onPressed: () async{
+                        //   var isAvailable = await LoginService().checkMobileNumber(mobileNumberController.text.trim());
+                        //   if(isAvailable){
+                        //     var data = await LoginService().getOtp(mobileNumberController.text.trim());
+                        //     if(data['status'] == true){
+                        //       Navigator.push(context, MaterialPageRoute(builder: (_)=>OtpScreen(otp:data['otp'])));
+                        //     }else{
+                        //       Navigator.push(context, MaterialPageRoute(builder: (_)=>RegisterScreen(mobile: mobileNumberController.text.trim(),)));
+                        //     }
+                        //
+                        //   }else{
+                        //     Navigator.push(context, MaterialPageRoute(builder: (_)=>RegisterScreen(mobile: mobileNumberController.text.trim(),)));
+                        //   }
+                        //
+                        //   // if(status == 0){
+                        //   //   if(mobileNumberController.text.toString().isNotEmpty){
+                        //   //     final mobileNumber = mobileNumberController.text;
+                        //   //     viewModel.sendOtp(mobileNumber);
+                        //   //     if(viewModel.statusMessage == "Otp Sent Succesfully."){
+                        //   //       status = 1;
+                        //   //     }
+                        //   //
+                        //   //   }else{
+                        //   //     ScaffoldMessenger.of(context).showSnackBar(
+                        //   //         SnackBar(content: Text('Mobile Number Can not Empty...'), duration: Duration(seconds: 2),)
+                        //   //     );
+                        //   //   }
+                        //   // }else{
+                        //   //   if(otpNumberController.text.toString().isNotEmpty){
+                        //   //     final mobileNumber = otpNumberController.text;
+                        //   //     viewModel.sendOtp(mobileNumber);
+                        //   //     if(viewModel.statusMessage == "Otp Sent Succesfully."){
+                        //   //       status = 0;
+                        //   //     }
+                        //   //
+                        //   //   }else{
+                        //   //     ScaffoldMessenger.of(context).showSnackBar(
+                        //   //         SnackBar(content: Text('Otp Field Can not Empty...'), duration: Duration(seconds: 2),)
+                        //   //     );
+                        //   //   }
+                        //
+                        //   // Navigate to MainScreen when submit button is clicked
+                        //   // Navigator.pushReplacementNamed(context, '/main');
+                        //   // Get.to(Ragister());
+                        //   // Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),));
+                        // },
 
-                          // Navigate to MainScreen when submit button is clicked
-                          // Navigator.pushReplacementNamed(context, '/main');
-                          // Get.to(Ragister());
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),));
+
+                        onPressed: () async {
+                          String mobileNumber = mobileNumberController.text.trim();
+
+                          if (mobileNumber.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('📢 Please enter a mobile number!')),
+                            );
+                            return;
+                          }
+
+                          var isAvailable = await LoginService().checkMobileNumber(mobileNumber);
+
+                          if (isAvailable) {
+                            // ✅ Mobile Number is registered, now send OTP
+                            var data = await LoginService().getOtp(mobileNumber);
+
+                            if (data['status'] == true) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('✅ OTP Sent Successfully!')),
+                              );
+
+                              await Future.delayed(const Duration(seconds: 1));
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => OtpScreen(otp: data['otp'])),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('❌ Failed to send OTP! Try again.')),
+                              );
+                            }
+                          } else {
+                            // 🆕 Mobile Number is NOT registered → Redirect to Register Screen
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('🆕 This number is not registered. Please sign up!')),
+                            );
+
+                            await Future.delayed(const Duration(seconds: 1));
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => RegisterScreen(mobile: mobileNumber)),
+                            );
+                          }
                         },
                         child: const Text(
                           "SUBMIT",
@@ -150,7 +214,7 @@ class LoginScreen extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 // Navigate to Register Screen
-                                Get.to(OtpScreen());
+                                // Get.to(RegisterScreen(mobile: '',));
                               },
                               child: const Text(
                                 "Signup Now",

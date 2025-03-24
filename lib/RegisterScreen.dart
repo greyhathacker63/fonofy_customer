@@ -9,21 +9,36 @@ import 'model/register_model.dart';
 import 'otp_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  final String mobile;
+  const RegisterScreen({Key? key, required this.mobile}) : super(key: key);
+
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  // final TextEditingController passwordController = TextEditingController();
 
   // final String token = "eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6InNhbXBsZSBzdHJpbmcgMyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzYW1wbGUgc3RyaW5nIDEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzYW1wbGUgc3RyaW5nIDIiLCJMb2dpblRpbWUiOiIzLzIyLzIwMjUgMTowNzowMiBQTSIsIm5iZiI6MTc0MjYyOTAyMiwiZXhwIjoxNzQyNjMwODIyLCJpc3MiOiJTaGl2YW0gU2hhcm1hIiwiYXVkIjoiRm9ub0FwaSJ9.SSaKhmums1hCVijhYkeXdiytXcU3m-NPQIkwWchi7Us";
 
   // Register function
 
+  @override
+  void initState() {
+    super.initState();
+    initValue();
+  }
+
+  initValue(){
+    setState(() {
+      phoneNumberController.text = widget.mobile;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,13 +71,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 20),
 
               // Name Field
-              _buildTextField("Enter name", nameController),
+              _buildTextField("Enter FirstName", firstNameController ),
+              _buildTextField("Enter LastName", lastNameController),
               // Mobile Number Field with Verify Button inside
-              _buildTextFieldWithVerify("Enter mobile no.", mobileController),
+              _buildTextFieldWithVerify("Enter mobile no.", phoneNumberController),
               // Email Field
               _buildTextField("Enter email id", emailController),
               // Password Field
-              _buildTextField("Create Password", passwordController),
+              // _buildTextField("Create Password", passwordController),
+
 
               const SizedBox(height: 20),
 
@@ -121,8 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onPressed: () {
               // Add logic for verifying the mobile number
             },
-            child: const Text(
-              "Verify",
+            child: const Text("Verify",
               style: TextStyle(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
@@ -176,13 +192,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // }
 
   Future<void> _registerUser() async {
-    final firstName = nameController.text;
-    final phoneNumber = mobileController.text;
+    final firstName = firstNameController.text;
+    final lastName = lastNameController.text;
+    final phoneNumber = phoneNumberController.text;
     final email = emailController.text;
-    final password = passwordController.text;
+    // final password = passwordController.text;
 
-    // Validate fields
-    if (firstName.isEmpty || phoneNumber.isEmpty || email.isEmpty || password.isEmpty) {
+    if (firstName.isEmpty || lastName.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('All fields are required!')),
       );
@@ -191,22 +207,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Create a register request string with all data
     String registerData = json.encode({
       "FirstName": firstName,
+      "LastName": lastName,
       "PhoneNumber": phoneNumber,
       "Email": email,
-      "Password": password,
+      // "Password": password,
     });
     try {
       // Call Register API using the service
       final registerService = RegisterService();
       final RegisterModel registerModel = await registerService.registerApi(registerData);
 
-      // If registration is successful, navigate to OTP Screen
       if (registerModel.success) {
        } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration Succesfully 👌👌👌: ${registerModel.message}')),
+          SnackBar(content: Text('Registration Successfully 👌👌👌: ${registerModel.message}')),
         );
-        Get.to(OtpScreen());
+        Get.to(OtpScreen(otp: ''));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -214,4 +230,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
     }
   }
+
+
+
+
+
+
+
+
+
+
 }

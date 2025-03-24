@@ -1,18 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:fonofy/AllBrands.dart';
+import 'package:fonofy/Api_Service/login_service.dart';
+import 'package:fonofy/MainScreen.dart';
 import 'package:http/http.dart' as http;
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final String otp;
+  const OtpScreen({super.key, required this.otp});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  final List<TextEditingController> otpControllers = List.generate(4, (_) => TextEditingController());
-
+  var otpValue = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,39 +26,26 @@ class _OtpScreenState extends State<OtpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Enter the OTP sent to your mobile number", style: TextStyle(fontSize: 16)),
+            Text("Enter the OTP sent to your mobile number",
+                style: TextStyle(fontSize: 16)),
 
             SizedBox(height: 20),
 
-            // OTP Input Fields (6 digit OTP)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
-                return Container(
-                  width: 50,
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  child: TextField(
-                    controller: otpControllers[index],
-                    keyboardType: TextInputType.number,
-                    maxLength: 1,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      counterText: "", // Hide the counter
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) {
-                      // Move to next TextField when value is entered
-                      if (value.isNotEmpty && index < 3) {
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                  ),
-                );
-              }),
+            OtpTextField(
+              fieldWidth: 50,
+              numberOfFields: 4,
+              borderColor: Color(0xFF512DA8),
+              showFieldAsBox: true,
+              //runs when a code is typed in
+              onCodeChanged: (String code) {
+                //handle validation or checks here
+              },
+              onSubmit: (String verificationCode) {
+                otpValue = verificationCode;
+                setState(() {});
+              }, // end onSubmit
             ),
-
             SizedBox(height: 20),
-
             // Submit Button
             // ElevatedButton(
             //   onPressed: () {
@@ -71,39 +62,50 @@ class _OtpScreenState extends State<OtpScreen> {
             //   child: Text("Verify OTP"),
             // ),
 
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     var isVerified = LoginService()
+            //         .verifyOTP(userOTP: otpValue, otp: widget.otp);
+            //     if (isVerified) {
+            //       Navigator.push(context,
+            //           MaterialPageRoute(builder: (_) => AllBrandsScreen()));
+            //     } else {
+            //       ScaffoldMessenger.of(context)
+            //           .showSnackBar(SnackBar(content: Text("OTP not matched")));
+            //     }
+            //   },
+            //   child: Text("Verify OTP"),
+            // ),
             ElevatedButton(
               onPressed: () async {
-                // Get the OTP entered by the user
-                String otp = otpControllers.map((controller) => controller.text).join();
-
-                // Check if the OTP length is 4
-                if (otp.length == 4) {
-                  // Call the OTP verification API
-                  String mobileNumber = "your_mobile_number_here";  // Replace with the actual mobile number passed during registration or login
-                  bool isOtpValid = await verifyOtp(mobileNumber, otp, context);
-
-                  if (isOtpValid) {
-                    // OTP is valid, navigate to the next screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("OTP Verified Successfully")),
-                    );
-                    // Navigate to home or main screen after OTP verification
-                    // Example:
-                    // Get.to(MainScreen());
-                  } else {
-                    // OTP is invalid
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Invalid OTP. Please try again")),
-                    );
-                  }
-                } else {
+                if (otpValue.isEmpty || otpValue.length < 4) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Please enter a 4-digit OTP")),
+                    const SnackBar(content: Text("❌ Please enter a 4-digit OTP")),
+                  );
+                  return;
+                }
+                bool isVerified = await LoginService().verifyOTP(userOTP: otpValue, otp: widget.otp);
+
+                if (isVerified) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("✅ OTP Verified Successfully!")),
+                  );
+
+                  await Future.delayed(const Duration(seconds: 1)); // Delay for better UX
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => MainScreen()),
+                  );
+                } else {
+                  // ❌ Show Error Message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("❌ OTP Not Matched! Try Again.")),
                   );
                 }
               },
-              child: Text("Verify OTP"),
+              child: const Text("Verify OTP"),
             ),
+
 
           ],
         ),
@@ -113,42 +115,43 @@ class _OtpScreenState extends State<OtpScreen> {
 
   // This function will make an API call to verify the OTP
 
-  Future<bool> verifyOtp(String mobileNumber, String otp, BuildContext context) async {
-    final url = Uri.parse(' https://api.fonofy.in/api/common/sendotp?mobileNumber=9135609361'); // Replace with your actual API endpoint
-
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode({
-          'mobileNumber': mobileNumber,
-          'otp': otp,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final responseBody = json.decode(response.body);
-
-        // Check if the response indicates OTP verification success
-        if (responseBody['status'] == 'Verified') {
-          return true; // OTP is valid
-        } else {
-          return false; // OTP is invalid
-        }
-      } else {
-        // Handle server error (non-200 status)
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to verify OTP. Please try again")),
-        );
-        return false;
-      }
-    } catch (e) {
-      // Handle network or API error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
-      return false;
-    }
-  }
-
+  // Future<bool> verifyOtp(
+  //     String mobileNumber, String otp, BuildContext context) async {
+  //   final url = Uri.parse(
+  //       ' https://api.fonofy.in/api/common/sendotp?mobileNumber=9135609361'); // Replace with your actual API endpoint
+  //
+  //   try {
+  //     final response = await http.post(
+  //       url,
+  //       body: json.encode({
+  //         'mobileNumber': mobileNumber,
+  //         'otp': otp,
+  //       }),
+  //       headers: {'Content-Type': 'application/json'},
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       final responseBody = json.decode(response.body);
+  //
+  //       // Check if the response indicates OTP verification success
+  //       if (responseBody['status'] == 'Verified') {
+  //         return true; // OTP is valid
+  //       } else {
+  //         return false; // OTP is invalid
+  //       }
+  //     } else {
+  //       // Handle server error (non-200 status)
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text("Failed to verify OTP. Please try again")),
+  //       );
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     // Handle network or API error
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Error: $e")),
+  //     );
+  //     return false;
+  //   }
+  // }
 }
