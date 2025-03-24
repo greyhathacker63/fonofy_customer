@@ -7,27 +7,35 @@ import 'package:get/get.dart'; // Import GetX for navigation
 import 'package:fonofy/CartScreen.dart'; // Import Cart Screen
 
 class TabScreen extends StatefulWidget {
-  const TabScreen({super.key});
+  final int upperTabIndex;
+  const TabScreen({super.key, required this.upperTabIndex});
 
   @override
   State<TabScreen> createState() => _TabScreenState();
 }
 
-class _TabScreenState extends State<TabScreen>
-    with SingleTickerProviderStateMixin {
+class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedIndex = 0; // Track the selected tab index
+  late int _selectedIndex; // ✅ Tracks selected tab index
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _selectedIndex = widget.upperTabIndex; // ✅ Set initial selected index
 
-    // Add listener to update UI when the tab changes
+    _tabController = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: _selectedIndex, // ✅ Set initial index for TabController
+    );
+
+    // ✅ Properly listen to tab changes (swipe & tap both update UI)
     _tabController.addListener(() {
-      setState(() {
-        _selectedIndex = _tabController.index;
-      });
+      if (_tabController.index != _selectedIndex) {
+        setState(() {
+          _selectedIndex = _tabController.index;
+        });
+      }
     });
   }
 
@@ -53,7 +61,7 @@ class _TabScreenState extends State<TabScreen>
             IconButton(
               icon: const Icon(Icons.shopping_cart, color: Colors.black),
               onPressed: () {
-                Get.to(() =>  CartScreen()); 
+                Get.to(() => CartScreen()); 
               },
             ),
         ],
@@ -64,7 +72,7 @@ class _TabScreenState extends State<TabScreen>
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: ColorConstants.appBlueColor3, // Selected tab background color
+                color: ColorConstants.appBlueColor3, // ✅ Selected tab background color
               ),
               unselectedLabelColor: Colors.white70,
               tabs: [
@@ -83,7 +91,7 @@ class _TabScreenState extends State<TabScreen>
     );
   }
 
-  // Helper function to build tab with dynamic background color
+  // ✅ Helper function to build tabs dynamically
   Widget _buildTab(String title, int index) {
     return Tab(
       child: Container(
@@ -109,6 +117,7 @@ class _TabScreenState extends State<TabScreen>
   }
 }
 
+// ✅ Function to get title based on tab index
 String _getTitle(int index) {
   switch (index) {
     case 0:

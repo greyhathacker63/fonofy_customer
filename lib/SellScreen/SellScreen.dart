@@ -34,7 +34,7 @@ class _SellscreenState extends State<Sellscreen> {
               child: Image.asset("assets/images/banner.png",
                   height: 120, fit: BoxFit.cover),
             ),
-               sellDevice(
+            sellDevice(
                 imagePath: "assets/images/phone.png",
                 text1: "Sell this device"),
 
@@ -48,7 +48,6 @@ class _SellscreenState extends State<Sellscreen> {
                   "brandName": "Samsung",
                   "imagePath": "assets/images/samsung.png"
                 },
-             
                 {"brandName": "Xiaomi", "imagePath": "assets/images/xiomi.png"},
                 {"brandName": "Vivo", "imagePath": "assets/images/vivo.png"},
                 {"brandName": "Oppo", "imagePath": "assets/images/oppo.png"},
@@ -64,18 +63,21 @@ class _SellscreenState extends State<Sellscreen> {
             ),
 
             // Featured Categories Section
+            // Featured Categories Section
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.03), // Responsive padding
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Featured Categories",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: Get.width * 0.045, // Responsive font size
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  SizedBox(height: Get.height * 0.015), // Responsive spacing
                   featuredCategory(categories: [
                     {
                       "imagePath": "assets/images/Deal.png",
@@ -83,7 +85,7 @@ class _SellscreenState extends State<Sellscreen> {
                     },
                     {
                       "imagePath": "assets/images/refurbished.png",
-                      "text1": "Refusrbished Mobiles"
+                      "text1": "Refurbished Mobiles"
                     },
                     {
                       "imagePath": "assets/images/AppleMobiles.png",
@@ -91,14 +93,14 @@ class _SellscreenState extends State<Sellscreen> {
                     },
                     {
                       "imagePath": "assets/images/oneplus.png",
-                      "text1": "OnePlusOffer"
+                      "text1": "OnePlus Offer"
                     },
                   ]),
                 ],
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: Get.height * 0.03), // Responsive spacing
 
             // Other Section
             Padding(
@@ -308,35 +310,48 @@ class _SellscreenState extends State<Sellscreen> {
     );
   }
 
+  // Featured Category Widget
   Widget featuredCategory({required List<Map<String, String>> categories}) {
     return SizedBox(
-      height: Get.height * 0.15,
-      width: Get.width * 1.0,
+      height: Get.height * 0.18, // Responsive height
+      width: Get.width, // Full width
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: categories.length, // ✅ Dynamic length
+        itemCount: categories.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: EdgeInsets.all(Get.width * 0.02), // Responsive padding
             child: Container(
-              padding: const EdgeInsets.all(7),
+              padding: EdgeInsets.all(Get.width * 0.025),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey, width: 1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(Get.width * 0.03),
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min, // Prevents extra spacing
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Image.asset(
                     categories[index]["imagePath"]!,
-                    height: 50,
-                    width: 70,
+                    height: Get.height * 0.08, // Responsive image size
+                    width: Get.width * 0.18,
                     fit: BoxFit.contain,
                   ),
-                  Text(
-                    categories[index]["text1"]!,
-                    style: const TextStyle(color: Colors.black, fontSize: 10),
+                  SizedBox(
+                      height: Get.height * 0.01), // Space between image & text
+                  SizedBox(
+                    width: Get.width * 0.18, // Responsive text width
+                    child: Text(
+                      categories[index]["text1"]!,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: Get.width * 0.03, // Responsive font size
+                      ),
+                      textAlign: TextAlign.center, // Centered text
+                      maxLines: 2, // Prevents text overflow
+                      overflow: TextOverflow.ellipsis, // Adds "..." if too long
+                    ),
                   ),
                 ],
               ),
