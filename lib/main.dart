@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/LoginScreen.dart';
 import 'package:get/get.dart';
 import 'MainScreen.dart';
 
@@ -17,15 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MainScreen(),
-      //   initialRoute: '/', // Default route
-      //   routes: {
-      //     '/': (context) => const DeviceDetailScreen2(),
-      //     '/main': (context) => const MainScreen(),
-      //     '/register': (context) => const RegisterScreen(),
-      //     '/email-login': (context) => const EmailLoginScreen(), // Added email login route
-      //     '/deviceDetails': (context) => const DeviceDetailsScreen(),
-      //   },
+      home: LoginScreen(),
     );
   }
 }

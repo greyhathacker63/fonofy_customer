@@ -94,6 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   onPressed: (){
+                    Get.to(() => OtpScreen());
                     register();
                   },
                   child: const Text(
