@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Manage Address/ManageAddressScreen.dart'; // Updated import (no spaces)
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -17,7 +18,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Image.asset("assets/images/Logo.png", height: 40), // Update with your logo path
+        title: Image.asset("assets/images/Logo.png", height: 40),
         elevation: 0,
         backgroundColor: Colors.white,
       ),
@@ -31,7 +32,7 @@ class _AccountScreenState extends State<AccountScreen> {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: AssetImage("assets/images/phone.png"), // User profile picture
+                  backgroundImage: AssetImage("assets/images/phone.png"),
                 ),
                 const SizedBox(width: 10),
                 Column(
@@ -59,36 +60,46 @@ class _AccountScreenState extends State<AccountScreen> {
             const SizedBox(height: 10),
 
             // Services Section (Expandable)
-            _buildExpandableSection("SERVICES", servicesExpanded, () {
-              setState(() {
-                servicesExpanded = !servicesExpanded;
-              });
-            }, servicesExpanded
-                ? ["Sell Phone", "Repair Phone", "Recycle Phone", "Offline Stores"]
-                : []),
+            _buildExpandableSection(
+              "SERVICES",
+              servicesExpanded,
+              () {
+                setState(() {
+                  servicesExpanded = !servicesExpanded;
+                });
+              },
+              servicesExpanded ? ["Sell Phone", "Repair Phone", "Recycle Phone", "Offline Stores"] : [],
+              context,
+            ),
 
             // Settings Section (Expandable)
-            _buildExpandableSection("SETTING", settingsExpanded, () {
-              setState(() {
-                settingsExpanded = !settingsExpanded;
-              });
-            }, settingsExpanded
-                ? ["Manage Address", "Manage Payments", "Delete My Account"]
-                : []),
+            _buildExpandableSection(
+              "SETTING",
+              settingsExpanded,
+              () {
+                setState(() {
+                  settingsExpanded = !settingsExpanded;
+                });
+              },
+              ["Manage Address", "Manage Payments", "Delete My Account"],
+              context, // Pass context correctly
+            ),
 
             // About Section (Expandable)
-            _buildExpandableSection("ABOUT", aboutExpanded, () {
-              setState(() {
-                aboutExpanded = !aboutExpanded;
-              });
-            }, aboutExpanded
-                ? ["About Us", "Contact Us", "Career"]
-                : []),
+            _buildExpandableSection(
+              "ABOUT",
+              aboutExpanded,
+              () {
+                setState(() {
+                  aboutExpanded = !aboutExpanded;
+                });
+              },
+              aboutExpanded ? ["About Us", "Contact Us", "Career"] : [],
+              context,
+            ),
 
             // Other Options
             _buildMenuItem("REFER & EARN"),
-            
-            
             _buildMenuItem("NEW OFFERS"),
             _buildMenuItem("MY EARNINGS"),
             _buildMenuItem("HELP"),
@@ -123,40 +134,57 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  Widget _buildExpandableSection(String title, bool isExpanded, VoidCallback onTap, List<String> subItems) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      GestureDetector(
-        onTap: onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-            Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.black),
-          ],
+  Widget _buildExpandableSection(
+    String title,
+    bool isExpanded,
+    VoidCallback onTap,
+    List<String> subItems,
+    BuildContext context, // Ensure BuildContext is included
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+              Icon(
+                isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                color: Colors.black,
+              ),
+            ],
+          ),
         ),
-      ),
-      if (isExpanded)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Align items to the right
-          children: subItems
-              .map((item) => Padding(
-                    padding: const EdgeInsets.only(right: 10, top: 5), // Adjust padding for alignment
-                    child: Text(
-                      item,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                      textAlign: TextAlign.end, // Align text to the right
-                    ),
-                  ))
-              .toList(),
-        ),
-      const SizedBox(height: 10),
-    ],
-  );
-}
-
+        if (isExpanded)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: subItems.map((item) {
+              return GestureDetector(
+                onTap: () {
+                  if (item == "Manage Address") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ManageAddressScreen()),
+                    );
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5),
+                  child: Text(
+                    item,
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
 }

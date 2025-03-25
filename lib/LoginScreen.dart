@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Setting the background color to white
+      backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -20,9 +20,9 @@ class LoginScreen extends StatelessWidget {
             children: [
               // Logo Section
               SizedBox(
-                height: 100, // Adjust height as per your logo
+                height: 100,
                 child: Image.asset(
-                  'assets/images/Logo.png', // Replace with your logo path
+                  'assets/images/Logo.png',
                   fit: BoxFit.contain,
                 ),
               ),
@@ -30,9 +30,9 @@ class LoginScreen extends StatelessWidget {
 
               // Login Image (Replaces "LOGIN" text & icon)
               SizedBox(
-                height: 40, // Adjust height as needed
+                height: 40,
                 child: Image.asset(
-                  'assets/images/login.png', 
+                  'assets/images/login.png',
                   fit: BoxFit.contain,
                 ),
               ),
@@ -66,15 +66,13 @@ class LoginScreen extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF19628B), // Button color
+                    backgroundColor: const Color(0xFF19628B),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   onPressed: () {
-                    // Navigate to MainScreen when submit button is clicked
-                    // Navigator.pushReplacementNamed(context, '/main');
-                  Get.to(MainScreen());
+                    Get.to(MainScreen());
                   },
                   child: const Text(
                     "SUBMIT",
@@ -98,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           // Navigate to Register Screen
-                         Get.to(RegisterScreen());
+                          Get.to(RegisterScreen());
                         },
                         child: const Text(
                           "Signup Now",
@@ -110,15 +108,14 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10), // Space between links
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("or "),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to Email Login Screen
-                         Get.to(EmailLoginScreen());
+                          Get.to(EmailLoginScreen());
                         },
                         child: const Text(
                           "Login with Email",
