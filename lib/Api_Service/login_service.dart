@@ -3,10 +3,11 @@ import 'package:http/http.dart' as http;
 
 class LoginService {
 
-  Future<bool> checkMobileNumber(String mobileNumber) async {
+  Future<bool> checkMobileNumber(String phoneNumber) async {
+
     final String apiUrl = "https://api.fonofy.in/api/common/check-mobile-number?mobileNumber=";
 
-    final response = await http.get(Uri.parse(apiUrl + mobileNumber));
+    final response = await http.get(Uri.parse(apiUrl + phoneNumber));
     if (response.statusCode == 200) {
       return true;
     } else if(response.statusCode == 400){
@@ -16,8 +17,8 @@ class LoginService {
     }
   }
 
-  Future<Map<String, dynamic>> getOtp(String mobileNumber) async {
-    final url = Uri.parse("https://api.fonofy.in/api/common/sendotp?mobileNumber=$mobileNumber");
+  Future<Map<String, dynamic>> getOtp(String phoneNumber) async {
+    final url = Uri.parse("https://api.fonofy.in/api/common/sendotp?mobileNumber=$phoneNumber");
 
     try {
       final response = await http.get(url);
@@ -37,7 +38,6 @@ class LoginService {
       throw Exception("Error: $e");
     }
   }
-
   bool verifyOTP({required String userOTP, required String otp}){
     return userOTP == otp;
   }

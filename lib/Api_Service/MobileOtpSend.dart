@@ -7,28 +7,27 @@ class OtpService {
   static const String apiUrl = 'https://api.fonofy.in/api/common/sendotp';
 
   Future<MobileOtp> sendOtp(String mobileNumber) async {
-    print("Api Url");
-    print(apiUrl);
-    final response = await http.get(
-      Uri.parse('$apiUrl?mobileNumber=$mobileNumber'),
-    );
+    print("API URL: $apiUrl");
+    final response = await http.get(Uri.parse('$apiUrl?mobileNumber=$mobileNumber'));
     if (response.statusCode == 200) {
-      print("Inside Data " + jsonDecode(response.body));
-      return MobileOtp.fromJson(jsonDecode(response.body));
+      var data = jsonDecode(response.body); // ✅ Decode JSON properly
+      print("Inside Data: ${jsonEncode(data)}"); // ✅ Convert Map to String before printing
+      return MobileOtp.fromJson(data);
     } else {
-      print("OutSide Else ");
+      print("❌ Error: ${response.body}");
       throw Exception('Failed to send OTP');
     }
   }
 
-  Future<bool> checkMobileNumber(String number)async{
+  Future<bool> checkMobileNumber(String number) async {
     var url = Uri.parse("https://api.fonofy.in/api/common/check-mobile-number?mobileNumber=$number");
     var response = await http.get(url);
-    if(response.statusCode == 400){
+
+    if (response.statusCode == 400) {
       return false;
-    }else if(response.statusCode == 200){
+    } else if (response.statusCode == 200) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }

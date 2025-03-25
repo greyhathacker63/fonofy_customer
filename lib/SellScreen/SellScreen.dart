@@ -432,8 +432,8 @@ Widget sellForCash({required List<Map<String, String>> brands}) {
               child: Column(
                 children: [
                   Container(
-                    height: 70,
-                    width: 70,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       border: Border.all(color: Colors.grey, width: 1),

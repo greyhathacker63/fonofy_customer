@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/BuyScreen/BuyScreen.dart';
 import 'package:get/get.dart';
-import 'MainScreen.dart';
+import 'package:provider/provider.dart';
+import 'package:fonofy/LoginScreen.dart';
+import 'package:fonofy/MainScreen.dart';
+import 'package:fonofy/BuyScreen/BuyScreen.dart';
+import 'package:fonofy/ViewModel/MobileOtpSend.dart'; // ✅ Import your ViewModel
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => OtpViewModel()), // ✅ Add Provider
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,15 +28,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MainScreen(),
-      //   initialRoute: '/', // Default route
-      //   routes: {
-      //     '/': (context) => const DeviceDetailScreen2(),
-      //     '/main': (context) => const MainScreen(),
-      //     '/register': (context) => const RegisterScreen(),
-      //     '/email-login': (context) => const EmailLoginScreen(), // Added email login route
-      //     '/deviceDetails': (context) => const DeviceDetailsScreen(),
-      //   },
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => LoginScreen()),
+        GetPage(name: '/main', page: () => const MainScreen()),
+        GetPage(name: '/buy', page: () => const BuyScreen()),
+      ],
     );
   }
 }

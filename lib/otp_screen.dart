@@ -28,9 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
           children: [
             Text("Enter the OTP sent to your mobile number",
                 style: TextStyle(fontSize: 16)),
-
             SizedBox(height: 20),
-
             OtpTextField(
               fieldWidth: 50,
               numberOfFields: 4,
@@ -46,36 +44,6 @@ class _OtpScreenState extends State<OtpScreen> {
               }, // end onSubmit
             ),
             SizedBox(height: 20),
-            // Submit Button
-            // ElevatedButton(
-            //   onPressed: () {
-            //     String otp = otpControllers.map((controller) => controller.text).join();
-            //     if (otp.length == 4) {
-            //       print("Entered OTP: $otp");
-            //       // Call an API for OTP verification (You can implement this part)
-            //     } else {
-            //       ScaffoldMessenger.of(context).showSnackBar(
-            //         SnackBar(content: Text("Please enter a 4-digit OTP")),
-            //       );
-            //     }
-            //   },
-            //   child: Text("Verify OTP"),
-            // ),
-
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     var isVerified = LoginService()
-            //         .verifyOTP(userOTP: otpValue, otp: widget.otp);
-            //     if (isVerified) {
-            //       Navigator.push(context,
-            //           MaterialPageRoute(builder: (_) => AllBrandsScreen()));
-            //     } else {
-            //       ScaffoldMessenger.of(context)
-            //           .showSnackBar(SnackBar(content: Text("OTP not matched")));
-            //     }
-            //   },
-            //   child: Text("Verify OTP"),
-            // ),
             ElevatedButton(
               onPressed: () async {
                 if (otpValue.isEmpty || otpValue.length < 4) {
@@ -96,7 +64,8 @@ class _OtpScreenState extends State<OtpScreen> {
                     context,
                     MaterialPageRoute(builder: (_) => MainScreen()),
                   );
-                } else {
+                }
+                else {
                   // ❌ Show Error Message
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("❌ OTP Not Matched! Try Again.")),
@@ -105,14 +74,11 @@ class _OtpScreenState extends State<OtpScreen> {
               },
               child: const Text("Verify OTP"),
             ),
-
-
           ],
         ),
       ),
     );
   }
-
   // This function will make an API call to verify the OTP
 
   // Future<bool> verifyOtp(

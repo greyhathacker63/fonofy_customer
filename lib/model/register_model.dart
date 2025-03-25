@@ -11,4 +11,5 @@ class RegisterModel {
       message: json['message'] ?? '',
     );
   }
+
 }

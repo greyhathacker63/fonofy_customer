@@ -1,10 +1,16 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:http/http.dart' as http;
+import 'package:fonofy/widgets/GlobalTextFieldWithVerify.dart';
+import 'package:fonofy/widgets/TextField.dart';
 import 'Api_Service/api_register.dart';
+import 'Api_Service/login_service.dart';
+import 'EmailLoginScreen.dart';
+import 'MainScreen.dart';
+import 'SharedPreferences/SharedPreferences_email.dart';
+import 'ViewModel/MobileOtpSend.dart';
 import 'model/register_model.dart';
 import 'otp_screen.dart';
 
@@ -12,33 +18,141 @@ class RegisterScreen extends StatefulWidget {
   final String mobile;
   const RegisterScreen({Key? key, required this.mobile}) : super(key: key);
 
-
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  // final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  // final String token = "eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6InNhbXBsZSBzdHJpbmcgMyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzYW1wbGUgc3RyaW5nIDEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzYW1wbGUgc3RyaW5nIDIiLCJMb2dpblRpbWUiOiIzLzIyLzIwMjUgMTowNzowMiBQTSIsIm5iZiI6MTc0MjYyOTAyMiwiZXhwIjoxNzQyNjMwODIyLCJpc3MiOiJTaGl2YW0gU2hhcm1hIiwiYXVkIjoiRm9ub0FwaSJ9.SSaKhmums1hCVijhYkeXdiytXcU3m-NPQIkwWchi7Us";
-
-  // Register function
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    initValue();
+    phoneNumberController.text = widget.mobile;
   }
 
-  initValue(){
-    setState(() {
-      phoneNumberController.text = widget.mobile;
-    });
+  Future<bool> _sendOtp(String mobileNumber) async {
+    final otpViewModel = Provider.of<OtpViewModel>(context, listen: false);
+    await otpViewModel.sendOtp(mobileNumber);
+
+    if (otpViewModel.statusMessage == "success") {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("📩 OTP Sent Successfully!")),);
+      return true;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("❌ OTP Sending Failed: ${otpViewModel.statusMessage}")),);
+      print("OTP Sending Failed: ${otpViewModel.statusMessage}");
+
+      return false;
+    }
   }
+  void _showVerificationDialog(BuildContext context, String mobileNumber) {
+    String otp = "";
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            width: MediaQuery.of(context).size.width * 0.85,
+            constraints: const BoxConstraints(maxWidth: 400),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Enter OTP",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Please enter the OTP sent to your mobile number.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(height: 20),
+
+                 OtpTextField(
+                  numberOfFields: 4,
+                  borderWidth: 2,
+                  fieldWidth: 50,
+                  borderColor: Colors.blue,
+                  showFieldAsBox: true,
+                  onCodeChanged: (String verificationCode){
+                    otp = verificationCode;
+                  },
+                  // onSubmit: (String verificationCode) {
+                  //   // ✅ Handle OTP submission
+                  //   Navigator.pop(context);
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(content: Text("✅ OTP Verified: $verificationCode")),
+                  //   );
+                  // },
+                ),
+
+                const SizedBox(height: 20),
+
+                /// ✅ Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if(otp.isNotEmpty){
+                          bool isVerified = await LoginService().verifyOTP(userOTP: otp, otp: otp);
+                          if (isVerified) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("✅ OTP Verified Successfully!")),
+                            );
+
+                            await Future.delayed(const Duration(seconds: 1)); // Delay for better UX
+                            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainScreen()),);
+                          }
+                          else {
+                            // ❌ Show Error Message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("❌ OTP Not Matched! Try Again.")),
+                            );
+                          }
+                        }else{
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("OTP Field Can't Empty ⚠️")),);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orangeAccent,
+                      ),
+                      child: const Text("Verify"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,42 +163,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo Section
               SizedBox(
                 height: 100,
-                child: Image.asset(
-                  'assets/images/Logo.png',
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset('assets/images/Logo.png', fit: BoxFit.contain),
               ),
               const SizedBox(height: 20),
-
-              // Register Text and Icon (Image)
               SizedBox(
                 height: 40,
-                child: Image.asset(
-                  'assets/images/register.png',
-                  // Replace with actual image path
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset('assets/images/register.png', fit: BoxFit.contain),
               ),
               const SizedBox(height: 20),
 
-              // Name Field
-              _buildTextField("Enter FirstName", firstNameController ),
-              _buildTextField("Enter LastName", lastNameController),
-              // Mobile Number Field with Verify Button inside
-              _buildTextFieldWithVerify("Enter mobile no.", phoneNumberController),
-              // Email Field
-              _buildTextField("Enter email id", emailController),
-              // Password Field
-              // _buildTextField("Create Password", passwordController),
+              GlobalTextField(
+                hint: 'First Name',
+                controller: firstNameController,
+              ),
 
+              GlobalTextFieldWithVerify(
+                hint: 'Phone No.',
+                controller: phoneNumberController,
+                sendOtpCallback: _sendOtp,
+                showVerificationDialog: _showVerificationDialog,
+              ),
+
+              GlobalTextField(
+                hint: "Email ID",
+                controller: emailController,
+              ),
+              GlobalTextField(
+                hint: "Password",
+                controller: passwordController,
+              ),
 
               const SizedBox(height: 20),
 
-              // Submit Button - Navigates to OTP Screen
-               SizedBox(
+              SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
@@ -94,13 +207,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: _registerUser,
-                  child: const Text("SUBMIT",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                  onPressed: isLoading ? null : _registerUser,
+                  child: isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                    "SUBMIT",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ),
@@ -111,133 +223,111 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Normal TextField with a controller
-  Widget _buildTextField(String hint, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: hint,
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextFieldWithVerify(String hint,
-      TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: hint,
-          border: OutlineInputBorder(),
-          suffixIcon: TextButton(
-            onPressed: () {
-              // Add logic for verifying the mobile number
-            },
-            child: const Text("Verify",
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   // Future<void> _registerUser() async {
-  //   final name = nameController.text;
-  //   final mobile = mobileController.text;
-  //   final email = emailController.text;
-  //   final password = passwordController.text;
+  //   final firstName = firstNameController.text.trim();
+  //   final phoneNumber = phoneNumberController.text.trim();
+  //   final email = emailController.text.trim();
+  //   final password = passwordController.text.trim();
   //
-  //   // Validate fields
-  //   if (name.isEmpty || mobile.isEmpty || email.isEmpty || password.isEmpty) {
+  //   if (firstName.isEmpty || password.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
   //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('All fields are required!')),
+  //       const SnackBar(content: Text('❌ All fields are required!')),
   //     );
   //     return;
   //   }
-  //   // Create a register request string with all data
-  //   String registerData = jsonEncode({
-  //     "name": name,
-  //     "mobile": mobile,
-  //     "email": email,
-  //     "password": password
+  //
+  //   setState(() => isLoading = true);
+  //
+  //   String registerData = json.encode({
+  //     "FirstName": firstName,
+  //     "PhoneNumber": phoneNumber,
+  //     "Email": email,
+  //     "Password": password,
   //   });
   //
   //   try {
-  //     // Call Register API using the service
   //     final registerService = RegisterService();
-  //     final RegisterModel registerModel = await registerService.registerApi(registerData.toString(); RegisterModel;
+  //     final RegisterModel registerModel = await registerService.registerApi(registerData);
   //
-  //         // If registration is successful, navigate to OTP Screen
-  //         if (registerModel.success) {
-  //       Get.to(OtpScreen());
+  //     if (registerModel.success) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("✅ Registration Successful! Sending OTP...")),
+  //       );
+  //
+  //       await Future.delayed(const Duration(seconds: 1));
+  //
+  //       bool otpSent = await _sendOtp(phoneNumber);
+  //       if (otpSent) {
+  //         // Get.to(OtpScreen(otp: ''));
+  //         Get.to( MainScreen());
+  //       }
   //     } else {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //   SnackBar(content: Text('Registration failed: ${registerModel.message}')),
-  //   );
-  //   }
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         // SnackBar(content: Text('❌ Registration Failed: ${registerModel.message}')),
+  //         SnackBar(content: Text('✅ Registration Successful! Sending OTP...')),
+  //       );
+  //     }
   //   } catch (e) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //   SnackBar(content: Text('Error: $e')),
-  //   );
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('❌ Error: $e')),
+  //     );
+  //   } finally {
+  //     setState(() => isLoading = false);
   //   }
   // }
 
   Future<void> _registerUser() async {
-    final firstName = firstNameController.text;
-    final lastName = lastNameController.text;
-    final phoneNumber = phoneNumberController.text;
-    final email = emailController.text;
-    // final password = passwordController.text;
+    final firstName = firstNameController.text.trim();
+    final phoneNumber = phoneNumberController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
-    if (firstName.isEmpty || lastName.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
+    if (firstName.isEmpty || password.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All fields are required!')),
+        const SnackBar(content: Text('❌ All fields are required!')),
       );
       return;
     }
-    // Create a register request string with all data
+
+    setState(() => isLoading = true);
+
     String registerData = json.encode({
       "FirstName": firstName,
-      "LastName": lastName,
       "PhoneNumber": phoneNumber,
       "Email": email,
-      // "Password": password,
+      "Password": password,
     });
+
     try {
-      // Call Register API using the service
       final registerService = RegisterService();
       final RegisterModel registerModel = await registerService.registerApi(registerData);
 
       if (registerModel.success) {
-       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration Successfully 👌👌👌: ${registerModel.message}')),
+
+          const SnackBar(content: Text("✅ Registration Successful!")),
         );
-        Get.to(OtpScreen(otp: ''));
+
+
+        await SharedpreferencesEmail().saveUserCredentials(email, password);
+
+        await Future.delayed(const Duration(seconds: 1));
+
+        // ✅ Navigate to Login Screen after registration
+        Get.offAll(() => const EmailLoginScreen());
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          // SnackBar(content: Text("❌ Registration Failed: ${registerModel.message}")),
+          SnackBar(content: Text('✅ Registration Successful!')),
+        ); Get.to(MainScreen());
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(content: Text('❌ Error: $e')),
       );
+    } finally {
+      setState(() => isLoading = false);
     }
   }
-
-
-
-
-
-
-
-
-
-
 }
