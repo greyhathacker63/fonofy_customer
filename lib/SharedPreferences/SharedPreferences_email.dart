@@ -1,20 +1,25 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedpreferencesEmail {
-  static const String _emailKey = "email";
-  static const String _passwordKey = "password";
+  static const String _keyEmail = "Email";
+  static const String _keyPassword = "Password";
 
+  /// ✅ **Save User Credentials**
   Future<void> saveUserCredentials(String email, String password) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_emailKey, email);
-    await prefs.setString(_passwordKey, password);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyEmail, email);
+    await prefs.setString(_keyPassword, password);
   }
+
+  /// ✅ **Get Stored Email**
   Future<String?> getUserEmail() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_emailKey);
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyEmail);
   }
+
+  /// ✅ **Get Stored Password**
   Future<String?> getUserPassword() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_passwordKey);
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyPassword);
   }
 }

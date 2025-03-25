@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/AccountsScreen.dart';
 import 'package:fonofy/InfoScreen.dart';
-import 'package:fonofy/ServicesScreen.dart';
+import 'package:fonofy/Services/ServicesScreen.dart';
 import 'package:fonofy/SupportScreen.dart';
 import 'package:fonofy/TabScreen.dart';
 import 'package:fonofy/screens.dart';

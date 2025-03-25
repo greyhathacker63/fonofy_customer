@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/YourDevice.dart';
+import 'package:fonofy/YourDevice/YourDevice.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 

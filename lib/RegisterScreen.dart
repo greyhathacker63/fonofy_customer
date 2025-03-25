@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/widgets/GlobalTextFieldWithVerify.dart';
 import 'package:fonofy/widgets/TextField.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Api_Service/api_register.dart';
 import 'Api_Service/login_service.dart';
 import 'EmailLoginScreen.dart';
@@ -23,6 +24,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -318,6 +320,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Get.offAll(() => const EmailLoginScreen());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
+
           // SnackBar(content: Text("❌ Registration Failed: ${registerModel.message}")),
           SnackBar(content: Text('✅ Registration Successful!')),
         ); Get.to(MainScreen());
@@ -330,4 +333,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() => isLoading = false);
     }
   }
+  // Future<void> _registerUser() async {
+  //   final firstName = firstNameController.text.trim();
+  //   final phoneNumber = phoneNumberController.text.trim();
+  //   final email = emailController.text.trim();
+  //   final password = passwordController.text.trim();
+  //
+  //   if (firstName.isEmpty || password.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('❌ All fields are required!')),
+  //     );
+  //     return;
+  //   }
+  //
+  //   setState(() => isLoading = true);
+  //
+  //   String registerData = json.encode({
+  //     "FirstName": firstName,
+  //     "PhoneNumber": phoneNumber,
+  //     "Email": email,
+  //     "Password": password,
+  //   });
+  //
+  //   try {
+  //     final registerService = RegisterService();
+  //     final RegisterModel registerModel = await registerService.registerApi(registerData);
+  //
+  //     if (registerModel.success) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("✅ Registration Successful!")),
+  //       );
+  //
+  //       // ✅ Save Credentials
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       await prefs.setString("Email", email);
+  //       await prefs.setString("Passwod", password);
+  //
+  //       await Future.delayed(const Duration(seconds: 1));
+  //
+  //       // ✅ Navigate to Login Screen after registration
+  //       Get.offAll(() => const EmailLoginScreen());
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text("❌ Registration Failed: ${registerModel.message}")),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('❌ Error: $e')),
+  //     );
+  //   } finally {
+  //     setState(() => isLoading = false);
+  //   }
+  // }
 }

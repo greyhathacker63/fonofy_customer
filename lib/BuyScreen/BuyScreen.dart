@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:fonofy/SelectProductScreen.dart';
+import 'package:fonofy/SelectProduct/SelectProductScreen.dart';
 import 'package:fonofy/SelectProductScreen3';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
