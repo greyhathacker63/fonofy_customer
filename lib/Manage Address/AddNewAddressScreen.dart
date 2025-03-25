@@ -49,7 +49,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor:ColorConstants.appBlueColor3
                     ),
-                    child: const Text("Save", style: TextStyle(fontSize: 16),),
+                    child: const Text("Save", style: TextStyle(fontSize: 16, color: Colors.white),),
                   ),
                 ),
               ),
