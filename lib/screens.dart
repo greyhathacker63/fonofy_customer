@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/EmptyCartScreen.dart';
 import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
-import 'package:fonofy/SelectProduct/SelectSlotScreen.dart';
+import 'package:fonofy/SelectSlotScreen.dart';
 import 'package:get/get.dart';
 
 import 'BuyRefurbishedProductScreen.dart';

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:fonofy/SelectProduct/SelectProductScreen.dart';
- import 'package:get/get.dart';
-
-import 'SelectProduct/SelectProductScreen3.dart'; // GetX for navigation
-
 
 void main() {
   runApp(const MyApp());
@@ -14,32 +11,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp( // GetX enable karne ke liye
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AllBrandsScreen(),
+      home: SelectProductScreen3(),
     );
   }
 }
 
-class AllBrandsScreen extends StatelessWidget {
-  final List<String> brands = [
-    "Apple", "Xiaomi", "Samsung",
-    "Vivo", "OnePlus", "Oppo",
-    "Realme", "Motorola", "Lenovo",
-    "Nokia", "Honor", "Google",
-    "Poco", "Infinix", "Tecno",
-    "IQOO", "Nothing"
+class SelectProductScreen3 extends StatelessWidget {
+  final List<String> iphoneModels = [
+    "Apple iPhone 6", "Apple iPhone 6 Plus",
+    "Apple iPhone 7", "Apple iPhone 7 Plus",
+    "Apple iPhone 8", "Apple iPhone 8 Plus",
+    "Apple iPhone X", "Apple iPhone XR",
+    "Apple iPhone XS", "Apple iPhone XS Max",
+    "Apple iPhone 11"
   ];
 
-  final String imagePath = "assets/images/phone.png"; // Your phone image path
+  final String imagePath = "assets/images/phone.png";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Brands"),
-        leading: const Icon(Icons.arrow_back),
-        actions: const [Icon(Icons.search)],
+        title: const Text("Select Your iPhone"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -52,9 +59,9 @@ class AllBrandsScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GridView.builder(
-              itemCount: brands.length,
+              itemCount: iphoneModels.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
+                crossAxisCount: 3, // 3 items per row
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 0,
                 childAspectRatio: 1.0,
@@ -62,7 +69,7 @@ class AllBrandsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(() => SelectProductScreen3());
+                    Get.to (() => SelectProductScreen());
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -74,8 +81,9 @@ class AllBrandsScreen extends StatelessWidget {
                         Image.asset(imagePath, height: 50, width: 50, fit: BoxFit.cover),
                         const SizedBox(height: 5),
                         Text(
-                          brands[index],
+                          iphoneModels[index],
                           style: const TextStyle(fontSize: 14),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),

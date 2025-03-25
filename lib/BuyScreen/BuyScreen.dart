@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fonofy/SelectProduct/SelectProductScreen.dart';
-import 'package:fonofy/SelectProductScreen3';
+// import 'package:fonofy/SelectProductScreen3';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
+
+import '../SelectProduct/SelectProductScreen3.dart';
 
 class BuyScreen extends StatefulWidget {
   const BuyScreen({super.key});

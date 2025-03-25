@@ -224,8 +224,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-
-
   // Future<void> _registerUser() async {
   //   final firstName = firstNameController.text.trim();
   //   final phoneNumber = phoneNumberController.text.trim();
@@ -310,17 +308,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           const SnackBar(content: Text("✅ Registration Successful!")),
         );
-
-
         await SharedpreferencesEmail().saveUserCredentials(email, password);
 
         await Future.delayed(const Duration(seconds: 1));
 
-        // ✅ Navigate to Login Screen after registration
         Get.offAll(() => const EmailLoginScreen());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-
           // SnackBar(content: Text("❌ Registration Failed: ${registerModel.message}")),
           SnackBar(content: Text('✅ Registration Successful!')),
         ); Get.to(MainScreen());
@@ -333,6 +327,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() => isLoading = false);
     }
   }
+
   // Future<void> _registerUser() async {
   //   final firstName = firstNameController.text.trim();
   //   final phoneNumber = phoneNumberController.text.trim();
