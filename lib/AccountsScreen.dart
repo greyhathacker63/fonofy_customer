@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
+import 'package:get/get.dart';
 import 'package:fonofy/Manage Address/ManageAddressScreen.dart'; // Updated import (no spaces)
 
 class AccountScreen extends StatefulWidget {
@@ -40,7 +42,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   children: const [
                     Text(
                       "FONOFY TECHNOLOGIES PVT.LTD.",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "kuldeep@fonofy.in",
@@ -55,7 +58,10 @@ class _AccountScreenState extends State<AccountScreen> {
             // My Orders
             const Text(
               "MY ORDERS",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             const SizedBox(height: 10),
 
@@ -68,7 +74,14 @@ class _AccountScreenState extends State<AccountScreen> {
                   servicesExpanded = !servicesExpanded;
                 });
               },
-              servicesExpanded ? ["Sell Phone", "Repair Phone", "Recycle Phone", "Offline Stores"] : [],
+              servicesExpanded
+                  ? [
+                      "Sell Phone",
+                      "Repair Phone",
+                      "Recycle Phone",
+                      "Offline Stores"
+                    ]
+                  : [],
               context,
             ),
 
@@ -82,7 +95,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 });
               },
               ["Manage Address", "Manage Payments", "Delete My Account"],
-              context, // Pass context correctly
+              context,
             ),
 
             // About Section (Expandable)
@@ -125,11 +138,19 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Widget _buildMenuItem(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+    return GestureDetector(
+      onTap: () {
+        if (title == "REFER & EARN") {
+          Get.to(() => ReferAndEarnScreen()); // GetX navigation for "REFER & EARN"
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Text(
+          title,
+          style: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
       ),
     );
   }
@@ -139,7 +160,7 @@ class _AccountScreenState extends State<AccountScreen> {
     bool isExpanded,
     VoidCallback onTap,
     List<String> subItems,
-    BuildContext context, // Ensure BuildContext is included
+    BuildContext context,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,10 +172,15 @@ class _AccountScreenState extends State<AccountScreen> {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
               ),
               Icon(
-                isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                isExpanded
+                    ? Icons.keyboard_arrow_up
+                    : Icons.keyboard_arrow_down,
                 color: Colors.black,
               ),
             ],
@@ -169,7 +195,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   if (item == "Manage Address") {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ManageAddressScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => ManageAddressScreen()),
                     );
                   }
                 },

@@ -31,15 +31,7 @@ class _ScreensState extends State<Screens> {
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Get.to(ReferAndEarnScreen());
-            },
-            child: const Text(
-              "Refer&Earn",
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-          ),
+          
           GestureDetector(
             onTap: () {
               Get.to(BuyRefurbishedProductScreen());
@@ -58,33 +50,25 @@ class _ScreensState extends State<Screens> {
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     Get.to(SelectSlotScreen());
-          //   },
-          //   child: const Text(
-          //     "SelectSlotScreen",
-          //     style: TextStyle(color: Colors.black, fontSize: 20),
-          //   ),
-          // ),
-          // GestureDetector(
-          //   onTap: () {
-          //     Get.to(YourDeviceScreen5());
-          //   },
-          //   child: const Text(
-          //     "YourDeviceScreen5",
-          //     style: TextStyle(color: Colors.black, fontSize: 20),
-          //   ),
-          // ),
-          // GestureDetector(
-          //   onTap: () {
-          //     Get.to(SelectColourScreen());
-          //   },
-          //   child: const Text(
-          //     "SelectColorScreen",
-          //     style: TextStyle(color: Colors.black, fontSize: 20),
-          //   ),
-          // ),
+          GestureDetector(
+            onTap: () {
+              Get.to(SelectSlotScreen());
+            },
+            child: const Text(
+              "SelectSlotScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+         
+          GestureDetector(
+            onTap: () {
+              Get.to(SelectColourScreen());
+            },
+            child: const Text(
+              "SelectColorScreen",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
           
         ],
       ),
