@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
 
@@ -62,23 +63,21 @@ class ManageAddressScreen extends StatelessWidget {
                 Get.to(() => AddNewAddressScreen());
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: ColorConstants.appBlueColor3,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                side: const BorderSide(color: Colors.black),
               ),
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Text(
                   "+ Add New",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-
             Expanded(
               child: ListView.builder(
                 itemCount: addresses.length,
@@ -101,8 +100,7 @@ class ManageAddressScreen extends StatelessWidget {
                               Text(
                                 "${address['name']}  |  ${address['workType']}",
                                 style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 5),
                               Text(
@@ -133,13 +131,15 @@ class ManageAddressScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.edit, color: Colors.blue),
+                                icon:
+                                    const Icon(Icons.edit, color: Colors.blue),
                                 onPressed: () {
                                   print("Edit Address ${address['city']}");
                                 },
                               ),
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.blueAccent),
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.blueAccent),
                                 onPressed: () {
                                   print("Delete Address ${address['city']}");
                                 },

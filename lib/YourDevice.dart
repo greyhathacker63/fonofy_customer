@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Bottom_Sheet/Price_Summary.dart';
 import 'package:fonofy/YourDeviceScreen2.dart';
+import 'package:fonofy/YourDeviceScreen6.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 
@@ -170,21 +172,21 @@ class YourDeviceScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             // FAQs Section
-// FAQs Section
+
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16), // Proper padding
+                  const EdgeInsets.symmetric(horizontal: 16), 
               child: Column(
                 crossAxisAlignment:
-                    CrossAxisAlignment.start, // Align items to left
+                    CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "FAQs",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10), // Space after title
+                  const SizedBox(height: 10), 
                   Align(
-                    alignment: Alignment.centerLeft, // Align items to left
+                    alignment: Alignment.centerLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -192,7 +194,7 @@ class YourDeviceScreen extends StatelessWidget {
                         _FAQItem("Is it safe to sell my phone on Fonofy?"),
                         _FAQItem("How does Voucher Payment work?"),
                         const SizedBox(
-                            height: 6), // Space before "Load More FAQs"
+                            height: 6), 
                       ],
                     ),
                   ),
@@ -231,13 +233,20 @@ class YourDeviceScreen extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black)),
-                      const Text("View Breakups",
-                          style: TextStyle(fontSize: 14, color: Colors.blue)),
+
+                      GestureDetector(
+                        onTap: () {
+                          showPriceSummary(context);
+                        },
+                        child: const Text(
+                          "View Breakups",
+                          style: TextStyle(fontSize: 14, color: Colors.blue),
+                        ),
+                      ),
                     ],
                   ),
                   ElevatedButton(
                     onPressed: () {
-
                       Get.to(() => YourDeviceScreen2());
                       // Sell Now Action
                     },

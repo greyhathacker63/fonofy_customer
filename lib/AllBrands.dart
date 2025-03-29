@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/SelectProductScreen.dart';
-import 'package:fonofy/SelectProductScreen3';
-import 'package:get/get.dart'; // GetX for navigation
+import 'package:get/get.dart';
+import 'SelectProductScreen3.dart'; 
 
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp( // GetX enable karne ke liye
+    return GetMaterialApp( 
       debugShowCheckedModeBanner: false,
       home: AllBrandsScreen(),
     );
@@ -30,7 +30,7 @@ class AllBrandsScreen extends StatelessWidget {
     "IQOO", "Nothing"
   ];
 
-  final String imagePath = "assets/images/phone.png"; // Your phone image path
+  final String imagePath = "assets/images/phone.png"; 
 
   @override
   Widget build(BuildContext context) {

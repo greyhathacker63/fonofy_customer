@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Make%20Payments/MyPaymentScreen.dart';
 import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/Manage Address/ManageAddressScreen.dart'; // Updated import (no spaces)
@@ -197,6 +198,13 @@ class _AccountScreenState extends State<AccountScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ManageAddressScreen()),
+                    );
+                  }
+                  else  if (item == "Manage Payments") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyPaymentScreen()),
                     );
                   }
                 },
