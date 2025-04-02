@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Bottom_Sheet/SortBy.dart';
+import 'package:fonofy/Filters/Filter.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -77,120 +80,180 @@ List<Product> products = [
   ),
 ];
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
+
+  @override
+  _ProductScreenState createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  String sortBy = "None";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Products"), backgroundColor: Colors.blue),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
+      appBar: AppBar(
+        title: const Text("Products"),
+        backgroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          // Filter Options
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // **Product Image (Left Side)**
-                  SizedBox(
-                    width: 120,
-                    child: Image.asset(product.image, height: 120, fit: BoxFit.contain),
+                  // Sort By Button
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      showSortBySheet(context, (selectedSort) {
+                        setState(() {
+                          sortBy = selectedSort; // Update selected sort option
+                        });
+                      });
+                    },
+                    icon: const Icon(Icons.sort, color: Colors.black),
+                    label: const Text("Sort By",
+                        style: TextStyle(color: Colors.black)),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.black12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
                   ),
+                  const SizedBox(width: 8),
 
-                  const SizedBox(width: 12), // Space between image and text
+                  // Filter Button
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Get.to(() => FilterScreen());
+                      // Implement Filter functionality here
+                    },
+                    icon: const Icon(Icons.tune, color: Colors.black),
+                    label: const Text("Filter",
+                        style: TextStyle(color: Colors.black)),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.black12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
 
-                  // **Product Details (Right Side)**
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Product Name
-                        Text(
-                          product.name,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-
-                        const SizedBox(height: 6),
-
-                        // Rating & Reviews
-                        Row(
-                          children: [
-                            const Icon(Icons.star, color: Colors.orange, size: 18),
-                            Text(
-                              " ${product.rating} ★ (${product.reviews})",
-                              style: const TextStyle(fontSize: 14, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 6),
-
-                        // Pricing
-                        Row(
-                          children: [
-                            Text(
-                              "₹${product.price.toStringAsFixed(0)}",
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              "M.R.P: ₹${product.oldPrice.toStringAsFixed(0)}",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              "(${((1 - product.price / product.oldPrice) * 100).toStringAsFixed(0)}% off)",
-                              style: const TextStyle(fontSize: 14, color: Colors.green, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        // Color Circles
-                        Row(
-                          children: product.availableColors.map((color) {
-                            return Container(
-                              margin: const EdgeInsets.only(right: 8),
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: color,
-                                border: Border.all(color: Colors.black, width: 1),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        // **Add to Cart Button (Blue)**
-                        SizedBox(
-                          width: 120,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                            child: const Text("Add to Cart", style: TextStyle(color: Colors.white)),
-                          ),
-                        ),
-                      ],
+                  // Compare Button
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      // Implement Compare functionality here
+                    },
+                    icon: const Icon(Icons.compare_arrows, color: Colors.black),
+                    label: const Text("Compare",
+                        style: TextStyle(color: Colors.black)),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.black12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                     ),
                   ),
                 ],
               ),
             ),
-          );
-        },
+          ),
+
+          // Product List
+          Expanded(
+            child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 120,
+                          child: Image.asset(product.image,
+                              height: 120, fit: BoxFit.contain),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.name,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  const Icon(Icons.star,
+                                      color: Colors.orange, size: 18),
+                                  Text(
+                                      " ${product.rating} ★ (${product.reviews})"),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Text("₹${product.price.toStringAsFixed(0)}",
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                      "M.R.P: ₹${product.oldPrice.toStringAsFixed(0)}",
+                                      style: const TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough)),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: product.availableColors.map((color) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(right: 8),
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: color,
+                                      border: Border.all(
+                                          color: Colors.black, width: 1),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: 120,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue),
+                                  child: const Text("Add to Cart",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

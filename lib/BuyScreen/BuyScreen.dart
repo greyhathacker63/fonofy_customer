@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fonofy/CartScreen.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/SelectProductScreen3.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
@@ -83,19 +84,18 @@ class _BuyScreenState extends State<BuyScreen> {
             ),
             // Featured Categories Section
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Get.width * 0.03), 
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Featured Categories",
                     style: TextStyle(
-                      fontSize: Get.width * 0.045, 
+                      fontSize: Get.width * 0.045,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: Get.height * 0.015), 
+                  SizedBox(height: Get.height * 0.015),
                   featuredCategory(categories: [
                     {
                       "imagePath": "assets/images/Deal.png",
@@ -361,37 +361,44 @@ class _BuyScreenState extends State<BuyScreen> {
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.all(Get.width * 0.02), // Responsive padding
-            child: Container(
-              padding: EdgeInsets.all(Get.width * 0.025),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1),
-                borderRadius: BorderRadius.circular(Get.width * 0.03),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Image.asset(
-                    categories[index]["imagePath"]!,
-                    height: Get.height * 0.08,
-                    width: Get.width * 0.18,
-                    fit: BoxFit.contain,
-                  ),
-                  SizedBox(height: Get.height * 0.01),
-                  SizedBox(
-                    width: Get.width * 0.18,
-                    child: Text(
-                      categories[index]["text1"]!,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: Get.width * 0.03,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => ProductScreen(), arguments: {
+                  "category": categories[index]["text1"] // Pass category name
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.all(Get.width * 0.025),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(Get.width * 0.03),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.asset(
+                      categories[index]["imagePath"]!,
+                      height: Get.height * 0.08,
+                      width: Get.width * 0.18,
+                      fit: BoxFit.contain,
                     ),
-                  ),
-                ],
+                    SizedBox(height: Get.height * 0.01),
+                    SizedBox(
+                      width: Get.width * 0.18,
+                      child: Text(
+                        categories[index]["text1"]!,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: Get.width * 0.03,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
