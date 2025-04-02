@@ -1,44 +1,73 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
+  final String baseUrl = "https://api.fonofy.in/api/common";
 
-  Future<bool> checkMobileNumber(String phoneNumber) async {
 
-    final String apiUrl = "https://api.fonofy.in/api/common/check-mobile-number?mobileNumber=";
-
-    final response = await http.get(Uri.parse(apiUrl + phoneNumber));
-    if (response.statusCode == 200) {
-      return true;
-    } else if(response.statusCode == 400){
-      return false;
-    }else{
-      return false;
-    }
-  }
-
-  Future<Map<String, dynamic>> getOtp(String phoneNumber) async {
-    final url = Uri.parse("https://api.fonofy.in/api/common/sendotp?mobileNumber=$phoneNumber");
-
+  Future<Map<String, dynamic>> checkMobileNumber(String number) async {
     try {
-      final response = await http.get(url);
+      final apiUrl = "https://api.fonofy.in/api/common/get-register-data?mobileNumber=$number";
+      final url = Uri.parse(apiUrl);
+
+      // Create an HttpClient that ignores SSL errors
+      final httpClient = HttpClient();
+      httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+
+      final request = await httpClient.getUrl(url);
+      final response = await request.close();
+      final responseBody = await response.transform(utf8.decoder).join();
 
       if (response.statusCode == 200) {
-        var data =  jsonDecode(response.body);
-        return {
-          "otp":data['otp'],
-          "status":true
-        };
+        return json.decode(responseBody);
       } else {
-        return {
-          "status":false
-        };
+        throw Exception("Failed to load data. Status Code: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error: $e");
+      throw Exception("Error fetching data: $e");
     }
   }
-  bool verifyOTP({required String userOTP, required String otp}){
-    return userOTP == otp;
+  /// ✅ Send OTP to Mobile Number
+  Future<Map<String, dynamic>> getOtp(String phoneNumber) async {
+    final Uri url = Uri.parse("$baseUrl/sendotp?mobileNumber=$phoneNumber");
+    try {
+      final httpClient = HttpClient();
+      httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+
+      final request = await httpClient.getUrl(url);
+      final response = await request.close();
+      final responseBody = await response.transform(utf8.decoder).join();
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(responseBody);
+        print("📩 OTP Sent Successfully: ${data['otp']}");
+        return {"otp": data['otp'], "status": true}; // Returns OTP and status
+      } else {
+        print("❌ Failed to Send OTP: ${response.statusCode}");
+        return {"status": false}; // Failed OTP response
+      }
+    } catch (e) {
+      print("❌ Exception in getOtp: $e");
+      return {"status": false}; // Exception handling
+    }
+  }
+
+  /// ✅ Verify OTP & Save Mobile Number Locally
+  Future<bool> verifyOTP({required String userOTP, required String otp, required String phoneNumber}) async {
+    if (userOTP == otp) {
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("number", phoneNumber);
+        print("✅ OTP Verified & Number Saved Locally: $phoneNumber");
+        return true;
+      } catch (e) {
+        print("❌ Exception in verifyOTP: $e");
+        return false; // Error in saving number
+      }
+    }
+    print("❌ OTP Mismatch - Verification Failed");
+    return false; // OTP mismatch
   }
 }

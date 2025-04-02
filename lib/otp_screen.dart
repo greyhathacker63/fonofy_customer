@@ -7,15 +7,35 @@ import 'package:fonofy/Api_Service/login_service.dart';
 import 'package:fonofy/MainScreen.dart';
 import 'package:http/http.dart' as http;
 
+import 'Api_Service/TokenService.dart';
+import 'TokenHelper/TokenHelper.dart';
+
 class OtpScreen extends StatefulWidget {
   final String otp;
-  const OtpScreen({super.key, required this.otp});
+  final String number;
+  const OtpScreen({super.key, required this.otp, required this.number});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+
+  TokenService tokenService = TokenService();
+
+  Future<void> checkToken() async {
+    String? token = await TokenHelper.getToken(); // Await the future
+    if (token == null || token.isEmpty) {
+      // print("Auth Token: $token");
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()),);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   var otpValue = "";
   @override
   Widget build(BuildContext context) {
@@ -52,9 +72,11 @@ class _OtpScreenState extends State<OtpScreen> {
                   );
                   return;
                 }
-                bool isVerified = await LoginService().verifyOTP(userOTP: otpValue, otp: widget.otp);
+                bool isVerified = await LoginService().verifyOTP(userOTP: otpValue, otp: widget.otp, phoneNumber: widget.number);
 
                 if (isVerified) {
+                  String? token = await tokenService.generateToken(widget.number);
+                    await TokenHelper.saveToken(token.toString());
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("✅ OTP Verified Successfully!")),
                   );

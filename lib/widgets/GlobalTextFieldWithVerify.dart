@@ -9,12 +9,12 @@ class GlobalTextFieldWithVerify extends StatelessWidget {
   final Function(BuildContext, String) showVerificationDialog;
 
   const GlobalTextFieldWithVerify({
-    Key? key,
+    super.key,
     required this.hint,
     required this.controller,
     required this.sendOtpCallback,
     required this.showVerificationDialog,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,7 @@ class GlobalTextFieldWithVerify extends StatelessWidget {
                 },
                 child: otpViewModel.isLoading
                     ? const CircularProgressIndicator()
-                    : const Text(
-                  "Verify",
+                    : const Text("Verify",
                   style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                 ),
               );

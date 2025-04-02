@@ -22,16 +22,16 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
   late List<Widget> screens; // Define it here
-
   @override
   void initState() {
     super.initState();
     screens = [
-      TabScreen(upperTabIndex: widget.upperTabIndex), // Use widget.upperTabIndex correctly
+      TabScreen(upperTabIndex: widget.upperTabIndex),
       InfoScreen(),
       ServicesScreen(),
       SupportScreen(),
       AccountScreen(),
+      // LoginService(),
       Screens(),
     ];
   }

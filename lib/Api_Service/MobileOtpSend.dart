@@ -10,8 +10,8 @@ class OtpService {
     print("API URL: $apiUrl");
     final response = await http.get(Uri.parse('$apiUrl?mobileNumber=$mobileNumber'));
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body); // ✅ Decode JSON properly
-      print("Inside Data: ${jsonEncode(data)}"); // ✅ Convert Map to String before printing
+      var data = jsonDecode(response.body);
+      print("Inside Data: ${jsonEncode(data)}");
       return MobileOtp.fromJson(data);
     } else {
       print("❌ Error: ${response.body}");
