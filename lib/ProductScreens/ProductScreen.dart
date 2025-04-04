@@ -99,10 +99,10 @@ class _ProductScreenState extends State<ProductScreen> {
       if (selectedProducts.contains(product)) {
         selectedProducts.remove(product);
       } else {
-        if (selectedProducts.length < 4) {
+        if (selectedProducts.length < 3) {
           selectedProducts.add(product);
         } else {
-          Get.snackbar("Limit Reached", "You can select up to 4 products only",
+          Get.snackbar("Limit Reached", "You can select up to 3 products only",
               snackPosition: SnackPosition.BOTTOM);
         }
       }
