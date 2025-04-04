@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Bottom_Sheet/SortBy.dart';
+import 'package:fonofy/Filters/CompareScreen.dart';
 import 'package:fonofy/Filters/Filter.dart';
+import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -89,6 +91,39 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   String sortBy = "None";
+  List<Product> selectedProducts = [];
+  bool showCheckboxes = false; // Initially, checkboxes are hidden
+
+  void toggleSelection(Product product) {
+    setState(() {
+      if (selectedProducts.contains(product)) {
+        selectedProducts.remove(product);
+      } else {
+        if (selectedProducts.length < 4) {
+          selectedProducts.add(product);
+        } else {
+          Get.snackbar("Limit Reached", "You can select up to 4 products only",
+              snackPosition: SnackPosition.BOTTOM);
+        }
+      }
+    });
+  }
+
+  void toggleCompareMode() {
+    setState(() {
+      showCheckboxes = true; // Show checkboxes when Compare is clicked
+    });
+  }
+
+  void navigateToCompareScreen() {
+    if (selectedProducts.length < 2) {
+      Get.snackbar("Select More Products",
+          "Please select at least 2 products to compare",
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    Get.to(() => CompareScreen(selectedProducts: selectedProducts));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,164 +132,154 @@ class _ProductScreenState extends State<ProductScreen> {
         title: const Text("Products"),
         backgroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          // Filter Options
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  // Sort By Button
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      showSortBySheet(context, (selectedSort) {
-                        setState(() {
-                          sortBy = selectedSort; // Update selected sort option
-                        });
+      body: Column(children: [
+        // Filter Options
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                // Sort By Button
+                OutlinedButton.icon(
+                  onPressed: () {
+                    showSortBySheet(context, (selectedSort) {
+                      setState(() {
+                        sortBy = selectedSort;
                       });
-                    },
-                    icon: const Icon(Icons.sort, color: Colors.black),
-                    label: const Text("Sort By",
-                        style: TextStyle(color: Colors.black)),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.black12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
+                    });
+                  },
+                  icon: const Icon(Icons.sort, color: Colors.black),
+                  label: const Text("Sort By",
+                      style: TextStyle(color: Colors.black)),
+                ),
+                const SizedBox(width: 8),
 
-                  // Filter Button
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      Get.to(() => FilterScreen());
-                      // Implement Filter functionality here
-                    },
-                    icon: const Icon(Icons.tune, color: Colors.black),
-                    label: const Text("Filter",
-                        style: TextStyle(color: Colors.black)),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.black12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
+                // Filter Button
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Get.to(() => FilterScreen());
+                  },
+                  icon: const Icon(Icons.tune, color: Colors.black),
+                  label: const Text("Filter",
+                      style: TextStyle(color: Colors.black)),
+                ),
+                const SizedBox(width: 8),
 
-                  // Compare Button
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      // Implement Compare functionality here
-                    },
-                    icon: const Icon(Icons.compare_arrows, color: Colors.black),
-                    label: const Text("Compare",
-                        style: TextStyle(color: Colors.black)),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.black12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                  ),
-                ],
-              ),
+                // Compare Button
+                OutlinedButton.icon(
+                  onPressed: () {
+                    if (!showCheckboxes) {
+                      toggleCompareMode(); // Show checkboxes first
+                    } else {
+                      navigateToCompareScreen(); // Proceed if already showing checkboxes
+                    }
+                  },
+                  icon: const Icon(Icons.compare_arrows, color: Colors.black),
+                  label: const Text("Compare",
+                      style: TextStyle(color: Colors.black)),
+                ),
+              ],
             ),
           ),
+        ),
 
-          // Product List
-          Expanded(
-            child: ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 120,
-                          child: Image.asset(product.image,
-                              height: 120, fit: BoxFit.contain),
+        // Product List
+        Expanded(
+          child: ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              final isSelected = selectedProducts.contains(product);
+              return Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Product Image
+                      SizedBox(
+                        width: 100,
+                        child: Image.asset(
+                          product.image,
+                          height: 140,
+                          fit: BoxFit.contain,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.name,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 10),
+
+                      // Product Details
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                              const SizedBox(height: 6),
-                              Row(
-                                children: [
-                                  const Icon(Icons.star,
-                                      color: Colors.orange, size: 18),
-                                  Text(
-                                      " ${product.rating} ★ (${product.reviews})"),
-                                ],
-                              ),
-                              const SizedBox(height: 6),
-                              Row(
-                                children: [
-                                  Text("₹${product.price.toStringAsFixed(0)}",
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                      "M.R.P: ₹${product.oldPrice.toStringAsFixed(0)}",
-                                      style: const TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough)),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: product.availableColors.map((color) {
-                                  return Container(
-                                    margin: const EdgeInsets.only(right: 8),
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: color,
-                                      border: Border.all(
-                                          color: Colors.black, width: 1),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: 120,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue),
-                                  child: const Text("Add to Cart",
-                                      style: TextStyle(color: Colors.white)),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              "₹${product.price.toStringAsFixed(0)}",
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.green),
+                            ),
+                            const SizedBox(height: 10),
+
+                            // Add to Cart Button
+                            ElevatedButton(
+                              onPressed: () {
+                                Get.snackbar(
+                                  "Added to Cart",
+                                  "${product.name} added successfully!",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: ColorConstants.appBlueColor3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                            ],
-                          ),
+                              child: const Text("Add to Cart",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      // Compare Checkbox (Visible only if Compare is clicked)
+                      if (showCheckboxes)
+                        Column(
+                          children: [
+                            Checkbox(
+                              value: isSelected,
+                              onChanged: (_) => toggleSelection(product),
+                            ),
+                            const Text("Compare",
+                                style: TextStyle(fontSize: 14)),
+                          ],
+                        ),
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }
