@@ -6,23 +6,23 @@ import 'package:fonofy/services/web_constants.dart';
 import 'package:http/http.dart' as http;
 
 class DashboardServices {
-  static Future<RamModel> ramListData(
-      ) async {
-    var url = baseurl + common + ramList;
+  static Future<List<RamModel>> ramListData() async {
+  var url = baseurl + common + ramList;
 
-    var request = http.Request('GET', Uri.parse(url));
-    log(request.toString());
+  var request = http.Request('GET', Uri.parse(url));
+  log("Request: $url");
 
-    request.headers.addAll(headers);
+  request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
-    var data = jsonDecode(await response.stream.bytesToString());
-    log(data.toString());
+  http.StreamedResponse response = await request.send();
+  var responseBody = await response.stream.bytesToString();
+  var data = jsonDecode(responseBody);
+  log("Response Data: $data");
 
-    if (response.statusCode == 200) {
-      return RamModel.fromJson(data);
-    } else {
-      return RamModel.fromJson(data);
-    }
+  if (response.statusCode == 200) {
+    return List<RamModel>.from(data.map((item) => RamModel.fromJson(item)));
+  } else {
+    throw Exception("Failed to fetch RAM list: ${response.reasonPhrase}");
   }
+}
 }

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/controllers/Controller.dart';
+import 'package:fonofy/model/RamModel.dart';
 import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../model/RomModel.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -9,10 +15,9 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  // Selected Category (Default: Price)
+  final Controller dashboardController = Get.put(Controller());
   String selectedCategory = "Price";
 
-  // Selected Filters Storage
   Map<String, dynamic> selectedFilters = {
     "Price": {"min": "", "max": ""},
     "RAM": <String>{},
@@ -25,11 +30,10 @@ class _FilterScreenState extends State<FilterScreen> {
     "Color": <String>{},
   };
 
-  // Filter Options Data
   final Map<String, dynamic> filterOptions = {
     "Price": {"min": "", "max": ""},
-    "RAM": ["4GB", "6GB", "8GB", "12GB"],
-    "ROM": ["32GB", "64GB", "128GB", "256GB", "512GB"],
+    "RAM": [], // Loaded dynamically via GetX
+    "ROM": [], // Loaded dynamically
     "Display": ["5.5 inch", "6.0 inch", "6.5 inch", "6.7 inch"],
     "Battery": ["3000mAh", "4000mAh", "5000mAh", "6000mAh"],
     "Front Camera": ["8MP", "12MP", "16MP", "32MP"],
@@ -38,11 +42,9 @@ class _FilterScreenState extends State<FilterScreen> {
     "Color": ["Black", "Blue", "Green", "Red", "White"],
   };
 
-  // Controllers for Price Min & Max
   final TextEditingController minPriceController = TextEditingController();
   final TextEditingController maxPriceController = TextEditingController();
 
-  // Toggle Filter Selection (Checkbox)
   void toggleSelection(String category, String value) {
     setState(() {
       if (selectedFilters[category].contains(value)) {
@@ -53,7 +55,6 @@ class _FilterScreenState extends State<FilterScreen> {
     });
   }
 
-  // Clear Filters
   void clearFilters() {
     setState(() {
       for (var key in selectedFilters.keys) {
@@ -69,7 +70,27 @@ class _FilterScreenState extends State<FilterScreen> {
     });
   }
 
-  // Widget for Price Filter
+  Future<void> fetchRomList() async {
+    try {
+      final response = await http.get(
+          Uri.parse('https://api.fonofy.in/api/common/rom-list'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final List<String> romNames =
+            data.map((e) => RomModel.fromJson(e).romName).toList();
+
+        setState(() {
+          filterOptions["ROM"] = romNames;
+        });
+      } else {
+        print("Failed to load ROMs: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching ROMs: $e");
+    }
+  }
+
   Widget buildPriceFilter() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +102,6 @@ class _FilterScreenState extends State<FilterScreen> {
         const SizedBox(height: 8),
         Row(
           children: [
-            // Min Price TextField
             Expanded(
               child: TextField(
                 controller: minPriceController,
@@ -94,7 +114,6 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
             ),
             const SizedBox(width: 10),
-            // Max Price TextField
             Expanded(
               child: TextField(
                 controller: maxPriceController,
@@ -112,17 +131,40 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  // Widget for Checkbox Filters
-  Widget buildCheckboxFilter(String category) {
+  Widget buildStaticCheckboxFilter({
+    required List<String> filterData,
+    required String category,
+  }) {
     return Expanded(
-      child: ListView(
-        children: filterOptions[category].map<Widget>((option) {
+      child: ListView.builder(
+        itemCount: filterData.length,
+        itemBuilder: (context, index) {
+          final option = filterData[index];
           return CheckboxListTile(
             title: Text(option),
-            value: selectedFilters[category].contains(option),
+            value: selectedFilters[category]?.contains(option) ?? false,
             onChanged: (isSelected) => toggleSelection(category, option),
           );
-        }).toList(),
+        },
+      ),
+    );
+  }
+
+  Widget buildCheckboxFilter({
+    required List<RamModel> filterData,
+    required String category,
+  }) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: filterData.length,
+        itemBuilder: (context, index) {
+          final option = filterData[index].ramName ?? '';
+          return CheckboxListTile(
+            title: Text(option),
+            value: selectedFilters[category]?.contains(option) ?? false,
+            onChanged: (isSelected) => toggleSelection(category, option),
+          );
+        },
       ),
     );
   }
@@ -140,24 +182,45 @@ class _FilterScreenState extends State<FilterScreen> {
           )
         ],
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ColorConstants.appBlueColor3,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+          ),
+          onPressed: () {
+            Navigator.pop(context, selectedFilters);
+          },
+          child: const Text("Apply",
+              style: TextStyle(color: Colors.white, fontSize: 16)),
+        ),
+      ),
       body: Row(
         children: [
-          // Left Navigation List
+          // Left Filter Categories
           Container(
             width: 120,
             color: Colors.grey[200],
             child: ListView(
               children: filterOptions.keys.map((category) {
                 return ListTile(
-                  title: Text(category,
-                      style:
-                          const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  title: Text(
+                    category,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
                   selected: selectedCategory == category,
                   selectedTileColor: Colors.white,
                   onTap: () {
                     setState(() {
                       selectedCategory = category;
                     });
+
+                    if (category == "ROM" &&
+                        (filterOptions["ROM"]?.isEmpty ?? true)) {
+                      fetchRomList();
+                    }
                   },
                 );
               }).toList(),
@@ -177,32 +240,40 @@ class _FilterScreenState extends State<FilterScreen> {
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const Divider(),
+                  if (selectedCategory == "Price") ...[
+                    buildPriceFilter()
+                  ] else if (selectedCategory == "RAM") ...[
+                    Obx(() {
+                      if (dashboardController.ramDataLoading.value) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                              color: ColorConstants.appBlueColor3),
+                        );
+                      }
 
-                  // Show Price Filter or Checkbox Filters
-                  selectedCategory == "Price"
-                      ? buildPriceFilter()
-                      : buildCheckboxFilter(selectedCategory),
+                      final ramList = dashboardController.getRamData ?? [];
+
+                      if (ramList.isEmpty) {
+                        return const Text("No RAM options available.");
+                      }
+
+                      return buildCheckboxFilter(
+                        filterData: ramList,
+                        category: selectedCategory,
+                      );
+                    })
+                  ] else ...[
+                    buildStaticCheckboxFilter(
+                      filterData: List<String>.from(
+                          filterOptions[selectedCategory] ?? []),
+                      category: selectedCategory,
+                    ),
+                  ]
                 ],
               ),
             ),
           ),
         ],
-      ),
-
-      // Apply Button
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: ColorConstants.appBlueColor3,
-              padding: const EdgeInsets.symmetric(vertical: 14)),
-          onPressed: () {
-            // Handle filter apply logic
-            Navigator.pop(context, selectedFilters);
-          },
-          child: const Text("Apply",
-              style: TextStyle(color: Colors.white, fontSize: 16)),
-        ),
       ),
     );
   }

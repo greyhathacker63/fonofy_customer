@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Bottom_Sheet/SortBy.dart';
 import 'package:fonofy/Filters/CompareScreen.dart';
-import 'package:fonofy/Filters/Filter.dart';
+import 'package:fonofy/Filters/FilterScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 

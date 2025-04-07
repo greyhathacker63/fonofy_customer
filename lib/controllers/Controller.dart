@@ -29,22 +29,21 @@ class Controller extends GetxController {
           registerDataLoading(false);
         });
   }
-   var ramDataLoading = true.obs;
-  var _ramListData;
 
-  RamModel? get getRamData => _ramListData;
+  var ramDataLoading = true.obs;
+  List<RamModel>? _ramListData;
 
-  Future<void> ramData(
-      ) async {
-    return await DashboardServices.ramListData(
-        )
-        .then((response) {
-          ramDataLoading(true);
-          _ramListData = response;
-        })
-        .catchError((err) => debugPrint('Error in Ram Data!!!!! : $err'))
-        .whenComplete(() {
-          ramDataLoading(false);
-        });
+  List<RamModel>? get getRamData => _ramListData;
+
+  Future<void> ramData() async {
+    ramDataLoading(true); // Start loading before API call
+
+    return await DashboardServices.ramListData().then((response) {
+      _ramListData = response;
+    }).catchError((err) {
+      debugPrint('Error in Ram Data!!!!! : $err');
+    }).whenComplete(() {
+      ramDataLoading(false); // Stop loading after completion
+    });
   }
 }
