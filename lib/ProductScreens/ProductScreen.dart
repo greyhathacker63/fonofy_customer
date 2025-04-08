@@ -233,8 +233,21 @@ class _ProductScreenState extends State<ProductScreen> {
                             const SizedBox(height: 5),
                             Text(
                               "₹${product.price.toStringAsFixed(0)}",
+<<<<<<< HEAD
                               style: const TextStyle(
                                   fontSize: 14, color: Colors.green),
+=======
+                              style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              "M.R.P: ₹${product.oldPrice.toStringAsFixed(0)}",
+                              style: const TextStyle(
+                                fontSize: 8,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+>>>>>>> vinay/users
                             ),
                             const SizedBox(height: 10),
 

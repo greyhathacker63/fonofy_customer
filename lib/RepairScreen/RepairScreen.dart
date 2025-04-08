@@ -228,7 +228,8 @@ class _RepairScreenState extends State<RepairScreen> {
               children: [
                 // Brand Image
                 Container(
-                  height: Get.height * 0.10,
+                  // height: Get.height * 0.10,
+                  height: 70,
                   width: Get.width * 0.30,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
@@ -310,7 +311,7 @@ class _RepairScreenState extends State<RepairScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.blue)),
           Text(description,
-              style: const TextStyle(fontSize: 12, color: Colors.black54)),
+              style: const TextStyle(fontSize: 10, color: Colors.black54)),
         ],
       ),
     );
@@ -325,7 +326,7 @@ class _RepairScreenState extends State<RepairScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(1),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

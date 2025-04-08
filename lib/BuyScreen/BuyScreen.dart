@@ -274,32 +274,33 @@ class _BuyScreenState extends State<BuyScreen> {
         ),
         const SizedBox(height: 8),
 
-        SizedBox(
-          height: Get.height * 0.25,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 5,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 120,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Image
-                      Image.asset(
-                        imagePath!,
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover,
-                      ),
+      // Scrollable List of Deals
+      SizedBox(
+        height: Get.height * 0.25, // Increased height to avoid overflow
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 5,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 120, // Fixed width to keep all items aligned
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Image
+                    Image.asset(
+                      imagePath!,
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    ),
 
                       // Text
                       Text(
@@ -764,45 +765,43 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 
+
   Widget byGrade({required List<Map<String, String>> grades}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              "By Grade",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            "By Grade",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: grades.map((grade) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: grade['color'] == "blue"
-                        ? ColorConstants.lightColor
-                        : grade['color'] == "green"
-                            ? ColorConstants.greenColor
-                            : Colors.purple.shade100,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    grade['grade']!,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: grades.map((grade) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: grade['color'] == "blue"
+                      ? ColorConstants.lightColor
+                      : grade['color'] == "green"
+                          ? ColorConstants.greenColor
+                          : Colors.purple.shade100,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
+                child: Text(
+                  grade['grade']!,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -932,3 +931,4 @@ class _BuyScreenState extends State<BuyScreen> {
     );
   }
 }
+

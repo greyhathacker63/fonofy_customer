@@ -42,7 +42,7 @@ class _BuyRefurbishedProductScreenState extends State<BuyRefurbishedProductScree
       "oldPrice": "₹43,000",
       "emi": "₹926 / Month"
     },
-     {
+    {
       "image": "assets/images/phone.png",
       "name": "Apple iPhone 6 Plus 32GB...",
       "price": "₹17,699",
@@ -88,73 +88,66 @@ class _BuyRefurbishedProductScreenState extends State<BuyRefurbishedProductScree
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            
+
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               // Main Product Image
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26, width: 2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.all(8),
-                child: Image.asset(
-                  productImages[selectedImageIndex],
-                  height: 250, // Adjust the size as needed
-                  fit: BoxFit.contain,
+              // Main Product Image
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black26, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Image.asset(
+                    productImages[selectedImageIndex],
+                    height: 250, // Adjust the size as needed
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-                        // Thumbnail Image Selection
-            SizedBox(
-              height: 70,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: productImages.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedImageIndex = index;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: selectedImageIndex == index ? Colors.black26 : Colors.transparent,
-                          width: 2,
+              const SizedBox(height: 10),
+              // Thumbnail Image Selection
+              SizedBox(
+                height: 70,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: productImages.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedImageIndex = index;
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: selectedImageIndex == index ? Colors.black26 : Colors.transparent,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          productImages[index],
+                          height: 50, // Thumbnail size
+                          width: 50,
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                      child: Image.asset(
-                        productImages[index],
-                        height: 50, // Thumbnail size
-                        width: 50,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
 
-            const SizedBox(height: 15),
+              const SizedBox(height: 15),
 
-            // Product Name and Description
-            const Text(
-              "(Refurbished) Redmi 6 Pro Max (Champagne Gold, 6GB RAM, 128GB Storage) - 64MP Quad...",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
-            ),
-          
-        
-        
-      
-    
-  
-
+              // Product Name and Description
+              const Text(
+                "(Refurbished) Redmi 6 Pro Max (Champagne Gold, 6GB RAM, 128GB Storage) - 64MP Quad...",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
+              ),
 
               // Product Image, Price, and Highlights (from previous code)
               _buildPricingCard(),
@@ -297,45 +290,45 @@ class _BuyRefurbishedProductScreenState extends State<BuyRefurbishedProductScree
   }
 }
 // Product Highlights Card
-  Widget _buildProductHighlightsCard() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Product Highlights", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-            const Divider(),
-            _buildProductHighlightRow("SKU", "PBREDME512"),
-            _buildProductHighlightRow("Model", "Redmi Note 9 Pro Max"),
-            _buildProductHighlightRow("Brand", "Redmi"),
-            _buildProductHighlightRow("Category", "SmartPhone"),
-            _buildProductHighlightRow("Network", "4G"),
-            _buildProductHighlightRow("RAM", "4GB"),
-            _buildProductHighlightRow("ROM", "64GB"),
-            _buildProductHighlightRow("Battery", "Built-In Rechargeable Lithium-Ion Battery"),
-            _buildProductHighlightRow("Color", "Atlantic Green"),
-            _buildProductHighlightRow("OS", "Android 12"),
-            const SizedBox(height: 10),
-            const Text("View All Specification", style: TextStyle(color: Colors.blue, fontSize: 14, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Helper Function to Build Product Highlight Row
-  Widget _buildProductHighlightRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Widget _buildProductHighlightsCard() {
+  return Card(
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87)),
-          Text(value, style: const TextStyle(fontSize: 14, color: Colors.black)),
+          const Text("Product Highlights", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black)),
+          const Divider(),
+          _buildProductHighlightRow("SKU", "PBREDME512"),
+          _buildProductHighlightRow("Model", "Redmi Note 9 Pro Max"),
+          _buildProductHighlightRow("Brand", "Redmi"),
+          _buildProductHighlightRow("Category", "SmartPhone"),
+          _buildProductHighlightRow("Network", "4G"),
+          _buildProductHighlightRow("RAM", "4GB"),
+          _buildProductHighlightRow("ROM", "64GB"),
+          _buildProductHighlightRow("Battery","Built-In Rechargeable Lithium-Ion Battery"),
+          _buildProductHighlightRow("Color", "Atlantic Green"),
+          _buildProductHighlightRow("OS", "Android 12"),
+          const SizedBox(height: 10),
+          const Text("View All Specification", style: TextStyle(color: Colors.blue, fontSize: 14, fontWeight: FontWeight.bold)),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
+// Helper Function to Build Product Highlight Row
+Widget _buildProductHighlightRow(String title, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black87)),
+        Text(value, style: const TextStyle(fontSize: 10, color: Colors.black)),
+      ],
+    ),
+  );
+}

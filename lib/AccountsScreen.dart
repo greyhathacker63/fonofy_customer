@@ -21,7 +21,11 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+<<<<<<< HEAD
         title: Image.asset("assets/images/Logo.png", height: 40),
+=======
+        title: Image.asset("assets/images/Logo.png", height: 30), // Update with your logo path
+>>>>>>> vinay/users
         elevation: 0,
         backgroundColor: Colors.white,
       ),
@@ -43,8 +47,12 @@ class _AccountScreenState extends State<AccountScreen> {
                   children: const [
                     Text(
                       "FONOFY TECHNOLOGIES PVT.LTD.",
+<<<<<<< HEAD
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+=======
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+>>>>>>> vinay/users
                     ),
                     Text(
                       "kuldeep@fonofy.in",
@@ -59,10 +67,14 @@ class _AccountScreenState extends State<AccountScreen> {
             // My Orders
             const Text(
               "MY ORDERS",
+<<<<<<< HEAD
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
+=======
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+>>>>>>> vinay/users
             ),
             const SizedBox(height: 10),
 

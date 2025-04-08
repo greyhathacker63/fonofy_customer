@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:fonofy/LoginScreen.dart';
 import 'package:fonofy/MyHttpOverride.dart';
+=======
+import 'package:fonofy/BuyScreen/BuyScreen.dart';
+>>>>>>> vinay/users
 import 'package:get/get.dart';
 import 'MainScreen.dart';
 import 'dart:io';

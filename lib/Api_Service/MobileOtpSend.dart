@@ -4,7 +4,11 @@ import 'package:fonofy/model/MobileOtp.dart';
 import 'package:http/http.dart' as http;
 
 class OtpService {
+<<<<<<< HEAD
   static const String apiUrl = 'http://api.fonofy.in/api/common/sendotp';
+=======
+  static const String apiUrl = 'https://api.fonofy.in/api/common/sendotp';
+>>>>>>> vinay/users
 
   Future<MobileOtp> sendOtp(String mobileNumber) async {
     print("Api Url ");

@@ -24,7 +24,6 @@ class RepairServiceScreen extends StatelessWidget {
                 },
               ),
             ),
-
             // Logo and Heading (Logo Left, Text Right)
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,

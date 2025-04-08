@@ -28,7 +28,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(9.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -41,7 +41,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
               "Please answer a few questions about your device.",
               style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 1),
 
             // Question 1
             _buildQuestion(
@@ -67,7 +67,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
               screenStatus,
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
 
             // Continue Button
             SizedBox(
