@@ -1,80 +1,5 @@
 
-import 'dart:convert';
-
-// AccountDetailsModel accountDetailsModelFromJson(String str) => AccountDetailsModel.fromJson(json.decode(str));
-//
-// String accountDetailsModelToJson(AccountDetailsModel data) => json.encode(data.toJson());
-//
-// class AccountDetailsModel {
-//   String userCode;
-//   String firstName;
-//   String lastName;
-//   String email;
-//   String phoneNumber;
-//   dynamic address;
-//   String role;
-//   bool isActive;
-//   bool isEmailVerified;
-//   bool isPhoneVerified;
-//   dynamic password;
-//
-//   AccountDetailsModel({
-//     required this.userCode,
-//     required this.firstName,
-//     required this.lastName,
-//     required this.email,
-//     required this.phoneNumber,
-//     required this.address,
-//     required this.role,
-//     required this.isActive,
-//     required this.isEmailVerified,
-//     required this.isPhoneVerified,
-//     required this.password,
-//   });
-//
-//   factory AccountDetailsModel.fromJson(Map<String, dynamic> json) => AccountDetailsModel(
-//     userCode: json["UserCode"],
-//     firstName: json["FirstName"],
-//     lastName: json["LastName"],
-//     email: json["Email"],
-//     phoneNumber: json["PhoneNumber"],
-//     address: json["Address"],
-//     role: json["Role"],
-//     isActive: json["IsActive"],
-//     isEmailVerified: json["IsEmailVerified"],
-//     isPhoneVerified: json["IsPhoneVerified"],
-//     password: json["Password"],
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "UserCode": userCode,
-//     "FirstName": firstName,
-//     "LastName": lastName,
-//     "Email": email,
-//     "PhoneNumber": phoneNumber,
-//     "Address": address,
-//     "Role": role,
-//     "IsActive": isActive,
-//     "IsEmailVerified": isEmailVerified,
-//     "IsPhoneVerified": isPhoneVerified,
-//     "Password": password,
-//   };
-// }
-
-import 'dart:convert';
-//
-// AccountDetailsModel accountDetailsModelFromJson(String str) =>
-//     AccountDetailsModel.fromJson(json.decode(str));
-//
-// String accountDetailsModelToJson(AccountDetailsModel data) =>
-//     json.encode(data.toJson());
-// To parse this JSON data, do
-//
-//     final accountDetailsModel = accountDetailsModelFromJson(jsonString);
-
-import 'dart:convert';
-
-class AccountDetailsModel {
+ class AccountDetailsModel {
   final String userCode;
   final String firstName;
   final String? lastName;
@@ -119,7 +44,6 @@ class AccountDetailsModel {
       platformType: json["PlatformType"],
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       "UserCode": userCode,

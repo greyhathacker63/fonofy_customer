@@ -21,7 +21,7 @@ class MainScreen extends StatelessWidget {
 
             Container(
               margin: EdgeInsets.only(bottom: 30),
-              color: Colors.amberAccent,
+              color: Colors.white,
               child: Image.asset(
                 // height: MediaQuery.of(context).size.height * 0.25,
                 width: MediaQuery.of(context).size.width * 0.50,

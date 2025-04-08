@@ -4,35 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../AccountDetailsModel/account_details_model.dart';
 
-// class AccountApiService {
-//   static const String accountApiUrl = "https://api.fonofy.in/api/common/get-register-data?mobileNumber=";
-//
-//   Future<AccountDetailsModel?> getAccountData(String phoneNumber) async {
-//     final url = Uri.parse("$accountApiUrl$phoneNumber");
-//     print("📡 Fetching Account Details from: $url");
-//
-//     try {
-//       final response = await http.get(url);
-//       print("🛜 API Response Code: ${response.statusCode}");
-//
-//       if (response.statusCode == 200) {
-//         final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-//
-//         print("📥 API Response Data: $jsonResponse");
-//         return AccountDetailsModel.fromJson(jsonResponse);
-//       } else {
-//         print("❌ Error: Failed to fetch data. Status Code: ${response.statusCode}");
-//         return null;
-//       }
-//     } catch (e) {
-//       print("❌ Exception in API Call: $e");
-//       return null;
-//     }
-//   }
-// }
-
 class AccountApiService {
   static const String baseUrl = "https://api.fonofy.in/api/common/get-register-data?mobileNumber=";
+
 
   /// Fetch Account Data from API
   Future<AccountDetailsModel?> getAccountData() async {
@@ -46,10 +20,8 @@ class AccountApiService {
       }
       final url = Uri.parse("$baseUrl$phoneNumber");
       print("📡 Fetching Account Details from: $url");
-      // ✅ Bypass SSL verification for development (Remove in production)
-      HttpOverrides.global = CustomHttpOverrides();
+       HttpOverrides.global = CustomHttpOverrides();
 
-      // API Request
       final response = await http.get(url);
       print("🛜 API Response Code: ${response.statusCode}");
 

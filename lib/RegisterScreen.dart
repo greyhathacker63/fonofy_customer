@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/widgets/GlobalTextFieldWithVerify.dart';
@@ -30,7 +31,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final LoginService _loginService = LoginService();
   bool isLoading = false;
+  bool isVerified = false;
   @override
   void initState() {
     super.initState();
@@ -106,57 +109,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
   Future<void> _registerUser() async {
-    final firstName = firstNameController.text.trim();
-    final phoneNumber = phoneNumberController.text.trim();
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
+    if(isVerified){
+      final firstName = firstNameController.text.trim();
+      final phoneNumber = phoneNumberController.text.trim();
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
 
-    if (firstName.isEmpty || password.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('❌ All fields are required!')),
-      );
-      return;
-    }
-
-    setState(() => isLoading = true);
-
-    String registerData = json.encode({
-      "FirstName": firstName,
-      "PhoneNumber": phoneNumber,
-      "Email": email,
-      "Password": password,
-      "PlatformType": "App",
-    });
-
-    try {
-      final registerService = RegisterService();
-      final RegisterModel registerModel = await registerService.registerApi(registerData);
-
-      if (registerModel.success) {
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // await prefs.setString("Email", email);
-        // await prefs.setString("Password", password);
+      if (firstName.isEmpty || password.isEmpty || phoneNumber.isEmpty || email.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-
-          const SnackBar(content: Text("✅ Registration Successful!")),
+          const SnackBar(content: Text('❌ All fields are required!')),
         );
-        await SharedpreferencesEmail().saveUserCredentials(email, password);
-
-        await Future.delayed(const Duration(seconds: 1));
-
-        Get.offAll(() => const EmailLoginScreen());
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          // SnackBar(content: Text("❌ Registration Failed: ${registerModel.message}")),
-          SnackBar(content: Text('✅ Registration Successful!')),
-        ); Get.to(MainScreen());
+        return;
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('❌ Error: $e')),
-      );
-    } finally {
-      setState(() => isLoading = false);
+
+      setState(() => isLoading = true);
+
+      String registerData = json.encode({
+        "FirstName": firstName,
+        "PhoneNumber": phoneNumber,
+        "Email": email,
+        "Password": password,
+        "PlatformType": "App",
+      });
+
+      try {
+        final registerService = RegisterService();
+        final RegisterModel registerModel = await registerService.registerApi(registerData);
+        if (registerModel.success) {
+          var response = await _loginService.checkMobileNumber(phoneNumber);
+          bool isActive = response["IsActive"];
+          String userCode = response["UserCode"] ?? "";
+          if (isActive) {
+            await TokenHelper.saveUserCode(userCode);
+          }
+          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("✅ Registration Successful!"),backgroundColor: Colors.green,),);
+          await SharedpreferencesEmail().saveUserCredentials(email, password);
+          await Future.delayed(const Duration(seconds: 1));
+          Get.offAll(() => const EmailLoginScreen());
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('✅ Registration Successful!'),backgroundColor: Colors.green),); Get.to(MainScreen());
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('❌ Error: $e')),
+        );
+      } finally {
+        setState(() => isLoading = false);
+      }
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('✅ Plz Verify Mobile Number...'),backgroundColor: Colors.green,),);
     }
   }
 
@@ -174,7 +175,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return false;
     }
   }
-
   void _showVerificationDialog(BuildContext context, String mobileNumber) {
     String otp = "";
     showDialog(
@@ -217,17 +217,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onCodeChanged: (String verificationCode){
                     otp = verificationCode;
                   },
-                  // onSubmit: (String verificationCode) {
-                  //   // ✅ Handle OTP submission
-                  //   Navigator.pop(context);
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(content: Text("✅ OTP Verified: $verificationCode")),
-                  //   );
-                  // },
-                ),
-
+                 ),
                 const SizedBox(height: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -240,10 +231,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         if(otp.isNotEmpty){
-                          bool isVerified = await LoginService().verifyOTP(userOTP: otp, otp: otp, phoneNumber: phoneNumberController.text.toString());
+                           isVerified = await LoginService().verifyOTP(userOTP: otp, otp: otp, phoneNumber: phoneNumberController.text.toString());
                           if (isVerified) {
+
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("✅ OTP Verified Successfully!")),
+                              const SnackBar(content: Text("✅ OTP Verified Successfully!"),backgroundColor: Colors.green,),
                             );
 
                             await Future.delayed(const Duration(seconds: 1));
@@ -258,7 +250,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }else{
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("OTP Field Can't Empty ⚠️")),);
                         }
+                        Navigator.of(context).pop();
                       },
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orangeAccent,
                       ),

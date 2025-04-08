@@ -120,7 +120,6 @@ class _SidebarMenuScreenState extends State<SidebarMenuScreen> {
       ),
     );
   }
-
   Widget _buildExpandableSection(String title, bool isExpanded, VoidCallback onTap, List<String> subItems) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

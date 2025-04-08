@@ -19,19 +19,16 @@ class TokenService {
       "Password": "sample string 11",
       "PlatformType": "sample string 12"
     };
-
     try {
       final response = await http.post(
         Uri.parse(_baseUrl),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestBody),
       );
-
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         String token = data["token"];
         print("✅ Token Generated: $token");
-
         // Store token securely for future use (e.g., SharedPreferences)
         return token;
       } else {

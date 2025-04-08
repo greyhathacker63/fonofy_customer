@@ -268,6 +268,8 @@ import 'TokenHelper/TokenHelper.dart';
 import 'ViewModel/MobileOtpSend.dart';
 import 'otp_screen.dart';
 
+import 'package:http/http.dart' as http;
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -279,7 +281,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController mobileNumberController = TextEditingController();
   bool isLoading = false;
   final LoginService _loginService = LoginService();
-
 
   @override
   Widget build(BuildContext context) {
@@ -295,30 +296,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Logo
                     SizedBox(
                       height: 100,
                       child: Image.asset('assets/images/Logo.png', fit: BoxFit.contain),
                     ),
                     const SizedBox(height: 20),
+                    // Login Image
                     SizedBox(
                       height: 40,
                       child: Image.asset('assets/images/login.png', fit: BoxFit.contain),
                     ),
                     const SizedBox(height: 20),
-                    // TextField(
-                    //   keyboardType: TextInputType.phone,
-                    //   decoration: InputDecoration(
-                    //     labelText: "Mobile No.",
-                    //     border: OutlineInputBorder(),
-                    //     prefixIcon: Icon(Icons.phone),
-                    //   ),
-                    //   controller: mobileNumberController,
-                    // ),
+
+                    // Mobile Number Field
                     TextFormField(
                       controller: mobileNumberController,
                       keyboardType: TextInputType.phone,
                       maxLength: 10,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Mobile No.",
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.phone),
@@ -326,6 +322,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
+
+                    // Submit Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -339,13 +337,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: isLoading ? null : _handleLogin,
                         child: isLoading
                             ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text("SUBMIT",
+                            : const Text(
+                          "SUBMIT",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
                     ),
 
-                    if (viewModel.statusMessage == "Otp Sent Successfully.")
+                    // Success/Error Message
+                    if (viewModel.statusMessage.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
@@ -359,6 +359,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     const SizedBox(height: 20),
 
+                    // Signup / Email Login
                     Column(
                       children: [
                         Row(
@@ -367,7 +368,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Text("Not a member? "),
                             GestureDetector(
                               onTap: () {
-                                // Get.to(RegisterScreen(mobile: ''));
+                                // Get.to(RegisterScreen(mobile: '')
+                                // );
                               },
                               child: const Text(
                                 "Signup Now",
@@ -376,7 +378,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10), // Space between links
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -404,61 +406,60 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   Future<void> _handleLogin() async {
     String mobileNumber = mobileNumberController.text.trim();
 
-    // ✅ Validation: Check if the number is empty
+    // ✅ Validation: Check if number is empty
     if (mobileNumber.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('📢 Please enter a mobile number!')),
-      );
+      _showMessage('📢 Please enter a mobile number!');
       return;
     }
 
-    // ✅ Validation: Check if number is exactly 10 digits
     if (!RegExp(r'^[0-9]{10}$').hasMatch(mobileNumber)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('❌ Please enter a valid 10-digit mobile number!')),
-      );
+      _showMessage('❌ Please enter a valid 10-digit mobile number!');
       return;
     }
 
-    setState(() => isLoading = true);
-
-    try {
+    setState(() => isLoading = true);    try {
       var response = await _loginService.checkMobileNumber(mobileNumber);
-      bool isActive = response["IsActive"]; // Ensure it's a boolean
-      String userCode = response["UserCode"];
+
+      if (response == null || !response.containsKey("IsActive")) {
+        _showMessage("❌ Unexpected server response. Try again later.");
+        return;
+      }
+
+      bool isActive = response["IsActive"];
+      String userCode = response["UserCode"] ?? "";
+
       if (isActive) {
-        await TokenHelper.saveUserCode(userCode.toString());
-        var data = await _loginService.getOtp(mobileNumber);
-        if (data['status'] == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('✅ OTP Sent Successfully!')),
-          );
+        // ✅ Save userCode & Proceed to OTP
+        await TokenHelper.saveUserCode(userCode);
+        var otpData = await _loginService.getOtp(mobileNumber);
+
+        if (otpData['status'] == true) {
+          _showMessage("✅ OTP Sent Successfully!");
           await Future.delayed(const Duration(seconds: 1));
-          Get.to(OtpScreen(otp: data['otp'], number: mobileNumber));
+          Get.to(OtpScreen(otp: otpData['otp'], number: mobileNumber));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('❌ Failed to send OTP! Try again.')),
-          );
+          _showMessage("❌ Failed to send OTP! Try again.");
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('🆕 This number is not registered. Please sign up!')),
-        );
-
+        // ❌ User Not Registered, Redirect to Register Page
+        _showMessage("🆕 This number is not registered. Redirecting...");
         await Future.delayed(const Duration(seconds: 1));
         Get.to(RegisterScreen(mobile: mobileNumber));
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('❌ Error: $e')),
-      );
+      _showMessage("❌ Error: $e");
     } finally {
       setState(() => isLoading = false);
     }
   }
 
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 }
+

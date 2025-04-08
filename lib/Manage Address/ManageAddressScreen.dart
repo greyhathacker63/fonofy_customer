@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ListShippingAddressService.dart';
 import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../TokenHelper/TokenHelper.dart';
 import '../model/ListShippingAddressModel.dart';
+import '../widgets/Colors.dart';
 
 class ManageAddressScreen extends StatefulWidget {
+
   final String customerId;
 
   const ManageAddressScreen({super.key, required this.customerId});
@@ -14,7 +15,9 @@ class ManageAddressScreen extends StatefulWidget {
   _ManageAddressScreenState createState() => _ManageAddressScreenState();
 }
 class _ManageAddressScreenState extends State<ManageAddressScreen> {
-  late Future<List<ListShippingAddressModel>> _addressFuture;
+
+  late final Future<List<ListShippingAddressModel>> _addressFuture;
+
   String token = "";
 
   @override
@@ -22,20 +25,19 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     super.initState();
     _initializeData();
   }
-
   Future<void> _initializeData() async {
     String? storedToken = await TokenHelper.getToken();
 
     if (storedToken != null && storedToken.isNotEmpty) {
       setState(() {
         token = storedToken;
+        print(token);
         _fetchAddressList();
       });
     } else {
       print("⚠️ Token is missing. Please log in again.");
     }
   }
-
   void _fetchAddressList() {
     setState(() {
       _addressFuture = ListShippingAddressService().listShippingAddress(
@@ -46,13 +48,13 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
   }
 
   void _navigateToAddNewAddressScreen() async {
-    final result = await Navigator.push(
+
+    final result = await Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => AddNewAddressScreen(customerId: widget.customerId,),
+        builder: (context) => AddNewAddressScreen(customerId: widget.customerId, address: ListShippingAddressModel()),
       ),
     );
-
     if (result != null) {
       _fetchAddressList();
     }
@@ -61,7 +63,9 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Addresses"),
+        backgroundColor: Colors.white,
+        title: const Text("My Addresses",
+        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -70,7 +74,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -92,7 +96,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Expanded(
               child: FutureBuilder<List<ListShippingAddressModel>>(
                 future: _addressFuture,
@@ -113,45 +117,41 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                       child: Text("📭 No addresses available."),
                     );
                   }
-
                   var addresses = snapshot.data!;
                   return ListView.builder(
                     itemCount: addresses.length,
                     itemBuilder: (context, index) {
                       final address = addresses[index];
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                      return Container(
+                        margin: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 2, color: Colors.black12),
                         ),
-                        elevation: 3,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        width: MediaQuery.of(context).size.width,
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${address.name}  |  ${address.workType}",
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
+                                "${address.name} | ${address.workType}",
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(height: 5),
                               Text(
                                 address.address ?? "NA",
                                 style: const TextStyle(
-                                    fontSize: 14, color: Colors.black87),
+                                    fontSize: 14, color: Colors.black),
                               ),
-                              const SizedBox(height: 5),
                               Text(
                                 "${address.city ?? "NA"} - ${address.pinCode ?? 'NA'}",
                                 style: const TextStyle(
-                                    fontSize: 14, color: Colors.black87),
+                                    fontSize: 14, color: Colors.black),
                               ),
-                              const SizedBox(height: 5),
                               Text(
-                                "📞 Mobile: ${address.mobileNo ?? "NA"}",
+                                "📞 ${address.mobileNo ?? "NA"}",
                                 style: const TextStyle(
-                                    fontSize: 14, color: Colors.grey),
+                                    fontSize: 14, color: Colors.black),
                               ),
                               Align(
                                 alignment: Alignment.topRight,
@@ -159,12 +159,20 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.edit,
-                                          color: Colors.blue),
+                                      icon: const Icon(Icons.edit, color: Colors.blue),
                                       onPressed: () {
-                                        print("Edit Address: ${address.city}");
+                                         Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AddNewAddressScreen(
+                                              customerId: widget.customerId,
+                                              address: address,
+                                            ),
+                                          ),
+                                        );
                                       },
                                     ),
+
                                     IconButton(
                                       icon: const Icon(Icons.delete,
                                           color: Colors.red),
@@ -189,7 +197,6 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
       ),
     );
   }
-
   Widget _buildShimmerEffect() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,

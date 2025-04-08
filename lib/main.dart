@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fonofy/AccountsScreen.dart';
 import 'package:fonofy/LoginScreen.dart';
@@ -43,11 +45,13 @@ import 'package:provider/provider.dart';
 
 import 'package:fonofy/ViewModel/MobileOtpSend.dart';
 
+import 'otp_screen.dart';
+
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => OtpViewModel()),
+      providers: [ChangeNotifierProvider(create: (context) => OtpViewModel()),
       ],
       child: const MyApp(),
     ),
@@ -64,7 +68,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
+     //home: OtpScreen(otp: '', number: '1234567890',),
       home: MainScreen(),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }
