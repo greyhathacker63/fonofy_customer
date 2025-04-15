@@ -27,7 +27,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   void initState() {
     super.initState();
     screens = [
-      TabScreen(upperTabIndex: widget.upperTabIndex), // Use widget.upperTabIndex correctly
+      TabScreen(upperTabIndex: widget.upperTabIndex), 
       InfoScreen(),
       ServicesScreen(),
       SupportScreen(),
