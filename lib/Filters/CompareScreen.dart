@@ -17,6 +17,8 @@ class _CompareScreenState extends State<CompareScreen> {
 
   final List<Map<String, String>> featureList = [
     {'label': 'Price', 'key': 'price'},
+    {'label': 'Availaible', 'key': 'availaible'},
+    {'label': 'Stock Status', 'key': 'stock'},
     {'label': 'RAM', 'key': 'ram'},
     {'label': 'ROM', 'key': 'rom'},
     {'label': 'Display', 'key': 'display'},
@@ -24,6 +26,7 @@ class _CompareScreenState extends State<CompareScreen> {
     {'label': 'Front Camera', 'key': 'frontCamera'},
     {'label': 'Rear Camera', 'key': 'rearCamera'},
     {'label': 'Processor', 'key': 'processor'},
+    {'label': 'Product Rating', 'key': 'rating'},
   ];
 
   @override
@@ -158,6 +161,12 @@ class _CompareScreenState extends State<CompareScreen> {
                                   case 'price':
                                     value = "₹${product.price}";
                                     break;
+                                    case 'availaible':
+                                    value = "Yes";
+                                    break;
+                                    case 'stock':
+                                    value = "In-Stock";
+                                    break;
                                   case 'ram':
                                     value = "6GB";
                                     break;
@@ -178,6 +187,9 @@ class _CompareScreenState extends State<CompareScreen> {
                                     break;
                                   case 'processor':
                                     value = "Snapdragon 778G";
+                                    break;
+                                    case 'rating':
+                                    value = "5/5";
                                     break;
                                 }
                                 return Container(
