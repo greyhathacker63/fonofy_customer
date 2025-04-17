@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/CartScreen.dart';
+import 'package:fonofy/Cart_Screens/CartScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 

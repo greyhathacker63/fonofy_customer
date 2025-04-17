@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Cart_Screens/CheckoutScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -145,6 +148,7 @@ class _CartScreenState extends State<CartScreen> {
             // 🛒 Proceed to Checkout Button
             ElevatedButton.icon(
               onPressed: () {
+                Get.to(() => CheckoutScreen());
                 // Navigate to checkout screen
               },
               icon: const Icon(Icons.arrow_forward, color: Colors.white),
