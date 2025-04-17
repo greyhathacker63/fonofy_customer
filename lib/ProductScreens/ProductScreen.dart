@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/Bottom_Sheet/SortBy.dart';
 import 'package:fonofy/Filters/CompareScreen.dart';
 import 'package:fonofy/Filters/FilterScreen.dart';
+import 'package:fonofy/Wishlist/WishlistScreen.dart';
 import 'package:fonofy/widgets/Colors.dart';
 import 'package:get/get.dart';
 
@@ -238,40 +239,74 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                             const SizedBox(height: 10),
 
-                            // Add to Cart Button
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.snackbar(
-                                  "Added to Cart",
-                                  "${product.name} added successfully!",
-                                  snackPosition: SnackPosition.BOTTOM,
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: ColorConstants.appBlueColor3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Wishlist Icon Button
+                                SizedBox(
+                                  height: 37,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(() =>
+                                          WishlistScreen()); // navigate to your Wishlist screen
+                                    },
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(7),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Icon(Icons.favorite_border,
+                                          size: 24, color: Colors.black),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              child: const Text("Add to Cart",
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                          ],
-                        ),
-                      ),
 
-                      // Compare Checkbox (Visible only if Compare is clicked)
-                      if (showCheckboxes)
-                        Column(
-                          children: [
-                            Checkbox(
-                              value: isSelected,
-                              onChanged: (_) => toggleSelection(product),
+                                // Add to Cart Button
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 12),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Get.snackbar(
+                                          "Added to Cart",
+                                          "${product.name} added successfully!",
+                                          snackPosition: SnackPosition.BOTTOM,
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            ColorConstants.appBlueColor3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      child: const Text("Add to Cart",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const Text("Compare",
-                                style: TextStyle(fontSize: 14)),
+
+                            // Compare Checkbox (Visible only if Compare is clicked)
+                            if (showCheckboxes)
+                              Column(
+                                children: [
+                                  Checkbox(
+                                    value: isSelected,
+                                    onChanged: (_) => toggleSelection(product),
+                                  ),
+                                  const Text("Compare",
+                                      style: TextStyle(fontSize: 14)),
+                                ],
+                              ),
                           ],
                         ),
+                      )
                     ],
                   ),
                 ),
