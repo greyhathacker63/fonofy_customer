@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fonofy/CartScreen.dart';
+import 'package:fonofy/ProductDetailsScreen.dart';
+import 'package:fonofy/ProductScreens/ProductDetailsScreen.dart';
 import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/SelectProductScreen3.dart';
 import 'package:fonofy/widgets/Colors.dart';
@@ -544,7 +546,8 @@ class _BuyScreenState extends State<BuyScreen> {
                           // Button
                           ElevatedButton(
                             onPressed: () {
-                              print("Add Pressed");
+                              Get.to(() => ProductDetailsScreen());
+                              
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstants.appBlueColor3,
@@ -632,6 +635,7 @@ class _BuyScreenState extends State<BuyScreen> {
                       // Button
                       ElevatedButton(
                         onPressed: () {
+                          Get.to(() => ProductDetailsScreen());
                           print("Add Pressed");
                         },
                         style: ElevatedButton.styleFrom(

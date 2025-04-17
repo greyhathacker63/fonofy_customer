@@ -10,9 +10,9 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
 class _BuyRefurbishedProductScreenState extends State<BuyRefurbishedProductScreen> {
   int selectedImageIndex = 0;
 
-  // Replace these paths with your actual image assets
+
   final List<String> productImages = [
-    "assets/images/main_product.png",  // Main Product Image
+    "assets/images/main_product.png",  
     "assets/images/thumb_1.png",
     "assets/images/thumb_2.png",
     "assets/images/thumb_3.png",
