@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/YourDevice/YourDeviceScreen2.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class YourDeviceScreen extends StatelessWidget {
@@ -62,7 +62,8 @@ class YourDeviceScreen extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.red),
+                                  color: Colors.red,
+                              ),
                             ),
                             const Spacer(),
                             GestureDetector(

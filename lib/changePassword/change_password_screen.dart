@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/MainScreen.dart';
-import '../Api_Service/ChangePasswordService.dart';
+import '../Api_Service/ChangePasswordService/ChangePasswordService.dart';
 import '../TokenHelper/TokenHelper.dart';
 
 class ChangePasswordScreen extends StatefulWidget {

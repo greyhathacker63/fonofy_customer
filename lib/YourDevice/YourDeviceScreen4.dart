@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/RepairService/RepairServiceScreen.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 

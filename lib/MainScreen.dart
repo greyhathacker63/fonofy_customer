@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/TabScreen.dart';
-import 'package:fonofy/bottom_navgation.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/ViewScreen/TabScreen.dart';
+import 'package:fonofy/ViewScreen/bottom_navgation.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class MainScreen extends StatelessWidget {
@@ -18,7 +18,6 @@ class MainScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Logo
-
             Container(
               margin: EdgeInsets.only(bottom: 30),
               color: Colors.white,
@@ -79,7 +78,8 @@ class MainScreen extends StatelessWidget {
         elevation: 3,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: ColorConstants.appGreyColor)),
+            side: BorderSide(color: ColorConstants.appGreyColor),
+        ),
         child: ListTile(
           contentPadding: const EdgeInsets.all(16),
           title: Text(

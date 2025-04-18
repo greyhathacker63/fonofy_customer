@@ -34,7 +34,6 @@ void showSortBySheet(BuildContext context, Function(String) onSortSelected) {
                   });
                   onSortSelected(newSort); // ✅ Sends selection back
                 }),
-
                 _buildSortOption("Price -- High to Low", selectedSort, setState, (newSort) {
                   setState(() {
                     selectedSort = newSort;
@@ -64,7 +63,6 @@ void showSortBySheet(BuildContext context, Function(String) onSortSelected) {
     },
   );
 }
-
 Widget _buildSortOption(
     String title,
     String? selectedSort,

@@ -1,13 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:fonofy/AccountsScreen.dart';
-import 'package:fonofy/LoginScreen.dart';
- import 'package:get/get.dart';
- import 'package:fonofy/MainScreen.dart';
+import 'package:get/get.dart';
+import 'package:fonofy/MainScreen.dart';
 import 'package:provider/provider.dart';
-
- import 'address_screen5.dart'; // ✅ Import your ViewModel
 
 // void main() {
 //   runApp(
@@ -42,11 +37,7 @@ import 'package:provider/provider.dart';
 //     );
 //   }
 // }
-
 import 'package:fonofy/ViewModel/MobileOtpSend.dart';
-
-import 'otp_screen.dart';
-
 void main() {
   HttpOverrides.global = MyHttpOverrides();
   runApp(
@@ -65,6 +56,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fonofy',
+      // initialRoute: '/login',
       theme: ThemeData(
         useMaterial3: true,
       ),

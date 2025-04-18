@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class SelectProduct2 extends StatelessWidget {

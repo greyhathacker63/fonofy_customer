@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/CartScreen.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/ViewScreen/CartScreen.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 

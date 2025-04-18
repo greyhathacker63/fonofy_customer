@@ -1,12 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:fonofy/Api_Service/AddShippingAddressService.dart';
+import 'package:fonofy/Api_Service/ShippingAddressService/AddShippingAddressService.dart';
 import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
-import '../Api_Service/LocationService.dart';
+import '../Api_Service/ShippingAddressService/LocationService.dart';
 import '../TokenHelper/TokenHelper.dart';
-import '../model/CityModel.dart';
-import '../model/ListShippingAddressModel.dart';
-import '../model/LocationModel.dart';
+import '../model/LocationModel/CityModel.dart';
+import '../model/ShippingAddressModel/ListShippingAddressModel.dart';
+import '../model/LocationModel/LocationModel.dart';
 import '../widgets/TextField.dart';
 
 class AddNewAddressScreen extends StatefulWidget {
@@ -20,6 +20,7 @@ class AddNewAddressScreen extends StatefulWidget {
 }
 
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
+
   final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
@@ -63,18 +64,48 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     _initializeData();
     fetchLocationData();
 
+
     if (widget.address != null) {
       nameController.text = widget.address?.name ?? "";
       emailController.text = widget.address?.emailId ?? "";
       mobileController.text = widget.address?.mobileNo ?? "";
       pinCodeController.text = widget.address?.pinCode ?? "";
       addressController.text = widget.address?.address ?? "";
-      workTypeController.text = widget.address?.workType ?? "";
 
-      // selectedCity = widget.address?.city as String?;
-      cityController.text = widget.address?.city ?? "";
-      // selectedState = widget.address!.state!;
-      stateController.text = widget.address?.state?? "";
+      selectedWorkType = widget.address?.workType;
+      workTypeController.text = selectedWorkType ?? "";
+
+      selectedState = widget.address?.state;
+      stateController.text = selectedState ?? "";
+
+      selectedCity = widget.address?.city;
+      cityController.text = selectedCity ?? "";
+
+
+      // final selectedStateObj = locations.firstWhere(
+      //       (loc) => loc.locationName == widget.address!.state,
+      //   orElse: () => LocationModel(id: 0, locationName: ""),
+      // );
+      //
+      // if (selectedStateObj.id != 0) {
+      //   selectedState = selectedStateObj.id.toString();
+      //   stateController.text = selectedStateObj.locationName;
+      //
+      //   // Fetch cities using then instead of await
+      //   LocationService().fetchCities(selectedStateObj.id).then((fetchedCities) {
+      //     setState(() {
+      //       cityList = fetchedCities;
+      //       final selectedCityObj = cityList.firstWhere(
+      //             (city) => city.cityname == widget.address!.city,
+      //         orElse: () => CityModel(id: 0, stateId: 0, cityname: ""),
+      //       );
+      //       if (selectedCityObj.id != 0) {
+      //         selectedCity = selectedCityObj.id.toString(); // Use ID
+      //         cityController.text = selectedCityObj.cityname;
+      //       }
+      //     });
+      //   });
+      // }
     }
   }
   Future<void> _initializeData() async {
@@ -85,7 +116,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       token = storedToken ?? "";
       userCode = user_Code ?? "";
     });
-
     if (storedToken == null || storedToken.isEmpty) {
       print("⚠️ Token is missing. Please log in again.");
     }
@@ -105,7 +135,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       print("❌ Error fetching locations: $e");
     }
   }
-
   Future<void> fetchCityData(int stateId) async {
     setState(() {
       isCityLoading = true;
@@ -113,7 +142,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       selectedCity = null;
       cityController.clear();
     });
-
     try {
       List<CityModel> fetchedCities = await LocationService().fetchCities(stateId);
       setState(() {
@@ -127,13 +155,13 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       print("❌ Error fetching cities: $e");
     }
   }
+
   String? validateRequired(String? value, String fieldName) {
     if (value == null || value.trim().isEmpty) {
       return "$fieldName is required";
     }
     return null;
   }
-
   String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Email is required";
@@ -143,7 +171,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     }
     return null;
   }
-
   String? validateMobile(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Mobile Number is required";
@@ -153,7 +180,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     }
     return null;
   }
-
   String? validatePinCode(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "PIN Code is required";
@@ -188,17 +214,22 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               GlobalTextField(
               hint: 'Name *', controller: nameController,
               validator: (value) => validateRequired(value, "Name"),),
-
               GlobalTextField(
                   hint: 'Email *',
                   controller: emailController,
                 validator: validateEmail,
               ),
 
-              GlobalTextField(hint: 'Mobile Number *',
-                  controller: mobileController,
-                  keyboardType: TextInputType.number,
-                  maxLength: 10,
+              GlobalTextField(
+                hint: 'Mobile Number *',
+                controller: mobileController,
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                prefixText: '+91 ',
+                prefixStyle: TextStyle(color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
                 validator: validateMobile,
               ),
 
@@ -217,6 +248,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   }).toList(),
                   onChanged: (newValue) {
                     setState(() {
+                      stateController.text = newValue!;
                       selectedState = newValue;
                       selectedCity = null;
                       cityController.clear();
@@ -226,7 +258,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   validator: (value) => value == null ? "State is required" : null,
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.all(5),
                 child: DropdownButtonFormField2<String>(
@@ -246,19 +277,18 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       setState(() {
                         selectedCity = newValue;
                         cityController.text = newValue;
+
                       });
                     }
                   },
                     validator: (value) => value == null ? "City is required" : null,
                 ),
               ),
-
               GlobalTextField(hint: 'PIN Code *',
                   controller: pinCodeController,
                   keyboardType: TextInputType.number,
                   maxLength: 6,
                 validator: validatePinCode),
-
               Container(
                 margin: EdgeInsets.all(5),
                 child: DropdownButtonFormField2<String>(
@@ -280,12 +310,12 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   validator: (value) => value == null ? "Work Type is required" : null,
                 ),
               ),
-
               GlobalTextField(hint: 'Address *',
                   controller: addressController,
                   maxLine: 3,
                 validator: (value) => validateRequired(value, "Address"),
               ),
+
               const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,

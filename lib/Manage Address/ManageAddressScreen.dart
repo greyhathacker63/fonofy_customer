@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/Api_Service/ListShippingAddressService.dart';
+import 'package:fonofy/Api_Service/ShippingAddressService/ListShippingAddressService.dart';
 import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
 import 'package:shimmer/shimmer.dart';
 import '../TokenHelper/TokenHelper.dart';
-import '../model/ListShippingAddressModel.dart';
-import '../widgets/Colors.dart';
+import '../model/ShippingAddressModel/ListShippingAddressModel.dart';
 
 class ManageAddressScreen extends StatefulWidget {
 
@@ -26,6 +25,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     _initializeData();
   }
   Future<void> _initializeData() async {
+
     String? storedToken = await TokenHelper.getToken();
 
     if (storedToken != null && storedToken.isNotEmpty) {
@@ -46,26 +46,23 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
       );
     });
   }
-
   void _navigateToAddNewAddressScreen() async {
 
-    final result = await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddNewAddressScreen(customerId: widget.customerId, address: ListShippingAddressModel()),
+    final result = await Navigator.pushReplacement(context,
+      MaterialPageRoute(builder: (context) => AddNewAddressScreen(customerId: widget.customerId, address: ListShippingAddressModel()),
       ),
     );
     if (result != null) {
       _fetchAddressList();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("My Addresses",
-        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+        title: const Text("My Addresses",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -90,9 +87,8 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
               ),
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: Text(
-                  "+ Add New",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+
+                child: Text("+ Add New",style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
             ),
@@ -161,18 +157,14 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                     IconButton(
                                       icon: const Icon(Icons.edit, color: Colors.blue),
                                       onPressed: () {
-                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AddNewAddressScreen(
-                                              customerId: widget.customerId,
-                                              address: address,
+                                        Navigator.push(context,MaterialPageRoute(builder: (context) => AddNewAddressScreen(
+                                          customerId: widget.customerId,
+                                          address: address,
                                             ),
                                           ),
                                         );
                                       },
                                     ),
-
                                     IconButton(
                                       icon: const Icon(Icons.delete,
                                           color: Colors.red),

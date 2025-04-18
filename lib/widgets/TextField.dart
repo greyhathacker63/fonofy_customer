@@ -8,6 +8,8 @@ class GlobalTextField extends StatelessWidget {
   final bool autoCorrect;
   final bool capitalize;
   final int? maxLength;
+  final String? prefixText;
+  final TextStyle? prefixStyle;
   final IconData? prefixIcon;
   final int? maxLine;
   final String? Function(String?)? validator; // ✅ Add validator
@@ -21,6 +23,8 @@ class GlobalTextField extends StatelessWidget {
     this.autoCorrect = true,
     this.capitalize = false,
     this.maxLength,
+    this.prefixText,
+    this.prefixStyle,
     this.prefixIcon,
     this.maxLine,
     this.validator, // ✅ Accept validator
@@ -47,6 +51,8 @@ class GlobalTextField extends StatelessWidget {
         validator: validator, // ✅ Apply validation
         decoration: InputDecoration(
           labelText: hint,
+          prefixText: prefixText,
+          prefixStyle: prefixStyle,
           border: OutlineInputBorder(),
           counterText: "", // ✅ Hide character count
           prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,

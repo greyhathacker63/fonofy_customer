@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen3.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class DeviceDetailScreen2 extends StatefulWidget {
