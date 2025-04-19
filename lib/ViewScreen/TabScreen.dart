@@ -4,7 +4,7 @@ import 'package:fonofy/RepairScreen/RepairScreen.dart';
 import 'package:fonofy/SellScreen/SellScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart'; // Import GetX for navigation
-import 'package:fonofy/ViewScreen/CartScreen.dart'; // Import Cart Screen
+import 'package:fonofy/Cart_Screens/CartScreen.dart'; // Import Cart Screen
 
 class TabScreen extends StatefulWidget {
   final int upperTabIndex;

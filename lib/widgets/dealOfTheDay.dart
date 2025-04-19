@@ -41,8 +41,7 @@ Widget dealOfTheDay({List<Table2Element>? DealOfTheDayTable}) {
                 final dealOfTheDayTableDetails = DealOfTheDayTable?[index];
                 return GestureDetector(
                   onTap: () {
-                   Get.to(()=> BuyRefurbishedProductScreen(
-                       url: dealOfTheDayTableDetails?.modelUrl.toString()?? '',
+                   Get.to(()=> BuyRefurbishedProductScreen(url: dealOfTheDayTableDetails?.modelUrl.toString()?? '',
                        refNo: dealOfTheDayTableDetails?.ucode.toString() ?? ''
                    ),
                    );

@@ -3,7 +3,10 @@ import 'package:get/get.dart';
 import 'package:fonofy/Filters/CompareScreen.dart';
 import 'package:fonofy/Filters/FilterScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
+import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
+import '../Wishlist/WishlistScreen.dart';
+import '../controllers/ControllerProductDetails/ControllerProductList.dart';
 import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
@@ -17,7 +20,6 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   String sortBy = "None";
   List<SearchCompareProductModel> selectedProducts = [];
-  List<GetSearchProductsModel> selectedProductsList = [];
   bool showCheckboxes = false;
 
   List<SearchCompareProductModel> productsList = [
@@ -67,6 +69,7 @@ class _ProductScreenState extends State<ProductScreen> {
       showCheckboxes = true;
     });
   }
+
   void navigateToCompareScreen() {
     if (selectedProducts.length < 2) {
       Get.snackbar("Select More Products",
@@ -86,14 +89,12 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Column(
         children: [
-          // Filter Options Row
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  // Sort By
                   OutlinedButton.icon(
                     onPressed: () {
                       showSortBySheet(context, (selectedSort) {
@@ -107,8 +108,6 @@ class _ProductScreenState extends State<ProductScreen> {
                         style: TextStyle(color: Colors.black)),
                   ),
                   const SizedBox(width: 8),
-
-                  // Filter
                   OutlinedButton.icon(
                     onPressed: () {
                       Get.to(() => FilterScreen());
@@ -118,8 +117,6 @@ class _ProductScreenState extends State<ProductScreen> {
                         style: TextStyle(color: Colors.black)),
                   ),
                   const SizedBox(width: 8),
-
-                  // Compare
                   OutlinedButton.icon(
                     onPressed: () {
                       if (!showCheckboxes) {
@@ -128,7 +125,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         navigateToCompareScreen();
                       }
                     },
-                    icon: const Icon(Icons.compare_arrows, color: Colors.black),
+                    icon: const Icon(Icons.compare_arrows,
+                        color: Colors.black),
                     label: const Text("Compare",
                         style: TextStyle(color: Colors.black)),
                   ),
@@ -136,39 +134,51 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
           ),
-
-          // Product List
           Expanded(
             child: ListView.builder(
               itemCount: productsList.length,
               itemBuilder: (context, index) {
                 final product = productsList[index];
                 final isSelected = selectedProducts.contains(product);
-
                 return Card(
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  margin:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 15),
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Image
                         SizedBox(
                           width: 100,
-                          child: Image.asset(
-                            product.image ?? '',
-                            height: 140,
+                          height: 140,
+                          child: product.image != null &&
+                              product.image!.startsWith('assets/')
+                              ? Image.asset(
+                            product.image!,
                             fit: BoxFit.contain,
+                          )
+                              : Image.network(
+                            '${imageAllBaseUrl}${product.image ?? ""}',
+                            fit: BoxFit.contain,
+                            errorBuilder:
+                                (context, error, stackTrace) =>
+                            const Icon(Icons.error),
+                            loadingBuilder:
+                                (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2));
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
-
-                        // Product Info
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,41 +199,68 @@ class _ProductScreenState extends State<ProductScreen> {
                                     fontSize: 14, color: Colors.green),
                               ),
                               const SizedBox(height: 10),
-
-                              ElevatedButton(
-                                onPressed: () {
-                                  Get.snackbar(
-                                    "Added to Cart",
-                                    "${product.name} added successfully!",
-                                    snackPosition: SnackPosition.BOTTOM,
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                  ColorConstants.appBlueColor3,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    height: 37,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(() =>
+                                            WishlistScreen());
+                                      },
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(7),
+                                        decoration: BoxDecoration(
+                                          border:
+                                          Border.all(color: Colors.black),
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(Icons.favorite_border,
+                                            size: 24, color: Colors.black),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: const Text("Add to Cart",
-                                    style: TextStyle(color: Colors.white)),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        "Added to Cart",
+                                        "${product.name} added successfully!",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                      ColorConstants.appBlueColor3,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text("Add to Cart",
+                                        style:
+                                        TextStyle(color: Colors.white)),
+                                  ),
+                                ],
                               ),
+                              if (showCheckboxes)
+                                Column(
+                                  children: [
+                                    Checkbox(
+                                      value: isSelected,
+                                      onChanged: (_) =>
+                                          toggleSelection(product),
+                                    ),
+                                    const Text("Compare",
+                                        style: TextStyle(fontSize: 14)),
+                                  ],
+                                ),
                             ],
                           ),
                         ),
-
-                        // Compare Checkbox
-                        if (showCheckboxes)
-                          Column(
-                            children: [
-                              Checkbox(
-                                value: isSelected,
-                                onChanged: (_) => toggleSelection(product),
-                              ),
-                              const Text("Compare",
-                                  style: TextStyle(fontSize: 14)),
-                            ],
-                          ),
                       ],
                     ),
                   ),

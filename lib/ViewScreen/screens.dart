@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/ViewScreen/EmptyCartScreen.dart';
+import 'package:fonofy/Cart_Screens/EmptyCartScreen.dart';
 import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
 import 'package:get/get.dart';

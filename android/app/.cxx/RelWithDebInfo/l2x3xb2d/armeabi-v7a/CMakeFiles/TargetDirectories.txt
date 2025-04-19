@@ -1,0 +1,2 @@
+C:/Users/rohit/OneDrive/Desktop/fonofy_customer/android/app/.cxx/RelWithDebInfo/l2x3xb2d/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/rohit/OneDrive/Desktop/fonofy_customer/android/app/.cxx/RelWithDebInfo/l2x3xb2d/armeabi-v7a/CMakeFiles/rebuild_cache.dir

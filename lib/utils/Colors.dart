@@ -9,7 +9,6 @@ Color hexToColor(String hex) {
         (hex.length == 7 ? 0xff000000 : 0x00000000),
   );
 }
-
 class ColorConstants {
   static Color appGreyColor = hexToColor('#D9D9D9');
   static Color appBlueColor = hexToColor('#EAF5FB');

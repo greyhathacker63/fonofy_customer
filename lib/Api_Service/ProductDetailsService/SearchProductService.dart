@@ -51,22 +51,22 @@ import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
 import '../BaseUrl/AllBaseUrl.dart';
 
 class SearchProductService {
-  static Future<List<GetSearchProductsModel>> fetchProductDetailsSearch(String query) async {
-    final url = Uri.parse('$baseUrl/api/common/get-search-products?query=$query');
-
-    try {
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        return data.map((item) => GetSearchProductsModel.fromJson(item)).toList();
-      } else {
-        throw Exception('Failed to load compare data');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
-    }
-  }
+  // static Future<List<GetSearchProductsModel>> fetchProductDetailsSearch(String query) async {
+  //   final url = Uri.parse('$baseUrl/api/common/get-search-products?query=$query');
+  //
+  //   try {
+  //     final response = await http.get(url);
+  //
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> data = json.decode(response.body);
+  //       return data.map((item) => GetSearchProductsModel.fromJson(item)).toList();
+  //     } else {
+  //       throw Exception('Failed to load compare data');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error: $e');
+  //   }
+  // }
 
   static Future<List<SearchCompareProductModel>> fetchSearchProductsList(String url) async {
     final uri = Uri.parse('$baseUrl/api/common/get-search-compare-product?query=$url');

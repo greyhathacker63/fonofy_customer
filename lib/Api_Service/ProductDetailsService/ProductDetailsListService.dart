@@ -8,13 +8,10 @@ import '../BaseUrl/AllBaseUrl.dart';
 class ProductDetailsListService {
   Future<List<ProductDetailsListModel>> fetchProductDetailsListData() async {
     try {
-      var url = Uri.parse(productListUrl);
+      var url = Uri.parse(productDetailsUrl);
       final Map<String, dynamic> requestBody = {
       };
-
-      var response = await http.post(
-        url,
-        headers: headers,
+      var response = await http.post(url, headers: headers,
         body: jsonEncode(requestBody),
       );
       if (response.statusCode == 200) {

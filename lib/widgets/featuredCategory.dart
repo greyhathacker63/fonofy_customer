@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -8,6 +9,7 @@ import '../ProductScreens/ProductScreen.dart';
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
 
 Widget featuredCategory({
+
   required List<Map<String, String>> categories,
   required List<Table1Element>? featuredCategoryTable,
 }) {
@@ -30,9 +32,10 @@ Widget featuredCategory({
           padding: EdgeInsets.all(Get.width * 0.02),
           child: GestureDetector(
             onTap: () {
-              Get.to(() => ProductScreen(), arguments: {
-                "category": isStatic ? item["text1"] : item.brandName,
-              });
+              Get.to(()=> ProductScreen());
+              // Get.to(() => BuyRefurbishedProductScreen(url: '', refNo: '',), arguments: {
+              //   "category": isStatic ? item["text1"] : item.brandName,
+              // });
             },
             child: Container(
               padding: EdgeInsets.all(Get.width * 0.025),
