@@ -222,6 +222,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
+                              
                               product.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -254,11 +255,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                     child: Container(
                                       padding: const EdgeInsets.all(7),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
+                                        border: Border.all(color: Colors.pink),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: const Icon(Icons.favorite_border,
-                                          size: 24, color: Colors.black),
+                                          size: 24, color: Colors.pink),
                                     ),
                                   ),
                                 ),
