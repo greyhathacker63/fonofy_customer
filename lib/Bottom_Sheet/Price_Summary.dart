@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/utils/Colors.dart';
 
 void showPriceSummary(BuildContext context) {
   showModalBottomSheet(
@@ -17,8 +18,7 @@ void showPriceSummary(BuildContext context) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "Price Summary",
+            const Text("Price Summary",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Divider(),

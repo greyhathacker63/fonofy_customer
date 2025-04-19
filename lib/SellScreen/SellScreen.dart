@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:fonofy/AllBrands.dart';
+import 'package:fonofy/ViewScreen/AllBrands.dart';
 import 'package:fonofy/RepairScreen/RepairScreen.dart';
-import 'package:fonofy/SelectProduct2.dart';
-import 'package:fonofy/widgets/Colors.dart';
+import 'package:fonofy/SelectProduct/SelectProduct2.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class Sellscreen extends StatefulWidget {
@@ -334,12 +334,12 @@ class _SellscreenState extends State<Sellscreen> {
                 children: [
                   Image.asset(
                     categories[index]["imagePath"]!,
-                    height: Get.height * 0.08, // Responsive image size
+                    height: Get.height * 0.08,
                     width: Get.width * 0.18,
                     fit: BoxFit.contain,
                   ),
                   SizedBox(
-                      height: Get.height * 0.01), // Space between image & text
+                      height: Get.height * 0.01),
                   SizedBox(
                     width: Get.width * 0.18, // Responsive text width
                     child: Text(
@@ -432,8 +432,8 @@ Widget sellForCash({required List<Map<String, String>> brands}) {
               child: Column(
                 children: [
                   Container(
-                    height: 70,
-                    width: 70,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       border: Border.all(color: Colors.grey, width: 1),

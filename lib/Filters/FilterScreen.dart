@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:fonofy/model/common_filter_model.dart';
-import 'package:fonofy/Api_service/filter_service.dart';
-import 'package:fonofy/widgets/Colors.dart';
+ import 'package:fonofy/utils/Colors.dart';
 import 'package:http/http.dart' as http;
+
+import '../Api_Service/FilterService/FilterService.dart';
 
 
 class FilterScreen extends StatefulWidget {
@@ -180,46 +182,46 @@ class _FilterScreenState extends State<FilterScreen> {
       body: commonFilters == null
           ? const Center(child: CircularProgressIndicator())
           : Row(
-              children: [
-                // Category Sidebar
-                Container(
-                  width: 120,
-                  color: Colors.grey[200],
-                  child: ListView(
-                    children: categories.map((category) {
-                      return ListTile(
-                        title: Text(category, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                        selected: selectedCategory == category,
-                        selectedTileColor: Colors.white,
-                        onTap: () {
-                          setState(() {
-                            selectedCategory = category;
-                          });
-                        },
-                      );
-                    }).toList(),
-                  ),
-                ),
-
-                // Filter Options
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(selectedCategory, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        const Divider(),
-                        if (selectedCategory == "Price")
-                          buildPriceFilter()
-                        else
-                          buildCheckboxFilter(selectedCategory, getOptionsForCategory(selectedCategory)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+        children: [
+          // Category Sidebar
+          Container(
+            width: 120,
+            color: Colors.grey[200],
+            child: ListView(
+              children: categories.map((category) {
+                return ListTile(
+                  title: Text(category, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  selected: selectedCategory == category,
+                  selectedTileColor: Colors.white,
+                  onTap: () {
+                    setState(() {
+                      selectedCategory = category;
+                    });
+                  },
+                );
+              }).toList(),
             ),
+          ),
+
+          // Filter Options
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(selectedCategory, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Divider(),
+                  if (selectedCategory == "Price")
+                    buildPriceFilter()
+                  else
+                    buildCheckboxFilter(selectedCategory, getOptionsForCategory(selectedCategory)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

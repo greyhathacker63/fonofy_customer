@@ -1,3 +1,4 @@
+
 class CommonFilterModel {
   final List<Processor> processors;
   final List<Ram> rams;
@@ -24,7 +25,7 @@ class CommonFilterModel {
   factory CommonFilterModel.fromJson(Map<String, dynamic> json) {
     return CommonFilterModel(
       processors:
-          List<Processor>.from(json["Table"].map((x) => Processor.fromJson(x))),
+      List<Processor>.from(json["Table"].map((x) => Processor.fromJson(x))),
       rams: List<Ram>.from(json["Table1"].map((x) => Ram.fromJson(x))),
       roms: List<Rom>.from(json["Table2"].map((x) => Rom.fromJson(x))),
       brands: List<BrandModel>.from(
@@ -50,9 +51,9 @@ class Processor {
   final String processor;
   Processor({required this.id, required this.processor});
   factory Processor.fromJson(Map<String, dynamic> json) => Processor(
-        id: json["Id"],
-        processor: json["Processor"],
-      );
+    id: json["Id"],
+    processor: json["Processor"],
+  );
 }
 
 class Ram {
@@ -60,9 +61,9 @@ class Ram {
   final String ramName;
   Ram({required this.id, required this.ramName});
   factory Ram.fromJson(Map<String, dynamic> json) => Ram(
-        id: json["id"],
-        ramName: json["RamName"],
-      );
+    id: json["id"],
+    ramName: json["RamName"],
+  );
 }
 
 class Rom {
@@ -70,9 +71,9 @@ class Rom {
   final String romName;
   Rom({required this.id, required this.romName});
   factory Rom.fromJson(Map<String, dynamic> json) => Rom(
-        id: json["id"],
-        romName: json["RomName"],
-      );
+    id: json["id"],
+    romName: json["RomName"],
+  );
 }
 
 class BrandModel {

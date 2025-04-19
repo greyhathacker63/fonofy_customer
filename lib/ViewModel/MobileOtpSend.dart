@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/model/MobileOtp.dart';
-
-import '../Api_Service/MobileOtpSend.dart';
+import 'package:fonofy/model/RegisterModel/MobileOtp.dart';
+import '../Api_Service/mobileOtpService/MobileOtpSend.dart';
 
 class OtpViewModel extends ChangeNotifier {
   final OtpService _otpService = OtpService();
@@ -12,17 +11,26 @@ class OtpViewModel extends ChangeNotifier {
   String _statusMessage = '';
   String get statusMessage => _statusMessage;
 
-  // The function to send OTP
+
+
+
+  // ✅ Function to send OTP with improved error handling
   Future<void> sendOtp(String mobileNumber) async {
     _isLoading = true;
     notifyListeners();
+
     try {
       MobileOtp otpResponse = await _otpService.sendOtp(mobileNumber);
-      _statusMessage = otpResponse.status;
-      _isLoading = false;
-      notifyListeners();
+
+      // ✅ Handle API response correctly
+      if (otpResponse.status == "Otp Sent Succesfully.") {
+        _statusMessage = "success";
+      } else {
+        _statusMessage = "OTP request failed";
+      }
     } catch (e) {
       _statusMessage = 'Failed to send OTP: ${e.toString()}';
+    } finally {
       _isLoading = false;
       notifyListeners();
     }
