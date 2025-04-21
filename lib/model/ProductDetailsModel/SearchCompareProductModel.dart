@@ -22,7 +22,26 @@ class SearchCompareProductModel {
     this.modelUrl,
   });
 
-  factory SearchCompareProductModel.fromJson(Map<String, dynamic> json) => SearchCompareProductModel(
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SearchCompareProductModel &&
+          modelNo == other.modelNo &&
+          productName == other.productName &&
+          amount == other.amount &&
+          image == other.image &&
+          modelUrl == other.modelUrl;
+
+  @override
+  int get hashCode =>
+      modelNo.hashCode ^
+      productName.hashCode ^
+      amount.hashCode ^
+      image.hashCode ^
+      modelUrl.hashCode;
+
+  factory SearchCompareProductModel.fromJson(Map<String, dynamic> json) =>
+      SearchCompareProductModel(
         modelNo: json["ModelNo"],
         productName: json["ProductAndModelName"],
         amount: json["Amount"],
