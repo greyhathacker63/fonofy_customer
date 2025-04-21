@@ -9,12 +9,13 @@ import '../ProductScreens/ProductScreen.dart';
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
 
 Widget featuredCategory({
+ 
 
-  required List<Map<String, String>> categories,
-  required List<Table1Element>? featuredCategoryTable,
+ List<Map<String, String>>? categories,
+   List<Table1Element>? featuredCategoryTable,
 }) {
   final List<dynamic> combinedItems = [
-    ...categories,
+    // ...categories,
     ...(featuredCategoryTable ?? []),
   ];
 
@@ -32,7 +33,7 @@ Widget featuredCategory({
           padding: EdgeInsets.all(Get.width * 0.02),
           child: GestureDetector(
             onTap: () {
-              Get.to(()=> ProductScreen());
+              Get.to(()=> ProductScreen(productName:combinedItems[index].brandName.toString() ,));
               // Get.to(() => BuyRefurbishedProductScreen(url: '', refNo: '',), arguments: {
               //   "category": isStatic ? item["text1"] : item.brandName,
               // });

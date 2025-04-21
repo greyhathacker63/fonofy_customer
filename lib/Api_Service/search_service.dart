@@ -1,20 +1,24 @@
 // search_service.dart
 import 'dart:convert';
+import 'dart:developer';
+import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
+import 'package:fonofy/Services/web_constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:fonofy/model/ProductModel.dart';
 
 class SearchService {
   static Future<List<ProductModel>> fetchAllProducts({
-    required String category,
-    required String productpage,
-    required String customerId,
-    required String ramUrl,
-    required String romUrl,
-    required String minPrice,
-    required String maxPrice,
-    required String pageCount,
+   String? category,
+    String? productpage,
+    String? customerId,
+    String? ramUrl,
+    String? romUrl,
+    String? minPrice,
+    String? maxPrice,
+    String? pageCount,
   }) async {
-    const String apiUrl = "https://api.fonofy.in/api/common/get-all-product-list"; // Update the API URL
+     String apiUrl = baseurl + common + productList + "?category=$category";
+     log(apiUrl.toString()); // Update the API URL
 
     try {
       final response = await http.get(Uri.parse(apiUrl));

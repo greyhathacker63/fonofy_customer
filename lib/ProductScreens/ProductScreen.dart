@@ -12,7 +12,8 @@ import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key});
+  final String productName;
+  const ProductScreen({super.key, required this.productName});
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
@@ -59,7 +60,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    productController.fetchProducts(); // fetch on load
+    productController.fetchProducts(category: widget.productName.toString()); // fetch on load
   }
 
   @override

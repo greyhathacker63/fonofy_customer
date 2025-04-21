@@ -129,16 +129,17 @@ class _BuyScreenState extends State<BuyScreen> {
                       ),
                       SizedBox(height: Get.height * 0.015),
                       featuredCategory(
-                        categories: [
-                          {
-                            "imagePath": "assets/images/Deal.png",
-                            "text1": "Deal of the day"
-                          },
-                          {
-                            "imagePath": "assets/images/refurbished.png",
-                            "text1": "Refurbished Mobiles"
-                          },
-                        ],
+                      
+                        // // categories: [
+                        // //   {
+                        // //     "imagePath": "assets/images/Deal.png",
+                        // //     "text1": "Deal of the day"
+                        // //   },
+                        // //   {
+                        // //     "imagePath": "assets/images/refurbished.png",
+                        // //     "text1": "Refurbished Mobiles"
+                        // //   },
+                        // ],
                         featuredCategoryTable:
                         tableController.tableOptionsData?.table1,
                       ),
