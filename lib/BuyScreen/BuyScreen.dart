@@ -87,7 +87,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                       child: CircularProgressIndicator());
                                 },
                                 errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.error, color: Colors.red),
+                                const Icon(Icons.error, color: Colors.black),
                               ),
                             );
                           }).toList(),

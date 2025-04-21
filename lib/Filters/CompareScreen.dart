@@ -96,7 +96,7 @@ class _CompareScreenState extends State<CompareScreen> {
       case 'rearCamera':
       case 'processor':
       case 'rating':
-        return "N/A"; // Placeholder
+        return "N/A"; 
       default:
         return "-";
     }
@@ -162,10 +162,10 @@ class _CompareScreenState extends State<CompareScreen> {
                     onTap: () async {
                       try {
                         final productToCompare = SearchCompareProductModel(
-                          name: item.name,
+                          productName: item.productName,
                           amount: item.amount,
                           image: item.image,
-                          url: item.url,
+                          modelUrl: item.modelUrl,
                         );
                         final firstNullIndex = selectedProducts.indexWhere((p) => p == null);
                         if (firstNullIndex != -1) {
@@ -204,7 +204,7 @@ class _CompareScreenState extends State<CompareScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.name ?? '',
+                                  item.productName ?? '',
                                   style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -273,7 +273,7 @@ class _CompareScreenState extends State<CompareScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                product.name ?? '',
+                                product.productName ?? '',
                                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ),
