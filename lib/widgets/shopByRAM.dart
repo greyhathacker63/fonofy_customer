@@ -29,7 +29,10 @@ Widget shopByRAM({List<Table5>? tableRamName}) {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => BuyRefurbishedProductScreen(
-                        url: 'url', refNo: 'refNo'),));
+                        url: '',
+                        refNo: 'refNo'),
+                    ),
+                    );
                    },
                   child: Container(
                     width: 140,

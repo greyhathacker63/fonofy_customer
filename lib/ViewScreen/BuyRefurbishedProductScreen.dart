@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
+import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 
@@ -26,12 +27,19 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
-  final ControllerProductDetails controllerProductDetails =
-      Get.put(ControllerProductDetails());
+
+  final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
+
   late final List<ProductDetailsListModel> productDetailsList;
 
+
   int selectedImageIndex = 0;
+   final String colorRom = "";
+
   bool isFavorite = false;
+  bool favoriteClicked = false;
+
+
 
   final ControllerProductDetailsList controllerProductDetailsList =
       Get.put(ControllerProductDetailsList());
@@ -39,11 +47,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   @override
   void initState() {
     super.initState();
-    controllerProductDetails.getProductDetailsData(
-        url: widget.url, refNo: widget.refNo);
+    controllerProductDetails.getProductDetailsData(url: widget.url, refNo: widget.refNo);
     controllerProductDetailsList.getProductListData();
   }
-
   final List<String> productImages = [
     "assets/images/main_product.png",
     "assets/images/thumb_1.png",
@@ -105,8 +111,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         title: Obx(() {
           var product = controllerProductDetails.productDetails.value;
           if (product == null) {
-            return const Text(
-              "",
+            return const Text("",
             );
           }
           return Text(
@@ -133,9 +138,12 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 color: Colors.redAccent,
               ),
               onPressed: () {
-                setState(() {
-                  isFavorite = !isFavorite;
-                });
+                if (!favoriteClicked) {
+                  setState(() {
+                    isFavorite = true;
+                    favoriteClicked = true;
+                  });
+                }
               },
             );
           }),
@@ -172,13 +180,14 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
+
+
                 SizedBox(
                   height: 70,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: productImages.length,
                     itemBuilder: (context, index) {
-
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -207,17 +216,21 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     },
                   ),
                 ),
+
+
+
+
+
                 const SizedBox(height: 15),
                 Text(
-                  "( ${product.modelUrl ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
+                  "( ${product.productAndModelName ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
                   // "( ${ product.modelUrl ?? ''}) Redmi 6 Pro Max (Champagne Gold, 6GB RAM, 128GB Storage) - 64MP Quad...",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue),
                 ),
-                Text(
-                  "Display( ${product.display ?? ''} ",
+                Text("Display( ${product.display ?? ''} ",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -229,8 +242,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 const SizedBox(height: 20),
                 _buildProductHighlightsCard(product),
                 const SizedBox(height: 20),
-
-                _buildRecommendedProducts(productDetailsList:controllerProductDetailsList.productDetailsList),
+                _buildRecommendedProducts(product),
+                // _buildRecommendedProducts(productDetailsList:controllerProductDetailsList.productDetailsList),
                 const SizedBox(height: 20),
 
                 _buildFeatureSection(),
@@ -269,10 +282,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     );
   }
 
-  Widget _buildRecommendedProducts(
-      {List<ProductDetailsListModel>? productDetailsList}) {
+  Widget _buildRecommendedProducts(ProductDetailsModel product) {
     return Obx(() {
       var productList = controllerProductDetailsList.productDetailsList;
+
       if (controllerProductDetailsList.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -285,7 +298,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("You May Also Like",
+              Text(
+                "You May Also Like",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -305,9 +319,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             height: 230,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: productDetailsList?.length ?? 0,
+              itemCount:  productDetailsList?.length ?? 0,
               itemBuilder: (context, index) {
-                final productList = productDetailsList?[index];
+                final product = productDetailsList?[index];
                 return Container(
                   width: 200,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -324,48 +338,44 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                             children: [
                               Center(
                                 child: Image.network(
-                                  '${imageAllBaseUrl}${productList?.image ?? ''}',
+                                  '${imageAllBaseUrl}${product?.image ?? ''}',
                                   height: 55,
                                   width: 55,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(Icons.image_not_supported),
+                                  const Icon(Icons.image_not_supported),
                                 ),
                               ),
                               const SizedBox(height: 15),
                               Text(
-                                productList?.productAndModelName ?? '',
+                                product?.productAndModelName ?? '',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Ram       ${productList?.ramName ?? ' '}',
+                                'Ram       ${product?.ramName ?? ' '}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Rom       ${productList?.romName ?? ' '}',
+                                'Rom       ${product?.romName ?? ' '}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Color      ${productList?.colorName ?? ' '}',
+                                'Color      ${product?.colorName ?? ' '}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               const Spacer(),
                               Row(
                                 children: [
                                   Text(
-                                    "₹${productList?.amount?.toString() ?? '0'}",
+                                    "₹${product?.amount?.toString() ?? '0'}",
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -374,7 +384,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Text(
-                                      "₹${productList?.newModelAmt?.toString() ?? '0'}",
+                                      "₹${product?.newModelAmt?.toString() ?? '0'}",
                                       style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
@@ -393,8 +403,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           top: 1,
                           right: 0,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: const BoxDecoration(
                               color: Colors.redAccent,
                               borderRadius: BorderRadius.only(
@@ -403,7 +412,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                               ),
                             ),
                             child: Text(
-                              '${productList?.discountPercentage?.toString() ?? ''}%',
+                              '${product?.discountPercentage?.toString() ?? ''}%',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 9,
@@ -414,6 +423,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         ),
                       ],
                     ),
+
                   ),
                 );
               },
@@ -547,8 +557,18 @@ Widget _buildProductHighlightRow(String title, String value) {
   );
 }
 
-Widget _buildProductAttributesCard(
-    BuildContext context, ProductDetailsModel product) {
+Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel product) {
+
+  String condition = "Fair"; // default fallback
+
+  if(product.romName == "64GB"){
+    condition = "Fair";
+  }else if(product.romName == "128GB"){
+    condition = "Good";
+  }else if(product.romName == "256GB"){
+    condition = "Super";
+  }
+
   return GestureDetector(
     onTap: () {
       showModalBottomSheet(
@@ -567,14 +587,14 @@ Widget _buildProductAttributesCard(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _buildAttributeRow(
-                Icons.phone_android, "Condition", "Good", "+2 more"),
+          _buildAttributeRow(
+                Icons.phone_android, "Condition", "${condition}", "+2 more"),
             const Divider(),
             _buildAttributeRow(Icons.sd_storage, "Storage",
                 "${product.ramName}/ ${product.romName}", "+1 more"),
             const Divider(),
             _buildAttributeRow(
-                Icons.circle, "Color", "${product.colorName}", "+5 more",
+                Icons.circle, "Color", "${product.colorName}", "+3 more",
                 isColorDot: true),
           ],
         ),
