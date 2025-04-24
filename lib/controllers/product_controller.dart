@@ -26,16 +26,19 @@ class ProductController extends GetxController {
     String? pageCount,
   }) async {
     try {
-      isLoading(true);
+      isLoading(true); // Set loading to true before fetching data
+      productsList
+          .clear(); // Clear existing products in the list before fetching new ones
+
       final products = await SearchService.fetchAllProducts(
         category: category,
         productpage: productpage,
         customerId: customerId,
         ramUrl: '',
         romUrl: '',
-        minPrice: '1000',
-        maxPrice: '50000',
-        pageCount: '10',
+        minPrice: '',
+        maxPrice: '',
+        pageCount: '',
       );
       productsList.assignAll(products);
     } finally {
@@ -43,7 +46,6 @@ class ProductController extends GetxController {
     }
   }
 
-  // Toggle product selection for comparison
   void toggleSelection(ProductModel product) {
     if (selectedProducts.contains(product)) {
       selectedProducts.remove(product);

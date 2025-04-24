@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen.dart';
 import 'package:get/get.dart';
-import 'package:fonofy/SelectProduct/SelectProductScreen.dart';
+
 
 void main() {
   runApp(const MyApp());

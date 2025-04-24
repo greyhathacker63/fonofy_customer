@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -26,17 +27,11 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
             ),
             GestureDetector(
               onTap: () {
+                Get.to(() => ProductScreen(productName: 'viewall'));
                 print("View All Pressed");
               },
-              child: const Text(
-                "View All",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue, // Blue Color
-                ),
-              ),
-            ),
+              child: const Text("View All"),
+            )
           ],
         ),
       ),

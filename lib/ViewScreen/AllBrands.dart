@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen3.dart';
   import 'package:get/get.dart';
 
-import '../SelectProduct/SelectProductScreen3.dart';
 
 
 void main() {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
 class AllBrandsScreen extends StatelessWidget {
   final List<String> brands = [
-    "Apple", "Xiaomi", "Samsung",
+    "Apple", "mi", "Samsung",
     "Vivo", "OnePlus", "Oppo",
     "Realme", "Motorola", "Lenovo",
     "Nokia", "Honor", "Google",

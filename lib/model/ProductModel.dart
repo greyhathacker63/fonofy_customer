@@ -2,18 +2,18 @@ import 'dart:convert';
 
 // product_model.dart
 class ProductModel {
-  final String modelNo;
-  final String productAndModelName;
-  final String modelType;
-  final double amount;
+  final dynamic modelNo;
+  final dynamic productAndModelName;
+  final dynamic modelType;
+  final dynamic amount;
   final String image;
-  final double newModelAmt;
+  final dynamic newModelAmt;
   final double discountPercentage;
-  final String modelUrl;
-  final int id;
-  final String ucode;
-  final int wishlistCount;
-  final int cartQuantity;
+  final dynamic modelUrl;
+  final dynamic id;
+  final dynamic ucode;
+  final dynamic wishlistCount;
+  final dynamic cartQuantity;
 
   ProductModel({
     required this.modelNo,

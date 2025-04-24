@@ -7,16 +7,21 @@ import 'package:fonofy/utils/Colors.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
 import '../Wishlist/WishlistScreen.dart';
-import '../controllers/ControllerProductDetails/ControllerProductList.dart';
 import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
 class ProductScreen extends StatefulWidget {
-  final String productName;
-  const ProductScreen({super.key, required this.productName});
+  final String? productName;
+  final String? productPage;
+
+  const ProductScreen({
+    Key? key,
+    this.productName,
+    this.productPage,
+  }) : super(key: key);
 
   @override
-  _ProductScreenState createState() => _ProductScreenState();
+  State<ProductScreen> createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
@@ -60,7 +65,10 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    productController.fetchProducts(category: widget.productName.toString()); // fetch on load
+    productController.fetchProducts(
+      category: widget.productName,
+      productpage: widget.productPage,
+    );
   }
 
   @override
@@ -73,6 +81,11 @@ class _ProductScreenState extends State<ProductScreen> {
       body: Obx(() {
         if (productController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
+        }
+
+        // Check if the product list is empty
+        if (productController.productsList.isEmpty) {
+          return const Center(child: Text("No products found"));
         }
 
         return Column(
@@ -97,8 +110,21 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                     const SizedBox(width: 8),
                     OutlinedButton.icon(
-                      onPressed: () {
-                        Get.to(() => FilterScreen());
+                      onPressed: () async {
+                        final selectedFilters =
+                            await Get.to(() => FilterScreen());
+
+                        if (selectedFilters != null &&
+                            selectedFilters is Map<String, dynamic>) {
+                          productController.fetchProducts(
+                            category: widget.productName,
+                            productpage: widget.productPage,
+                            ramUrl: selectedFilters['ram'],
+                            romUrl: selectedFilters['rom'],
+                            minPrice: selectedFilters['minPrice'],
+                            maxPrice: selectedFilters['maxPrice'],
+                          );
+                        }
                       },
                       icon: const Icon(Icons.tune, color: Colors.black),
                       label: const Text("Filter",
@@ -113,8 +139,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           navigateToCompareScreen();
                         }
                       },
-                      icon: const Icon(Icons.compare_arrows,
-                          color: Colors.black),
+                      icon:
+                          const Icon(Icons.compare_arrows, color: Colors.black),
                       label: const Text("Compare",
                           style: TextStyle(color: Colors.black)),
                     ),
@@ -142,8 +168,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
                     child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: Row(
@@ -152,7 +178,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           SizedBox(
                             width: 100,
                             height: 140,
-                            child: (product.image ?? "").startsWith('assets/')
+                            child: (product.image ?? '').startsWith('assets/')
                                 ? Image.asset(
                                     product.image!,
                                     fit: BoxFit.contain,
@@ -214,8 +240,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                           ),
-                                          child: const Icon(Icons.favorite_border,
-                                              size: 24, color: Colors.black),
+                                          child: const Icon(
+                                              Icons.favorite_border,
+                                              size: 24,
+                                              color: Colors.black),
                                         ),
                                       ),
                                     ),

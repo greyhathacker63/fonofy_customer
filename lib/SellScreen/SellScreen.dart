@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/ViewScreen/AllBrands.dart';
 import 'package:fonofy/RepairScreen/RepairScreen.dart';
-import 'package:fonofy/SelectProduct/SelectProduct2.dart';
+
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
