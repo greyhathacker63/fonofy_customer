@@ -160,7 +160,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('✅ Plz Verify Mobile Number...'),backgroundColor: Colors.green,),);
     }
   }
-
   Future<bool> _sendOtp(String mobileNumber) async {
     final otpViewModel = Provider.of<OtpViewModel>(context, listen: false);
     await otpViewModel.sendOtp(mobileNumber);

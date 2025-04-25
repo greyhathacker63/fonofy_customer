@@ -54,7 +54,7 @@ class LoginService {
     }
   }
 
-  /// ✅ Verify OTP & Save Mobile Number Locally
+  // ✅ Verify OTP & Save Mobile Number Locally
   Future<bool> verifyOTP({required String userOTP, required String otp, required String phoneNumber}) async {
     if (userOTP == otp) {
       try {
@@ -70,5 +70,4 @@ class LoginService {
     print("❌ OTP Mismatch - Verification Failed");
     return false; // OTP mismatch
   }
-
 }

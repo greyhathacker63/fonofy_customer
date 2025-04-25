@@ -171,7 +171,7 @@ class _SelectSlotScreenState extends State<SelectSlotScreen> {
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: () {
-                    Get.to(() => CartScreen());
+                    // Get.to(() => CartScreen(customerId: ''));
                   },
                   child: const Text("Place Order",
                       style: TextStyle(fontSize: 16, color: Colors.white)),

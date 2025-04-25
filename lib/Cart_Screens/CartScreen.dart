@@ -1,27 +1,123 @@
-
 import 'package:flutter/material.dart';
+import 'package:fonofy/Api_Service/AddToCartService/AddToCartService.dart';
+import 'package:fonofy/Api_Service/AddToCartService/ShippingChargeService.dart';
 import 'package:fonofy/Cart_Screens/CheckoutScreen.dart';
- import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
-
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
+import 'package:fonofy/model/AddToCartModel/ShippingChargeModel.dart';
+import 'package:fonofy/model/DataObject.dart';
+import 'package:get/get.dart';
+import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import '../model/AddToCartModel/AddToCartModel.dart';
 import '../utils/Colors.dart';
 
 class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
+
   @override
   _CartScreenState createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
   int quantity = 1;
-  final double unitPrice = 25999.0;
-  final double shippingCost = 0.0;
-  final String productName = "iQOO Neo 6 5G";
-  final String productImage = "assets/images/iphone.png";
+  double unitPrice = 0.0;
+  double shippingCost = 0.0;
+
+  AddToCartModel? addToCartItems;
+  ShippingChargeModel? shippingChargeData;
+
+  List<CartListModel> cartList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCartItems();
+    fetchShippingData();
+  }
+
+  Future<void> fetchCartItems() async {
+    try {
+      String? userCode = await TokenHelper.getUserCode();
+      if (userCode != null) {
+        final response = await AddToCartService.fetchAddToCartData(userCode);
+        setState(() {
+          addToCartItems = response;
+        });
+      }
+    } catch (e) {
+      print("❌ Error fetching cart items: $e");
+    }
+  }
+  Future<void> fetchShippingData() async {
+    try {
+      var data = await ShippingChargeService.fetchShippingCharge();
+      if (data != null) {
+        setState(() {
+          shippingChargeData = data;
+        });
+      }
+    } catch (e) {
+      print("❌ Error fetching shipping charge: $e");
+    }
+  }
+
+  void updateQuantity(bool isIncrement) {
+    int maxQty = addToCartItems?.result?.quantity ?? 1;
+
+    if (isIncrement) {
+      if (quantity < maxQty) {
+        setState(() {
+          quantity++;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("You can only add up to $maxQty item(s)."),
+            backgroundColor: Colors.redAccent,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } else {
+      if (quantity > 1) {
+        setState(() {
+          quantity--;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Minimum quantity is 1."),
+            backgroundColor: Colors.orange,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  double calculateShippingCharge(double totalAmount) {
+    if (shippingChargeData == null) {
+      return 0.0;
+    }
+
+    if (totalAmount >= (shippingChargeData?.maxAmount ?? 0)) {
+      int multiples = (totalAmount / (shippingChargeData?.maxAmount ?? 1)).floor();
+      return multiples * (shippingChargeData?.shippingCharge ?? 0);
+    } else {
+      return 0.0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    dynamic price = DataClass.sellingPrice;
+    dynamic shipping = DataClass.shipping;
+    unitPrice = double.tryParse(price.toString()) ?? 0.0;
+    shippingCost = double.tryParse(shipping.toString()) ?? 0.0;
+
     double subtotal = unitPrice * quantity;
-    double total = subtotal + shippingCost;
+    double shippingCharge = calculateShippingCharge(subtotal);
+    double total = subtotal + shippingCharge;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,12 +132,10 @@ class _CartScreenState extends State<CartScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "There are 1 product(s) in your cart",
+              "There are product(s) in your cart",
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             const SizedBox(height: 20),
-
-            // 🛒 Product Card
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -58,60 +152,57 @@ class _CartScreenState extends State<CartScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 🖼️ Product Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(productImage, height: 80, width: 80, fit: BoxFit.cover),
+                    child: Image.network(
+                      "$imageAllBaseUrl${DataClass.imageUrl ?? ''}",
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(width: 12),
-
-                  // 📋 Product Details
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          productName,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          '${DataClass.productName ?? 'No Name'}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "₹${unitPrice.toStringAsFixed(1)}",
-                          style: const TextStyle(fontSize: 14, color: Colors.blue),
+                          "₹${unitPrice.toStringAsFixed(0)}",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                          ),
                         ),
-
                         const SizedBox(height: 10),
-
-                        // 🔢 Quantity Selector
                         Row(
                           children: [
                             IconButton(
                               icon: const Icon(Icons.remove, size: 20),
-                              onPressed: () {
-                                setState(() {
-                                  if (quantity > 1) quantity--;
-                                });
-                              },
+                              onPressed: () => updateQuantity(false),
                             ),
-                            Text(quantity.toString(),
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            Text(
+                              quantity.toString(),
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                             IconButton(
                               icon: const Icon(Icons.add, size: 20),
-                              onPressed: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
+                              onPressed: () => updateQuantity(true),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-
-                  // ❌ Remove Button
                   IconButton(
                     icon: const Icon(Icons.delete, color: Colors.black),
                     onPressed: () {
@@ -123,10 +214,7 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // 💰 Checkout Summary Box
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -138,33 +226,26 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   _summaryRow("Subtotal", "₹${subtotal.toStringAsFixed(1)}"),
                   _divider(),
-                  _summaryRow("Shipping", "₹${shippingCost.toStringAsFixed(1)}"),
+                  _summaryRow("Shipping Charge", "₹${shippingCharge.toStringAsFixed(1)}"),
                   _divider(),
                   _summaryRow("Total", "₹${total.toStringAsFixed(1)}", isBold: true),
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // 🛒 Proceed to Checkout Button
             ElevatedButton.icon(
               onPressed: () {
                 Get.to(() => CheckoutScreen());
-                // Navigate to checkout screen
               },
               icon: const Icon(Icons.arrow_forward, color: Colors.white),
               label: const Text("Proceed to Checkout", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor:ColorConstants.appBlueColor3,
+                backgroundColor: ColorConstants.appBlueColor3,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 minimumSize: const Size(double.infinity, 45),
               ),
             ),
-
             const SizedBox(height: 10),
-
-            // 🔄 Continue Shopping Button
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.pop(context);
@@ -183,20 +264,29 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  // Divider
   Widget _divider() {
     return const Divider(color: Colors.grey);
   }
-
-  // Summary Row
   Widget _summaryRow(String label, String value, {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
-          Text(value, style: TextStyle(fontSize: 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
         ],
       ),
     );

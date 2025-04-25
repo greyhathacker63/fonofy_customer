@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/DataObject.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import '../Api_Service/AddToCartService/AddToCartService.dart';
 import '../Api_Service/ProductDetailsService/ProductRamRomColorsService.dart';
+import '../Cart_Screens/CartScreen.dart';
+import '../TokenHelper/TokenHelper.dart';
+import '../ViewScreen/LoginScreen.dart';
 import '../utils/Colors.dart';
 
 class ProductAttributeBottomSheet extends StatefulWidget {
   final ProductDetailsModel product;
-
   const ProductAttributeBottomSheet({super.key, required this.product});
 
   @override
@@ -21,7 +27,7 @@ class _ProductAttributeBottomSheetState
   int selectedColorIndex = 0;
   bool showDealsOnly = false;
 
-  final _service = ProductRamRomColorsService();
+  final _serviceProductRamRom = ProductRamRomColorsService();
 
   List<ProductRamRomColorListModel> _colorList = [];
   ProductRamRomColorListModel? selectedVariant;
@@ -33,14 +39,12 @@ class _ProductAttributeBottomSheetState
   }
 
   Future<void> _fetchColors() async {
-    List<ProductRamRomColorListModel> colors =
-        await _service.fetchProductRamRomListColorsData(
+    List<ProductRamRomColorListModel> colors = await _serviceProductRamRom.fetchProductRamRomListColorsData(
             widget.product.modelUrl.toString(),
             widget.product.ucode.toString());
 
     setState(() {
       _colorList = colors;
-
       selectedVariant = _colorList.firstWhere(
         (item) =>
             item.ramName == widget.product.ramName &&
@@ -49,8 +53,7 @@ class _ProductAttributeBottomSheetState
         orElse: () => _colorList.first,
       );
 
-      selectedStorage =
-          "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
+      selectedStorage = "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
       selectedColorIndex = _colorList.indexOf(selectedVariant!);
     });
   }
@@ -104,7 +107,7 @@ class _ProductAttributeBottomSheetState
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _sectionTitle("Condition"),
               Wrap(
                 spacing: 8,
@@ -136,7 +139,7 @@ class _ProductAttributeBottomSheetState
               ),
               const SizedBox(height: 10),
               _buildWarrantyCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _sectionTitle("Storage"),
               ListView.builder(
                 shrinkWrap: true,
@@ -146,6 +149,8 @@ class _ProductAttributeBottomSheetState
                   String selectRom = _colorList[index].romName.toString();
                   String storage = "${_colorList[index].ramName} / ${_colorList[index].romName}";
                   bool isSelected = selectedStorage == storage;
+                  DataClass.selectedSRam = _colorList[index].ramName;
+                  DataClass.selectedSRom = _colorList[index].romName;
                   return OutlinedButton(
                     onPressed: () {
                       setState(() {
@@ -159,6 +164,7 @@ class _ProductAttributeBottomSheetState
                         selectedStorage = storage;
                         selectedVariant = _colorList[index];
                         selectedColorIndex = index;
+                        DataClass.sellingPrice = selectedVariant?.f2.toString();
                       });
                     },
                     style: OutlinedButton.styleFrom(
@@ -185,7 +191,7 @@ class _ProductAttributeBottomSheetState
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _sectionTitle("Color"),
               const SizedBox(height: 10),
               Wrap(
@@ -247,7 +253,40 @@ class _ProductAttributeBottomSheetState
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    minimumSize: Size(300, 50),
+                  ),
+                  onPressed: () async {
+                    DataClass.productName = widget.product.productAndModelName.toString();
+                    final userCode = await TokenHelper.getUserCode();
+                    if (userCode == null) {
+                      Get.to(() => LoginScreen());
+                    } else {
+                      var response = await AddToCartService.fetchAddToCartData(userCode);
+                      if (response != null) {
+                        Get.to(() => CartScreen());
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Something went wrong! Please try again."),
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: const Text("ADD TO CART"),
+                ),
+              )
             ],
           ),
         );
