@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/controllers/product_controller.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/Filters/CompareScreen.dart';
@@ -228,8 +230,23 @@ class _ProductScreenState extends State<ProductScreen> {
                                     SizedBox(
                                       height: 37,
                                       child: InkWell(
-                                        onTap: () {
-                                          Get.to(() => WishlistScreen());
+                                        onTap: () async {
+                                          final userCode =
+                                              await TokenHelper.getUserCode();
+
+                                          if (userCode == null ||
+                                              userCode.isEmpty) {
+                                            Get.snackbar(
+                                              "Login Required",
+                                              "Please login to view your wishlist",
+                                              snackPosition:
+                                                  SnackPosition.BOTTOM,
+                                            );
+
+                                            Get.to(() => LoginScreen());
+                                          } else {
+                                            Get.to(() => WishlistScreen());
+                                          }
                                         },
                                         borderRadius: BorderRadius.circular(8),
                                         child: Container(
