@@ -6,7 +6,6 @@ import '../utils/Colors.dart';
 
 class ProductAttributeBottomSheet extends StatefulWidget {
   final ProductDetailsModel product;
-
   const ProductAttributeBottomSheet({super.key, required this.product});
 
   @override
@@ -21,7 +20,7 @@ class _ProductAttributeBottomSheetState
   int selectedColorIndex = 0;
   bool showDealsOnly = false;
 
-  final _service = ProductRamRomColorsService();
+  final _serviceProductRamRom = ProductRamRomColorsService();
 
   List<ProductRamRomColorListModel> _colorList = [];
   ProductRamRomColorListModel? selectedVariant;
@@ -33,14 +32,12 @@ class _ProductAttributeBottomSheetState
   }
 
   Future<void> _fetchColors() async {
-    List<ProductRamRomColorListModel> colors =
-        await _service.fetchProductRamRomListColorsData(
+    List<ProductRamRomColorListModel> colors = await _serviceProductRamRom.fetchProductRamRomListColorsData(
             widget.product.modelUrl.toString(),
             widget.product.ucode.toString());
 
     setState(() {
       _colorList = colors;
-
       selectedVariant = _colorList.firstWhere(
         (item) =>
             item.ramName == widget.product.ramName &&

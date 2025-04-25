@@ -12,6 +12,7 @@ import '../widgets/networkType.dart';
 import '../widgets/shopByOS.dart';
 import '../widgets/shopByPrice.dart';
 import '../widgets/shopByRAM.dart';
+
 class BuyScreen extends StatefulWidget {
   const BuyScreen({super.key});
 

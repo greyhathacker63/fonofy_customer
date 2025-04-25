@@ -120,7 +120,7 @@ class SelectAddressScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: () {
-                    Get.to(() => CartScreen());
+                    // Get.to(() => CartScreen(customerId: '',));
                   },
                   child: const Text("Book Now",
                       style: TextStyle(fontSize: 16, color: Colors.white)),

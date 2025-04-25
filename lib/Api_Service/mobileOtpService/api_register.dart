@@ -73,9 +73,7 @@ class RegisterService {
     try {
       final response = await http.post(
         Uri.parse(registerApiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json',},
         body: registerData,
       );
       print(registerData);

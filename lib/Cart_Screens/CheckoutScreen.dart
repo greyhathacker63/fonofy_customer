@@ -229,7 +229,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ],
             ),
             const SizedBox(height: 24),
-
             // Address Section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

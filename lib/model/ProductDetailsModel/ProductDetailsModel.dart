@@ -113,6 +113,10 @@ class ProductDetailsModel {
         rowNum: json["RowNum"],
       );
 
+
+
+
+
   Map<String, dynamic> toJson() =>
       {
         "Description": description,
