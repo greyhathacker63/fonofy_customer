@@ -67,7 +67,6 @@ class SearchProductService {
   //     throw Exception('Error: $e');
   //   }
   // }
-
   static Future<List<SearchCompareProductModel>> fetchSearchProductsList(String url) async {
     final uri = Uri.parse('$baseUrl/api/common/get-search-compare-product?query=$url');
 

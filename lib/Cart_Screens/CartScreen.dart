@@ -1,25 +1,66 @@
-
 import 'package:flutter/material.dart';
+import 'package:fonofy/Api_Service/AddToCartService/AddToCartService.dart';
 import 'package:fonofy/Cart_Screens/CheckoutScreen.dart';
- import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
-
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:get/get.dart';
+import '../model/AddToCartModel/AddToCartModel.dart';
 import '../utils/Colors.dart';
 
 class CartScreen extends StatefulWidget {
+   final String customerId ;
+
+  const CartScreen({super.key, required this.customerId});
+
   @override
   _CartScreenState createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
+
   int quantity = 1;
   final double unitPrice = 25999.0;
   final double shippingCost = 0.0;
-  final String productName = "iQOO Neo 6 5G";
   final String productImage = "assets/images/iphone.png";
 
+  // String user_code = "";
+
+  List<AddToCartModel> addToCartItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCartItems();
+  }
+
+  Future<void> fetchCartItems() async {
+    try {
+      String? userCode = await TokenHelper.getUserCode();
+      if (userCode != null) {
+        final response = await AddToCartService().fetchAddToCartData(userCode);
+        setState(() {
+          addToCartItems = response;
+        });
+      }
+    } catch (e) {
+      print("❌ Error fetching cart items: $e");
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    if (addToCartItems.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Your Cart", style: TextStyle(color: Colors.black)),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+        ),
+        body: Center(child: const Text("Your cart is empty")),
+      );
+    }
+
+    final item = addToCartItems[0].result;
+
     double subtotal = unitPrice * quantity;
     double total = subtotal + shippingCost;
 
@@ -35,13 +76,12 @@ class _CartScreenState extends State<CartScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "There are 1 product(s) in your cart",
+            Text(
+              "There are ${addToCartItems.length} product(s) in your cart",
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             const SizedBox(height: 20),
-
-            // 🛒 Product Card
+            // Product Card
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -58,33 +98,30 @@ class _CartScreenState extends State<CartScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 🖼️ Product Image
+                  // Product Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.asset(productImage, height: 80, width: 80, fit: BoxFit.cover),
                   ),
                   const SizedBox(width: 12),
-
-                  // 📋 Product Details
+                  // Product Details
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          productName,
+                          item?.productId.toString() ?? 'No Name', // Display product ID if available
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "₹${unitPrice.toStringAsFixed(1)}",
+                          "₹${unitPrice.toStringAsFixed(1)}", // Display price
                           style: const TextStyle(fontSize: 14, color: Colors.blue),
                         ),
-
                         const SizedBox(height: 10),
-
-                        // 🔢 Quantity Selector
+                        // Quantity Selector
                         Row(
                           children: [
                             IconButton(
@@ -110,8 +147,7 @@ class _CartScreenState extends State<CartScreen> {
                       ],
                     ),
                   ),
-
-                  // ❌ Remove Button
+                  // Remove Button
                   IconButton(
                     icon: const Icon(Icons.delete, color: Colors.black),
                     onPressed: () {
@@ -123,10 +159,8 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // 💰 Checkout Summary Box
+            // Checkout Summary Box
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -144,10 +178,8 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // 🛒 Proceed to Checkout Button
+            // Proceed to Checkout Button
             ElevatedButton.icon(
               onPressed: () {
                 Get.to(() => CheckoutScreen());
@@ -156,15 +188,13 @@ class _CartScreenState extends State<CartScreen> {
               icon: const Icon(Icons.arrow_forward, color: Colors.white),
               label: const Text("Proceed to Checkout", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor:ColorConstants.appBlueColor3,
+                backgroundColor: ColorConstants.appBlueColor3,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 minimumSize: const Size(double.infinity, 45),
               ),
             ),
-
             const SizedBox(height: 10),
-
-            // 🔄 Continue Shopping Button
+            // Continue Shopping Button
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.pop(context);

@@ -10,6 +10,8 @@ Color hexToColor(String hex) {
   );
 }
 class ColorConstants {
+
+
   static Color appGreyColor = hexToColor('#D9D9D9');
   static Color appBlueColor = hexToColor('#EAF5FB');
   static Color appBlueColor2 = hexToColor('#19628B');
@@ -19,4 +21,36 @@ class ColorConstants {
   static Color greenColor = hexToColor('#B6FFB8');
   static Color appBlueColor5 = hexToColor('#5892B0');
   static Color appGreyColor2 = hexToColor('#F5F5F5');
+}
+
+Color getColorFromName(String colorName) {
+  switch (colorName.toLowerCase()) {
+    case 'red':
+      return Colors.red;
+    case 'blue':
+      return Colors.blue;
+    case 'green':
+      return Colors.green;
+    case 'black':
+      return Colors.black;
+    case 'white':
+      return Colors.white;
+    case 'grey':
+    case 'gray':
+      return Colors.grey;
+    case 'yellow':
+      return Colors.yellow;
+    case 'pink':
+      return Colors.pink;
+    case 'purple':
+      return Colors.purple;
+    case 'orange':
+      return Colors.orange;
+    case 'teal':
+      return Colors.teal;
+    case 'brown':
+      return Colors.brown;
+    default:
+      return Colors.grey; // fallback color
+  }
 }

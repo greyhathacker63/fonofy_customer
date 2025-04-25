@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ProductDetailsService/ProductDetailsService.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
+import 'package:fonofy/model/ProductDetailsModel/ProductImageListModel.dart';
 import 'package:get/get.dart';
 
 class ControllerProductDetails extends GetxController {

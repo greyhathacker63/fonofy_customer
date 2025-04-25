@@ -1,14 +1,24 @@
+
 import 'package:flutter/material.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
+import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
+import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
+import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
-
+import '../Api_Service/AddToCartService/AddToCartService.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import '../Api_Service/ProductDetailsService/ProductImageListService.dart';
+import '../Api_Service/ProductDetailsService/ProductRatingService.dart';
+import '../Api_Service/ProductDetailsService/ProductReviewService.dart';
 import '../Bottom_Sheet/ProductAttributeBottomSheet.dart';
+import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/ControllerProductDetails.dart';
 import '../controllers/ControllerProductDetails/ControllerProductList.dart';
 import '../model/ProductDetailsModel/ProductDetailsListModel.dart';
 import '../model/ProductDetailsModel/ProductDetailsModel.dart';
+import '../model/ProductDetailsModel/ProductImageListModel.dart';
+import '../model/ProductDetailsModel/ProductRatingModel.dart';
 
 class BuyRefurbishedProductScreen extends StatefulWidget {
   final String url;
@@ -24,65 +34,101 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
   State<BuyRefurbishedProductScreen> createState() =>
       _ProductDetailsScreenState();
 }
-
 class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
-  final ControllerProductDetails controllerProductDetails =
-      Get.put(ControllerProductDetails());
-  late final List<ProductDetailsListModel> productDetailsList;
+
+  final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
+
+  List<ProductDetailsListModel> productDetailsList =[];
+
+  List <AddToCartModel> productAddToCart = [];
 
   int selectedImageIndex = 0;
-  bool isFavorite = false;
+  final String colorRom = "";
 
-  final ControllerProductDetailsList controllerProductDetailsList =
-      Get.put(ControllerProductDetailsList());
+  late bool isFavorite = false;
+  bool favoriteClicked = false;
+
+  ProductRatingModel? ratingData;
+  int totalRatings = 0;
+
+  List<ProductReviewModel> reviews = [];
+
+  List<AddToCartModel> add =[];
+
+  Future<void> loadProductRating() async {
+    final data = await ProductRatingService.fetchProductRating(widget.url);
+    if (data != null) {
+      setState(() {
+        ratingData = data;
+        totalRatings = (data.rating1 ?? 0) +
+            (data.rating2 ?? 0) +
+            (data.rating3 ?? 0) +
+            (data.rating4 ?? 0) +
+            (data.rating5 ?? 0);
+      });
+    }
+  }
+
+  Future<void> loadProductReview() async {
+    final response = await ProductReviewService.fetchProductReviews(widget.url);
+    if (response != null) {
+      setState(() {
+        reviews = response;
+      });
+    }
+  }
+
+  final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
 
   @override
   void initState() {
     super.initState();
-    controllerProductDetails.getProductDetailsData(
-        url: widget.url, refNo: widget.refNo);
+    controllerProductDetails.getProductDetailsData(url: widget.url, refNo: widget.refNo);
     controllerProductDetailsList.getProductListData();
+
+    loadProductRating();
+    loadProductReview();
+    fetchImagesList();
   }
-
-  final List<String> productImages = [
-    "assets/images/main_product.png",
-    "assets/images/thumb_1.png",
-    "assets/images/thumb_2.png",
-    "assets/images/thumb_3.png",
-    "assets/images/thumb_4.png",
-  ];
-
-  final List<Map<String, String>> recommendedProducts = [
-    {
-      "image": "assets/images/phone.png",
-      "name": "Apple iPhone 6 Plus 32GB...",
-      "price": "₹17,699",
-      "oldPrice": "₹43,000",
-      "emi": "₹926 / Month"
-    },
-    {
-      "image": "assets/images/phone.png",
-      "name": "Apple iPhone 6 Plus 32GB...",
-      "price": "₹17,699",
-      "oldPrice": "₹43,000",
-      "emi": "₹926 / Month"
-    },
-    {
-      "image": "assets/images/phone.png",
-      "name": "Apple iPhone 6 Plus 32GB...",
-      "price": "₹17,699",
-      "oldPrice": "₹43,000",
-      "emi": "₹926 / Month"
-    },
-    {
-      "image": "assets/images/phone.png",
-      "name": "Apple iPhone 6 Plus 32GB...",
-      "price": "₹17,699",
-      "oldPrice": "₹43,000",
-      "emi": "₹926 / Month"
-    },
-  ];
-
+  List<ProductImageListModel> productImages = [];
+   bool isLoading = true;
+  // Future<void> fetchImages() async {
+  //   try {
+  //     final images = await ProductImageListService.fetchProductImagesList(
+  //       refNo: widget.refNo,
+  //       url: widget.url,
+  //     );
+  //     setState(() {
+  //       productImages = images;
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print("Error loading images: $e");
+  //     setState(() => isLoading = false);
+  //   }
+  // }
+  // final List<String> productImages = [
+  //   "assets/images/main_product.png",
+  //   "assets/images/thumb_1.png",
+  //   "assets/images/thumb_2.png",
+  //   "assets/images/thumb_3.png",
+  //   "assets/images/thumb_4.png",
+  // ];
+  Future<void> fetchImagesList() async {
+    try {
+      final productImageList = await ProductImageListService.fetchProductImagesList(
+        refNo: widget.refNo,
+        url: widget.url,
+      );
+      setState(() {
+        productImages = productImageList;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error loading images: $e");
+      setState(() => isLoading = false);
+    }
+  }
   final List<Map<String, String>> features = [
     {"icon": "assets/images/warranty.png", "text": "6-Month Warranty"},
     {"icon": "assets/images/exchange.png", "text": "3-Days Exchange"},
@@ -105,9 +151,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         title: Obx(() {
           var product = controllerProductDetails.productDetails.value;
           if (product == null) {
-            return const Text(
-              "",
-            );
+            return const Text("");
           }
           return Text(
             '${product.productAndModelName.toString() ?? ''} - ${product.ramName.toString() ?? ''}/ ${product.romName.toString() ?? ''}',
@@ -133,9 +177,12 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 color: Colors.redAccent,
               ),
               onPressed: () {
-                setState(() {
-                  isFavorite = !isFavorite;
-                });
+                if (!favoriteClicked) {
+                  setState(() {
+                    isFavorite = true;
+                    favoriteClicked = true;
+                  });
+                }
               },
             );
           }),
@@ -158,18 +205,20 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Container(
+                  child: productImages.isNotEmpty
+                      ? Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black26, width: 2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.all(8),
-                    child: Image.asset(
-                      productImages[selectedImageIndex],
+                    child: Image.network(
+                      "$imageAllBaseUrl${productImages[selectedImageIndex].image ?? ''}",
                       height: 250,
                       fit: BoxFit.contain,
                     ),
-                  ),
+                  )
+                      : CircularProgressIndicator(strokeWidth: 1,color: Colors.blue,), // Show loading indicator while the images are being fetched
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -178,7 +227,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: productImages.length,
                     itemBuilder: (context, index) {
-
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -197,7 +245,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Image.network(
-                            productImages[index],
+                            "${imageAllBaseUrl}${productImages[index].image ?? ''}",
                             height: 50,
                             width: 50,
                             fit: BoxFit.contain,
@@ -207,17 +255,16 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: 15),
                 Text(
-                  "( ${product.modelUrl ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
+                  "( ${product.productAndModelName ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
                   // "( ${ product.modelUrl ?? ''}) Redmi 6 Pro Max (Champagne Gold, 6GB RAM, 128GB Storage) - 64MP Quad...",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue),
                 ),
-                Text(
-                  "Display( ${product.display ?? ''} ",
+                Text("Display( ${product.display ?? ''} ",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -229,15 +276,14 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 const SizedBox(height: 20),
                 _buildProductHighlightsCard(product),
                 const SizedBox(height: 20),
-
-                _buildRecommendedProducts(productDetailsList:controllerProductDetailsList.productDetailsList),
+                _buildRecommendedProducts(product),
+                // _buildRecommendedProducts(productDetailsList:controllerProductDetailsList.productDetailsList),
                 const SizedBox(height: 20),
-
                 _buildFeatureSection(),
                 const SizedBox(height: 20),
                 _buildPincodeSection(),
                 const SizedBox(height: 20),
-                buildUserReviewsSection(),
+                buildUserReviewsSection(product,reviews),
               ],
             ),
           ),
@@ -246,7 +292,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       bottomNavigationBar: _buildBottomButtons(),
     );
   }
-
   Widget _buildBottomButtons() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -255,24 +300,26 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
           Expanded(
               child: ElevatedButton(
                   onPressed: () {
-                    Get.to(() => CartScreen() );
-                  }, child: const Text("ADD TO CART"))),
+                    Get.to(() => CartScreen(customerId: '',) );
+                  }, child: const Text("ADD TO CART"),
+              ),
+          ),
           const SizedBox(width: 10),
           Expanded(
               child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            child: const Text("BUY NOW", style: TextStyle(color: Colors.white)),
-          )),
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                child: const Text("BUY NOW", style: TextStyle(color: Colors.white)),
+              )),
         ],
       ),
     );
   }
 
-  Widget _buildRecommendedProducts(
-      {List<ProductDetailsListModel>? productDetailsList}) {
+  Widget _buildRecommendedProducts(ProductDetailsModel product) {
     return Obx(() {
       var productList = controllerProductDetailsList.productDetailsList;
+
       if (controllerProductDetailsList.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -285,7 +332,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("You May Also Like",
+              Text(
+                "You May Also Like",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -305,9 +353,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             height: 230,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: productDetailsList?.length ?? 0,
+              itemCount:  productDetailsList?.length ?? 0,
               itemBuilder: (context, index) {
-                final productList = productDetailsList?[index];
+                final product = productDetailsList?[index];
                 return Container(
                   width: 200,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -324,48 +372,44 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                             children: [
                               Center(
                                 child: Image.network(
-                                  '${imageAllBaseUrl}${productList?.image ?? ''}',
+                                  '${imageAllBaseUrl}${product?.image ?? ''}',
                                   height: 55,
                                   width: 55,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(Icons.image_not_supported),
+                                  const Icon(Icons.image_not_supported),
                                 ),
                               ),
                               const SizedBox(height: 15),
                               Text(
-                                productList?.productAndModelName ?? '',
+                                product?.productAndModelName ?? '',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Ram       ${productList?.ramName ?? ' '}',
+                                'Ram       ${product?.ramName ?? ' '}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Rom       ${productList?.romName ?? ' '}',
+                                'Rom       ${product?.romName ?? ' '}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Color      ${productList?.colorName ?? ' '}',
+                                'Color      ${product?.colorName ?? ' '}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               const Spacer(),
                               Row(
                                 children: [
                                   Text(
-                                    "₹${productList?.amount?.toString() ?? '0'}",
+                                    "₹${product?.amount?.toString() ?? '0'}",
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -374,7 +418,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Text(
-                                      "₹${productList?.newModelAmt?.toString() ?? '0'}",
+                                      "₹${product?.newModelAmt?.toString() ?? '0'}",
                                       style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
@@ -393,8 +437,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           top: 1,
                           right: 0,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: const BoxDecoration(
                               color: Colors.redAccent,
                               borderRadius: BorderRadius.only(
@@ -403,7 +446,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                               ),
                             ),
                             child: Text(
-                              '${productList?.discountPercentage?.toString() ?? ''}%',
+                              '${product?.discountPercentage?.toString() ?? ''}%',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 9,
@@ -414,6 +457,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         ),
                       ],
                     ),
+
                   ),
                 );
               },
@@ -423,7 +467,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
     });
   }
-
   Widget _buildFeatureSection() {
     return GridView.builder(
       shrinkWrap: true,
@@ -529,7 +572,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     );
   }
 }
-
 Widget _buildProductHighlightRow(String title, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 3),
@@ -547,8 +589,17 @@ Widget _buildProductHighlightRow(String title, String value) {
   );
 }
 
-Widget _buildProductAttributesCard(
-    BuildContext context, ProductDetailsModel product) {
+Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel product) {
+
+  String condition = "Fair"; // default fallback
+  if(product.romName == "64GB"){
+    condition = "Fair";
+  }else if(product.romName == "128GB"){
+    condition = "Good";
+  }else if(product.romName == "256GB"){
+    condition = "Super";
+  }
+
   return GestureDetector(
     onTap: () {
       showModalBottomSheet(
@@ -568,13 +619,13 @@ Widget _buildProductAttributesCard(
         child: Column(
           children: [
             _buildAttributeRow(
-                Icons.phone_android, "Condition", "Good", "+2 more"),
+                Icons.phone_android, "Condition", "${condition}", "+1 more"),
             const Divider(),
             _buildAttributeRow(Icons.sd_storage, "Storage",
-                "${product.ramName}/ ${product.romName}", "+1 more"),
+                "${product.ramName}/ ${product.romName}", "2+ more"),
             const Divider(),
             _buildAttributeRow(
-                Icons.circle, "Color", "${product.colorName}", "+5 more",
+                Icons.circle, "Color", "${product.colorName}", "+2 more",
                 isColorDot: true),
           ],
         ),
@@ -605,16 +656,14 @@ Widget _buildAttributeRow(
             Icon(icon, size: 20),
           const SizedBox(width: 10),
           Text("$label: ", style: const TextStyle(fontSize: 14)),
-          Text(value,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          Text(value, style:
+          const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
         ],
       ),
       Text(moreText, style: const TextStyle(fontSize: 14, color: Colors.grey)),
     ],
   );
 }
-
 Widget _buildPincodeSection() {
   return Card(
     elevation: 2,
@@ -656,18 +705,15 @@ Widget _buildPincodeSection() {
     ),
   );
 }
-
-Widget buildUserReviewsSection() {
+Widget buildUserReviewsSection(ProductDetailsModel product, List<ProductReviewModel> reviews) {
+  final ratingData = ProductRatingModel();
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const Text(
-        "User Reviews",
+      const Text("User Reviews",
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 12),
-
-      // Summary Card
       Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 1,
@@ -675,18 +721,16 @@ Widget buildUserReviewsSection() {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              // Rating Box
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  "4.7",
-                  style: TextStyle(
-                    fontSize: 22,
+                child: Text(
+                  "${product.avgReview?.toString() ?? '0.0'}",
+                  style: const TextStyle(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -694,58 +738,78 @@ Widget buildUserReviewsSection() {
               ),
               const SizedBox(width: 16),
 
-              // Stars and count
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
-                      children: [
-                        Icon(Icons.star, color: Colors.orange, size: 18),
-                        Icon(Icons.star, color: Colors.orange, size: 18),
-                        Icon(Icons.star, color: Colors.orange, size: 18),
-                        Icon(Icons.star, color: Colors.orange, size: 18),
-                        Icon(Icons.star_half, color: Colors.orange, size: 18),
-                      ],
+                    Row(
+                      children: List.generate(5, (index) {
+                        final rate = product.avgRate ?? 0.0;
+
+                        if (index < rate.floor()) {
+                          return const Icon(Icons.star, color: Colors.orange, size: 18);
+                        } else if (index == rate.floor() && rate % 1 >= 0.5) {
+                          return const Icon(Icons.star_half, color: Colors.orange, size: 18);
+                        } else {
+                          return const Icon(Icons.star_border, color: Colors.orange, size: 18);
+                        }
+                      }),
                     ),
                     const SizedBox(height: 4),
-                    const Text("1108 reviews",
-                        style: TextStyle(fontSize: 14, color: Colors.black)),
+
+                    Text(
+                      "${product.reviewCount ?? 0} reviews",
+                      style: const TextStyle(fontSize: 14, color: Colors.black),
+                    ),
 
                     const SizedBox(height: 12),
 
-                    // Ratings breakdown
-                    for (var rating in [
-                      {"star": 5, "count": 807},
-                      {"star": 4, "count": 283},
-                      {"star": 3, "count": 18},
-                      {"star": 2, "count": 0},
-                      {"star": 1, "count": 0},
-                    ])
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Row(
-                          children: [
-                            Text("${rating["star"]}",
-                                style: const TextStyle(fontSize: 12)),
-                            const Icon(Icons.star,
-                                size: 14, color: Colors.grey),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: LinearProgressIndicator(
-                                value: (rating["count"] as int) / 1108,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Colors.black),
-                                minHeight: 6,
-                              ),
+                    Builder(builder: (context) {
+                      int totalRatings = (ratingData.rating1 ?? 0) +
+                          (ratingData.rating2 ?? 0) +
+                          (ratingData.rating3 ?? 0) +
+                          (ratingData.rating4 ?? 0) +
+                          (ratingData.rating5 ?? 0);
+
+                      final ratingList = [
+                        {"star": 5, "count": ratingData.rating5 ?? 0},
+                        {"star": 4, "count": ratingData.rating4 ?? 0},
+                        {"star": 3, "count": ratingData.rating3 ?? 0},
+                        {"star": 2, "count": ratingData.rating2 ?? 0},
+                        {"star": 1, "count": ratingData.rating1 ?? 0},
+                      ];
+
+                      return Column(
+                        children: ratingList.map((rating) {
+                          final double value = totalRatings > 0
+                              ? (rating["count"] as int) / totalRatings
+                              : 0;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Row(
+                              children: [
+                                Text("${rating["star"]}",
+                                    style: const TextStyle(fontSize: 12)),
+                                const Icon(Icons.star, size: 14, color: Colors.grey),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: LinearProgressIndicator(
+                                    value: value,
+                                    backgroundColor: Colors.grey[300],
+                                    valueColor: const AlwaysStoppedAnimation<Color>(
+                                        Colors.black),
+                                    minHeight: 6,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Text("(${rating["count"]})",
+                                    style: const TextStyle(fontSize: 12)),
+                              ],
                             ),
-                            const SizedBox(width: 6),
-                            Text("(${rating["count"]})",
-                                style: const TextStyle(fontSize: 12)),
-                          ],
-                        ),
-                      ),
+                          );
+                        }).toList(),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -754,109 +818,58 @@ Widget buildUserReviewsSection() {
         ),
       ),
 
-      const SizedBox(height: 20),
-
-      // Review 1
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
+      SizedBox(height: 20),
+      ListView.builder(
+        shrinkWrap: true,
+        physics:  NeverScrollableScrollPhysics(),
+        itemCount: reviews.length,
+        itemBuilder: (context, index) {
+          final reviewDetails = reviews[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
               Row(
+                children: List.generate(5, (index) {
+                  final rate = product.avgRate ?? 0.0;
+                  if (index < rate.floor()) {
+                    return const Icon(Icons.star, color: Colors.orange, size: 18);
+                  } else if (index == rate.floor() && rate % 1 >= 0.5) {
+                    return const Icon(Icons.star_half, color: Colors.orange, size: 18);
+                  } else {
+                    return const Icon(Icons.star_border, color: Colors.orange, size: 18);
+                  }
+                }),
+              ),
+
+              const SizedBox(height: 8),
+              Text(reviewDetails.description.toString(),
+                style: TextStyle(fontSize: 12),),
+              SizedBox(height: 6,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Anshuman Mohapatra",
-                      style: TextStyle(fontWeight: FontWeight.w500)),
-                  SizedBox(width: 6),
-                  Icon(Icons.verified, size: 16, color: Colors.black54),
+                  Row(
+                    children: [
+                      Text(
+                        reviewDetails.firstName ?? '',
+                        style:
+                        const TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
+                      ),
+                      const SizedBox(width: 6),
+                      const Icon(Icons.verified,
+                          size: 14, color: Colors.black54),
+                    ],
+                  ),
+                  Text(
+                    reviewDetails.createdDate ?? '',
+                    style:  TextStyle(color: Colors.grey,fontSize: 13),
+                  ),
                 ],
               ),
-              Text("16/4/2025", style: TextStyle(color: Colors.grey)),
             ],
-          ),
-          const Divider(height: 28),
-        ],
-      ),
-
-      // Review 2
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Good", style: TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(height: 4),
-          const Row(
-            children: [
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Text("Nice"),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Row(
-                children: [
-                  Text("Deepak", style: TextStyle(fontWeight: FontWeight.w500)),
-                  SizedBox(width: 6),
-                  Icon(Icons.verified, size: 16, color: Colors.black54),
-                ],
-              ),
-              Text("16/4/2025", style: TextStyle(color: Colors.grey)),
-            ],
-          ),
-          const Divider(height: 28),
-        ],
-      ),
-
-      // Review 3
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Good experience",
-              style: TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(height: 4),
-          const Row(
-            children: [
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-              Icon(Icons.star, size: 16, color: Colors.orange),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Text("Good experience"),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Row(
-                children: [
-                  Text("Deepak", style: TextStyle(fontWeight: FontWeight.w500)),
-                  SizedBox(width: 6),
-                  Icon(Icons.verified, size: 16, color: Colors.black54),
-                ],
-              ),
-              Text("16/4/2025", style: TextStyle(color: Colors.grey)),
-            ],
-          ),
-        ],
-      ),
+          );
+        },
+      )
     ],
   );
 }
