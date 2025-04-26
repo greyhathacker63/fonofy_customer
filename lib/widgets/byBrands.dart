@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen3.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
-import '../SelectProduct/SelectProductScreen3.dart';
+
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
 
 Widget byBrands({List<Table1Element>? buyTableBrands}) {

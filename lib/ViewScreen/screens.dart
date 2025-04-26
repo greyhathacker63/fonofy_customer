@@ -45,15 +45,15 @@ class _ScreensState extends State<Screens> {
           //     style: TextStyle(color: Colors.black, fontSize: 20),
           //   ),
           // ),
-          GestureDetector(
-            onTap: () {
-              Get.to(ProductScreen());
-            },
-            child: const Text(
-              "ProductScreen",
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-          ),
+          // // GestureDetector(
+          // //   onTap: () {
+          // //     Get.to(ProductScreen());
+          // //   },
+          //   child: const Text(
+          //     "ProductScreen",
+          //     style: TextStyle(color: Colors.black, fontSize: 20),
+          //   ),
+          // ),
           // GestureDetector(
           //   onTap: () {
           //     Get.to(SelectSlotScreen());

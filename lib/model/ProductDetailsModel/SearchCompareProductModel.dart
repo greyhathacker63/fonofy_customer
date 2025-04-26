@@ -1,37 +1,59 @@
-// To parse this JSON data, do
-//
-//     final searchCompareProductModel = searchCompareProductModelFromJson(jsonString);
-
 import 'dart:convert';
 
-List<SearchCompareProductModel> searchCompareProductModelFromJson(String str) => List<SearchCompareProductModel>.from(json.decode(str).map((x) => SearchCompareProductModel.fromJson(x)));
+List<SearchCompareProductModel> searchCompareProductModelFromJson(String str) =>
+    List<SearchCompareProductModel>.from(
+        json.decode(str).map((x) => SearchCompareProductModel.fromJson(x)));
 
-String searchCompareProductModelToJson(List<SearchCompareProductModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String searchCompareProductModelToJson(List<SearchCompareProductModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SearchCompareProductModel {
-  String? name;
-  dynamic? amount;
-  String? url;
+  String? modelNo;
+  String? productName;
+  dynamic amount;
   String? image;
+  String? modelUrl;
 
   SearchCompareProductModel({
-    this.name,
+    this.modelNo,
+    this.productName,
     this.amount,
-    this.url,
     this.image,
+    this.modelUrl,
   });
 
-  factory SearchCompareProductModel.fromJson(Map<String, dynamic> json) => SearchCompareProductModel(
-    name: json["Name"],
-    amount: json["Amount"],
-    url: json["Url"],
-    image: json["Image"],
-  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SearchCompareProductModel &&
+          modelNo == other.modelNo &&
+          productName == other.productName &&
+          amount == other.amount &&
+          image == other.image &&
+          modelUrl == other.modelUrl;
+
+  @override
+  int get hashCode =>
+      modelNo.hashCode ^
+      productName.hashCode ^
+      amount.hashCode ^
+      image.hashCode ^
+      modelUrl.hashCode;
+
+  factory SearchCompareProductModel.fromJson(Map<String, dynamic> json) =>
+      SearchCompareProductModel(
+        modelNo: json["ModelNo"],
+        productName: json["ProductAndModelName"],
+        amount: json["Amount"],
+        image: json["Image"],
+        modelUrl: json["ModelUrl"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "Name": name,
-    "Amount": amount,
-    "Url": url,
-    "Image": image,
-  };
+        "ModelNo": modelNo,
+        "ProductAndModelName": productName,
+        "Amount": amount,
+        "Image": image,
+        "ModelUrl": modelUrl,
+      };
 }

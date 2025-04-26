@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/SelectProduct/SelectAddressScreen.dart';
+
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectAddressScreen.dart';
 import 'package:get/get.dart';
 
 class RepairServiceScreen extends StatelessWidget {
