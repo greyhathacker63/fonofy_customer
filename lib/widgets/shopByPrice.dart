@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
@@ -26,11 +27,13 @@ Widget shopByPrice({List<Table6>? shopTablePrices}) {
               var shopPriceDetails = shopTablePrices?[index];
 
               return GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => BuyRefurbishedProductScreen(
-                      url: '',
-                      refNo: ''),));
-                },
+                 onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(underAmt: shopPriceDetails?.priceRange.toString(),)
+                        // url: '',
+                        // refNo: 'refNo'),
+                    ),
+                    );
+                   },
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Container(

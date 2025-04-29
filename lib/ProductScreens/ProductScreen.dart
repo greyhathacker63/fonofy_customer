@@ -15,11 +15,14 @@ import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 class ProductScreen extends StatefulWidget {
   final String? productName;
   final String? productPage;
+  final String? ramName;
+  final String? maxPrice;
+  final String? underAmt;
 
   const ProductScreen({
     Key? key,
     this.productName,
-    this.productPage,
+    this.productPage, this.ramName, this.maxPrice, this.underAmt,
   }) : super(key: key);
 
   @override
@@ -31,7 +34,7 @@ class _ProductScreenState extends State<ProductScreen> {
   List<SearchCompareProductModel> selectedProducts = [];
   bool showCheckboxes = false;
 
-  final productController = Get.put(ProductController());
+  final ProductController productController = Get.put(ProductController());
 
   void toggleSelection(SearchCompareProductModel product) {
     setState(() {
@@ -67,9 +70,12 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
+    productController.isLoading = true.obs;
     productController.fetchProducts(
       category: widget.productName,
       productpage: widget.productPage,
+      ramName: widget.ramName,
+      maxPrice: widget.maxPrice,
     );
   }
 
@@ -231,22 +237,21 @@ class _ProductScreenState extends State<ProductScreen> {
                                       height: 37,
                                       child: InkWell(
                                         onTap: () async {
-                                          final userCode =
-                                              await TokenHelper.getUserCode();
-
-                                          if (userCode == null ||
-                                              userCode.isEmpty) {
-                                            Get.snackbar(
-                                              "Login Required",
-                                              "Please login to view your wishlist",
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                            );
-
-                                            Get.to(() => LoginScreen());
-                                          } else {
+                                          // final userCode =
+                                          //     await TokenHelper.getUserCode();
+                                          // if (userCode == null ||
+                                          //     userCode.isEmpty) {
+                                          //   Get.snackbar(
+                                          //     "Login Required",
+                                          //     "Please login to view your wishlist",
+                                          //     snackPosition:
+                                          //         SnackPosition.BOTTOM,
+                                          //   );
+                                          //   Get.to(() => LoginScreen());
+                                          // } else {
+                                          print("object");
                                             Get.to(() => WishlistScreen());
-                                          }
+                                          // }
                                         },
                                         borderRadius: BorderRadius.circular(8),
                                         child: Container(

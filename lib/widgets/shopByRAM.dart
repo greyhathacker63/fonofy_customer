@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
 
 Widget shopByRAM({List<Table5>? tableRamName}) {
@@ -28,9 +28,9 @@ Widget shopByRAM({List<Table5>? tableRamName}) {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => BuyRefurbishedProductScreen(
-                        url: '',
-                        refNo: 'refNo'),
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(ramName: tableRamDetails?.ramName.toString(),maxPrice:tableRamDetails?.amount.toString() ,)
+                        // url: '',
+                        // refNo: 'refNo'),
                     ),
                     );
                    },

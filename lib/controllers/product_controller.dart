@@ -1,4 +1,6 @@
 // product_controller.dart
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:fonofy/model/ProductModel.dart';
 import 'package:fonofy/Api_Service/search_service.dart';
@@ -8,13 +10,6 @@ class ProductController extends GetxController {
   var productsList = <ProductModel>[].obs;
   var selectedProducts = <ProductModel>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchProducts();
-  }
-
-  // Fetch products using SearchService
   Future<void> fetchProducts({
     String? category,
     String? productpage,
@@ -24,23 +19,26 @@ class ProductController extends GetxController {
     String? minPrice,
     String? maxPrice,
     String? pageCount,
+    String? ramName,
   }) async {
     try {
-      isLoading(true); // Set loading to true before fetching data
-      productsList
-          .clear(); // Clear existing products in the list before fetching new ones
+      isLoading(true);
+      productsList.clear();
 
       final products = await SearchService.fetchAllProducts(
         category: category,
         productpage: productpage,
         customerId: customerId,
-        ramUrl: '',
-        romUrl: '',
-        minPrice: '',
-        maxPrice: '',
-        pageCount: '',
+        maxPrice: maxPrice,
+        ramName: ramName,
+        // Only pass parameters that have values
       );
+      
       productsList.assignAll(products);
+    } catch (e) {
+      log("Error in fetchProducts: $e");
+      // You might want to show an error message to the user here
+      rethrow;
     } finally {
       isLoading(false);
     }
