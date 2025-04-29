@@ -1,48 +1,23 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:fonofy/MainScreen.dart';
 import 'package:provider/provider.dart';
 
-// void main() {
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (context) => OtpViewModel()),
-//       ],
-//       child: const MyApp(),
-//     ),
-//   );
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Fonofy',
-//       theme: ThemeData(
-//         useMaterial3: true,
-//       ),
-//       initialRoute: '/',
-//       getPages: [
-//         // GetPage(name: '/', page: () => LoginScreen()),
-//         GetPage(name: '/main', page: () => const MainScreen()),
-//         GetPage(name: '/buy', page: () => const BuyScreen()),
-//         // GetPage(name: '/',page: () => AddressScreen5()),
-//         // GetPage(name: '/',page: () => AccountDetailsScreen(phoneNumber: '',)),
-//       ],
-//     );
-//   }
-// }
+import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/ViewModel/MobileOtpSend.dart';
+import 'package:fonofy/services/token_service.dart'; // make sure this file exists
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+
+  // Start the token refresh timer
+  TokenService.startTokenRefreshTimer();
+
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => OtpViewModel()),
+      providers: [
+        ChangeNotifierProvider(create: (context) => OtpViewModel()),
       ],
       child: const MyApp(),
     ),
@@ -51,17 +26,19 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fonofy',
-      // initialRoute: '/login',
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
-     //home: OtpScreen(otp: '', number: '1234567890',),
-      home: MainScreen(),
+      theme: ThemeData(useMaterial3: true),
+      home: const MainScreen(),
+      // You can use getPages or routes if needed
+      getPages: [
+        GetPage(name: '/main', page: () => const MainScreen()),
+        // Add other screens here
+      ],
     );
   }
 }
