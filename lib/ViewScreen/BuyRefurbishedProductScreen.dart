@@ -45,20 +45,18 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   List<ProductReviewModel> reviews = [];
   List<ProductImageListModel> productImages = [];
 
+  ProductRatingModel? ratingData;
+  AddToCartModel? addToaCrtData;
+
 
   int selectedImageIndex = 0;
   int totalRatings = 0;
 
-  final String colorRom = "";
-
-  late bool isFavorite = false;
-
-  bool isLoading = true;
-
+  // final String colorRom = "";
+  bool isFavorite = false;
   bool favoriteClicked = false;
-  dynamic price;
-
-  ProductRatingModel? ratingData;
+  bool isLoading = true;
+   dynamic price;
 
   Future<void> loadProductRating() async {
     final data = await ProductRatingService.fetchProductRating(widget.url);
@@ -97,9 +95,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       setState(() => isLoading = false);
     }
   }
-
   final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
-
   @override
   void initState() {
     super.initState();
@@ -167,10 +163,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             var product = controllerProductDetails.productDetails.value;
             if (product == null) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                  strokeWidth: 1,
-                ),
+                // child: CircularProgressIndicator(
+                //   color: Colors.blue,
+                //   strokeWidth: 1,
+                // ),
               );
             }
             // Display the favorite button when product is available
@@ -180,12 +176,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 color: Colors.redAccent,
               ),
               onPressed: () {
-                if (!favoriteClicked) {
-                  setState(() {
-                    isFavorite = true;
-                    favoriteClicked = true;
-                  });
-                }
+                setState(() {
+                  isFavorite = !isFavorite;  // Toggle the state
+                });
               },
             );
           }),
@@ -194,7 +187,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
         price = product?.sellingPrice.toString();
-        DataClass.modelNo = product?.modelNo.toString();
          if (product == null) {
           return const Center(
             child: CircularProgressIndicator(
@@ -303,33 +295,75 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       child: Row(
         children: [
           Expanded(
+            //       child: ElevatedButton(
+            // style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+            //         onPressed: () async {
+            //           DataClass.sellingPrice = price;
+            //           DataClass.productName = widget.url.toString();
+            //           final userCode = await TokenHelper.getUserCode();
+            //           if (userCode == null) {
+            //              Get.to(() => LoginScreen());
+            //           } else {
+            //              var response = await AddToCartService.fetchAddToCartData(userCode);
+            //             if (response != null) {
+            //                Get.to(() => CartScreen());
+            //             } else {
+            //                ScaffoldMessenger.of(context).showSnackBar(
+            //                 SnackBar(
+            //                   content: Text("Something went wrong! Please try again."),
+            //                   backgroundColor: Colors.redAccent,
+            //                 ),
+            //               );
+            //             }
+            //           }
+            //
+            //         },
+            //         child: const Text("ADD TO CART",style: TextStyle(color: Colors.white)),
+            //       ),
             child: ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
               onPressed: () async {
+                try {
+                  final product = controllerProductDetails.productDetails.value;
+                  final userCode = await TokenHelper.getUserCode();
+                  if (userCode == null) {
+                    Get.to(() => LoginScreen());
+                    return;
+                  }
+                  final addToCartService = AddToCartService();
+                  final response = await addToCartService.fetchAddToCartData(
+                    userCode,
+                    product?.ramId,
+                    product?.romId,
+                    product?.stockQuantity,
+                    product?.colorId,
+                    product?.modelNo,
+                  );
 
-                DataClass.sellingPrice = price;
-                DataClass.productName = widget.url.toString();
-                final userCode = await TokenHelper.getUserCode();
-                if (userCode == null) {
-                   Get.to(() => LoginScreen());
-                } else {
-                   var response = await AddToCartService.fetchAddToCartData(userCode);
                   if (response != null) {
-                     Get.to(() => CartScreen());
+                    Get.to(() => CartScreen());
                   } else {
-                     ScaffoldMessenger.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Something went wrong! Please try again."),
                         backgroundColor: Colors.redAccent,
                       ),
                     );
                   }
+                } catch (e) {
+                  print("Add to Cart Error: $e");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("An error occurred: $e"),
+                      backgroundColor: Colors.redAccent,
+                    ),
+                  );
                 }
-
               },
-              child: const Text("ADD TO CART",style: TextStyle(color: Colors.white)),
+              child: const Text("ADD TO CART",
+                style: TextStyle(color: Colors.black,fontSize: 15),
+              ),
             ),
-
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -342,10 +376,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       ),
     );
   }
+
   Widget _buildRecommendedProducts(ProductDetailsModel product) {
     return Obx(() {
       var productList = controllerProductDetailsList.productDetailsList;
-
       if (controllerProductDetailsList.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -493,6 +527,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
     });
   }
+
   Widget _buildFeatureSection() {
     return GridView.builder(
       shrinkWrap: true,
@@ -516,6 +551,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       },
     );
   }
+
   Widget _buildProductHighlightsCard(ProductDetailsModel product) {
     return Card(
       elevation: 1,
@@ -610,7 +646,10 @@ Widget _buildProductHighlightRow(String title, String value) {
     ),
   );
 }
+
+
 Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel product) {
+
   String condition = "Fair"; // default fallback
   if(product.romName == "64GB"){
     condition = "Fair";
@@ -621,9 +660,7 @@ Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel pro
   }
   return GestureDetector(
     onTap: () {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
+      showModalBottomSheet(context: context, isScrollControlled: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
@@ -637,21 +674,19 @@ Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel pro
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _buildAttributeRow(
-                Icons.phone_android, "Condition", "${condition}", "+1 more"),
+            _buildAttributeRow(Icons.phone_android, "Condition", "${condition}", "+1 more"),
             const Divider(),
             _buildAttributeRow(Icons.sd_storage, "Storage",
-                "${product.ramName}/ ${product.romName}", "2+ more"),
+                "${product.ramName}/ ${product.romName}", "+2 more"),
             const Divider(),
-            _buildAttributeRow(
-                Icons.circle, "Color", "${product.colorName}", "+2 more",
-                isColorDot: true),
+            _buildAttributeRow(Icons.circle, "Color", "${product.colorName}", "+2 more",isColorDot: true),
           ],
         ),
       ),
     ),
   );
 }
+
 Widget _buildAttributeRow(
     IconData icon, String label, String value, String moreText,
     {bool isColorDot = false}) {

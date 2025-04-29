@@ -16,6 +16,7 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
   late int _selectedIndex;
 
   @override
@@ -57,10 +58,11 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
           style: const TextStyle(color: Colors.black),
         ),
         actions: [
-          if (_selectedIndex == 0) 
+          if (_selectedIndex == 0)
             IconButton(
               icon: const Icon(Icons.shopping_cart, color: Colors.black),
               onPressed: () {
+                Get.to(()=> CartScreen());
                 // Get.to(() => CartScreen(customerId: '', addToCart: ,));
               },
             ),

@@ -7,7 +7,7 @@ import '../BaseUrl/AllBaseUrl.dart';
 class ShippingChargeService {
   static Future<ShippingChargeModel?> fetchShippingCharge() async {
     try {
-      var url = Uri.parse(shippingChargeUrl); // shippingChargeUrl constant hona chahiye
+      var url = Uri.parse(shippingChargeUrl);
       var response = await http.get(url);
 
       if (response.statusCode == 200) {

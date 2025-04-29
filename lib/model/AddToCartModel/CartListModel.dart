@@ -86,7 +86,8 @@ class CartListModel {
     totalMrp: json["TotalMRP"],
     totalDiscount: json["TotalDiscount"],
   );
-  Map<String, dynamic> toJson() => {
+
+   Map<String, dynamic> toJson() => {
     "CartId": cartId,
     "ProductName": productName,
     "ProductId": productId,

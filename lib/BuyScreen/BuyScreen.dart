@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:get/get.dart';
 import '../controllers/ControllerTable.dart';
 import '../widgets/AmazingDeal.dart';
@@ -79,13 +80,14 @@ class _BuyScreenState extends State<BuyScreen> {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
-                                "http://cdn.fonofy.in//"+imageUrl,
+                                "$imageAllBaseUrl$imageUrl",
+                                // imageAllBaseUrl+imageUrl,
                                 fit: BoxFit.cover,
                                 width: Get.width,
                                 loadingBuilder: (context, child, progress) {
                                   if (progress == null) return child;
                                   return const Center(
-                                      child: CircularProgressIndicator());
+                                      child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
                                 },
                                 errorBuilder: (context, error, stackTrace) =>
                                 const Icon(Icons.error, color: Colors.black),
@@ -142,7 +144,6 @@ class _BuyScreenState extends State<BuyScreen> {
   ],
   featuredCategoryTable: tableController.tableOptionsData?.table1,
 ),
-
 
                     ],
                   ),

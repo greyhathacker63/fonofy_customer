@@ -5,42 +5,34 @@ import 'package:http/http.dart' as http;
 import '../../Services/web_constants.dart';
 
 class AddToCartService {
-  Future<List<AddToCartModel>> fetchAddToCartData(String customerId) async {
+
+  Future<AddToCartModel?> fetchAddToCartData(String customerId, dynamic ram,dynamic rom,dynamic qty,dynamic color,dynamic modelID) async {
     try {
       var url = Uri.parse(addToCartUrl);
       final Map<String, dynamic> requestBody = {
         "ProductId": 0,
         "CustomerId": customerId,
-        "Quantity": 3,
-        "ModelId": 4,
+        "Quantity": qty,
+        "ModelId": modelID,
         "BrandId": 5,
-        "ColorId": 6,
-        "RamId": 7,
-        "RomId": 8,
-        "CartRef": ""
+        "ColorId": color,
+        "RamId": ram,
+        "RomId": rom,
+        "CartRef": "4rnfdmfknsd"
       };
-      var response = await http.post(
-        url,
+      var response = await http.post(url,
         headers: headers,
         body: jsonEncode(requestBody),
       );
       if (response.statusCode == 200) {
-        var decodedResponse = jsonDecode(response.body);
-        if (decodedResponse is List) {
-          return decodedResponse
-              .map((item) => AddToCartModel.fromJson(item))
-              .toList();
-        } else {
-          print("❌ Unexpected response format");
-          return [];
-        }
+        return AddToCartModel.fromJson(json.decode(response.body));
       } else {
         print('❌ HTTP Error: ${response.statusCode}');
-        return [];
+        return null;
       }
     } catch (e) {
-      print('❌ Exception: $e');
-      return [];
+      print('❌ Exception while fetching shipping charge: $e');
+      return null;
     }
   }
 }
