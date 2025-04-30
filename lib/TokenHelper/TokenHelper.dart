@@ -75,6 +75,7 @@ class TokenHelper {
     }
     throw FormatException("Invalid JWT token format");
   }
+  
 
   // Base64 URL Decode
   static String _base64UrlDecode(String input) {

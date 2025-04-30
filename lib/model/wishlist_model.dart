@@ -1,5 +1,5 @@
 class WishlistModel {
-  final dynamic id;
+  final dynamic productId;
   final dynamic customerId;
   final dynamic status;
   final dynamic productAndModelName;
@@ -18,7 +18,7 @@ class WishlistModel {
   final dynamic colorId;
 
   WishlistModel({
-    this.id,
+    this.productId,
     this.customerId,
     this.status,
     this.productAndModelName,
@@ -39,7 +39,7 @@ class WishlistModel {
 
   factory WishlistModel.fromJson(Map<String, dynamic> json) {
     return WishlistModel(
-      id: json['Id'] as dynamic,
+      productId: json['Id'] as dynamic,
       customerId: json['CustomerId'] as dynamic,
       status: json['Status'] as dynamic,
       productAndModelName: json['ProductAndModelName'] as dynamic,

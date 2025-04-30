@@ -41,9 +41,21 @@ class WishlistController extends GetxController {
     required int colorId,
     required int ramId,
     required int romId,
-    required String cartRef,
+    String? cartRef, // Make cartRef nullable
   }) async {
     isLoading.value = true;
+
+    // First, fetch the current wishlist to check if the product is already in the wishlist
+    List<WishlistModel> currentWishlist = await WishlistService.fetchWishlist();
+
+    bool isProductAlreadyInWishlist = currentWishlist.any((item) =>
+        item.productId == productId); // Use the correct property name here
+
+    if (isProductAlreadyInWishlist) {
+      Get.snackbar("Info", "This product is already in your wishlist.");
+      isLoading.value = false;
+      return;
+    }
 
     bool success = await WishlistService.addToWishlist(
       productId: productId,
@@ -67,5 +79,19 @@ class WishlistController extends GetxController {
     }
   }
 
-  void removeFromWishlist(ucode) {}
+  /// Remove product from wishlist using API
+  void removeProductFromWishlist({required int productId}) async {
+    isLoading.value = true;
+
+    bool success = await WishlistService.removeFromWishlist(productId.toString());
+
+    isLoading.value = false;
+
+    if (success) {
+      Get.snackbar("Success", "Product removed from wishlist");
+      await fetchWishlistData(); // Refresh after successful removal
+    } else {
+      Get.snackbar("Error", "Failed to remove product from wishlist");
+    }
+  }
 }

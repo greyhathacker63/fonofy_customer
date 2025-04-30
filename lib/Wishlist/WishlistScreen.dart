@@ -17,7 +17,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
     wishlistController.fetchWishlistData();
   }
 
-  // Pull-to-refresh method
   Future<void> _onRefresh() async {
     await wishlistController.fetchWishlistData();
   }
@@ -48,7 +47,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: RefreshIndicator(
-            onRefresh: _onRefresh, // Pull-to-refresh
+            onRefresh: _onRefresh,
             child: GridView.builder(
               itemCount: wishlistController.wishlistItems.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -58,7 +57,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 childAspectRatio: 0.58,
               ),
               itemBuilder: (context, index) {
-                final item = wishlistController.wishlistItems[index];
+                var wishlistItem = wishlistController.wishlistItems[index];
+
                 return Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey.shade300),
@@ -66,99 +66,105 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   ),
                   child: Column(
                     children: [
-                      // Image Section
                       ClipRRect(
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: Image.network(
-                            item.image ?? '',
+                            wishlistItem.image ?? '',
                             fit: BoxFit.cover,
                             width: double.infinity,
                             errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.broken_image, size: 50),
+                                const Center(child: Icon(Icons.broken_image, size: 50)),
                           ),
                         ),
                       ),
 
-                      // Info & Action
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: LayoutBuilder(
                             builder: (context, constraints) {
-                              return ConstrainedBox(
-                                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // Product Info
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.productAndModelName ?? 'N/A',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Product Info
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        wishlistItem.productAndModelName ?? 'N/A',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          item.modelNo ?? 'Model No.',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.green,
-                                          ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        wishlistItem.modelNo?.toString() ?? 'Model No.',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.green,
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 6),
+                                      ),
+                                    ],
+                                  ),
 
-                                    // Move to Cart Button
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: 36,
-                                      child: OutlinedButton(
-                                        onPressed: () {
-                                          // TODO: Implement Move to Cart functionality
-                                        },
-                                        child: const Text(
-                                          'Move to Cart',
-                                          style: TextStyle(fontSize: 13),
-                                        ),
-                                        style: OutlinedButton.styleFrom(
-                                          backgroundColor:ColorConstants.appBlueColor3,
-                                          foregroundColor: Colors.white,
-                                          side: const BorderSide(color: Colors.teal),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
+                                  // Move to Cart Button
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 36,
+                                    child: OutlinedButton(
+                                      onPressed: () {
+                                        // TODO: Implement Move to Cart logic
+                                        Get.snackbar("Action", "Moved to Cart feature coming soon!",
+                                            snackPosition: SnackPosition.BOTTOM);
+                                      },
+                                      child: const Text('Move to Cart', style: TextStyle(fontSize: 13)),
+                                      style: OutlinedButton.styleFrom(
+                                        backgroundColor: ColorConstants.appBlueColor3,
+                                        foregroundColor: Colors.white,
+                                        side: const BorderSide(color: Colors.teal),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               );
                             },
                           ),
                         ),
                       ),
-                      // Delete/Remove Icon (long press)
+
+                      // Delete Icon
                       GestureDetector(
-                        onLongPress: () {
-                          // Remove from wishlist
-                          wishlistController.removeFromWishlist(item.ucode);
+                        onLongPress: () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Remove Item"),
+                              content: const Text("Are you sure you want to remove this item from wishlist?"),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text("Cancel")),
+                                TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text("Remove")),
+                              ],
+                            ),
+                          );
+
+                          if (confirm == true) {
+                            wishlistController.removeProductFromWishlist(
+                              productId: wishlistItem.productId,
+                            );
+                          }
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                            size: 18,
-                          ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.delete, color: Colors.red, size: 18),
                         ),
                       ),
                     ],

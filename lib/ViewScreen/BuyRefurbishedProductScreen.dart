@@ -295,31 +295,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       child: Row(
         children: [
           Expanded(
-            //       child: ElevatedButton(
-            // style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            //         onPressed: () async {
-            //           DataClass.sellingPrice = price;
-            //           DataClass.productName = widget.url.toString();
-            //           final userCode = await TokenHelper.getUserCode();
-            //           if (userCode == null) {
-            //              Get.to(() => LoginScreen());
-            //           } else {
-            //              var response = await AddToCartService.fetchAddToCartData(userCode);
-            //             if (response != null) {
-            //                Get.to(() => CartScreen());
-            //             } else {
-            //                ScaffoldMessenger.of(context).showSnackBar(
-            //                 SnackBar(
-            //                   content: Text("Something went wrong! Please try again."),
-            //                   backgroundColor: Colors.redAccent,
-            //                 ),
-            //               );
-            //             }
-            //           }
-            //
-            //         },
-            //         child: const Text("ADD TO CART",style: TextStyle(color: Colors.white)),
-            //       ),
+          
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
               onPressed: () async {

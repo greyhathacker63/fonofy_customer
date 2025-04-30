@@ -90,13 +90,12 @@ class WishlistService {
     required int colorId,
     required int ramId,
     required int romId,
-    required String cartRef,
+    String? cartRef,
   }) async {
     final String url = "$baseurl$b2c$addToWishlist";
 
     var token = await TokenHelper.getToken();
 
-    // Skipping token refresh for now
     if (token == null) {
       log("Token is null. Cannot proceed with wishlist POST.");
       return false;
@@ -111,7 +110,7 @@ class WishlistService {
       "ColorId": colorId,
       "RamId": ramId,
       "RomId": romId,
-      "CartRef": cartRef,
+      "CartRef": cartRef ?? "",
     });
 
     try {
@@ -128,7 +127,12 @@ class WishlistService {
 
       if (response.statusCode == 200) {
         var res = jsonDecode(response.body);
-        return res["message"] == "Product add in wish list";
+        if (res["message"] == "Product add in wish list") {
+          return true; // Product successfully added to wishlist
+        } else {
+          log("Product is already in the wishlist");
+          return false; // Product already in wishlist
+        }
       } else {
         log("Add to Wishlist failed: ${response.statusCode}");
         return false;
@@ -138,4 +142,40 @@ class WishlistService {
       return false;
     }
   }
+
+static Future<bool> removeFromWishlist(String productId) async {
+  final String url = "$baseurl$b2c$deleteProductList";
+
+  final token = await TokenHelper.getToken();
+
+  if (token == null) {
+    log("Token is null. Cannot proceed with wishlist delete.");
+    return false;
+  }
+
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({"ProductId": productId}), // Send productId here
+    );
+
+    log("Remove Wishlist Response: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final res = jsonDecode(response.body);
+      return res["message"] == "Product removed from wishlist";
+    } else {
+      log("Remove from Wishlist failed: ${response.statusCode}");
+      return false;
+    }
+  } catch (e) {
+    log("Remove from Wishlist exception: $e");
+    return false;
+  }
+}
+
 }
