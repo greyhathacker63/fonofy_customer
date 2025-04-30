@@ -8,5 +8,4 @@ class DataClass{
     static dynamic? selectedPrice;
     static dynamic? selectedSRom;
     static dynamic? selectedSRam;
-    static dynamic? selectedColor;
- }
+  }

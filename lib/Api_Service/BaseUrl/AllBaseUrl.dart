@@ -17,6 +17,8 @@ const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
 
  const String cartListUrl = "${baseUrl}api/common/get-cart-list";
 
+ const String deleteCartUrl = "${baseUrl}api/common/delete-in-cart";
+
 
 
 

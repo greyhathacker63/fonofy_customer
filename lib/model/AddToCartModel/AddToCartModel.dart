@@ -62,38 +62,41 @@ class Result {
     this.romId,
     this.cartRef,
   });
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-    id: json["Id"],
-    productId: json["ProductId"],
-    customerId: json["CustomerId"],
-    createdDate: json["CreatedDate"] == null ? null : DateTime.parse(json["CreatedDate"]),
-    updatedDate: json["UpdatedDate"],
-    status: json["Status"],
-    quantity: json["Quantity"],
-    type: json["Type"],
-    modelId: json["ModelId"],
-    brandId: json["BrandId"],
-    colorId: json["ColorId"],
-    ramId: json["RamId"],
-    romId: json["RomId"],
-    cartRef: json["CartRef"],
-  );
-  Map<String, dynamic> toJson() => {
-    "Id": id,
-    "ProductId": productId,
-    "CustomerId": customerId,
-    "CreatedDate": createdDate?.toIso8601String(),
-    "UpdatedDate": updatedDate,
-    "Status": status,
-    "Quantity": quantity,
-    "Type": type,
-    "ModelId": modelId,
-    "BrandId": brandId,
-    "ColorId": colorId,
-    "RamId": ramId,
-    "RomId": romId,
-    "CartRef": cartRef,
-  };
+
+  factory Result.fromJson(Map<String, dynamic> json) =>
+      Result(
+        id: json["Id"],
+        productId: json["ProductId"],
+        customerId: json["CustomerId"],
+        createdDate: json["CreatedDate"] == null ? null : DateTime.parse(
+            json["CreatedDate"]),
+        updatedDate: json["UpdatedDate"],
+        status: json["Status"],
+        quantity: json["Quantity"],
+        type: json["Type"],
+        modelId: json["ModelId"],
+        brandId: json["BrandId"],
+        colorId: json["ColorId"],
+        ramId: json["RamId"],
+        romId: json["RomId"],
+        cartRef: json["CartRef"],
+      );
+
+  Map<String, dynamic> toJson() =>
+      {
+        "Id": id,
+        "ProductId": productId,
+        "CustomerId": customerId,
+        "CreatedDate": createdDate?.toIso8601String(),
+        "UpdatedDate": updatedDate,
+        "Status": status,
+        "Quantity": quantity,
+        "Type": type,
+        "ModelId": modelId,
+        "BrandId": brandId,
+        "ColorId": colorId,
+        "RamId": ramId,
+        "RomId": romId,
+        "CartRef": cartRef,
+      };
 }
-
-

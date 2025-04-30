@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsListModel.dart';
-import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:http/http.dart' as http;
 import '../../Services/web_constants.dart';
 import '../BaseUrl/AllBaseUrl.dart';
@@ -9,16 +8,27 @@ class ProductDetailsListService {
   Future<List<ProductDetailsListModel>> fetchProductDetailsListData() async {
     try {
       var url = Uri.parse(productDetailsUrl);
-      final Map<String, dynamic> requestBody = {
-      };
-      var response = await http.post(url, headers: headers,
-        body: jsonEncode(requestBody),
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode({}),
       );
+
       if (response.statusCode == 200) {
-        var decodedResponse = jsonDecode(response.body);
+        final decodedResponse = jsonDecode(response.body);
+
         if (decodedResponse is List) {
           return decodedResponse
-              .map((item) => ProductDetailsListModel.fromJson(item))
+              .map<ProductDetailsListModel>((item) =>
+              ProductDetailsListModel.fromJson(item))
+              .toList();
+        } else if (decodedResponse is Map &&
+            decodedResponse.containsKey('result') &&
+            decodedResponse['result'] is List) {
+          // in case API returns something like { "result": [...] }
+          return (decodedResponse['result'] as List)
+              .map<ProductDetailsListModel>(
+                  (item) => ProductDetailsListModel.fromJson(item))
               .toList();
         } else {
           print("❌ Error: Unexpected data format");
