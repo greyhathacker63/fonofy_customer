@@ -16,38 +16,42 @@ class SearchService {
     String? minPrice,
     String? maxPrice,
     String? pageCount,
+    String? ramName,
   }) async {
-    String apiUrl;
-
-    // Generate URL for API call
-    if (productpage != null && productpage.isNotEmpty) {
-      apiUrl = "$baseurl$common$productList?productpage=$productpage";
-    } else if (category != null && category.toLowerCase() != 'viewall') {
-      apiUrl = "$baseurl$common$productList?category=$category";
-    } else {
-      apiUrl = "$baseurl$common$productList";
-    }
-
-    log("API URL: $apiUrl");
-    
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final Uri uri = Uri.parse("$baseurl$common$productList").replace(
+        queryParameters: {
+          if (productpage != null && productpage.isNotEmpty) 
+            'productpage': productpage,
+          if (category != null && category.isNotEmpty && category.toLowerCase() != 'viewall') 
+            'category': category,
+          if (ramName != null && ramName.isNotEmpty) 
+            'Ramurl': ramName,
+          if (maxPrice != null && maxPrice.isNotEmpty) 
+            'MaxPrice': maxPrice,
+          // Add other parameters as needed
+        },
+      );
+
+      log("API URL: ${uri.toString()}");
+
+      final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         
-        // Check if the response contains a valid product list
-        if (data is List && data.isNotEmpty) {
-          // Return the list of products if found
+        if (data is List) {
           return data.map((json) => ProductModel.fromJson(json)).toList();
         } else {
-          // Return an empty list if no products are found
+          log("Unexpected response format: $data");
           return [];
         }
       } else {
-        throw Exception('Failed to load products');
+        log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
+        throw Exception('Failed to load products: ${response.statusCode}');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      log("Error fetching products: $e", stackTrace: stackTrace);
       throw Exception('Error fetching products: $e');
     }
   }
