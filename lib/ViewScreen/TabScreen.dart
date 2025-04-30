@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/BuyScreen/BuyScreen.dart';
 import 'package:fonofy/RepairScreen/RepairScreen.dart';
 import 'package:fonofy/SellScreen/SellScreen.dart';
+import 'package:fonofy/Wishlist/WishlistScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart'; // Import GetX for navigation
 import 'package:fonofy/Cart_Screens/CartScreen.dart'; // Import Cart Screen
@@ -16,6 +17,7 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
   late int _selectedIndex;
 
   @override
@@ -57,14 +59,21 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
           style: const TextStyle(color: Colors.black),
         ),
         actions: [
-          if (_selectedIndex == 0) 
-            IconButton(
-              icon: const Icon(Icons.shopping_cart, color: Colors.black),
-              onPressed: () {
-                // Get.to(() => CartScreen(customerId: '', addToCart: ,));
-              },
-            ),
-        ],
+  if (_selectedIndex == 0) ...[
+    IconButton(
+      icon: const Icon(Icons.favorite_border, color: Colors.redAccent),
+      onPressed: () {
+        Get.to(() => WishlistScreen()); // Navigate to wishlist screen
+      },
+    ),
+    IconButton(
+      icon: const Icon(Icons.shopping_cart, color: Colors.black),
+      onPressed: () {
+        Get.to(() => CartScreen()); // Navigate to cart screen
+      },
+    ),
+  ],
+],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Container(

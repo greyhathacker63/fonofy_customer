@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/DataObject.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import '../Api_Service/AddToCartService/AddToCartService.dart';
 import '../Api_Service/ProductDetailsService/ProductRamRomColorsService.dart';
+import '../Cart_Screens/CartScreen.dart';
+import '../TokenHelper/TokenHelper.dart';
+import '../ViewScreen/LoginScreen.dart';
 import '../utils/Colors.dart';
 
 class ProductAttributeBottomSheet extends StatefulWidget {
   final ProductDetailsModel product;
-  const ProductAttributeBottomSheet({super.key, required this.product});
-
+  // final Function onTap;
+  const ProductAttributeBottomSheet({super.key, required this.product,});
   @override
   _ProductAttributeBottomSheetState createState() =>
       _ProductAttributeBottomSheetState();
 }
-
 class _ProductAttributeBottomSheetState
+
     extends State<ProductAttributeBottomSheet> {
   String selectedCondition = "Fair";
   String selectedStorage = "";
@@ -33,21 +40,20 @@ class _ProductAttributeBottomSheetState
 
   Future<void> _fetchColors() async {
     List<ProductRamRomColorListModel> colors = await _serviceProductRamRom.fetchProductRamRomListColorsData(
-            widget.product.modelUrl.toString(),
-            widget.product.ucode.toString());
+        widget.product.modelUrl.toString(),
+        widget.product.ucode.toString());
 
     setState(() {
       _colorList = colors;
       selectedVariant = _colorList.firstWhere(
-        (item) =>
-            item.ramName == widget.product.ramName &&
+            (item) =>
+        item.ramName == widget.product.ramName &&
             item.romName == widget.product.romName &&
             item.colorName == widget.product.colorName,
         orElse: () => _colorList.first,
       );
 
-      selectedStorage =
-          "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
+      selectedStorage = "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
       selectedColorIndex = _colorList.indexOf(selectedVariant!);
     });
   }
@@ -69,7 +75,7 @@ class _ProductAttributeBottomSheetState
               Text(
                 widget.product.productAndModelName ?? "",
                 style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
@@ -80,7 +86,7 @@ class _ProductAttributeBottomSheetState
               Text.rich(
                 TextSpan(
                   text:
-                      "₹${selectedVariant?.f2 ?? widget.product.sellingPrice ?? '0'} ",
+                  "₹${selectedVariant?.f2 ?? widget.product.sellingPrice ?? '0'} ",
                   style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -88,7 +94,7 @@ class _ProductAttributeBottomSheetState
                   children: [
                     TextSpan(
                       text:
-                          " ₹${selectedVariant?.newAmount ?? widget.product.newModelAmt ?? '0'} ",
+                      " ₹${selectedVariant?.newAmount ?? widget.product.newModelAmt ?? '0'} ",
                       style: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
@@ -101,7 +107,7 @@ class _ProductAttributeBottomSheetState
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _sectionTitle("Condition"),
               Wrap(
                 spacing: 8,
@@ -133,18 +139,22 @@ class _ProductAttributeBottomSheetState
               ),
               const SizedBox(height: 10),
               _buildWarrantyCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _sectionTitle("Storage"),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _colorList.length,
                 itemBuilder: (context, index) {
+
                   String selectRom = _colorList[index].romName.toString();
                   String storage = "${_colorList[index].ramName} / ${_colorList[index].romName}";
                   bool isSelected = selectedStorage == storage;
+                  // DataClass.selectedSRam = _colorList[index].ramName;
+                  // DataClass.selectedSRom = _colorList[index].romName;
                   return OutlinedButton(
                     onPressed: () {
+                      // widget.onTap();
                       setState(() {
                         if(selectRom =="64GB"){
                           selectedCondition = "Fair";
@@ -156,6 +166,7 @@ class _ProductAttributeBottomSheetState
                         selectedStorage = storage;
                         selectedVariant = _colorList[index];
                         selectedColorIndex = index;
+                        // DataClass.sellingPrice = selectedVariant?.f2.toString();
                       });
                     },
                     style: OutlinedButton.styleFrom(
@@ -182,9 +193,10 @@ class _ProductAttributeBottomSheetState
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _sectionTitle("Color"),
               const SizedBox(height: 10),
+
               Wrap(
                 spacing: 14,
                 runSpacing: 12,
@@ -192,16 +204,14 @@ class _ProductAttributeBottomSheetState
                   int index = entry.key;
                   var item = entry.value;
                   bool isSelected = selectedColorIndex == index;
-
                   Color circleColor = getColorFromName(item.colorName ?? "Grey");
 
                   return GestureDetector(
-                      onTap: () {
+                    onTap: () {
                       setState(() {
                         selectedColorIndex = index;
                         selectedVariant = _colorList[index];
-                        selectedStorage =
-                        "${selectedVariant?.ramName} / ${selectedVariant?.romName}";
+                        selectedStorage = "${selectedVariant?.ramName} / ${selectedVariant?.romName}";
                       });
                     },
                     child: Column(
@@ -214,7 +224,7 @@ class _ProductAttributeBottomSheetState
                               backgroundColor: circleColor,
                               child: isSelected
                                   ? const Icon(Icons.check,
-                                      color: Colors.black87, size: 16)
+                                  color: Colors.black87, size: 16)
                                   : null,
                             ),
                             Positioned(
@@ -244,7 +254,63 @@ class _ProductAttributeBottomSheetState
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 30),
+
+              const SizedBox(height: 10),
+
+              // Center(
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Colors.blue,
+              //       foregroundColor: Colors.white,
+              //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       minimumSize: Size(300, 50),
+              //     ),
+              //     // onPressed: () async {
+              //     //   DataClass.productName = widget.product.productAndModelName.toString();
+              //     //   final userCode = await TokenHelper.getUserCode();
+              //     //   if (userCode == null) {
+              //     //     Get.to(() => LoginScreen());
+              //     //   } else {
+              //     //     var response = await AddToCartService.fetchAddToCartData(userCode);
+              //     //     if (response != null) {
+              //     //       Get.to(() => CartScreen());
+              //     //     } else {
+              //     //       ScaffoldMessenger.of(context).showSnackBar(
+              //     //         SnackBar(
+              //     //           content: Text("Something went wrong! Please try again."),
+              //     //           backgroundColor: Colors.redAccent,
+              //     //         ),
+              //     //       );
+              //     //     }
+              //     //   }
+              //     // },
+              //     onPressed: () async {
+              //       // DataClass.productName = widget.product.productAndModelName.toString();
+              //       final userCode = await TokenHelper.getUserCode();
+              //       if (userCode == null) {
+              //         Get.to(() => LoginScreen());
+              //       } else {
+              //         AddToCartService addToCartService = AddToCartService();
+              //         // var response = await addToCartService.fetchAddToCartData(userCode);
+              //         // if (response != null) {
+              //         //   Get.to(() => CartScreen());
+              //         // } else {
+              //         //   ScaffoldMessenger.of(context).showSnackBar(
+              //         //     SnackBar(
+              //         //       content: Text("Something went wrong! Please try again."),
+              //         //       backgroundColor: Colors.redAccent,
+              //         //     ),
+              //         //   );
+              //         // }
+              //       }
+              //     },
+              //     child: const Text("ADD TO CART"),
+              //   ),
+              // )
+
             ],
           ),
         );
@@ -253,9 +319,9 @@ class _ProductAttributeBottomSheetState
   }
 
   Widget _sectionTitle(String text) => Text(
-        text,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      );
+    text,
+    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  );
 
   Widget _buildWarrantyCard() {
     return Card(

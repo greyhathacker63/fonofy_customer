@@ -15,5 +15,10 @@ const String addToCartUrl =  "${baseUrl}api/common/add-to-cart";
 
 const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
 
+ const String cartListUrl = "${baseUrl}api/common/get-cart-list";
+
+
+
+
 
 

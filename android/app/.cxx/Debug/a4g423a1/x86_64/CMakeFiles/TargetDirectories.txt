@@ -1,0 +1,2 @@
+C:/fonofy_customer/fonofy_customer/android/app/.cxx/Debug/a4g423a1/x86_64/CMakeFiles/edit_cache.dir
+C:/fonofy_customer/fonofy_customer/android/app/.cxx/Debug/a4g423a1/x86_64/CMakeFiles/rebuild_cache.dir

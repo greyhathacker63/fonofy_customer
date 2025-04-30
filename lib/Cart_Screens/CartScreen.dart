@@ -1,68 +1,137 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/Api_Service/AddToCartService/AddToCartService.dart';
+import 'package:fonofy/Api_Service/AddToCartService/CartListService.dart';
+import 'package:fonofy/Api_Service/AddToCartService/ShippingChargeService.dart';
 import 'package:fonofy/Cart_Screens/CheckoutScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
+import 'package:fonofy/model/AddToCartModel/ShippingChargeModel.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
-import '../model/AddToCartModel/AddToCartModel.dart';
-import '../utils/Colors.dart';
+
+import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
 class CartScreen extends StatefulWidget {
-   final String customerId ;
-
-  const CartScreen({super.key, required this.customerId});
+  const CartScreen({super.key});
 
   @override
   _CartScreenState createState() => _CartScreenState();
 }
-
 class _CartScreenState extends State<CartScreen> {
 
-  int quantity = 1;
-  final double unitPrice = 25999.0;
-  final double shippingCost = 0.0;
-  final String productImage = "assets/images/iphone.png";
+  List<CartListModel> cartList = [];
 
-  // String user_code = "";
-
-  List<AddToCartModel> addToCartItems = [];
-
+  ShippingChargeModel? shippingChargeData;
+  bool isLoading = true;
+  // int quantity = 0;
   @override
   void initState() {
     super.initState();
-    fetchCartItems();
+    loadData();
   }
 
-  Future<void> fetchCartItems() async {
+  Future<void> loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await fetchCartList();
+    await fetchShippingData();
+     setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> fetchCartList() async {
     try {
-      String? userCode = await TokenHelper.getUserCode();
-      if (userCode != null) {
-        final response = await AddToCartService().fetchAddToCartData(userCode);
+      final userCode = await TokenHelper.getUserCode();
+      if (userCode == null || userCode.isEmpty) {
+        print("❌ User code is null or empty");
+        return;
+      }
+
+      final response = await CartListService.fetchCartList(userCode);
+      setState(() {
+        cartList = response ?? [];
+      });
+    } catch (e, stackTrace) {
+      print("❌ Error fetching cart list: $e");
+      print("📍 StackTrace: $stackTrace");
+      setState(() {
+        cartList = [];
+      });
+    }
+  }
+
+  Future<void> fetchShippingData() async {
+    try {
+      var data = await ShippingChargeService.fetchShippingCharge();
+      if (data != null) {
         setState(() {
-          addToCartItems = response;
+          shippingChargeData = data;
         });
       }
     } catch (e) {
-      print("❌ Error fetching cart items: $e");
+      print("❌ Error fetching shipping charge: $e");
     }
   }
+
+  double calculateSubtotal() {
+    return cartList.fold(0.0, (sum, item) {
+      double price = double.tryParse(item.sellingPrice?.toString() ?? '0') ?? 0.0;
+      print("🔍 Product: ${item.productName}, Price: $price, Quantity: ${item.quantity}");
+      return sum + (price * item.quantity);
+    });
+  }
+
+   Future<void> updateQuantity(bool isIncrement, int index) async {
+    final int maxQty = cartList[index].stockQuantity ?? 1;
+    if (isIncrement) {
+      if (cartList[index].quantity < maxQty) {
+        setState(() {
+          cartList[index].quantity++;
+          print("Quantity increased to: ${cartList[index].quantity}");
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("You can only add up to $maxQty item(s)."),
+            backgroundColor: Colors.redAccent,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } else {
+      if (cartList[index].quantity > 1) {
+        setState(() {
+          cartList[index].quantity--;
+          print("Quantity decreased to: ${cartList[index].quantity}");
+        });
+      } else {
+        setState(() {
+          cartList[index].quantity = 0;
+          print("Quantity set to 0");
+        });
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  double calculateShippingCharge(double totalAmount) {
+    if (shippingChargeData == null) {
+      return 0.0;
+    }
+    if (totalAmount >= (shippingChargeData?.maxAmount ?? 0)) {
+      int multiples = (totalAmount / (shippingChargeData?.maxAmount ?? 1)).floor();
+      return multiples * (shippingChargeData?.shippingCharge ?? 0);
+    } else {
+      return 0.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (addToCartItems.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text("Your Cart", style: TextStyle(color: Colors.black)),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.black),
-        ),
-        body: Center(child: const Text("Your cart is empty")),
-      );
-    }
-
-    final item = addToCartItems[0].result;
-
-    double subtotal = unitPrice * quantity;
-    double total = subtotal + shippingCost;
+    double subtotal = calculateSubtotal();
+    double shippingCharge = calculateShippingCharge(subtotal);
+    double total = subtotal + shippingCharge;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,96 +140,100 @@ class _CartScreenState extends State<CartScreen> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Padding(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator(strokeWidth: 1, color: Colors.blue))
+          : cartList.isEmpty
+          ? const Center(child: Text("No items in the cart."))
+          : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "There are ${addToCartItems.length} product(s) in your cart",
-              style: TextStyle(fontSize: 16, color: Colors.black54),
-            ),
-            const SizedBox(height: 20),
-            // Product Card
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    blurRadius: 5,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Product Image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(productImage, height: 80, width: 80, fit: BoxFit.cover),
-                  ),
-                  const SizedBox(width: 12),
-                  // Product Details
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item?.productId.toString() ?? 'No Name', // Display product ID if available
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          "₹${unitPrice.toStringAsFixed(1)}", // Display price
-                          style: const TextStyle(fontSize: 14, color: Colors.blue),
-                        ),
-                        const SizedBox(height: 10),
-                        // Quantity Selector
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove, size: 20),
-                              onPressed: () {
-                                setState(() {
-                                  if (quantity > 1) quantity--;
-                                });
-                              },
-                            ),
-                            Text(quantity.toString(),
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                            IconButton(
-                              icon: const Icon(Icons.add, size: 20),
-                              onPressed: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
-                            ),
-                          ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: cartList.length,
+                itemBuilder: (context, index) {
+                  final cartData = cartList[index];
+                  double price = double.tryParse(cartData.sellingPrice?.toString() ?? '0') ?? 0.0;
+
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          blurRadius: 5,
+                          spreadRadius: 2,
                         ),
                       ],
                     ),
-                  ),
-                  // Remove Button
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.black),
-                    onPressed: () {
-                      setState(() {
-                        quantity = 0;
-                      });
-                    },
-                  ),
-                ],
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            "$imageAllBaseUrl${cartData.productImage}",
+                            height: 80,
+                            width: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                cartData.productName ?? '',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              const SizedBox(height: 5),
+                              Text("₹${price.toStringAsFixed(0)}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.remove),
+                                    onPressed: () => updateQuantity(false, index),
+                                  ),
+                                  Text('${cartList[index].quantity}'),
+                                  IconButton(
+                                    icon: const Icon(Icons.add),
+                                    onPressed: () => updateQuantity(true, index),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              cartList.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 20),
-            // Checkout Summary Box
+            const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -172,19 +245,15 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   _summaryRow("Subtotal", "₹${subtotal.toStringAsFixed(1)}"),
                   _divider(),
-                  _summaryRow("Shipping", "₹${shippingCost.toStringAsFixed(1)}"),
+                  _summaryRow("Shipping Charge", "₹${shippingCharge.toStringAsFixed(1)}"),
                   _divider(),
                   _summaryRow("Total", "₹${total.toStringAsFixed(1)}", isBold: true),
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            // Proceed to Checkout Button
             ElevatedButton.icon(
-              onPressed: () {
-                Get.to(() => CheckoutScreen());
-                // Navigate to checkout screen
-              },
+              onPressed: () => Get.to(() => CheckoutScreen()),
               icon: const Icon(Icons.arrow_forward, color: Colors.white),
               label: const Text("Proceed to Checkout", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
@@ -194,11 +263,8 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            // Continue Shopping Button
             ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               label: const Text("Continue Shopping", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
@@ -213,12 +279,6 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  // Divider
-  Widget _divider() {
-    return const Divider(color: Colors.grey);
-  }
-
-  // Summary Row
   Widget _summaryRow(String label, String value, {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -231,4 +291,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+
+  Widget _divider() => const Divider(color: Colors.grey);
 }
+

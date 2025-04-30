@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
+import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
@@ -15,6 +16,7 @@ import '../Bottom_Sheet/ProductAttributeBottomSheet.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/ControllerProductDetails.dart';
 import '../controllers/ControllerProductDetails/ControllerProductList.dart';
+import '../model/DataObject.dart';
 import '../model/ProductDetailsModel/ProductDetailsListModel.dart';
 import '../model/ProductDetailsModel/ProductDetailsModel.dart';
 import '../model/ProductDetailsModel/ProductImageListModel.dart';
@@ -39,21 +41,22 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
 
   List<ProductDetailsListModel> productDetailsList =[];
-
   List <AddToCartModel> productAddToCart = [];
-
-  int selectedImageIndex = 0;
-  final String colorRom = "";
-
-  late bool isFavorite = false;
-  bool favoriteClicked = false;
+  List<ProductReviewModel> reviews = [];
+  List<ProductImageListModel> productImages = [];
 
   ProductRatingModel? ratingData;
+  AddToCartModel? addToaCrtData;
+
+
+  int selectedImageIndex = 0;
   int totalRatings = 0;
 
-  List<ProductReviewModel> reviews = [];
-
-  List<AddToCartModel> add =[];
+  // final String colorRom = "";
+  bool isFavorite = false;
+  bool favoriteClicked = false;
+  bool isLoading = true;
+   dynamic price;
 
   Future<void> loadProductRating() async {
     final data = await ProductRatingService.fetchProductRating(widget.url);
@@ -68,7 +71,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       });
     }
   }
-
   Future<void> loadProductReview() async {
     final response = await ProductReviewService.fetchProductReviews(widget.url);
     if (response != null) {
@@ -77,21 +79,32 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       });
     }
   }
-
+  Future<void> fetchImagesList() async {
+    try {
+      final productImageList = await ProductImageListService.fetchProductImagesList(
+        refNo: widget.refNo,
+        url: widget.url,
+      );
+      setState(() {
+        productImages = productImageList;
+        DataClass.imageUrl = productImages[0].image.toString();
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error loading images: $e");
+      setState(() => isLoading = false);
+    }
+  }
   final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
-
   @override
   void initState() {
     super.initState();
     controllerProductDetails.getProductDetailsData(url: widget.url, refNo: widget.refNo);
     controllerProductDetailsList.getProductListData();
-
     loadProductRating();
     loadProductReview();
     fetchImagesList();
   }
-  List<ProductImageListModel> productImages = [];
-   bool isLoading = true;
   // Future<void> fetchImages() async {
   //   try {
   //     final images = await ProductImageListService.fetchProductImagesList(
@@ -114,21 +127,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   //   "assets/images/thumb_3.png",
   //   "assets/images/thumb_4.png",
   // ];
-  Future<void> fetchImagesList() async {
-    try {
-      final productImageList = await ProductImageListService.fetchProductImagesList(
-        refNo: widget.refNo,
-        url: widget.url,
-      );
-      setState(() {
-        productImages = productImageList;
-        isLoading = false;
-      });
-    } catch (e) {
-      print("Error loading images: $e");
-      setState(() => isLoading = false);
-    }
-  }
+
   final List<Map<String, String>> features = [
     {"icon": "assets/images/warranty.png", "text": "6-Month Warranty"},
     {"icon": "assets/images/exchange.png", "text": "3-Days Exchange"},
@@ -164,10 +163,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             var product = controllerProductDetails.productDetails.value;
             if (product == null) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                  strokeWidth: 1,
-                ),
+                // child: CircularProgressIndicator(
+                //   color: Colors.blue,
+                //   strokeWidth: 1,
+                // ),
               );
             }
             // Display the favorite button when product is available
@@ -177,12 +176,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 color: Colors.redAccent,
               ),
               onPressed: () {
-                if (!favoriteClicked) {
-                  setState(() {
-                    isFavorite = true;
-                    favoriteClicked = true;
-                  });
-                }
+                setState(() {
+                  isFavorite = !isFavorite;  // Toggle the state
+                });
               },
             );
           }),
@@ -190,7 +186,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       ),
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
-        if (product == null) {
+        price = product?.sellingPrice.toString();
+         if (product == null) {
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.blue,
@@ -298,11 +295,75 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       child: Row(
         children: [
           Expanded(
-              child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(() => CartScreen(customerId: '',) );
-                  }, child: const Text("ADD TO CART"),
+            //       child: ElevatedButton(
+            // style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+            //         onPressed: () async {
+            //           DataClass.sellingPrice = price;
+            //           DataClass.productName = widget.url.toString();
+            //           final userCode = await TokenHelper.getUserCode();
+            //           if (userCode == null) {
+            //              Get.to(() => LoginScreen());
+            //           } else {
+            //              var response = await AddToCartService.fetchAddToCartData(userCode);
+            //             if (response != null) {
+            //                Get.to(() => CartScreen());
+            //             } else {
+            //                ScaffoldMessenger.of(context).showSnackBar(
+            //                 SnackBar(
+            //                   content: Text("Something went wrong! Please try again."),
+            //                   backgroundColor: Colors.redAccent,
+            //                 ),
+            //               );
+            //             }
+            //           }
+            //
+            //         },
+            //         child: const Text("ADD TO CART",style: TextStyle(color: Colors.white)),
+            //       ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+              onPressed: () async {
+                try {
+                  final product = controllerProductDetails.productDetails.value;
+                  final userCode = await TokenHelper.getUserCode();
+                  if (userCode == null) {
+                    Get.to(() => LoginScreen());
+                    return;
+                  }
+                  final addToCartService = AddToCartService();
+                  final response = await addToCartService.fetchAddToCartData(
+                    userCode,
+                    product?.ramId,
+                    product?.romId,
+                    product?.stockQuantity,
+                    product?.colorId,
+                    product?.modelNo,
+                  );
+
+                  if (response != null) {
+                    Get.to(() => CartScreen());
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Something went wrong! Please try again."),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  print("Add to Cart Error: $e");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("An error occurred: $e"),
+                      backgroundColor: Colors.redAccent,
+                    ),
+                  );
+                }
+              },
+              child: const Text("ADD TO CART",
+                style: TextStyle(color: Colors.black,fontSize: 15),
               ),
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -319,7 +380,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   Widget _buildRecommendedProducts(ProductDetailsModel product) {
     return Obx(() {
       var productList = controllerProductDetailsList.productDetailsList;
-
       if (controllerProductDetailsList.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -467,6 +527,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
     });
   }
+
   Widget _buildFeatureSection() {
     return GridView.builder(
       shrinkWrap: true,
@@ -520,7 +581,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       ),
     );
   }
-
   Widget _buildPricingCard(ProductDetailsModel product) {
     return Card(
       elevation: 2,
@@ -530,9 +590,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             Row(
               children: [
                 Text("-${product.discountPercentage?.toString() ?? "0"}%",
@@ -541,7 +599,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.bold)),
                 const SizedBox(width: 10),
-                Text("₹${product.sellingPrice?.toString() ?? "0"}",
+                Text("₹${product.sellingPrice ?.toString() ?? "0"}",
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -589,6 +647,7 @@ Widget _buildProductHighlightRow(String title, String value) {
   );
 }
 
+
 Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel product) {
 
   String condition = "Fair"; // default fallback
@@ -599,12 +658,9 @@ Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel pro
   }else if(product.romName == "256GB"){
     condition = "Super";
   }
-
   return GestureDetector(
     onTap: () {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
+      showModalBottomSheet(context: context, isScrollControlled: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
@@ -618,15 +674,12 @@ Widget _buildProductAttributesCard(BuildContext context, ProductDetailsModel pro
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _buildAttributeRow(
-                Icons.phone_android, "Condition", "${condition}", "+1 more"),
+            _buildAttributeRow(Icons.phone_android, "Condition", "${condition}", "+1 more"),
             const Divider(),
             _buildAttributeRow(Icons.sd_storage, "Storage",
-                "${product.ramName}/ ${product.romName}", "2+ more"),
+                "${product.ramName}/ ${product.romName}", "+2 more"),
             const Divider(),
-            _buildAttributeRow(
-                Icons.circle, "Color", "${product.colorName}", "+2 more",
-                isColorDot: true),
+            _buildAttributeRow(Icons.circle, "Color", "${product.colorName}", "+2 more",isColorDot: true),
           ],
         ),
       ),

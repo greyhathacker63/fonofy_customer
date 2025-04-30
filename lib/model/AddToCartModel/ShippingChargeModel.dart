@@ -1,27 +1,19 @@
-// To parse this JSON data, do
-//
-//     final shippingChargeModel = shippingChargeModelFromJson(jsonString);
-
-import 'dart:convert';
-
-ShippingChargeModel shippingChargeModelFromJson(String str) => ShippingChargeModel.fromJson(json.decode(str));
-
-String shippingChargeModelToJson(ShippingChargeModel data) => json.encode(data.toJson());
-
 class ShippingChargeModel {
-  int? maxAmount;
-  int? shipingCharge;
+  final double maxAmount;
+  final double shippingCharge;
 
   ShippingChargeModel({
-    this.maxAmount,
-    this.shipingCharge,
+    required this.maxAmount,
+    required this.shippingCharge,
   });
+
   factory ShippingChargeModel.fromJson(Map<String, dynamic> json) => ShippingChargeModel(
-    maxAmount: json["MaxAmount"],
-    shipingCharge: json["ShipingCharge"],
+    maxAmount: (json["MaxAmount"] ?? 0).toDouble(),
+    shippingCharge: (json["ShipingCharge"] ?? 0).toDouble(),
   );
+
   Map<String, dynamic> toJson() => {
     "MaxAmount": maxAmount,
-    "ShipingCharge": shipingCharge,
+    "ShipingCharge": shippingCharge,
   };
 }
