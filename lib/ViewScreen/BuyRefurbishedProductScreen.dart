@@ -44,7 +44,6 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
   final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
-
   List<ProductDetailsListModel> productDetailsList =[];
   List <AddToCartModel> productAddToCart = [];
   List<ProductReviewModel> reviews = [];
@@ -54,11 +53,11 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
   AddToCartModel? addToaCrtData;
 
-
   int selectedImageIndex = 0;
   int totalRatings = 0;
 
   // final String colorRom = "";
+
   bool isFavorite = false;
   bool favoriteClicked = false;
   bool isLoading = true;
@@ -507,7 +506,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
     });
   }
-
   Widget _buildFeatureSection() {
     return GridView.builder(
       shrinkWrap: true,
@@ -531,6 +529,5 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       },
     );
   }
-
 }
 

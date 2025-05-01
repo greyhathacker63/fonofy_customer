@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:fonofy/model/wishlist_model.dart';
+import 'package:fonofy/model/WishlistModel/wishlist_model.dart';
 import '../Api_Service/Wishlist/wishlist_service.dart';
 
 class WishlistController extends GetxController {
