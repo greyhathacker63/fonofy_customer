@@ -16,7 +16,7 @@ class SearchService {
     String? minPrice,
     String? maxPrice,
     String? pageCount,
-    String? ramName,
+    String? ramName, String? modelID,
   }) async {
     try {
       final Uri uri = Uri.parse("$baseurl$common$productList").replace(
@@ -47,7 +47,7 @@ class SearchService {
           return [];
         }
       } else {
-        log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
+       log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
         throw Exception('Failed to load products: ${response.statusCode}');
       }
     } catch (e, stackTrace) {

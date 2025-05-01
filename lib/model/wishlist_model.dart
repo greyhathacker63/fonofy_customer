@@ -1,6 +1,7 @@
 class WishlistModel {
   final dynamic productId;
   final dynamic customerId;
+  final dynamic modelID;
   final dynamic status;
   final dynamic productAndModelName;
   final dynamic image;
@@ -20,6 +21,7 @@ class WishlistModel {
   WishlistModel({
     this.productId,
     this.customerId,
+    this.modelID,
     this.status,
     this.productAndModelName,
     this.image,
@@ -41,6 +43,7 @@ class WishlistModel {
     return WishlistModel(
       productId: json['Id'] as dynamic,
       customerId: json['CustomerId'] as dynamic,
+      modelID: json['modelID'] as dynamic,
       status: json['Status'] as dynamic,
       productAndModelName: json['ProductAndModelName'] as dynamic,
       image: json['Image'] as dynamic,

@@ -33,14 +33,13 @@ class WishlistController extends GetxController {
 
   /// Add product to wishlist using API
   void addProductToWishlist({
-    required int productId,
-    required String customerId,
-    required int quantity,
-    required int modelId,
-    required int brandId,
-    required int colorId,
-    required int ramId,
-    required int romId,
+    required String productId,
+    int? quantity,
+    int? modelId,
+    int? brandId,
+    required String colorId,
+    required String ramId,
+    required String romId,
     String? cartRef, // Make cartRef nullable
   }) async {
     isLoading.value = true;
@@ -59,7 +58,6 @@ class WishlistController extends GetxController {
 
     bool success = await WishlistService.addToWishlist(
       productId: productId,
-      customerId: customerId,
       quantity: quantity,
       modelId: modelId,
       brandId: brandId,
@@ -80,16 +78,31 @@ class WishlistController extends GetxController {
   }
 
   /// Remove product from wishlist using API
-  void removeProductFromWishlist({required int productId}) async {
+  void removeFromWishlist({
+    required String productId,
+    int? quantity,
+    required String modelId,
+    int? brandId,
+    required String colorId,
+    required String ramId,
+    required String romId,
+    String? cartRef, 
+  }) async {
     isLoading.value = true;
 
-    bool success = await WishlistService.removeFromWishlist(productId.toString());
+    bool success = await WishlistService.removeFromWishlist(
+      productId: productId,
+      modelId: modelId,
+      colorId: colorId,
+      ramId: ramId,
+      romId: romId,
+    );
 
     isLoading.value = false;
 
     if (success) {
       Get.snackbar("Success", "Product removed from wishlist");
-      await fetchWishlistData(); // Refresh after successful removal
+      await fetchWishlistData(); // Refresh after successful remove
     } else {
       Get.snackbar("Error", "Failed to remove product from wishlist");
     }

@@ -8,7 +8,6 @@ import '../../TokenHelper/TokenHelper.dart';
 class WishlistService {
   static Future<List<WishlistModel>> fetchWishlist() async {
     var userCode = await TokenHelper.getUserCode();
-
     var token = await TokenHelper.getToken();
 
     if (token == null || TokenHelper.isTokenExpired(token)) {
@@ -27,7 +26,7 @@ class WishlistService {
     try {
       http.StreamedResponse response = await request.send();
       var responseBody = await response.stream.bytesToString();
-      log(responseBody);
+      //log(responseBody);
 
       if (response.statusCode == 200) {
         var data = jsonDecode(responseBody);
@@ -60,39 +59,42 @@ class WishlistService {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      String newToken = data['token']; // Assuming response contains new token
-      await TokenHelper.saveToken(newToken); // Save new token to local storage
+      String newToken = data['token']; 
+      await TokenHelper.saveToken(newToken); 
       return newToken;
     } else {
       throw Exception('Failed to refresh token: ${response.statusCode}');
     }
   }
 
-  // Check if the token is expired (e.g., you can use expiration time from token payload)
+  
   static bool isTokenExpired(String token) {
-    // This is just an example logic. You can decode JWT and check expiration date
+    
     try {
       var decodedToken = jsonDecode(token);
-      var exp = decodedToken['exp']; // Assuming 'exp' is in seconds
+      var exp = decodedToken['exp']; 
       var expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
       return expiryDate.isBefore(DateTime.now());
     } catch (e) {
-      return true; // Assume expired if unable to decode
+      return true; 
     }
   }
 
   static Future<bool> addToWishlist({
-    required int productId,
-    required String customerId,
-    required int quantity,
-    required int modelId,
-    required int brandId,
-    required int colorId,
-    required int ramId,
-    required int romId,
+    required String productId,
+    int? quantity,
+    int? modelId,
+    int? brandId,
+    required String colorId,
+    required String ramId,
+    required String romId,
     String? cartRef,
+    
   }) async {
-    final String url = "$baseurl$b2c$addToWishlist";
+    var userCode = await TokenHelper.getUserCode();
+    final String url = "$baseurl$b2c$addtoWishlist";
+    log(url.toString());
+    
 
     var token = await TokenHelper.getToken();
 
@@ -102,16 +104,17 @@ class WishlistService {
     }
 
     var body = jsonEncode({
-      "ProductId": productId,
-      "CustomerId": customerId,
+      "ProductId": int.parse(productId),
+      "CustomerId": userCode,
       "Quantity": quantity,
       "ModelId": modelId,
       "BrandId": brandId,
-      "ColorId": colorId,
-      "RamId": ramId,
-      "RomId": romId,
+      "ColorId": int.parse(colorId),
+      "RamId": int.parse(ramId),
+      "RomId": int.parse(romId),
       "CartRef": cartRef ?? "",
     });
+
 
     try {
       var response = await http.post(
@@ -123,8 +126,8 @@ class WishlistService {
         body: body,
       );
 
-      log("Wishlist Add Response: ${response.body}");
-
+      // log("Wishlist Add Response: ${response.body}");
+      // log(jsonEncode.toString());
       if (response.statusCode == 200) {
         var res = jsonDecode(response.body);
         if (res["message"] == "Product add in wish list") {
@@ -143,30 +146,47 @@ class WishlistService {
     }
   }
 
-static Future<bool> removeFromWishlist(String productId) async {
+static Future<bool> removeFromWishlist({
+  required String productId,
+  required String modelId,
+  required String colorId,
+  required String ramId,
+  required String romId,
+}) async {
+  var userCode = await TokenHelper.getUserCode();
   final String url = "$baseurl$b2c$deleteProductList";
+  log(url.toString());
 
-  final token = await TokenHelper.getToken();
+  var token = await TokenHelper.getToken();
 
   if (token == null) {
     log("Token is null. Cannot proceed with wishlist delete.");
     return false;
   }
 
+  var body = jsonEncode({
+    "ProductId": int.parse(productId),
+    "ModelID":(modelId),
+    "CustomerId": userCode,
+    "ColorId": int.parse(colorId),
+    "RamId": int.parse(ramId),
+    "RomId": int.parse(romId),
+  });
+
   try {
-    final response = await http.post(
+    var response = await http.post(
       Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode({"ProductId": productId}), // Send productId here
+      body: body,
     );
 
     log("Remove Wishlist Response: ${response.body}");
 
     if (response.statusCode == 200) {
-      final res = jsonDecode(response.body);
+      var res = jsonDecode(response.body);
       return res["message"] == "Product removed from wishlist";
     } else {
       log("Remove from Wishlist failed: ${response.statusCode}");
@@ -177,5 +197,4 @@ static Future<bool> removeFromWishlist(String productId) async {
     return false;
   }
 }
-
 }
