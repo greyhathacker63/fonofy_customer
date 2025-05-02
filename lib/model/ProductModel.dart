@@ -1,22 +1,22 @@
 class ProductModel {
-  final String? ramName;
-  final String? romName;
-  final String? colorName;
-  final int? colorId;
-  final int? ramId;
-  final int? romId;
-  final String? modelNo;
-  final String? productAndModelName;
-  final String? modelType;
-  final int? amount;
-  final String? image;
-  final int? newModelAmt;
-  final int? discountPercentage;
-  final String? modelUrl;
-  final int? id;
-  final String? ucode;
-  final int? wishlistCount;
-  final int? cartQuantity;
+   String? ramName;
+   String? romName;
+   String? colorName;
+   int? colorId;
+   int? ramId;
+   int? romId;
+   String? modelNo;
+   String? productAndModelName;
+   String? modelType;
+   int? amount;
+   String? image;
+   int? newModelAmt;
+   int? discountPercentage;
+   String? modelUrl;
+   int? id;
+   String? ucode;
+   int? wishlistCount;
+   int? cartQuantity;
 
   ProductModel({
     this.ramName,

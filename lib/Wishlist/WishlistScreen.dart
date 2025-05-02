@@ -37,20 +37,20 @@ class _WishlistScreenState extends State<WishlistScreen> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: Obx(() {
-        if (wishlistController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: SafeArea(
+        child: Obx(() {
+          if (wishlistController.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        if (wishlistController.wishlistItems.isEmpty) {
-          return const Center(child: Text("No items in wishlist"));
-        }
+          if (wishlistController.wishlistItems.isEmpty) {
+            return const Center(child: Text("No items in wishlist"));
+          }
 
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RefreshIndicator(
+          return RefreshIndicator(
             onRefresh: _onRefresh,
             child: GridView.builder(
+              padding: const EdgeInsets.all(8.0),
               itemCount: wishlistController.wishlistItems.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -67,16 +67,18 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // Product image
                       ClipRRect(
                         borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12)),
+                          top: Radius.circular(12),
+                        ),
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: Image.network(
                             wishlistItem.image ?? '',
                             fit: BoxFit.cover,
-                            width: double.infinity,
                             errorBuilder: (context, error, stackTrace) =>
                                 const Center(
                                     child: Icon(Icons.broken_image, size: 50)),
@@ -84,114 +86,98 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         ),
                       ),
 
-                      // Remove the Expanded widget here
+                      // Product info
                       Padding(
                         padding: const EdgeInsets.all(6.0),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Product Info
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      wishlistItem.productAndModelName ??
-                                          'N/A',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      wishlistItem.modelNo?.toString() ??
-                                          'Model No.',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              wishlistItem.productAndModelName ?? 'N/A',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              wishlistItem.modelNo?.toString() ?? 'Model No.',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.green,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
 
-                                // Move to Cart Button
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 36,
-                                  child: OutlinedButton(
-                                    onPressed: () {
-                                      // TODO: Implement Move to Cart logic
-                                      Get.snackbar("Action",
-                                          "Moved to Cart feature coming soon!",
-                                          snackPosition: SnackPosition.BOTTOM);
-                                    },
-                                    child: const Text('Move to Cart',
-                                        style: TextStyle(fontSize: 13)),
-                                    style: OutlinedButton.styleFrom(
-                                      backgroundColor:
-                                          ColorConstants.appBlueColor3,
-                                      foregroundColor: Colors.white,
-                                      side: const BorderSide(color: Colors.teal),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
+                            // Move to cart button
+                            SizedBox(
+                              width: double.infinity,
+                              height: 36,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  Get.snackbar("Action",
+                                      "Moved to Cart feature coming soon!",
+                                      snackPosition: SnackPosition.BOTTOM);
+                                },
+                                child: const Text('Move to Cart',
+                                    style: TextStyle(fontSize: 13)),
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor:
+                                      ColorConstants.appBlueColor3,
+                                  foregroundColor: Colors.white,
+                                  side: const BorderSide(color: Colors.teal),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              ],
-                            );
-                          },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
-                      // Delete Icon
-                      GestureDetector(
-                        onLongPress: () async {
-                          final confirm = await showDialog<bool>(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text("Remove Item"),
-                              content: const Text(
-                                  "Are you sure you want to remove this item from wishlist?"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () => Navigator.pop(ctx, false),
-                                    child: const Text("Cancel")),
-                                TextButton(
-                                    onPressed: () => Navigator.pop(ctx, true),
-                                    child: const Text("Remove")),
-                              ],
-                            ),
-                          );
-
-                          if (confirm == true) {
-                            wishlistController.removeFromWishlist(
-                              productId: productController
-                                  .productsList[index].id
-                                  .toString(),
-                              modelId: productController.productsList[index].modelNo
-                                  .toString(),
-                              colorId: productController
-                                  .productsList[index].colorId
-                                  .toString(),
-                              ramId: productController.productsList[index].ramId
-                                  .toString(),
-                              romId: productController.productsList[index].romId
-                                  .toString(),
+                      // Delete icon
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onLongPress: () async {
+                            final confirm = await showDialog<bool>(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text("Remove Item"),
+                                content: const Text(
+                                    "Are you sure you want to remove this item from wishlist?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(ctx, false),
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(ctx, true),
+                                    child: const Text("Remove"),
+                                  ),
+                                ],
+                              ),
                             );
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child:
-                              Icon(Icons.delete, color: Colors.red, size: 18),
+                            if (confirm == true) {
+                              wishlistController.removeFromWishlist(
+                                wishlistId: wishlistItem.id.toString(),
+                                modelId: wishlistItem.modelNo.toString(),
+                                colorId: wishlistItem.colorId.toString(),
+                                ramId: wishlistItem.ramId.toString(),
+                                romId: wishlistItem.romId.toString(),
+                              );
+                            }
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child:
+                                Icon(Icons.delete, color: Colors.red, size: 18),
+                          ),
                         ),
                       ),
                     ],
@@ -199,9 +185,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 );
               },
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

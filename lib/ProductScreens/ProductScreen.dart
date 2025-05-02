@@ -244,83 +244,54 @@ class _ProductScreenState extends State<ProductScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                        icon: Icon(
-                                          isWishlisted
-                                              //product ==true
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          color: isWishlisted
-                                              ? Colors.red
-                                              : Colors.grey,
-                                        ),
-                                        // onPressed: () async {
-                                        //   final userCode =
-                                        //       await TokenHelper.getUserCode();
-                                        //   if (userCode == null || userCode.isEmpty) {
-                                        //     Get.snackbar("Login Required",
-                                        //         "Please login to wishlist a product",
-                                        //         snackPosition: SnackPosition.BOTTOM);
-                                        //     Get.to(() => LoginScreen());
-                                        //     return;
-                                        //   }
-
-                                        //   final prefs =
-                                        //       await SharedPreferences.getInstance();
-                                        //   List<String> wishlist =
-                                        //       prefs.getStringList('wishlist') ?? [];
-
-                                        //   setState(() {
-                                        //     if (isWishlisted) {
-                                        //       wishlistedProductNames
-                                        //           .remove(product.productAndModelName);
-                                        //       wishlist
-                                        //           .remove(product.productAndModelName);
-                                        //     } else {
-                                        //       if (product.productAndModelName != null &&
-                                        //           product.productAndModelName!
-                                        //               .isNotEmpty) {
-                                        //         wishlistedProductNames.add(
-                                        //             product.productAndModelName!);
-                                        //         wishlist.add(
-                                        //             product.productAndModelName!);
-                                        //       }
-                                        //     }
-                                        //   });
-
-                                        //   await prefs.setStringList(
-                                        //       'wishlist', wishlist);
-                                        // },
-                                        onPressed: () async {
-                                          final userCode =
-                                              await TokenHelper.getUserCode();
-                                          if (userCode == null ||
-                                              userCode.isEmpty) {
-                                            Get.snackbar(
-                                              "Login Required",
-                                              "Please login to wishlist a product",
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                            );
-                                            Get.to(() => LoginScreen());
-                                            return;
-                                          }
-
-                                          wishlistController
-                                              .addProductToWishlist(
-                                            productId: productController
-                                                .productsList[index].modelNo
-                                                .toString(),
-                                            colorId: productController
-                                                .productsList[index].colorId
-                                                .toString(),
-                                            ramId: productController
-                                                .productsList[index].ramId
-                                                .toString(),
-                                            romId: productController
-                                                .productsList[index].romId
-                                                .toString(),
+                                      icon: Icon(
+                                        productController.productsList[index]
+                                                    .wishlistCount ==
+                                                1
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        color: productController
+                                                    .productsList[index]
+                                                    .wishlistCount ==
+                                                1
+                                            ? Colors.red
+                                            : Colors.grey,
+                                      ),
+                                      onPressed: () async {
+                                        final userCode =
+                                            await TokenHelper.getUserCode();
+                                        if (userCode == null ||
+                                            userCode.isEmpty) {
+                                          Get.snackbar(
+                                            "Login Required",
+                                            "Please login to wishlist a product",
+                                            snackPosition: SnackPosition.BOTTOM,
                                           );
-                                        }),
+                                          Get.to(() => LoginScreen());
+                                          return;
+                                        }
+
+                                        final product = productController
+                                            .productsList[index];
+
+                                        // Call API to add/remove from wishlist
+                                        wishlistController.addProductToWishlist(
+                                          productId: product.modelNo.toString(),
+                                          colorId: product.colorId.toString(),
+                                          ramId: product.ramId.toString(),
+                                          romId: product.romId.toString(),
+                                        );
+
+                                        // Toggle local wishlistCount and rebuild
+                                        setState(() {
+                                          productController.productsList[index]
+                                                  .wishlistCount =
+                                              product.wishlistCount == 1
+                                                  ? 0
+                                                  : 1;
+                                        });
+                                      },
+                                    ),
                                     ElevatedButton(
                                       onPressed: () {
                                         Get.snackbar(
