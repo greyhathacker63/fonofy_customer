@@ -32,11 +32,7 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
   final String url;
   final String refNo;
 
-  const BuyRefurbishedProductScreen({
-    super.key,
-    required this.url,
-    required this.refNo,
-  });
+  const BuyRefurbishedProductScreen({super.key, required this.url, required this.refNo,});
 
   @override
   State<BuyRefurbishedProductScreen> createState() =>

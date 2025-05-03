@@ -85,33 +85,35 @@ class _ProductAttributeBottomSheetState
               const SizedBox(height: 10),
               Text.rich(
                 TextSpan(
-                  text:
-                  "₹${selectedVariant?.f2 ?? widget.product.sellingPrice ?? '0'} ",
+                  text: "₹${_getSelectedConditionPrice()?.toStringAsFixed(0) ?? '0'} ",
                   style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                   children: [
                     TextSpan(
                       text:
-                      " ₹${selectedVariant?.newAmount ?? widget.product.newModelAmt ?? '0'} ",
+                      " ₹${widget.product.newModelAmt?.toStringAsFixed(0) ?? '0'} ",
                       style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough),
+                        fontSize: 16,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
                     TextSpan(
                       text: "  You Save ₹ ${_calculateSavings()}",
                       style: TextStyle(fontSize: 12, color: Colors.green[700]),
-                    )
+                    ),
                   ],
                 ),
               ),
+
               const SizedBox(height: 10),
               _sectionTitle("Condition"),
               Wrap(
                 spacing: 8,
-                children: ["Fair", "Good", "Superb"].map((condition) {
+                children: ["Fair","Good","Superb"].map((condition) {
                   return ChoiceChip(
                     label: Text(condition),
                     selected: selectedCondition == condition,
@@ -127,6 +129,7 @@ class _ProductAttributeBottomSheetState
                   );
                 }).toList(),
               ),
+
               Row(
                 children: [
                   Checkbox(
@@ -365,10 +368,29 @@ class _ProductAttributeBottomSheetState
     );
   }
 
-  String _calculateSavings() {
-    double mrp =
-        double.tryParse(selectedVariant?.newAmount?.toString() ?? "0") ?? 0;
-    double sp = double.tryParse(selectedVariant?.f1?.toString() ?? "0") ?? 0;
-    return (mrp - sp).toStringAsFixed(0);
+  double? _getSelectedConditionPrice() {
+    if (selectedCondition == "Fair") {
+      return widget.product.sellingPrice;
+    } else if (selectedCondition == "Good") {
+      return widget.product.sellingPriceF1;
+    } else if (selectedCondition == "Superb") {
+      return widget.product.sellingPricePlus;
+    }
+    // default to sellingPrice if none selected
+    return widget.product.sellingPrice;
   }
+
+  String _calculateSavings() {
+    final selectedPrice = _getSelectedConditionPrice() ?? 0;
+    final newPrice = widget.product.newModelAmt ?? 0;
+    final savings = newPrice - selectedPrice;
+    return savings > 0 ? savings.toStringAsFixed(0) : '0';
+  }
+
+  // String _calculateSavings() {
+  //   double mrp =
+  //       double.tryParse(selectedVariant?.newAmount?.toString() ?? "0") ?? 0;
+  //   double sp = double.tryParse(selectedVariant?.f1?.toString() ?? "0") ?? 0;
+  //   return (mrp - sp).toStringAsFixed(0);
+  // }
 }

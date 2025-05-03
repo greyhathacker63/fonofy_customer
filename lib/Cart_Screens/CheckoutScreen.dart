@@ -135,15 +135,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          // Edit
+
           String? userCode = widget.userCode ?? await TokenHelper.getUserCode();
+
+
           if (userCode == null) return false;
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddNewAddressScreen(
-                customerId: userCode,
-                address: address,
+              builder: (context) => AddNewAddressScreen(customerId: userCode, address: address,
               ),
             ),
           );
@@ -176,7 +176,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 id: id,
                 shipmentId: shipmentId,
               );
-
               if (result != null && result.status == true) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("✅ ${result.message}")),
