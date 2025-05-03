@@ -60,7 +60,7 @@ class WishlistController extends GetxController {
       item.ramId.toString() == ramId);
 
   if (isProductAlreadyInWishlist) {
-    Get.snackbar("Info", "This product is already in your wishlist.");
+    //Get.snackbar("Info", "This product is already in your wishlist.");
     isLoading.value = false;
     return;
   }
@@ -83,7 +83,7 @@ class WishlistController extends GetxController {
     Get.snackbar("Success", "Product added to wishlist");
     await fetchWishlistData();
   } else {
-    Get.snackbar("Error", "Failed to add product to wishlist");
+    //Get.snackbar("Error", "Failed to add product to wishlist");
   }
 }
 

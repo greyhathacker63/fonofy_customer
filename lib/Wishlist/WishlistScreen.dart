@@ -14,7 +14,6 @@ class WishlistScreen extends StatefulWidget {
 class _WishlistScreenState extends State<WishlistScreen> {
   final WishlistController wishlistController = Get.put(WishlistController());
   final ProductController productController = Get.put(ProductController());
-  
 
   @override
   void initState() {
@@ -63,7 +62,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
               ),
               itemBuilder: (context, index) {
                 var wishlistItem = wishlistController.wishlistItems[index];
-                
 
                 return Container(
                   decoration: BoxDecoration(
@@ -134,7 +132,12 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                     ramId: wishlistItem.ramId.toString(),
                                     romId: wishlistItem.romId.toString(),
                                   );
+
+                                  // Remove item from the list immediately
+                                  wishlistController.wishlistItems
+                                      .removeAt(index);
                                 }
+                            
                               },
                               child: const Icon(Icons.close,
                                   size: 18, color: Colors.black26),
@@ -145,7 +148,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
                       // Info + button
                       Expanded(
-                        
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: Column(
@@ -163,7 +165,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                 style: const TextStyle(fontSize: 10),
                                 maxLines: 1,
                               ),
-                             
                               Text(
                                 '₹${wishlistItem.price ?? ''}',
                                 style: const TextStyle(

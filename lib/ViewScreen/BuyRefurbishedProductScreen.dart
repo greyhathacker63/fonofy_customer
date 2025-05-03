@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/AddToCartService/AddToBuyNowService.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
+import 'package:fonofy/controllers/product_controller.dart';
+import 'package:fonofy/controllers/wishlist_controller.dart';
 import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
@@ -49,6 +51,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   List<AddToCartModel> productAddToCart = [];
   List<ProductReviewModel> reviews = [];
   List<ProductImageListModel> productImages = [];
+
+  Set<String> wishlistedProductNames = {};
+  final ProductController productController = Get.put(ProductController());
+  final WishlistController wishlistController = Get.put(WishlistController());
 
   ProductRatingModel? ratingData;
 
@@ -144,24 +150,146 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         }),
         centerTitle: true,
         actions: [
-          Obx(() {
-            var product = controllerProductDetails.productDetails.value;
-            if (product == null) {
-              return const SizedBox.shrink();
-            }
-            return IconButton(
-              icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: Colors.redAccent,
-              ),
-              onPressed: () {
-                setState(() {
-                  isFavorite = !isFavorite;
-                });
-              },
-            );
-          }),
-        ],
+  Obx(() {
+    var product = controllerProductDetails.productDetails.value;
+    if (product == null) {
+      return const SizedBox.shrink();
+    }
+
+    return IconButton(
+      icon: Icon(
+        product.wishlistCount == 1 ? Icons.favorite : Icons.favorite_border,
+        color: product.wishlistCount == 1 ? Colors.red : Colors.grey,
+      ),
+      onPressed: () async {
+        final userCode = await TokenHelper.getUserCode();
+
+        if (userCode == null || userCode.isEmpty) {
+          Get.snackbar(
+            "Login Required",
+            "Please login to wishlist a product",
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          Get.to(() => LoginScreen());
+          return;
+        }
+
+        if (product.wishlistCount == 0) {
+          // Add to wishlist
+          wishlistController.addProductToWishlist(
+            productId: product.modelNo.toString(),
+            colorId: product.colorId.toString(),
+            ramId: product.ramId.toString(),
+            romId: product.romId.toString(),
+          );
+          product.wishlistCount = 1;
+          Get.snackbar("Wishlist", "Product added to wishlist",
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          // Remove from wishlist
+          wishlistController.removeFromWishlist(
+            wishlistId: product.id.toString(),
+            modelId: product.modelNo.toString(),
+            colorId: product.colorId.toString(),
+            ramId: product.ramId.toString(),
+            romId: product.romId.toString(),
+          );
+          product.wishlistCount = 0;
+          Get.snackbar("Wishlist", "Product removed from wishlist",
+              snackPosition: SnackPosition.BOTTOM);
+        }
+
+        // Trigger UI update
+        controllerProductDetails.productDetails.refresh();
+      },
+    );
+  })
+],
+
+  //       actions: [
+  //         Obx(() {
+  //           var product = controllerProductDetails.productDetails.value;
+  //           if (product == null) {
+  //             return const SizedBox.shrink();
+  //           }
+  //           // return IconButton(
+  //           //   icon: Icon(
+  //           //     isFavorite ? Icons.favorite : Icons.favorite_border,
+  //           //     color: Colors.red,
+  //           //   ),
+  //           //   onPressed: () {
+  //           //     setState(() {
+                  
+  //           //       isFavorite = !isFavorite;
+  //           //     });
+  //           //   },
+  //           // );
+  //           IconButton(
+  //                itemCount: productController.productsList.length,
+  //               itemBuilder: (context, index) {
+  //                 final product = productController.productsList[index];
+  // icon: Icon(
+  //   productController.productsList[index].wishlistCount == 1
+  //       ? Icons.favorite
+  //       : Icons.favorite_border,
+  //   color: productController.productsList[index].wishlistCount == 1
+  //       ? Colors.red
+  //       : Colors.grey,
+  // ),
+  // onPressed: () async {
+  //   final userCode = await TokenHelper.getUserCode();
+
+  //   if (userCode == null || userCode.isEmpty) {
+  //     Get.snackbar(
+  //       "Login Required",
+  //       "Please login to wishlist a product",
+  //       snackPosition: SnackPosition.BOTTOM,
+  //     );
+  //     Get.to(() => LoginScreen());
+  //     return;
+  //   }
+
+  //   final product = productController.productsList[index];
+
+  //   if (product.wishlistCount == 0) {
+  //     // ADD to wishlist
+  //     wishlistController.addProductToWishlist(
+  //       productId: product.modelNo.toString(),
+  //       colorId: product.colorId.toString(),
+  //       ramId: product.ramId.toString(),
+  //       romId: product.romId.toString(),
+  //     );
+
+  //     setState(() {
+  //       product.wishlistCount = 1;
+  //     });
+
+  //     Get.snackbar("Wishlist", "Product added to wishlist",
+  //         snackPosition: SnackPosition.BOTTOM);
+  //   } else {
+  //     // REMOVE from wishlist
+  //     wishlistController.removeFromWishlist(
+  //       wishlistId: product.id.toString(), // Must be stored in model
+  //       modelId: product.modelNo.toString(),
+  //       colorId: product.colorId.toString(),
+  //       ramId: product.ramId.toString(),
+  //       romId: product.romId.toString(),
+  //     );
+
+  //     setState(() {
+  //       product.wishlistCount = 0;
+  //     });
+
+  //     Get.snackbar("Wishlist", "Product removed from wishlist",
+  //         snackPosition: SnackPosition.BOTTOM);
+  //   }
+  // };
+            
+  //               }
+  //           );
+
+  //         }),
+        
       ),
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
