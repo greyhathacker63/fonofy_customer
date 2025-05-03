@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:fonofy/Services/web_constants.dart';
-import 'package:fonofy/model/wishlist_model.dart';
+import 'package:fonofy/model/WishlistModel/wishlist_model.dart';
 import 'package:http/http.dart' as http;
 import '../../TokenHelper/TokenHelper.dart';
 
@@ -13,7 +13,6 @@ class WishlistService {
     if (token == null || TokenHelper.isTokenExpired(token)) {
       token = await refreshToken(userCode!);
     }
-
     final String url = "$baseurl$b2c$wishlist?CustomerId=$userCode";
 
     var request = http.Request('GET', Uri.parse(url));

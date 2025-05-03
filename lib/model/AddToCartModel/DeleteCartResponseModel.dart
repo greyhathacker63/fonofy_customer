@@ -1,7 +1,7 @@
 
 class DeleteCartResponseModel {
-  final dynamic? success;
-  final String? message;
+  final dynamic success;
+  final dynamic message;
 
   DeleteCartResponseModel({this.success, this.message});
 

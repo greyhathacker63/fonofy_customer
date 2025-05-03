@@ -6,7 +6,14 @@ import '../../Services/web_constants.dart';
 
 class AddToCartService {
 
-  Future<AddToCartModel?> fetchAddToCartData(String customerId, dynamic ram,dynamic rom,dynamic qty,dynamic color,dynamic modelID) async {
+  Future<AddToCartModel?> fetchAddToCartData(
+      String customerId,
+      dynamic ram,
+      dynamic rom,
+      dynamic qty,
+      dynamic color,
+      dynamic modelID
+      ) async {
     try {
       var url = Uri.parse(addToCartUrl);
       final Map<String, dynamic> requestBody = {

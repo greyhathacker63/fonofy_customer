@@ -1,21 +1,22 @@
-
 import 'package:flutter/material.dart';
+import 'package:fonofy/Api_Service/AddToCartService/AddToBuyNowService.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 import '../Api_Service/AddToCartService/AddToCartService.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Api_Service/ProductDetailsService/ProductImageListService.dart';
 import '../Api_Service/ProductDetailsService/ProductRatingService.dart';
 import '../Api_Service/ProductDetailsService/ProductReviewService.dart';
 import '../Bottom_Sheet/ProductAttributeBottomSheet.dart';
+import '../Cart_Screens/CheckoutScreen.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/ControllerProductDetails.dart';
 import '../controllers/ControllerProductDetails/ControllerProductList.dart';
+import '../model/AddToCartModel/GetBuynowModel.dart';
 import '../model/DataObject.dart';
 import '../model/ProductDetailsModel/ProductDetailsListModel.dart';
 import '../model/ProductDetailsModel/ProductDetailsModel.dart';
@@ -41,12 +42,11 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
   State<BuyRefurbishedProductScreen> createState() =>
       _ProductDetailsScreenState();
 }
+
 class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
-
   final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
-
-  List<ProductDetailsListModel> productDetailsList =[];
-  List <AddToCartModel> productAddToCart = [];
+  List<ProductDetailsListModel> productDetailsList = [];
+  List<AddToCartModel> productAddToCart = [];
   List<ProductReviewModel> reviews = [];
   List<ProductImageListModel> productImages = [];
 
@@ -54,15 +54,13 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
   AddToCartModel? addToaCrtData;
 
-
   int selectedImageIndex = 0;
   int totalRatings = 0;
 
-  // final String colorRom = "";
   bool isFavorite = false;
   bool favoriteClicked = false;
   bool isLoading = true;
-   dynamic price;
+  dynamic price;
 
   Future<void> loadProductRating() async {
     final data = await ProductRatingService.fetchProductRating(widget.url);
@@ -77,6 +75,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       });
     }
   }
+
   Future<void> loadProductReview() async {
     final response = await ProductReviewService.fetchProductReviews(widget.url);
     if (response != null) {
@@ -85,6 +84,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       });
     }
   }
+
   Future<void> fetchImagesList() async {
     try {
       final productImageList = await ProductImageListService.fetchProductImagesList(
@@ -93,7 +93,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
       setState(() {
         productImages = productImageList;
-        // DataClass.imageUrl = productImages[0].image.toString();
         isLoading = false;
       });
     } catch (e) {
@@ -101,7 +100,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       setState(() => isLoading = false);
     }
   }
+
   final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
+
   @override
   void initState() {
     super.initState();
@@ -112,28 +113,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     fetchImagesList();
   }
 
-  // Future<void> fetchImages() async {
-  //   try {
-  //     final images = await ProductImageListService.fetchProductImagesList(
-  //       refNo: widget.refNo,
-  //       url: widget.url,
-  //     );
-  //     setState(() {
-  //       productImages = images;
-  //       isLoading = false;
-  //     });
-  //   } catch (e) {
-  //     print("Error loading images: $e");
-  //     setState(() => isLoading = false);
-  //   }
-  // }
-  // final List<String> productImages = [
-  //   "assets/images/main_product.png",
-  //   "assets/images/thumb_1.png",
-  //   "assets/images/thumb_2.png",
-  //   "assets/images/thumb_3.png",
-  //   "assets/images/thumb_4.png",
-  // ];
   final List<Map<String, String>> features = [
     {"icon": "assets/images/warranty.png", "text": "6-Month Warranty"},
     {"icon": "assets/images/exchange.png", "text": "3-Days Exchange"},
@@ -168,21 +147,16 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
           Obx(() {
             var product = controllerProductDetails.productDetails.value;
             if (product == null) {
-              return Center(
-                // child: CircularProgressIndicator(
-                //   color: Colors.blue,
-                //   strokeWidth: 1,
-                // ),
-              );
+              return const SizedBox.shrink();
             }
-             return IconButton(
+            return IconButton(
               icon: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: Colors.redAccent,
               ),
               onPressed: () {
                 setState(() {
-                  isFavorite = !isFavorite;  // Toggle the state
+                  isFavorite = !isFavorite;
                 });
               },
             );
@@ -192,7 +166,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
         price = product?.sellingPrice.toString();
-         if (product == null) {
+        if (product == null) {
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.blue,
@@ -220,7 +194,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       fit: BoxFit.contain,
                     ),
                   )
-                      : CircularProgressIndicator(strokeWidth: 1,color: Colors.blue,), // Show loading indicator while the images are being fetched
+                      : const CircularProgressIndicator(
+                    strokeWidth: 1,
+                    color: Colors.blue,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -257,17 +234,17 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Text(
                   "( ${product.productAndModelName ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
-                  // "( ${ product.modelUrl ?? ''}) Redmi 6 Pro Max (Champagne Gold, 6GB RAM, 128GB Storage) - 64MP Quad...",
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue),
                 ),
-                Text("Display( ${product.display ?? ''} ",
-                  style: TextStyle(
+                Text(
+                  "Display( ${product.display ?? ''} ",
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue),
@@ -279,28 +256,27 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 buildProductHighlightsCard(product),
                 const SizedBox(height: 20),
                 _buildRecommendedProducts(product),
-                // _buildRecommendedProducts(productDetailsList:controllerProductDetailsList.productDetailsList),
                 const SizedBox(height: 20),
                 _buildFeatureSection(),
                 const SizedBox(height: 20),
                 buildPincodeSection(),
                 const SizedBox(height: 20),
-                buildUserReviewsSection(product,reviews),
+                buildUserReviewsSection(product, reviews),
               ],
             ),
           ),
         );
       }),
-      bottomNavigationBar: _buildBottomButtons(),
+      bottomNavigationBar: _buildBottomButtons(productImages),
     );
   }
-  Widget _buildBottomButtons() {
+
+  Widget _buildBottomButtons(List<ProductImageListModel> productImages) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         children: [
           Expanded(
-          
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
               onPressed: () async {
@@ -308,23 +284,23 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   final product = controllerProductDetails.productDetails.value;
                   final userCode = await TokenHelper.getUserCode();
                   if (userCode == null) {
-                    Get.to(() => LoginScreen());
+                    Get.to(() => const LoginScreen());
                     return;
                   }
                   final addToCartService = AddToCartService();
                   final response = await addToCartService.fetchAddToCartData(
                     userCode,
-                    product?.ramId,
-                    product?.romId,
-                    product?.stockQuantity,
-                    product?.colorId,
-                    product?.modelNo,
+                    product?.ramId?.toString(),
+                    product?.romId?.toString(),
+                    product?.stockQuantity?.toString(),
+                    product?.colorId?.toString(),
+                    product?.modelNo?.toString(),
                   );
                   if (response != null) {
-                    Get.to(() => CartScreen());
+                    Get.to(() => const CartScreen());
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text("Something went wrong! Please try again."),
                         backgroundColor: Colors.redAccent,
                       ),
@@ -340,18 +316,65 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   );
                 }
               },
-              child: const Text("ADD TO CART",
-                style: TextStyle(color: Colors.black,fontSize: 15),
+              child: const Text(
+                "ADD TO CART",
+                style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                child: const Text("BUY NOW", style: TextStyle(color: Colors.white)),
-              )),
+            child: ElevatedButton(
+              onPressed: () async {
+                try {
+                  final product = controllerProductDetails.productDetails.value;
+                  final userCode = await TokenHelper.getUserCode();
+                  if (userCode == null) {
+                    Get.to(() => const LoginScreen());
+                    return;
+                  }
+                  if (product == null || productImages.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Product details not available!"),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                    return;
+                  }
+                  Get.to(() => CheckoutScreen(
+                    isSingleProduct: true,
+                    modelNo: product.modelNo?.toString() ?? '',
+                    colorId: product.colorId?.toString() ?? '',
+                    stockQuantity: product.stockQuantity?.toString() ?? '1',
+                    price: product.sellingPrice?.toDouble() ?? 0.0,
+                    productImage: productImages[0].image ?? '',
+                    userCode: userCode,
+                    productName: product.productAndModelName ?? '',
+                    ramName: product.ramName ?? '',
+                    romName: product.romName ?? '',
+                    colorName: product.colorName ?? '',
+                    ramId: product.ramId?.toString() ?? '',
+                    romId: product.romId?.toString() ?? '',
+                    newModelAmt: product.newModelAmt?.toDouble() ?? 0.0,
+                  ));
+                } catch (e) {
+                  print("Buy Now Error: $e");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("An error occurred: $e"),
+                      backgroundColor: Colors.redAccent,
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              child: const Text(
+                "BUY NOW",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -393,9 +416,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             height: 230,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount:  productDetailsList?.length ?? 0,
+              itemCount: productDetailsList.length,
               itemBuilder: (context, index) {
-                final product = productDetailsList?[index];
+                final product = productDetailsList[index];
                 return Container(
                   width: 200,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -412,7 +435,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                             children: [
                               Center(
                                 child: Image.network(
-                                  '${imageAllBaseUrl}${product?.image ?? ''}',
+                                  '${imageAllBaseUrl}${product.image ?? ''}',
                                   height: 55,
                                   width: 55,
                                   fit: BoxFit.cover,
@@ -422,34 +445,38 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                               ),
                               const SizedBox(height: 15),
                               Text(
-                                product?.productAndModelName ?? '',
+                                product.productAndModelName ?? '',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Ram       ${product?.ramName ?? ' '}',
+                                'Ram       ${product.ramName ?? ''}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Rom       ${product?.romName ?? ' '}',
+                                'Rom       ${product.romName ?? ''}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'Color      ${product?.colorName ?? ' '}',
+                                'Color      ${product.colorName ?? ''}',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.w600),
                               ),
                               const Spacer(),
                               Row(
                                 children: [
                                   Text(
-                                    "₹${product?.amount?.toString() ?? '0'}",
+                                    "₹${product.amount?.toString() ?? '0'}",
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -458,7 +485,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Text(
-                                      "₹${product?.newModelAmt?.toString() ?? '0'}",
+                                      "₹${product.newModelAmt?.toString() ?? '0'}",
                                       style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
@@ -472,12 +499,12 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                             ],
                           ),
                         ),
-                        // Positioned discount badge
                         Positioned(
                           top: 1,
                           right: 0,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: const BoxDecoration(
                               color: Colors.redAccent,
                               borderRadius: BorderRadius.only(
@@ -486,7 +513,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                               ),
                             ),
                             child: Text(
-                              '${product?.discountPercentage?.toString() ?? ''}%',
+                              '${product.discountPercentage?.toString() ?? ''}%',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 9,
@@ -497,7 +524,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         ),
                       ],
                     ),
-
                   ),
                 );
               },
@@ -521,16 +547,19 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         final feature = features[index];
         return Column(
           children: [
-            Image.asset(feature["icon"]!, height: 40),
+            Image.asset(
+              feature["icon"]!,
+              height: 40,
+            ),
             const SizedBox(height: 5),
-            Text(feature["text"]!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 12)),
+            Text(
+              feature["text"]!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 12),
+            ),
           ],
         );
       },
     );
   }
-
 }
-
