@@ -4,6 +4,8 @@ import 'package:fonofy/controllers/wishlist_controller.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
+import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+
 class WishlistScreen extends StatefulWidget {
   @override
   State<WishlistScreen> createState() => _WishlistScreenState();
@@ -76,13 +78,28 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         ),
                         child: AspectRatio(
                           aspectRatio: 1,
-                          child: Image.network(
-                            wishlistItem.image ?? '',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Center(
-                                    child: Icon(Icons.broken_image, size: 50)),
-                          ),
+                          child: (wishlistItem.image ?? '')
+                                  .startsWith('assets/')
+                              ? Image.asset(
+                                  wishlistItem.image!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  '$imageAllBaseUrl${wishlistItem.image ?? ""}',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Center(
+                                          child: Icon(Icons.broken_image,
+                                              size: 50)),
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2),
+                                    );
+                                  },
+                                ),
                         ),
                       ),
 
@@ -124,8 +141,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                 child: const Text('Move to Cart',
                                     style: TextStyle(fontSize: 13)),
                                 style: OutlinedButton.styleFrom(
-                                  backgroundColor:
-                                      ColorConstants.appBlueColor3,
+                                  backgroundColor: ColorConstants.appBlueColor3,
                                   foregroundColor: Colors.white,
                                   side: const BorderSide(color: Colors.teal),
                                   shape: RoundedRectangleBorder(
@@ -151,13 +167,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                     "Are you sure you want to remove this item from wishlist?"),
                                 actions: [
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(ctx, false),
+                                    onPressed: () => Navigator.pop(ctx, false),
                                     child: const Text("Cancel"),
                                   ),
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(ctx, true),
+                                    onPressed: () => Navigator.pop(ctx, true),
                                     child: const Text("Remove"),
                                   ),
                                 ],
