@@ -219,25 +219,112 @@ class _ProductScreenState extends State<ProductScreen> {
                                     },
                                   ),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 8),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  product.productAndModelName ?? '',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                // Text(
+                                //   product.productAndModelName ?? '',
+                                //   style: const TextStyle(
+                                //       fontWeight: FontWeight.bold,
+                                //       fontSize: 16),
+                                //   maxLines: 2,
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
+                                //  Text(
+                                //   product.ramName ?? 'Ram',
+                                //   style: const TextStyle(
+
+                                //       fontSize: 16),
+                                //   maxLines: 2,
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
+                                //  Text(
+                                //   product.romName?? 'Rom',
+                                //   style: const TextStyle(
+
+                                //       fontSize: 16),
+                                //   maxLines: 2,
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
+
+                                // const SizedBox(height: 5),
+                                // Text(
+                                //   "₹${product.amount ?? ''}",
+                                //   style: const TextStyle(
+                                //       fontSize: 14, color: Colors.green),
+                                // ),
+                                //  Text(
+                                //   product.newModelAmt.toString() ?? 'Discounted Amount',
+                                //   style: const TextStyle(
+                                //       fontWeight: FontWeight.bold,
+                                //        fontSize: 14, color: Colors.redAccent),
+
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.productAndModelName ?? '',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+
+                                    // Ram | Rom
+                                    Text(
+                                      '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
+                                      style: const TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                     Text(
+                                      product.wishlistCount.toString() ?? '',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                               
+                                    // Price (green)
+                                    Text(
+                                      "₹${product.amount ?? ''}",
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.green),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      '${product.discountPercentage ?? 0} % Discount',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+
+                                    // Discounted Amount with strikethrough
+                                    Text(
+                                      "₹${product.newModelAmt ?? 'Discounted Amount'}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "₹${product.amount ?? ''}",
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.green),
-                                ),
+
                                 const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment:
@@ -247,6 +334,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       icon: Icon(
                                         productController.productsList[index]
                                                     .wishlistCount ==
+
                                                 1
                                             ? Icons.favorite
                                             : Icons.favorite_border,

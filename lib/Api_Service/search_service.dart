@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
 import 'package:fonofy/Services/web_constants.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:http/http.dart' as http;
 import 'package:fonofy/model/ProductModel.dart';
 
@@ -16,22 +17,67 @@ class SearchService {
     String? minPrice,
     String? maxPrice,
     String? pageCount,
-    String? ramName, String? modelID,
+    String? ramName,
+    String? modelID,
   }) async {
+    var userCode = await TokenHelper.getUserCode();
     try {
-      final Uri uri = Uri.parse("$baseurl$common$productList").replace(
-        queryParameters: {
-          if (productpage != null && productpage.isNotEmpty) 
-            'productpage': productpage,
-          if (category != null && category.isNotEmpty && category.toLowerCase() != 'viewall') 
-            'category': category,
-          if (ramName != null && ramName.isNotEmpty) 
-            'Ramurl': ramName,
-          if (maxPrice != null && maxPrice.isNotEmpty) 
-            'MaxPrice': maxPrice,
-          // Add other parameters as needed
-        },
-      );
+//       final Uri uri = Uri.parse("$baseurl$common$productList?CustomerId=$userCode").replace(
+//         queryParameters: {
+//           if (productpage != null && productpage.isNotEmpty)
+//             'productpage': productpage,
+//           if (category != null && category.isNotEmpty && category.toLowerCase() != 'viewall')
+//             'category': category,
+//           if (ramName != null && ramName.isNotEmpty)
+//             'Ramurl': ramName,
+//           if (maxPrice != null && maxPrice.isNotEmpty)
+//             'MaxPrice': maxPrice,
+//           // Add other parameters as needed
+//         },
+//       );
+
+//       log("API URL: ${uri.toString()}");
+
+//       final response = await http.get(uri);
+
+//       if (response.statusCode == 200) {
+//         final data = json.decode(response.body);
+
+//         if (data is List) {
+//           return data.map((json) => ProductModel.fromJson(json)).toList();
+//         } else {
+//           log("Unexpected response format: $data");
+//           return [];
+//         }
+//       } else {
+//        log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
+//         throw Exception('Failed to load products: ${response.statusCode}');
+//       }
+//     } catch (e, stackTrace) {
+//       log("Error fetching products: $e", stackTrace: stackTrace);
+//       throw Exception('Error fetching products: $e');
+//     }
+
+      Map<String, String> queryParams = {};
+
+      if (userCode != null && userCode.isNotEmpty) {
+        queryParams['CustomerId'] = userCode;
+      } else if (productpage != null && productpage.isNotEmpty) {
+        queryParams['productpage'] = productpage;
+      } else if (category != null &&
+          category.isNotEmpty &&
+          category.toLowerCase() != 'viewall') {
+        queryParams['category'] = category;
+      } else if (ramName != null && ramName.isNotEmpty) {
+        queryParams['Ramurl'] = ramName;
+      } else if (maxPrice != null && maxPrice.isNotEmpty) {
+        queryParams['MaxPrice'] = maxPrice;
+      } else {
+        queryParams['Default'] = '1';
+      }
+
+      final uri = Uri.parse("$baseurl$common$productList")
+          .replace(queryParameters: queryParams);
 
       log("API URL: ${uri.toString()}");
 
@@ -39,7 +85,6 @@ class SearchService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        
         if (data is List) {
           return data.map((json) => ProductModel.fromJson(json)).toList();
         } else {
@@ -47,7 +92,7 @@ class SearchService {
           return [];
         }
       } else {
-       log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
+        log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
         throw Exception('Failed to load products: ${response.statusCode}');
       }
     } catch (e, stackTrace) {
