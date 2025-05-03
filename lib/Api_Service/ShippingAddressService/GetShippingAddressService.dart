@@ -22,8 +22,7 @@ class GetShippingAddressService {
       };
       // final idd=4;
       // final  ShippmentIdd='SIP_29032025101409AM';
-      var url = Uri.parse(
-          "https://api.fonofy.in/api/forb2c/get-shipping-address?Id=$id&ShippmentId=$shipmentId");
+      var url = Uri.parse("https://api.fonofy.in/api/forb2c/get-shipping-address?Id=$id&ShippmentId=$shipmentId");
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         var decodedResponse = jsonDecode(response.body);

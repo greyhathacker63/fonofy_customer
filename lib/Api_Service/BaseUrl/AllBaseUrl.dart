@@ -17,7 +17,13 @@ const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
 
  const String cartListUrl = "${baseUrl}api/common/get-cart-list";
 
- const String deleteCartUrl = "${baseUrl}api/common/delete-in-cart";
+ const String getDeleteCartUrl = "${baseUrl}api/common/delete-to-cart";
+
+ const String buyNowUrl = "${baseUrl}api/common/add-to-buynow";
+
+ const String getBuyNowUrl = "${baseUrl}api/forb2c/get-buynow";
+
+ const String deleteShippingUrl = "${baseUrl}api/forb2c/delete-ship-address";
 
 
 

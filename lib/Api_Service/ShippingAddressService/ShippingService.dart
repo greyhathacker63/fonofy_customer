@@ -10,7 +10,6 @@ class ShippingService {
   final String baseUrl = "https://api.fonofy.in/api/forb2c";
 
   Future<List> getShippingAddress({
-
     required int id,
     required String shipmentId,
     required String token
@@ -31,9 +30,7 @@ class ShippingService {
 
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(responseBody);
-
         return data.map((item) => ListShippingAddressModel.fromJson(item)).toList();
-
       } else {
         debugPrint("❌ API Error (${response.statusCode}): $responseBody");
         return [];

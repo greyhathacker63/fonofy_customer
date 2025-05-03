@@ -42,8 +42,9 @@ class Result {
   dynamic? modelId;
   dynamic? brandId;
   dynamic? colorId;
-  int? ramId;
-  int? romId;
+  dynamic? ramId;
+  dynamic? romId;
+  dynamic? price;
   String? cartRef;
 
   Result({

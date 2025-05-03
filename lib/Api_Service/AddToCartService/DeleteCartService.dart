@@ -4,7 +4,7 @@ import '../../model/AddToCartModel/DeleteCartResponseModel.dart';
 import '../BaseUrl/AllBaseUrl.dart';
 
 class DeleteCartService {
-  static Future<DeleteCartResponseModel?> deleteCartItem({
+  static Future<String> deleteCartItem({
     required String modelNo,
     required String ramId,
     required String romId,
@@ -12,21 +12,21 @@ class DeleteCartService {
   }) async {
     try {
       final url = Uri.parse(
-        '$deleteCartUrl?ModelNo=$modelNo&Ramid=$ramId&Romid=$romId&CustomerId=$customerId',
+        '$getDeleteCartUrl?ModelNo=$modelNo&Ramid=$ramId&Romid=$romId&CustomerId=$customerId',
       );
 
-      final response = await http.delete(url);
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        return DeleteCartResponseModel.fromJson(jsonData);
+        return jsonData;
       } else {
         print('❌ Failed with status: ${response.statusCode}');
-        return null;
+        return "";
       }
     } catch (e) {
       print('❌ DeleteCartService Error: $e');
-      return null;
+      return " ";
     }
   }
 }
