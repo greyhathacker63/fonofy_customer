@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../Bottom_Sheet/ProductAttributeBottomSheet.dart';
 import '../../model/ProductDetailsModel/ProductDetailsModel.dart';
 
+
 Widget buildProductAttributesCard(BuildContext context, ProductDetailsModel product) {
-  
-  String condition = "Fair"; // default fallback
+
+  String condition = "Fair";
   if(product.romName == "64GB"){
     condition = "Fair";
   }else if(product.romName == "128GB"){
@@ -31,10 +31,9 @@ Widget buildProductAttributesCard(BuildContext context, ProductDetailsModel prod
         child: Column(
           children: [
             _buildAttributeRow(Icons.phone_android, "Condition", "${condition}", "+1 more"),
-            const Divider(),
-            _buildAttributeRow(Icons.sd_storage, "Storage",
-                "${product.ramName}/ ${product.romName}", "+2 more"),
-            const Divider(),
+             Divider(),
+            _buildAttributeRow(Icons.sd_storage, "Storage", "${product.ramName}/ ${product.romName}", "+2 more"),
+             Divider(),
             _buildAttributeRow(Icons.circle, "Color", "${product.colorName}", "+2 more",isColorDot: true),
           ],
         ),

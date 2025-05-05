@@ -89,6 +89,7 @@ class _CompareScreenState extends State<CompareScreen> {
       case 'stock':
         return "In-Stock";
       case 'ram':
+
       case 'rom':
       case 'display':
       case 'battery':
@@ -96,7 +97,7 @@ class _CompareScreenState extends State<CompareScreen> {
       case 'rearCamera':
       case 'processor':
       case 'rating':
-        return "N/A"; 
+        return "N/A";
       default:
         return "-";
     }
@@ -162,7 +163,7 @@ class _CompareScreenState extends State<CompareScreen> {
                     onTap: () async {
                       try {
                         final productToCompare = SearchCompareProductModel(
-                          productName: item.productName,
+                          productName: item.productName ?? '',
                           amount: item.amount,
                           image: item.image,
                           modelUrl: item.modelUrl,

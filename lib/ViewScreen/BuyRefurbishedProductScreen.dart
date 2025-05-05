@@ -46,7 +46,8 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
-  final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
+  final ControllerProductDetails controllerProductDetails =
+      Get.put(ControllerProductDetails());
   List<ProductDetailsListModel> productDetailsList = [];
   List<AddToCartModel> productAddToCart = [];
   List<ProductReviewModel> reviews = [];
@@ -93,7 +94,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
   Future<void> fetchImagesList() async {
     try {
-      final productImageList = await ProductImageListService.fetchProductImagesList(
+      final productImageList =
+          await ProductImageListService.fetchProductImagesList(
         refNo: widget.refNo,
         url: widget.url,
       );
@@ -107,12 +109,14 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     }
   }
 
-  final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
+  final ControllerProductDetailsList controllerProductDetailsList =
+      Get.put(ControllerProductDetailsList());
 
   @override
   void initState() {
     super.initState();
-    controllerProductDetails.getProductDetailsData(url: widget.url, refNo: widget.refNo);
+    controllerProductDetails.getProductDetailsData(
+        url: widget.url, refNo: widget.refNo);
     controllerProductDetailsList.getProductListData();
     loadProductRating();
     loadProductReview();
@@ -150,146 +154,148 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         }),
         centerTitle: true,
         actions: [
-  Obx(() {
-    var product = controllerProductDetails.productDetails.value;
-    if (product == null) {
-      return const SizedBox.shrink();
-    }
+          Obx(() {
+            var product = controllerProductDetails.productDetails.value;
+            if (product == null) {
+              return const SizedBox.shrink();
+            }
 
-    return IconButton(
-      icon: Icon(
-        product.wishlistCount == 1 ? Icons.favorite : Icons.favorite_border,
-        color: product.wishlistCount == 1 ? Colors.red : Colors.grey,
-      ),
-      onPressed: () async {
-        final userCode = await TokenHelper.getUserCode();
+            return IconButton(
+              icon: Icon(
+                product.wishlistCount == 1
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                color: product.wishlistCount == 1 ? Colors.red : Colors.grey,
+              ),
+              onPressed: () async {
+                final userCode = await TokenHelper.getUserCode();
 
-        if (userCode == null || userCode.isEmpty) {
-          Get.snackbar(
-            "Login Required",
-            "Please login to wishlist a product",
-            snackPosition: SnackPosition.BOTTOM,
-          );
-          Get.to(() => LoginScreen());
-          return;
-        }
+                if (userCode == null || userCode.isEmpty) {
+                  Get.snackbar(
+                    "Login Required",
+                    "Please login to wishlist a product",
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  Get.to(() => LoginScreen());
+                  return;
+                }
 
-        if (product.wishlistCount == 0) {
-          // Add to wishlist
-          wishlistController.addProductToWishlist(
-            productId: product.modelNo.toString(),
-            colorId: product.colorId.toString(),
-            ramId: product.ramId.toString(),
-            romId: product.romId.toString(),
-          );
-          product.wishlistCount = 1;
-          Get.snackbar("Wishlist", "Product added to wishlist",
-              snackPosition: SnackPosition.BOTTOM);
-        } else {
-          // Remove from wishlist
-          wishlistController.removeFromWishlist(
-            wishlistId: product.id.toString(),
-            modelId: product.modelNo.toString(),
-            colorId: product.colorId.toString(),
-            ramId: product.ramId.toString(),
-            romId: product.romId.toString(),
-          );
-          product.wishlistCount = 0;
-          Get.snackbar("Wishlist", "Product removed from wishlist",
-              snackPosition: SnackPosition.BOTTOM);
-        }
+                if (product.wishlistCount == 0) {
+                  // Add to wishlist
+                  wishlistController.addProductToWishlist(
+                    productId: product.modelNo.toString(),
+                    colorId: product.colorId.toString(),
+                    ramId: product.ramId.toString(),
+                    romId: product.romId.toString(),
+                  );
+                  product.wishlistCount = 1;
+                  Get.snackbar("Wishlist", "Product added to wishlist",
+                      snackPosition: SnackPosition.BOTTOM);
+                } else {
+                  // Remove from wishlist
+                  wishlistController.removeFromWishlist(
+                    wishlistId: product.wishlistId.toString(),
+                    modelId: product.modelNo.toString(),
+                    colorId: product.colorId.toString(),
+                    ramId: product.ramId.toString(),
+                    romId: product.romId.toString(),
+                  );
+                  product.wishlistCount = 0;
+                  Get.snackbar("Wishlist", "Product removed from wishlist",
+                      snackPosition: SnackPosition.BOTTOM);
+                }
 
-        // Trigger UI update
-        controllerProductDetails.productDetails.refresh();
-      },
-    );
-  })
-],
+                // ✅ Trigger UI rebuild properly
+                controllerProductDetails.productDetails.value =
+                    controllerProductDetails.productDetails.value!;
+              },
+            );
+          })
+        ],
 
-  //       actions: [
-  //         Obx(() {
-  //           var product = controllerProductDetails.productDetails.value;
-  //           if (product == null) {
-  //             return const SizedBox.shrink();
-  //           }
-  //           // return IconButton(
-  //           //   icon: Icon(
-  //           //     isFavorite ? Icons.favorite : Icons.favorite_border,
-  //           //     color: Colors.red,
-  //           //   ),
-  //           //   onPressed: () {
-  //           //     setState(() {
-                  
-  //           //       isFavorite = !isFavorite;
-  //           //     });
-  //           //   },
-  //           // );
-  //           IconButton(
-  //                itemCount: productController.productsList.length,
-  //               itemBuilder: (context, index) {
-  //                 final product = productController.productsList[index];
-  // icon: Icon(
-  //   productController.productsList[index].wishlistCount == 1
-  //       ? Icons.favorite
-  //       : Icons.favorite_border,
-  //   color: productController.productsList[index].wishlistCount == 1
-  //       ? Colors.red
-  //       : Colors.grey,
-  // ),
-  // onPressed: () async {
-  //   final userCode = await TokenHelper.getUserCode();
+        //       actions: [
+        //         Obx(() {
+        //           var product = controllerProductDetails.productDetails.value;
+        //           if (product == null) {
+        //             return const SizedBox.shrink();
+        //           }
+        //           // return IconButton(
+        //           //   icon: Icon(
+        //           //     isFavorite ? Icons.favorite : Icons.favorite_border,
+        //           //     color: Colors.red,
+        //           //   ),
+        //           //   onPressed: () {
+        //           //     setState(() {
 
-  //   if (userCode == null || userCode.isEmpty) {
-  //     Get.snackbar(
-  //       "Login Required",
-  //       "Please login to wishlist a product",
-  //       snackPosition: SnackPosition.BOTTOM,
-  //     );
-  //     Get.to(() => LoginScreen());
-  //     return;
-  //   }
+        //           //       isFavorite = !isFavorite;
+        //           //     });
+        //           //   },
+        //           // );
+        //           IconButton(
+        //                itemCount: productController.productsList.length,
+        //               itemBuilder: (context, index) {
+        //                 final product = productController.productsList[index];
+        // icon: Icon(
+        //   productController.productsList[index].wishlistCount == 1
+        //       ? Icons.favorite
+        //       : Icons.favorite_border,
+        //   color: productController.productsList[index].wishlistCount == 1
+        //       ? Colors.red
+        //       : Colors.grey,
+        // ),
+        // onPressed: () async {
+        //   final userCode = await TokenHelper.getUserCode();
 
-  //   final product = productController.productsList[index];
+        //   if (userCode == null || userCode.isEmpty) {
+        //     Get.snackbar(
+        //       "Login Required",
+        //       "Please login to wishlist a product",
+        //       snackPosition: SnackPosition.BOTTOM,
+        //     );
+        //     Get.to(() => LoginScreen());
+        //     return;
+        //   }
 
-  //   if (product.wishlistCount == 0) {
-  //     // ADD to wishlist
-  //     wishlistController.addProductToWishlist(
-  //       productId: product.modelNo.toString(),
-  //       colorId: product.colorId.toString(),
-  //       ramId: product.ramId.toString(),
-  //       romId: product.romId.toString(),
-  //     );
+        //   final product = productController.productsList[index];
 
-  //     setState(() {
-  //       product.wishlistCount = 1;
-  //     });
+        //   if (product.wishlistCount == 0) {
+        //     // ADD to wishlist
+        //     wishlistController.addProductToWishlist(
+        //       productId: product.modelNo.toString(),
+        //       colorId: product.colorId.toString(),
+        //       ramId: product.ramId.toString(),
+        //       romId: product.romId.toString(),
+        //     );
 
-  //     Get.snackbar("Wishlist", "Product added to wishlist",
-  //         snackPosition: SnackPosition.BOTTOM);
-  //   } else {
-  //     // REMOVE from wishlist
-  //     wishlistController.removeFromWishlist(
-  //       wishlistId: product.id.toString(), // Must be stored in model
-  //       modelId: product.modelNo.toString(),
-  //       colorId: product.colorId.toString(),
-  //       ramId: product.ramId.toString(),
-  //       romId: product.romId.toString(),
-  //     );
+        //     setState(() {
+        //       product.wishlistCount = 1;
+        //     });
 
-  //     setState(() {
-  //       product.wishlistCount = 0;
-  //     });
+        //     Get.snackbar("Wishlist", "Product added to wishlist",
+        //         snackPosition: SnackPosition.BOTTOM);
+        //   } else {
+        //     // REMOVE from wishlist
+        //     wishlistController.removeFromWishlist(
+        //       wishlistId: product.id.toString(), // Must be stored in model
+        //       modelId: product.modelNo.toString(),
+        //       colorId: product.colorId.toString(),
+        //       ramId: product.ramId.toString(),
+        //       romId: product.romId.toString(),
+        //     );
 
-  //     Get.snackbar("Wishlist", "Product removed from wishlist",
-  //         snackPosition: SnackPosition.BOTTOM);
-  //   }
-  // };
-            
-  //               }
-  //           );
+        //     setState(() {
+        //       product.wishlistCount = 0;
+        //     });
 
-  //         }),
-        
+        //     Get.snackbar("Wishlist", "Product removed from wishlist",
+        //         snackPosition: SnackPosition.BOTTOM);
+        //   }
+        // };
+
+        //               }
+        //           );
+
+        //         }),
       ),
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
@@ -311,21 +317,21 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 Center(
                   child: productImages.isNotEmpty
                       ? Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black26, width: 2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Image.network(
-                      "$imageAllBaseUrl${productImages[selectedImageIndex].image ?? ''}",
-                      height: 250,
-                      fit: BoxFit.contain,
-                    ),
-                  )
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black26, width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(8),
+                          child: Image.network(
+                            "$imageAllBaseUrl${productImages[selectedImageIndex].image ?? ''}",
+                            height: 250,
+                            fit: BoxFit.contain,
+                          ),
+                        )
                       : const CircularProgressIndicator(
-                    strokeWidth: 1,
-                    color: Colors.blue,
-                  ),
+                          strokeWidth: 1,
+                          color: Colors.blue,
+                        ),
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -429,7 +435,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Something went wrong! Please try again."),
+                        content:
+                            Text("Something went wrong! Please try again."),
                         backgroundColor: Colors.redAccent,
                       ),
                     );
@@ -471,21 +478,21 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     return;
                   }
                   Get.to(() => CheckoutScreen(
-                    isSingleProduct: true,
-                    modelNo: product.modelNo?.toString() ?? '',
-                    colorId: product.colorId?.toString() ?? '',
-                    stockQuantity: product.stockQuantity?.toString() ?? '1',
-                    price: product.sellingPrice?.toDouble() ?? 0.0,
-                    productImage: productImages[0].image ?? '',
-                    userCode: userCode,
-                    productName: product.productAndModelName ?? '',
-                    ramName: product.ramName ?? '',
-                    romName: product.romName ?? '',
-                    colorName: product.colorName ?? '',
-                    ramId: product.ramId?.toString() ?? '',
-                    romId: product.romId?.toString() ?? '',
-                    newModelAmt: product.newModelAmt?.toDouble() ?? 0.0,
-                  ));
+                        isSingleProduct: true,
+                        modelNo: product.modelNo?.toString() ?? '',
+                        colorId: product.colorId?.toString() ?? '',
+                        stockQuantity: product.stockQuantity?.toString() ?? '1',
+                        price: product.sellingPrice?.toDouble() ?? 0.0,
+                        productImage: productImages[0].image ?? '',
+                        userCode: userCode,
+                        productName: product.productAndModelName ?? '',
+                        ramName: product.ramName ?? '',
+                        romName: product.romName ?? '',
+                        colorName: product.colorName ?? '',
+                        ramId: product.ramId?.toString() ?? '',
+                        romId: product.romId?.toString() ?? '',
+                        newModelAmt: product.newModelAmt?.toDouble() ?? 0.0,
+                      ));
                 } catch (e) {
                   print("Buy Now Error: $e");
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -568,7 +575,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   width: 55,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.image_not_supported),
+                                      const Icon(Icons.image_not_supported),
                                 ),
                               ),
                               const SizedBox(height: 15),
@@ -631,8 +638,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           top: 1,
                           right: 0,
                           child: Container(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
                             decoration: const BoxDecoration(
                               color: Colors.redAccent,
                               borderRadius: BorderRadius.only(

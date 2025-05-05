@@ -124,7 +124,7 @@ class WishlistService {
       if (response.statusCode == 200) {
         var res = jsonDecode(response.body);
         if (res["message"] == "Product add in wish list") {
-          return true; // Product successfully added to wishlist
+          return true;
         } else {
           log("Product is already in the wishlist");
           return false; // Product already in wishlist

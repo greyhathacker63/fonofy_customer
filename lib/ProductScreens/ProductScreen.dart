@@ -283,7 +283,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                     Text(
+                                    Text(
                                       product.wishlistCount.toString() ?? '',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -292,7 +292,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                               
+
                                     // Price (green)
                                     Text(
                                       "₹${product.amount ?? ''}",
@@ -334,7 +334,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                       icon: Icon(
                                         productController.productsList[index]
                                                     .wishlistCount ==
-
                                                 1
                                             ? Icons.favorite
                                             : Icons.favorite_border,
@@ -365,6 +364,14 @@ class _ProductScreenState extends State<ProductScreen> {
                                         // Call API to add/remove from wishlist
                                         wishlistController.addProductToWishlist(
                                           productId: product.modelNo.toString(),
+                                          colorId: product.colorId.toString(),
+                                          ramId: product.ramId.toString(),
+                                          romId: product.romId.toString(),
+                                        );
+                                        wishlistController.removeFromWishlist(
+                                          wishlistId:
+                                              product.wishlistId.toString(),
+                                          modelId: product.modelNo.toString(),
                                           colorId: product.colorId.toString(),
                                           ramId: product.ramId.toString(),
                                           romId: product.romId.toString(),

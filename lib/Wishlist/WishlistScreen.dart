@@ -12,6 +12,7 @@ class WishlistScreen extends StatefulWidget {
 }
 
 class _WishlistScreenState extends State<WishlistScreen> {
+
   final WishlistController wishlistController = Get.put(WishlistController());
   final ProductController productController = Get.put(ProductController());
 

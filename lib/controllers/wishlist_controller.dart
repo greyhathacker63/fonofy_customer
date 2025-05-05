@@ -85,9 +85,10 @@ class WishlistController extends GetxController {
   } else {
     //Get.snackbar("Error", "Failed to add product to wishlist");
   }
+  // else {
+  //   Get.snackbar("Error", "Failed to add product to wishlist");
+  // }
 }
-
-
 
   /// Remove product from wishlist using API
   void removeFromWishlist({
