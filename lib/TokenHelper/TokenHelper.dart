@@ -6,6 +6,7 @@ class TokenHelper {
   static const String _tokenKey = "token";
   static const String _userCodeKey = "UserCode";
 
+
   // Save User Code (mobile number)
   static Future<void> saveUserCode(String userCode) async {
     final prefs = await SharedPreferences.getInstance();
@@ -24,17 +25,18 @@ class TokenHelper {
     await prefs.remove(_userCodeKey);
   }
 
-  // Save Token (JWT token)
+  // Save Token
   static Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
   }
+
   static Future<String?> changePasswordToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_tokenKey);
   }
 
-  // Get Token (JWT token)
+  // Get Token
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_tokenKey);
@@ -57,11 +59,11 @@ class TokenHelper {
   static bool isTokenExpired(String token) {
     try {
       var decodedToken = _decodeToken(token);
-      var exp = decodedToken['exp']; // Assuming 'exp' is the expiry time in seconds
+      var exp = decodedToken['exp'];
       var expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
       return expiryDate.isBefore(DateTime.now());
     } catch (e) {
-      return true; // If decoding fails, assume expired
+      return true;
     }
   }
 

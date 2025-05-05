@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../Bottom_Sheet/ProductAttributeBottomSheet.dart';
 import '../../model/ProductDetailsModel/ProductDetailsModel.dart';
 
-
 Widget buildProductAttributesCard(BuildContext context, ProductDetailsModel product) {
 
   String condition = "Fair";
@@ -30,10 +29,10 @@ Widget buildProductAttributesCard(BuildContext context, ProductDetailsModel prod
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            _buildAttributeRow(Icons.phone_android, "Condition", "${condition}", "+1 more"),
-             Divider(),
+            _buildAttributeRow(Icons.phone_android, "Condition", condition, "+1 more"),
+            Divider(),
             _buildAttributeRow(Icons.sd_storage, "Storage", "${product.ramName}/ ${product.romName}", "+2 more"),
-             Divider(),
+            Divider(),
             _buildAttributeRow(Icons.circle, "Color", "${product.colorName}", "+2 more",isColorDot: true),
           ],
         ),
@@ -41,7 +40,6 @@ Widget buildProductAttributesCard(BuildContext context, ProductDetailsModel prod
     ),
   );
 }
-
 Widget _buildAttributeRow(
     IconData icon, String label, String value, String moreText,
     {bool isColorDot = false}) {
@@ -65,10 +63,11 @@ Widget _buildAttributeRow(
           const SizedBox(width: 10),
           Text("$label: ", style: const TextStyle(fontSize: 14)),
           Text(value, style:
-          const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
-      Text(moreText, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+      Text(moreText, style: TextStyle(fontSize: 14, color: Colors.grey)),
     ],
   );
 }

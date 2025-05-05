@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/model/DataObject.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import '../Api_Service/AddToCartService/AddToCartService.dart';
+
 import '../Api_Service/ProductDetailsService/ProductRamRomColorsService.dart';
-import '../Cart_Screens/CartScreen.dart';
-import '../TokenHelper/TokenHelper.dart';
-import '../ViewScreen/LoginScreen.dart';
+
 import '../utils/Colors.dart';
 
 class ProductAttributeBottomSheet extends StatefulWidget {
@@ -37,7 +32,6 @@ class _ProductAttributeBottomSheetState
     super.initState();
     _fetchColors();
   }
-
   Future<void> _fetchColors() async {
     List<ProductRamRomColorListModel> colors = await _serviceProductRamRom.fetchProductRamRomListColorsData(
         widget.product.modelUrl.toString(),
@@ -52,7 +46,6 @@ class _ProductAttributeBottomSheetState
             item.colorName == widget.product.colorName,
         orElse: () => _colorList.first,
       );
-
       selectedStorage = "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
       selectedColorIndex = _colorList.indexOf(selectedVariant!);
     });
@@ -72,20 +65,17 @@ class _ProductAttributeBottomSheetState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.product.productAndModelName ?? "",
+              Text(widget.product.productAndModelName ?? "",
                 style:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text(
-                "$selectedCondition / $selectedStorage / Color ${selectedVariant?.colorName ?? widget.product.colorName}",
+              Text("$selectedCondition / $selectedStorage / Color ${selectedVariant?.colorName ?? widget.product.colorName}",
                 style: const TextStyle(fontSize: 14, color: Colors.black54),
               ),
               const SizedBox(height: 10),
               Text.rich(
-                TextSpan(
-                  text: "₹${_getSelectedConditionPrice()?.toStringAsFixed(0) ?? '0'} ",
+                TextSpan(text: "₹${_getSelectedConditionPrice()?.toStringAsFixed(0) ?? '0'} ",
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -108,10 +98,9 @@ class _ProductAttributeBottomSheetState
                   ],
                 ),
               ),
-
-              const SizedBox(height: 10),
+               SizedBox(height: 10),
               _sectionTitle("Condition"),
-              Wrap(
+               Wrap(
                 spacing: 8,
                 children: ["Fair","Good","Superb"].map((condition) {
                   return ChoiceChip(
@@ -129,7 +118,6 @@ class _ProductAttributeBottomSheetState
                   );
                 }).toList(),
               ),
-
               Row(
                 children: [
                   Checkbox(
@@ -153,8 +141,7 @@ class _ProductAttributeBottomSheetState
                   String selectRom = _colorList[index].romName.toString();
                   String storage = "${_colorList[index].ramName} / ${_colorList[index].romName}";
                   bool isSelected = selectedStorage == storage;
-                  // DataClass.selectedSRam = _colorList[index].ramName;
-                  // DataClass.selectedSRom = _colorList[index].romName;
+
                   return OutlinedButton(
                     onPressed: () {
                       // widget.onTap();
@@ -257,63 +244,7 @@ class _ProductAttributeBottomSheetState
                   );
                 }).toList(),
               ),
-
-              const SizedBox(height: 10),
-
-              // Center(
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Colors.blue,
-              //       foregroundColor: Colors.white,
-              //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //       minimumSize: Size(300, 50),
-              //     ),
-              //     // onPressed: () async {
-              //     //   DataClass.productName = widget.product.productAndModelName.toString();
-              //     //   final userCode = await TokenHelper.getUserCode();
-              //     //   if (userCode == null) {
-              //     //     Get.to(() => LoginScreen());
-              //     //   } else {
-              //     //     var response = await AddToCartService.fetchAddToCartData(userCode);
-              //     //     if (response != null) {
-              //     //       Get.to(() => CartScreen());
-              //     //     } else {
-              //     //       ScaffoldMessenger.of(context).showSnackBar(
-              //     //         SnackBar(
-              //     //           content: Text("Something went wrong! Please try again."),
-              //     //           backgroundColor: Colors.redAccent,
-              //     //         ),
-              //     //       );
-              //     //     }
-              //     //   }
-              //     // },
-              //     onPressed: () async {
-              //       // DataClass.productName = widget.product.productAndModelName.toString();
-              //       final userCode = await TokenHelper.getUserCode();
-              //       if (userCode == null) {
-              //         Get.to(() => LoginScreen());
-              //       } else {
-              //         AddToCartService addToCartService = AddToCartService();
-              //         // var response = await addToCartService.fetchAddToCartData(userCode);
-              //         // if (response != null) {
-              //         //   Get.to(() => CartScreen());
-              //         // } else {
-              //         //   ScaffoldMessenger.of(context).showSnackBar(
-              //         //     SnackBar(
-              //         //       content: Text("Something went wrong! Please try again."),
-              //         //       backgroundColor: Colors.redAccent,
-              //         //     ),
-              //         //   );
-              //         // }
-              //       }
-              //     },
-              //     child: const Text("ADD TO CART"),
-              //   ),
-              // )
-
+                SizedBox(height: 10),
             ],
           ),
         );

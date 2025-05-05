@@ -224,45 +224,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Text(
-                                //   product.productAndModelName ?? '',
-                                //   style: const TextStyle(
-                                //       fontWeight: FontWeight.bold,
-                                //       fontSize: 16),
-                                //   maxLines: 2,
-                                //   overflow: TextOverflow.ellipsis,
-                                // ),
-                                //  Text(
-                                //   product.ramName ?? 'Ram',
-                                //   style: const TextStyle(
 
-                                //       fontSize: 16),
-                                //   maxLines: 2,
-                                //   overflow: TextOverflow.ellipsis,
-                                // ),
-                                //  Text(
-                                //   product.romName?? 'Rom',
-                                //   style: const TextStyle(
-
-                                //       fontSize: 16),
-                                //   maxLines: 2,
-                                //   overflow: TextOverflow.ellipsis,
-                                // ),
-
-                                // const SizedBox(height: 5),
-                                // Text(
-                                //   "₹${product.amount ?? ''}",
-                                //   style: const TextStyle(
-                                //       fontSize: 14, color: Colors.green),
-                                // ),
-                                //  Text(
-                                //   product.newModelAmt.toString() ?? 'Discounted Amount',
-                                //   style: const TextStyle(
-                                //       fontWeight: FontWeight.bold,
-                                //        fontSize: 14, color: Colors.redAccent),
-
-                                //   overflow: TextOverflow.ellipsis,
-                                // ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

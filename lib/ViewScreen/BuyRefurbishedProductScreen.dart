@@ -16,8 +16,6 @@ import '../Cart_Screens/CheckoutScreen.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/ControllerProductDetails.dart';
 import '../controllers/ControllerProductDetails/ControllerProductList.dart';
-import '../model/AddToCartModel/GetBuynowModel.dart';
-import '../model/DataObject.dart';
 import '../model/ProductDetailsModel/ProductDetailsListModel.dart';
 import '../model/ProductDetailsModel/ProductDetailsModel.dart';
 import '../model/ProductDetailsModel/ProductImageListModel.dart';
@@ -38,9 +36,10 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
   State<BuyRefurbishedProductScreen> createState() =>
       _ProductDetailsScreenState();
 }
-
 class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
+
   final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
+
   List<ProductDetailsListModel> productDetailsList = [];
   List<AddToCartModel> productAddToCart = [];
   List<ProductReviewModel> reviews = [];
@@ -365,8 +364,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: const Text(
-                "BUY NOW",
+              child: const Text("BUY NOW",
                 style: TextStyle(color: Colors.white),
               ),
             ),

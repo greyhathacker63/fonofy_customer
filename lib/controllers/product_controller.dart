@@ -43,7 +43,6 @@ class ProductController extends GetxController {
       isLoading(false);
     }
   }
-
   void toggleSelection(ProductModel product) {
     if (selectedProducts.contains(product)) {
       selectedProducts.remove(product);
