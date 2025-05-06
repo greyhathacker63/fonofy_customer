@@ -6,6 +6,7 @@ import 'package:fonofy/model/ProductDetailsModel/ProductImageListModel.dart';
 import 'package:get/get.dart';
 
 class ControllerProductDetails extends GetxController {
+
   var productDetails = Rxn<ProductDetailsModel>();
 
   Future<void> getProductDetailsData({required String url, required String refNo}) async {

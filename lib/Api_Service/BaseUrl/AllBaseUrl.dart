@@ -1,4 +1,6 @@
 
+const String deliveryBaseUrl = 'https://track.delhivery.com/c/';
+
 const String baseUrl = 'https://api.fonofy.in/';
 
 const String tableUrl = "${baseUrl}api/forb2c/buyscreen-data-list";
@@ -24,6 +26,10 @@ const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
  const String getBuyNowUrl = "${baseUrl}api/forb2c/get-buynow";
 
  const String deleteShippingUrl = "${baseUrl}api/forb2c/delete-ship-address";
+
+ const String deliveryPinCodeUrl = "${deliveryBaseUrl}api/pin-codes/json/";
+
+ const String createOrderUrl = "${baseUrl}api/forb2c/create-order";
 
 
 

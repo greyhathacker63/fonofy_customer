@@ -7,9 +7,13 @@ import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
 import 'package:fonofy/model/ShippingAddressModel/ListShippingAddressModel.dart';
 import 'package:fonofy/utils/Colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../Api_Service/ShippingAddressService/DeleteShippingAddressService.dart';
+import '../controllers/CreateOrderController.dart';
+import '../model/AddToCartModel/CreateOrderModel.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final List<CartListModel>? cartList;
@@ -60,6 +64,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   String token = "";
   int selectedAddressIndex = -1;
+
+  final CreateOrderController orderController = Get.put(CreateOrderController());
+
+   ListShippingAddressModel? shippingList;
+
 
   List<String> paymentMethods = [
     'Cash on Delivery',
@@ -444,29 +453,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     const SizedBox(height: 24),
                     // Place Order Button
                     ElevatedButton(
-                      onPressed: () {
-                        if (selectedAddressIndex >= 0) {
-                          // TODO: Implement order placement logic
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   const SnackBar(content: Text("Order placed successfully!")),
-                          // );
-                        } else {
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   const SnackBar(content: Text("Please select a delivery address")),
-                          // );
-                        }
+                      onPressed: () async {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorConstants.appBlueColor3,
                         minimumSize: const Size(double.infinity, 48),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
-                      child: const Text(
-                        "Place Order",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      child:  Text(
+                          "Place Order",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

@@ -117,9 +117,6 @@ class ProductDetailsModel {
       );
 
 
-
-
-
   Map<String, dynamic> toJson() =>
       {
         "Description": description,

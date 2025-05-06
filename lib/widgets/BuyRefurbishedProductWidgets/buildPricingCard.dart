@@ -15,37 +15,34 @@ Widget buildPricingCard(ProductDetailsModel product) {
           SizedBox(height: 10),
           Row(
             children: [
-              Text("-${product.discountPercentage?.toString() ?? "0"}%",
+              Text("-${product.discountPercentage?.toString() ?? ""}%",
                   style: const TextStyle(
                       color: Colors.red,
                       fontSize: 16,
                       fontWeight: FontWeight.bold)),
               const SizedBox(width: 10),
-              Text("₹${product.sellingPrice ?.toString() ?? "0"}",
+              Text("₹${product.sellingPrice ?.toString() ?? ""}",
                   style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black)),
               const SizedBox(width: 8),
               Text(
-                "₹${product.newModelAmt?.toString() ?? "0"}",
+                "₹${product.newModelAmt?.toString() ?? ""}",
                 style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
-                    decoration: TextDecoration.lineThrough),
+                    decoration: TextDecoration.lineThrough,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 5),
-          const Text("View Plans",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold)),
+          const Text("View Plans",style: TextStyle(color: Colors.blue,fontSize: 14,fontWeight: FontWeight.bold)),
           const SizedBox(height: 5),
-          const Text(
-              "Cardless and No Cost EMI Available on credit/debit card",
-              style: TextStyle(color: Colors.grey, fontSize: 12)),
+          const Text("Cardless and No Cost EMI Available on credit/debit card",
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+          ),
         ],
       ),
     ),

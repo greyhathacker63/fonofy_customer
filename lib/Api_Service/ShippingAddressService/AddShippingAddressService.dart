@@ -17,18 +17,14 @@ class AddShippingAddressService {
     try {
       final String apiUrl = 'https://api.fonofy.in/api/forb2c/add-shipping-address';
 
-      // ✅ Create HttpClient & Bypass SSL (for Development Only)
       final HttpClient httpClient = HttpClient();
       httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
 
-      // ✅ Create HTTP Request
-      final HttpClientRequest request = await httpClient.postUrl(Uri.parse(apiUrl));
+       final HttpClientRequest request = await httpClient.postUrl(Uri.parse(apiUrl));
 
-      // ✅ Set Headers
       request.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
       request.headers.set(HttpHeaders.authorizationHeader, 'Bearer $token');
 
-      // ✅ Prepare Request Body
       final Map<String, dynamic> requestBody = {
         "Id": 0,
         "ShippmentId": "",
@@ -45,11 +41,9 @@ class AddShippingAddressService {
       };
       request.add(utf8.encode(json.encode(requestBody)));
 
-      // ✅ Send Request & Get Response
       final HttpClientResponse response = await request.close();
       final String responseBody = await response.transform(utf8.decoder).join();
 
-      // ✅ Close HttpClient
       httpClient.close();
 
       // ✅ Handle Response

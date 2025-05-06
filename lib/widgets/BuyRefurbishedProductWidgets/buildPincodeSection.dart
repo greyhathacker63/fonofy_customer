@@ -1,7 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../../controllers/ControllerProductDetails/DeliveryPinCodeController.dart';
 
 Widget buildPincodeSection() {
+
+  final TextEditingController pinController = TextEditingController();
+  final DeliveryPinCodeController controllerDelivery = Get.put(DeliveryPinCodeController());
+
   return Card(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -19,24 +26,68 @@ Widget buildPincodeSection() {
             children: [
               Expanded(
                 child: TextField(
+                  controller: pinController,
                   decoration: InputDecoration(
-                    hintText: "Enter Pincode",
+                    hintText: "Enter Pin code",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                   ),
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(6),
+                  ],
                 ),
               ),
               const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle pincode check
-                },
-                child: const Text("Check"),
-              ),
+              SizedBox(
+                height: 45,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (pinController.text.length == 6) {
+                      controllerDelivery.fetchPinCode(pinController.text);
+                    } else {
+                      Get.snackbar("Invalid", "Please enter a valid 6-digit PIN code");
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: Colors.blue, // You can change color if needed
+                  ),
+                  child: const Text("Check",style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              )
+
             ],
           ),
+          const SizedBox(height: 10),
+          Obx(() {
+            if (controllerDelivery.errorMessage.isNotEmpty) {
+              return Text(
+                controllerDelivery.errorMessage.value,
+                style: const TextStyle(color: Colors.red),
+              );
+            } else if (controllerDelivery.deliveryPinCodeModel.value != null) {
+              final data = controllerDelivery.deliveryPinCodeModel.value!.deliveryCodes!;
+              if (data.isNotEmpty && data[0].postalCode?.prePaid == "Y") {
+                return Text(
+                  "✅ Delivery Available",
+                  style: const TextStyle(color: Colors.green),
+                );
+              } else {
+                return const Text(
+                  "Delivery not available for this PIN code.",
+                  style: TextStyle(color: Colors.red),
+                );
+              }
+            }
+            return SizedBox();
+          }),
         ],
       ),
     ),
