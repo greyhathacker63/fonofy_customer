@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fonofy/Services/web_constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../../model/common_filter_model.dart';
@@ -6,7 +7,7 @@ import '../../model/common_filter_model.dart';
 class FilterService {
   Future<CommonFilterModel?> fetchCommonFilterData() async {
     try {
-      final url = "https://api.fonofy.in/api/common/product-page-list";
+      final String url = "$baseurl$common$filter";
       print("Fetching filters from: $url");
 
       final response = await http.get(Uri.parse(url));
