@@ -22,41 +22,6 @@ class SearchService {
   }) async {
     var userCode = await TokenHelper.getUserCode();
     try {
-//       final Uri uri = Uri.parse("$baseurl$common$productList?CustomerId=$userCode").replace(
-//         queryParameters: {
-//           if (productpage != null && productpage.isNotEmpty)
-//             'productpage': productpage,
-//           if (category != null && category.isNotEmpty && category.toLowerCase() != 'viewall')
-//             'category': category,
-//           if (ramName != null && ramName.isNotEmpty)
-//             'Ramurl': ramName,
-//           if (maxPrice != null && maxPrice.isNotEmpty)
-//             'MaxPrice': maxPrice,
-//           // Add other parameters as needed
-//         },
-//       );
-
-//       log("API URL: ${uri.toString()}");
-
-//       final response = await http.get(uri);
-
-//       if (response.statusCode == 200) {
-//         final data = json.decode(response.body);
-
-//         if (data is List) {
-//           return data.map((json) => ProductModel.fromJson(json)).toList();
-//         } else {
-//           log("Unexpected response format: $data");
-//           return [];
-//         }
-//       } else {
-//        log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
-//         throw Exception('Failed to load products: ${response.statusCode}');
-//       }
-//     } catch (e, stackTrace) {
-//       log("Error fetching products: $e", stackTrace: stackTrace);
-//       throw Exception('Error fetching products: $e');
-//     }
       Map<String, String> queryParams = {};
 
       // Add all filters independently
@@ -113,6 +78,7 @@ class SearchService {
       log("API URL: ${uri.toString()}");
 
       final response = await http.get(uri);
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data is List) {
