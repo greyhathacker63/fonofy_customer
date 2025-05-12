@@ -10,4 +10,5 @@ const String deleteProductList = "delete-product-wishlist";
 const String wishlist = "get-wishlist";
 const String addtoWishlist = "add-product-wishlist";
 const String filter ="product-page-list";
+const String Search='get-search-products';
 

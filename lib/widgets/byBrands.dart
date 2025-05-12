@@ -21,12 +21,14 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
               fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 8),
       // Scrollable Brand List
       SizedBox(
-        height: 110,
+        height: Get.height * 0.15,
+        width: Get.width,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
           itemCount: buyTableBrands?.length ?? 0,
           itemBuilder: (context, index) {
             final buyBrandsDetails = buyTableBrands?[index];
@@ -41,8 +43,8 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
                     },
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double radius = constraints.maxWidth * 0.15;
-
+                        double radius = constraints.maxWidth * 0.12;
+      
                         return Container(
                           height: Get.height * 0.10,
                           width: Get.width * 0.35,
@@ -51,12 +53,12 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
                           //   border: Border.all(color: Colors.grey, width: 1),
                           //   borderRadius: BorderRadius.circular(radius),
                           // ),
-
+      
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1),
                             borderRadius: BorderRadius.circular(10),
                           ),
-
+      
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
@@ -76,22 +78,19 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
                       },
                     ),
                   ),
-
-                  const SizedBox(height: 5),
-
+      
+                  const SizedBox(height: 10),
+      
                   // Brand Name
-                  SizedBox(
-                    width: Get.width * 0.22,
-                    child: Text(
-                      buyBrandsDetails?.brandName.toString() ?? "",
-                      style: TextStyle(
-                        fontSize: Get.width * 0.035,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                  Text(
+                    buyBrandsDetails?.brandName.toString() ?? "",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
