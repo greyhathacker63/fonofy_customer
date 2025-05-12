@@ -49,7 +49,6 @@ import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
 import 'package:http/http.dart' as http;
  import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
-
 class SearchProductService {
   static Future<List<SearchCompareProductModel>> fetchSearchProductsList(String query) async {
     final uri = Uri.parse('$searchCompareProductUrl?query=$query');
