@@ -5,7 +5,7 @@ import 'package:fonofy/Cart_Screens/CartScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
 import 'package:fonofy/model/AddToCartModel/GetBuynowModel.dart';
- import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
+import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import '../Api_Service/AddToCartService/AddToCartService.dart';
@@ -13,7 +13,7 @@ import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Api_Service/ProductDetailsService/ProductImageListService.dart';
 import '../Api_Service/ProductDetailsService/ProductRatingService.dart';
 import '../Api_Service/ProductDetailsService/ProductReviewService.dart';
- import '../Cart_Screens/CheckoutScreen.dart';
+import '../Cart_Screens/CheckoutScreen.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/ControllerProductDetails.dart';
 import '../controllers/ControllerProductDetails/ControllerProductList.dart';
@@ -298,9 +298,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     product?.stockQuantity?.toString(),
                     product?.colorId?.toString(),
                     product?.modelNo?.toString(),
-                   product?.sellingPrice?.toString(),
+                    product?.sellingPrice?.toString(),
                     cartRef,
-                   );
+                  );
                   if (response != null) {
                     Get.to(() => const CartScreen());
                   } else {
@@ -326,7 +326,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             ),
 
           ),
-           SizedBox(width: 10),
+          SizedBox(width: 10),
           // Expanded(
           //   child: ElevatedButton(
           //     onPressed: () async {
@@ -413,7 +413,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     quantity: product.stockQuantity ?? 0,
                     price: product.sellingPrice?.toDouble() ?? 0.0,
                     cartRef: cartRef,
-                    );
+                  );
 
                   if (addToBuyNowDetails != null) {
                     Get.to(() => CheckoutScreen(
