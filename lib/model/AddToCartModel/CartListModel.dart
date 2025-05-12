@@ -9,30 +9,30 @@ List<CartListModel> cartListModelFromJson(String str) => List<CartListModel>.fro
 String cartListModelToJson(List<CartListModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CartListModel {
-  dynamic? cartId;
+  dynamic cartId;
   String? productName;
-  dynamic? productId;
-  dynamic? f2;
+  dynamic productId;
+  dynamic f2;
   String? ramName;
   String? romName;
   String? colorName;
   String? ucode;
   String? url;
   String? productImage;
-  dynamic? stockQuantity;
-  dynamic? ramId;
-  dynamic? romId;
-  dynamic? colorId;
-  dynamic? quantity;
-  dynamic? price;
-  dynamic? mrp;
-  dynamic? discount;
-  dynamic? discountAmount;
-  dynamic? sellingPrice;
-  dynamic? totalSellingPrice;
-  dynamic? totalPrice;
-  dynamic? totalMrp;
-  dynamic? totalDiscount;
+  dynamic stockQuantity;
+  dynamic ramId;
+  dynamic romId;
+  dynamic colorId;
+  dynamic quantity;
+  dynamic price;
+  dynamic mrp;
+  dynamic discount;
+  dynamic discountAmount;
+  dynamic sellingPrice;
+  dynamic totalSellingPrice;
+  dynamic totalPrice;
+  dynamic totalMrp;
+  dynamic totalDiscount;
 
   CartListModel({
     this.cartId,

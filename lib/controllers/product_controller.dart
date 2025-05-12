@@ -20,6 +20,7 @@ class ProductController extends GetxController {
     String? maxPrice,
     String? pageCount,
     String? ramName,
+    String? WishlistId,
   }) async {
     try {
       isLoading(true);
@@ -31,6 +32,7 @@ class ProductController extends GetxController {
         customerId: customerId,
         maxPrice: maxPrice,
         ramName: ramName,
+        
         // Only pass parameters that have values
       );
       

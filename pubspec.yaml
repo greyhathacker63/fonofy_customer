@@ -46,6 +46,7 @@ dependencies:
   percent_indicator: ^4.2.5
   flutter_launcher_icons: ^0.14.3
   jwt_decoder: ^2.0.1
+  uuid: any
 
 
 dev_dependencies:

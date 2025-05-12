@@ -186,7 +186,7 @@ class _AccountScreenState extends State<AccountScreen> {
               progressColor: Colors.blue,
               backgroundColor: Colors.grey.shade300,
               center: Text("$_secondsRemaining sec",style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 10.0,color: Colors.black,
-                ),
+              ),
               ),
             ),
 
@@ -361,7 +361,6 @@ class _AccountScreenState extends State<AccountScreen> {
       ],
     );
   }
-
   Widget _buildMenuItem(String title, {VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,

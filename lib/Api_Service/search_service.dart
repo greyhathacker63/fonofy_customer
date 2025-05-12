@@ -57,7 +57,6 @@ class SearchService {
 //       log("Error fetching products: $e", stackTrace: stackTrace);
 //       throw Exception('Error fetching products: $e');
 //     }
-
       Map<String, String> queryParams = {};
 
       if (userCode != null && userCode.isNotEmpty) {
@@ -82,7 +81,6 @@ class SearchService {
       log("API URL: ${uri.toString()}");
 
       final response = await http.get(uri);
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data is List) {

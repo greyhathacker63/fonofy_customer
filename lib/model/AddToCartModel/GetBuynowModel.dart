@@ -1,10 +1,12 @@
+// To parse this JSON data, do
+//
+//     final getBuynowModel = getBuynowModelFromJson(jsonString);
+
 import 'dart:convert';
 
-List<GetBuyNowModel> getBuyNowModelFromJson(String str) =>
-    List<GetBuyNowModel>.from(json.decode(str).map((x) => GetBuyNowModel.fromJson(x)));
+List<GetBuyNowModel> getBuyNowModelFromJson(String str) => List<GetBuyNowModel>.from(json.decode(str).map((x) => GetBuyNowModel.fromJson(x)));
 
-String getBuyNowModelToJson(List<GetBuyNowModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String getBuyNowModelToJson(List<GetBuyNowModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class GetBuyNowModel {
   dynamic cartId;
@@ -112,4 +114,5 @@ class GetBuyNowModel {
     "TotalMRP": totalMrp,
     "TotalDiscount": totalDiscount,
   };
-}
+
+ }

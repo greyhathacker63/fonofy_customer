@@ -10,14 +10,14 @@ class ManageAddressScreen extends StatefulWidget {
   final String customerId;
 
   const ManageAddressScreen({super.key, required this.customerId});
-
   @override
   _ManageAddressScreenState createState() => _ManageAddressScreenState();
 }
-
 class _ManageAddressScreenState extends State<ManageAddressScreen> {
   Future<List<ListShippingAddressModel>>? _addressFuture;
+
   String token = "";
+
 
   @override
   void initState() {
@@ -25,11 +25,23 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     _initializeData();
   }
 
+  // Future<void> _initializeData() async {
+  //   String? storedToken = await TokenHelper.getToken();
+  //
+  //   if (storedToken != null && storedToken.isNotEmpty) {
+  //     token = storedToken;
+  //     await _fetchAddressList();
+  //   } else {
+  //     print("⚠️ Token is missing. Please log in again.");
+  //   }
+  // }
+
   Future<void> _initializeData() async {
     String? storedToken = await TokenHelper.getToken();
-    if (storedToken != null && storedToken.isNotEmpty) {
+    String? userCode = await TokenHelper.getUserCode();
+    if (storedToken != null && storedToken.isNotEmpty && userCode!= null) {
       token = storedToken;
-      await _fetchAddressList(); // changed to await
+      await _fetchAddressList();
     } else {
       print("⚠️ Token is missing. Please log in again.");
     }
@@ -190,15 +202,15 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                address.address ?? "NA",
+                                address.address ?? "",
                                 style: const TextStyle(fontSize: 14, color: Colors.black),
                               ),
                               Text(
-                                "${address.city ?? "NA"} - ${address.pinCode ?? 'NA'}",
+                                "${address.city ?? ""} - ${address.pinCode ?? ''}",
                                 style: const TextStyle(fontSize: 14, color: Colors.black),
                               ),
                               Text(
-                                "📞 ${address.mobileNo ?? "NA"}",
+                                "📞 ${address.mobileNo ?? ""}",
                                 style: const TextStyle(fontSize: 14, color: Colors.black),
                               ),
                               Align(
@@ -226,7 +238,6 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                         await deleteAddress(address);
                                       },
                                     ),
-
                                   ],
                                 ),
                               ),

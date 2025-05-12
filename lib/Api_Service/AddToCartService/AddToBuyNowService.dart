@@ -1,51 +1,50 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 import '../../Services/web_constants.dart';
 import '../BaseUrl/AllBaseUrl.dart';
 
 class AddToBuyNowService {
-  Future<String?> fetchBuyNowData(
-      String customerId,
-      dynamic ramId,
-      dynamic romId,
-      dynamic quantity,
-      dynamic colorId,
-      dynamic modelId,
-      ) async {
+  Future<String?> fetchBuyNowData({
+    required String customerId,
+    required String modelId,
+    required String colorId,
+    required String ramId,
+    required String romId,
+    required String cartRef,
+    required int quantity,
+    required double price,
+  }) async {
     try {
-      final url = Uri.parse(buyNowUrl);
+      final uri = Uri.parse(buyNowUrl);
       final requestBody = {
         "CustomerId": customerId,
         "Quantity": quantity,
         "ModelId": modelId,
+        "Price": price,
         "ColorId": colorId,
         "RamId": ramId,
         "RomId": romId,
-        "CartRef": "4rnfdmfknsd",
+        "CartRef": cartRef,
       };
 
-      final response = await http.post(
-        url,
-        headers: headers,
-        body: jsonEncode(requestBody),
-      );
+      print("📤 Request Body: ${jsonEncode(requestBody)}");
+       String jsonData = "";
+      final response = await http.post(uri, headers: headers, body: jsonEncode(requestBody));
+      final body = response.body.trim();
 
-      print("🔵 Raw response body: ${response.body}");
+      print("🔵 Raw Response: $body");
 
       if (response.statusCode == 200) {
-        final  body = jsonDecode(response.body);
-
-        // ✅ Return only the 'Message' field
-        return body;
-      } else {
-        print('❌ HTTP Error: ${response.statusCode}');
-        return null;
+         jsonData = json.decode(body);
+        }
+      else {
+        print("❌ HTTP Error: ${response.statusCode}");
       }
+      return jsonData;
     } catch (e) {
-      print('❌ Exception while adding to Buy Now: $e');
-      return null;
+      print("❌ Exception in addToBuyNow: $e");
     }
+    return null;
+
   }
 }

@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Api_Service/ProductDetailsService/SearchProductService.dart';
-import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 import '../utils/Colors.dart';
 
@@ -24,7 +25,7 @@ class _CompareScreenState extends State<CompareScreen> {
 
   final List<Map<String, String>> featureList = [
     {'label': 'Price', 'key': 'price'},
-    {'label': 'Available', 'key': 'availaible'},
+    {'label': 'Available', 'key': 'available'},
     {'label': 'Stock Status', 'key': 'stock'},
     {'label': 'RAM', 'key': 'ram'},
     {'label': 'ROM', 'key': 'rom'},
@@ -46,10 +47,14 @@ class _CompareScreenState extends State<CompareScreen> {
   }
 
   void _onSearchChanged(String query) async {
-    if (query.isEmpty) {
-      setState(() => _searchResults.clear());
+    if (query.trim().isEmpty) {
+      setState(() {
+        _searchResults.clear();
+        isLoading = false;
+      });
       return;
     }
+
     setState(() => isLoading = true);
     try {
       final results = await SearchProductService.fetchSearchProductsList(query);
@@ -59,13 +64,15 @@ class _CompareScreenState extends State<CompareScreen> {
       });
     } catch (e) {
       setState(() => isLoading = false);
-      print('Error fetching search results: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to search products: $e')),
+      );
     }
   }
 
   void _removeProduct(int index) {
     final count = selectedProducts.where((e) => e != null).length;
-    if (count > 0) {
+    if (count > 1) {
       setState(() => selectedProducts[index] = null);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -83,13 +90,12 @@ class _CompareScreenState extends State<CompareScreen> {
   String getFeatureValue(String key, SearchCompareProductModel product) {
     switch (key) {
       case 'price':
-        return "₹${product.amount ?? 'N/A'}";
-      case 'availaible':
-        return "Yes";
+        return "₹${product.amount?.toString() ?? 'N/A'}";
+      case 'available':
+        return "Yes"; // Update with actual data if available
       case 'stock':
-        return "In-Stock";
+        return "In-Stock"; // Update with actual data if available
       case 'ram':
-
       case 'rom':
       case 'display':
       case 'battery':
@@ -97,7 +103,7 @@ class _CompareScreenState extends State<CompareScreen> {
       case 'rearCamera':
       case 'processor':
       case 'rating':
-        return "N/A";
+        return "N/A"; // Update with actual data if available
       default:
         return "-";
     }
@@ -150,53 +156,50 @@ class _CompareScreenState extends State<CompareScreen> {
               ),
             ),
           if (isLoading) const LinearProgressIndicator(),
-
           if (showSearch)
             Expanded(
               child: _searchResults.isEmpty && !isLoading
-                  ? const Center(child: Text('No product found'))
+                  ? const Center(child: Text('No products found'))
                   : ListView.builder(
                 itemCount: _searchResults.length,
                 itemBuilder: (context, index) {
-                  final item = _searchResults[index];
+                  final searchData = _searchResults[index];
                   return InkWell(
-                    onTap: () async {
-                      try {
-                        final productToCompare = SearchCompareProductModel(
-                          productName: item.productName ?? '',
-                          amount: item.amount,
-                          image: item.image,
-                          modelUrl: item.modelUrl,
-                        );
-                        final firstNullIndex = selectedProducts.indexWhere((p) => p == null);
-                        if (firstNullIndex != -1) {
-                          setState(() {
-                            selectedProducts[firstNullIndex] = productToCompare;
-                            showSearch = false;
-                            _searchResults.clear();
-                            searchProductController.clear();
-                          });
-                        }
-                      } catch (e) {
-                        print("Compare API error: $e");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error: $e')),
-                        );
+                    onTap: () {
+                      final productToCompare = SearchCompareProductModel(
+
+                        amount: searchData.amount,
+                        image: searchData.image,
+
+                      );
+                      final firstNullIndex =
+                      selectedProducts.indexWhere((p) => p == null);
+                      if (firstNullIndex != -1) {
+                        setState(() {
+                          selectedProducts[firstNullIndex] = productToCompare;
+                          showSearch = false;
+                          _searchResults.clear();
+                          searchProductController.clear();
+                        });
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
                       child: Row(
                         children: [
                           Image.network(
-                            '${imageAllBaseUrl}${item.image ?? ""}',
+                            '$imageAllBaseUrl${searchData.image ?? ""}',
                             height: 55,
                             width: 55,
                             fit: BoxFit.fill,
-                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+                            errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.error),
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
-                              return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2, color: Colors.lightBlue));
                             },
                           ),
                           const SizedBox(width: 12),
@@ -205,14 +208,18 @@ class _CompareScreenState extends State<CompareScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.productName ?? '',
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                                  searchData.name ?? '',
+                                  style: const TextStyle(
+                                      fontSize: 12, fontWeight: FontWeight.w500),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  "₹${item.amount ?? ''}",
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+                                  "₹${searchData.amount?.toString() ?? ''}",
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
                                 ),
                               ],
                             ),
@@ -224,7 +231,6 @@ class _CompareScreenState extends State<CompareScreen> {
                 },
               ),
             ),
-
           if (!showSearch)
             Expanded(
               child: Row(
@@ -246,11 +252,12 @@ class _CompareScreenState extends State<CompareScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Image.network(
-                                    '${imageAllBaseUrl}${product.image ?? ""}',
+                                    '$imageAllBaseUrl${product.image ?? ""}',
                                     height: 120,
                                     fit: BoxFit.contain,
                                     errorBuilder: (context, error, stackTrace) =>
-                                        Image.asset('assets/images/placeholder.png', height: 120),
+                                        Image.asset('assets/images/placeholder.png',
+                                            height: 120),
                                   ),
                                 ),
                                 Positioned(
@@ -264,7 +271,8 @@ class _CompareScreenState extends State<CompareScreen> {
                                         color: Colors.white,
                                       ),
                                       padding: const EdgeInsets.all(5),
-                                      child: const Icon(Icons.close, size: 18, color: Colors.black),
+                                      child: const Icon(Icons.close,
+                                          size: 18, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -274,8 +282,9 @@ class _CompareScreenState extends State<CompareScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                product.productName ?? '',
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                product.name ?? '',
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -284,17 +293,21 @@ class _CompareScreenState extends State<CompareScreen> {
                               return Container(
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  border: Border(top: BorderSide(color: Colors.grey.shade200)),
+                                  border: Border(
+                                      top:
+                                      BorderSide(color: Colors.grey.shade200)),
                                   color: Colors.blue.shade50,
                                 ),
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 8),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       feature['label']!,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 13),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(value, style: const TextStyle(fontSize: 13)),
@@ -312,7 +325,8 @@ class _CompareScreenState extends State<CompareScreen> {
                           padding: const EdgeInsets.all(12),
                           child: FittedBox(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 14),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: ColorConstants.appBlueColor3,

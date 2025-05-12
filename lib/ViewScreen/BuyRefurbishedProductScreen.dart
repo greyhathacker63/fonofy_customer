@@ -1,18 +1,19 @@
+
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/AddToCartService/AddToBuyNowService.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
-import 'package:fonofy/model/ProductDetailsModel/ProductRamRomColorListModel.dart';
-import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
+import 'package:fonofy/model/AddToCartModel/GetBuynowModel.dart';
+ import 'package:fonofy/model/ProductDetailsModel/ProductReviewModel.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 import '../Api_Service/AddToCartService/AddToCartService.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Api_Service/ProductDetailsService/ProductImageListService.dart';
 import '../Api_Service/ProductDetailsService/ProductRatingService.dart';
 import '../Api_Service/ProductDetailsService/ProductReviewService.dart';
-import '../Bottom_Sheet/ProductAttributeBottomSheet.dart';
-import '../Cart_Screens/CheckoutScreen.dart';
+ import '../Cart_Screens/CheckoutScreen.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/ControllerProductDetails.dart';
 import '../controllers/ControllerProductDetails/ControllerProductList.dart';
@@ -48,6 +49,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   ProductRatingModel? ratingData;
 
   AddToCartModel? addToaCrtData;
+  GetBuyNowModel? getData;
 
   int selectedImageIndex = 0;
   int totalRatings = 0;
@@ -55,6 +57,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   bool isFavorite = false;
   bool favoriteClicked = false;
   bool isLoading = true;
+
   dynamic price;
 
   Future<void> loadProductRating() async {
@@ -272,16 +275,21 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       child: Row(
         children: [
           Expanded(
+
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
               onPressed: () async {
                 try {
                   final product = controllerProductDetails.productDetails.value;
                   final userCode = await TokenHelper.getUserCode();
-                  if (userCode == null) {
+                  final token = await TokenHelper.getToken();
+                  if (userCode == null || token == null) {
                     Get.to(() => const LoginScreen());
                     return;
                   }
+                  final uuid = Uuid();
+                  String cartRef = uuid.v4();
+
                   final addToCartService = AddToCartService();
                   final response = await addToCartService.fetchAddToCartData(
                     userCode,
@@ -290,7 +298,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     product?.stockQuantity?.toString(),
                     product?.colorId?.toString(),
                     product?.modelNo?.toString(),
-                  );
+                   product?.sellingPrice?.toString(),
+                    cartRef,
+                   );
                   if (response != null) {
                     Get.to(() => const CartScreen());
                   } else {
@@ -311,20 +321,76 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   );
                 }
               },
-              child: const Text(
-                "ADD TO CART",
-                style: TextStyle(color: Colors.black, fontSize: 15),
+              child: const Text("ADD TO CART",style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             ),
+
           ),
-          const SizedBox(width: 10),
+           SizedBox(width: 10),
+          // Expanded(
+          //   child: ElevatedButton(
+          //     onPressed: () async {
+          //       try {
+          //         final product = controllerProductDetails.productDetails.value;
+          //         final userCode = await TokenHelper.getUserCode();
+          //         if (userCode == null) {
+          //           Get.to(() => const LoginScreen());
+          //           return;
+          //         }
+          //         if (product == null || productImages.isEmpty) {
+          //           ScaffoldMessenger.of(context).showSnackBar(
+          //             const SnackBar(
+          //               content: Text("Product details not available!"),
+          //               backgroundColor: Colors.redAccent,
+          //             ),
+          //           );
+          //           return;
+          //         }
+          //         Get.to(() => CheckoutScreen(
+          //           isSingleProduct: true,
+          //           modelNo: product.modelNo?.toString() ?? '',
+          //           colorId: product.colorId?.toString() ?? '',
+          //           stockQuantity: product.stockQuantity?.toString() ?? '1',
+          //           price: product.sellingPrice?.toDouble() ?? 0.0,
+          //           productImage: productImages[0].image ?? '',
+          //           userCode: userCode,
+          //           productName: product.productAndModelName ?? '',
+          //           ramName: product.ramName ?? '',
+          //           romName: product.romName ?? '',
+          //           colorName: product.colorName ?? '',
+          //           ramId: product.ramId?.toString() ?? '',
+          //           romId: product.romId?.toString() ?? '',
+          //           newModelAmt: product.newModelAmt?.toDouble() ?? 0.0,
+          //         ));
+          //       } catch (e) {
+          //         print("Buy Now Error: $e");
+          //         ScaffoldMessenger.of(context).showSnackBar(
+          //           SnackBar(
+          //             content: Text("An error occurred: $e"),
+          //             backgroundColor: Colors.redAccent,
+          //           ),
+          //         );
+          //       }
+          //     },
+          //     style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+          //     child: const Text("BUY NOW",
+          //       style: TextStyle(color: Colors.white),
+          //     ),
+          //   ),
+          // ),
+
           Expanded(
             child: ElevatedButton(
               onPressed: () async {
                 try {
+                  final uuid = Uuid();
+                  String cartRef = uuid.v4();
+                  print('cartRef :- $cartRef');
                   final product = controllerProductDetails.productDetails.value;
+
                   final userCode = await TokenHelper.getUserCode();
-                  if (userCode == null) {
+                  final token = await TokenHelper.getToken();
+                  if (userCode == null || token == null) {
                     Get.to(() => const LoginScreen());
                     return;
                   }
@@ -337,22 +403,31 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     );
                     return;
                   }
-                  Get.to(() => CheckoutScreen(
-                    isSingleProduct: true,
-                    modelNo: product.modelNo?.toString() ?? '',
-                    colorId: product.colorId?.toString() ?? '',
-                    stockQuantity: product.stockQuantity?.toString() ?? '1',
+                  final addToBuyNowService = AddToBuyNowService();
+                  final addToBuyNowDetails = await addToBuyNowService.fetchBuyNowData(
+                    customerId: userCode,
+                    modelId: product.modelNo.toString(),
+                    colorId: product.colorId.toString(),
+                    ramId: product.ramId.toString(),
+                    romId: product.romId.toString(),
+                    quantity: product.stockQuantity ?? 0,
                     price: product.sellingPrice?.toDouble() ?? 0.0,
-                    productImage: productImages[0].image ?? '',
-                    userCode: userCode,
-                    productName: product.productAndModelName ?? '',
-                    ramName: product.ramName ?? '',
-                    romName: product.romName ?? '',
-                    colorName: product.colorName ?? '',
-                    ramId: product.ramId?.toString() ?? '',
-                    romId: product.romId?.toString() ?? '',
-                    newModelAmt: product.newModelAmt?.toDouble() ?? 0.0,
-                  ));
+                    cartRef: cartRef,
+                    );
+
+                  if (addToBuyNowDetails != null) {
+                    Get.to(() => CheckoutScreen(
+                      isSingleProduct: true,
+                      customerId: userCode, cartRef: cartRef,
+                    ),);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Failed to fetch Buy Now data"),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                  }
                 } catch (e) {
                   print("Buy Now Error: $e");
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -364,16 +439,13 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: const Text("BUY NOW",
-                style: TextStyle(color: Colors.white),
-              ),
+              child: const Text("BUY NOW", style: TextStyle(color: Colors.white)),
             ),
-          ),
+          )
         ],
       ),
     );
   }
-
   Widget _buildRecommendedProducts(ProductDetailsModel product) {
     return Obx(() {
       var productList = controllerProductDetailsList.productDetailsList;
@@ -527,7 +599,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
     });
   }
-
   Widget _buildFeatureSection() {
     return GridView.builder(
       shrinkWrap: true,

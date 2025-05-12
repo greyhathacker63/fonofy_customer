@@ -6,6 +6,7 @@ class AddToBuyNowModel {
   final dynamic colorId;
   final dynamic ramId;
   final dynamic romId;
+  final dynamic price;
   final String cartRef;
 
   AddToBuyNowModel({
@@ -15,6 +16,7 @@ class AddToBuyNowModel {
     required this.colorId,
     required this.ramId,
     required this.romId,
+    required this.price,
     required this.cartRef,
   });
 
@@ -25,6 +27,7 @@ class AddToBuyNowModel {
       "ModelId": modelId,
       "ColorId": colorId,
       "RamId": ramId,
+      "Price": price,
       "RomId": romId,
       "CartRef": cartRef,
     };
@@ -36,9 +39,10 @@ class AddToBuyNowModel {
       quantity: json['Quantity'] ?? 0,
       modelId: json['ModelId'] ?? 0,
       colorId: json['ColorId'] ?? 0,
+      price: json['Price'] ?? 0,
       ramId: json['RamId'] ?? 0,
       romId: json['RomId'] ?? 0,
       cartRef: json['CartRef'] ?? '',
-    );
+     );
   }
 }

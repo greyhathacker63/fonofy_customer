@@ -45,6 +45,8 @@ class ListShippingAddressModel {
     workType: json["WorkType"],
     isdefault: json["Isdefault"],
   );
+
+
   Map<String, dynamic> toJson() => {
     "Id": id,
     "ShippmentId": shippmentId,

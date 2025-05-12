@@ -24,7 +24,7 @@ class _ScreensState extends State<Screens> {
             onTap: () {
               Get.to(EmptyCartScreen());
             },
-            child: const Text("EmptyCart", style: TextStyle(color: Colors.black, fontSize: 20),
+            child: const Text("EmptyCart",style:TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
           GestureDetector(

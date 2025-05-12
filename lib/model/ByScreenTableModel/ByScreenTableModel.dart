@@ -50,18 +50,18 @@ class ByTableModel {
 }
 
 class Table {
-  dynamic? id;
+  dynamic id;
   String? title;
   String? tagLine;
   bool? isActive;
-  dynamic? sequenceId;
+  dynamic sequenceId;
   String? ramdomCode;
   String? bnnerImage;
   String? cmpCode;
   bool? status;
   bool? isdeleted;
   DateTime? createdDate;
-  dynamic? createdby;
+  dynamic createdby;
   dynamic updatedDate;
   dynamic updatedBy;
 

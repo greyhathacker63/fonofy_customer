@@ -41,6 +41,7 @@ class ProductDetailsModel {
   dynamic? avgRate;
   dynamic? stockQuantity;
   dynamic? rowNum;
+  dynamic? wishlistId;
 
   ProductDetailsModel({
     this.description,
@@ -75,6 +76,7 @@ class ProductDetailsModel {
     this.avgRate,
     this.stockQuantity,
     this.rowNum,
+    this.wishlistId
   });
 
   factory ProductDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -111,6 +113,7 @@ class ProductDetailsModel {
         avgRate: json["AvgRate"],
         stockQuantity: json["StockQuantity"],
         rowNum: json["RowNum"],
+        wishlistId: json["WishlistId"],
       );
 
 
