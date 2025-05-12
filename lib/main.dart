@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fonofy/ViewScreen/Orders/MyOrders.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -34,8 +35,9 @@ class MyApp extends StatelessWidget {
       title: 'Fonofy',
       theme: ThemeData(useMaterial3: true),
       home:  MainScreen(),
-       getPages: [
-        GetPage(name: '/main', page: () => const MainScreen()),
+      // You can use getPages or routes if needed
+      getPages: [
+        GetPage(name: '/main', page: () =>  MainScreen()),
         // Add other screens here
       ],
     );

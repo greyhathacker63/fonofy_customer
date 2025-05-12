@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:fonofy/Filters/CompareScreen.dart';
 import 'package:fonofy/Filters/FilterScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // ✅ Added this
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
 import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
@@ -224,7 +224,6 @@ class _ProductScreenState extends State<ProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -238,24 +237,13 @@ class _ProductScreenState extends State<ProductScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
 
-                                    // Ram | Rom
                                     Text(
                                       '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
                                       style: const TextStyle(fontSize: 16),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    Text(
-                                      product.wishlistCount.toString() ?? '',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
 
-                                    // Price (green)
                                     Text(
                                       "₹${product.amount ?? ''}",
                                       style: const TextStyle(
@@ -286,7 +274,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                     ),
                                   ],
                                 ),
-
                                 const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment:

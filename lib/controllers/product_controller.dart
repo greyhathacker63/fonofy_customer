@@ -11,45 +11,41 @@ class ProductController extends GetxController {
   var selectedProducts = <ProductModel>[].obs;
 
   Future<void> fetchProducts({
-    String? category,
-    String? productpage,
-    String? customerId,
-    String? ramUrl,
-    String? romUrl,
-    String? minPrice,
-    String? maxPrice,
-    String? pageCount,
-    String? ramName,
-    String? WishlistId,
-  }) async {
-    try {
-      isLoading(true);
-      productsList.clear();
+  String? category,
+  String? productpage,
+  String? customerId,
+  String? ramUrl,
+  String? romUrl,
+  String? minPrice,
+  String? maxPrice,
+  String? pageCount,
+  String? ramName,
+  String? WishlistId,
+}) async {
+  try {
+    isLoading(true);
+    productsList.clear();
 
-      final products = await SearchService.fetchAllProducts(
-        category: category,
-        productpage: productpage,
-        customerId: customerId,
-        maxPrice: maxPrice,
-        ramName: ramName,
-        
-        // Only pass parameters that have values
-      );
-      
-      productsList.assignAll(products);
-    } catch (e) {
-      log("Error in fetchProducts: $e");
-      // You might want to show an error message to the user here
-      rethrow;
-    } finally {
-      isLoading(false);
-    }
+    final products = await SearchService.fetchAllProducts(
+      category: category,
+      productpage: productpage,
+      customerId: customerId,
+      ramUrl: ramUrl,
+      romUrl: romUrl,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      pageCount: pageCount,
+      ramName: ramName,
+    
+    );
+
+    productsList.assignAll(products);
+  } catch (e) {
+    log("Error in fetchProducts: $e");
+    rethrow;
+  } finally {
+    isLoading(false);
   }
-  void toggleSelection(ProductModel product) {
-    if (selectedProducts.contains(product)) {
-      selectedProducts.remove(product);
-    } else {
-      selectedProducts.add(product);
-    }
-  }
+}
+
 }
