@@ -27,6 +27,7 @@ import '../widgets/BuyRefurbishedProductWidgets/buildProductAttributesCard.dart'
 import '../widgets/BuyRefurbishedProductWidgets/buildProductHighlightsCard.dart';
 import '../widgets/BuyRefurbishedProductWidgets/buildUserReviewsSection.dart';
 
+
 class BuyRefurbishedProductScreen extends StatefulWidget {
   final String url;
   final String refNo;
@@ -289,7 +290,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   }
                   final uuid = Uuid();
                   String cartRef = uuid.v4();
-
                   final addToCartService = AddToCartService();
                   final response = await addToCartService.fetchAddToCartData(
                     userCode,
@@ -327,6 +327,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
           ),
           SizedBox(width: 10),
+
           // Expanded(
           //   child: ElevatedButton(
           //     onPressed: () async {

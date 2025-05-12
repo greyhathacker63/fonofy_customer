@@ -91,7 +91,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return 'unknown';
     }
   }
-
   void loadBuyNowData() async {
     final userCode = await TokenHelper.getUserCode();
     if (userCode != null && widget.cartRef.isNotEmpty) {
@@ -113,7 +112,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
-
   void _loadAddresses() async {
     String? userCode = await TokenHelper.getUserCode();
     String? token = await TokenHelper.getToken();
@@ -130,7 +128,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           colorText: Colors.white);
     }
   }
-
   Future<void> _initializeData() async {
     String? storedToken = await TokenHelper.getToken();
     String? userCode = await TokenHelper.getUserCode();
@@ -147,7 +144,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
-
   void _navigateToAddNewAddressScreen() async {
     String? userCode = await TokenHelper.getUserCode();
     String? token = await TokenHelper.getToken();
@@ -174,7 +170,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       });
     }
   }
-
   Future<void> fetchShippingData() async {
     try {
       final data = await ShippingChargeService.fetchShippingCharge();
@@ -193,7 +188,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
-
   double calculateSubtotal() {
     if (widget.isSingleProduct) {
       return cartList1.fold(0.0, (sum, item) {
@@ -208,7 +202,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       });
     }
   }
-
   double calculateShippingCharge(double totalAmount) {
     if (shippingChargeData == null) {
       print("❌ Shipping charge data is null");
@@ -577,7 +570,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     });
   }
-
   Widget _buildCartProductsSummary() {
     return ListView.builder(
       shrinkWrap: true,
@@ -633,7 +625,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       },
     );
   }
-
   Widget _buildAddressTile(ListShippingAddressModel address, int index) {
     return Dismissible(
       key: ValueKey(address.id ?? index),
@@ -749,7 +740,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
-
+  
   Widget _buildShimmerEffect() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
