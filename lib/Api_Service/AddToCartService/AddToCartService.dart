@@ -12,7 +12,9 @@ class AddToCartService {
       dynamic rom,
       dynamic qty,
       dynamic color,
-      dynamic modelID
+      dynamic modelID,
+      dynamic price,
+      dynamic cartRef,
       ) async {
     try {
       var url = Uri.parse(addToCartUrl);
@@ -21,11 +23,12 @@ class AddToCartService {
         "CustomerId": customerId,
         "Quantity": qty,
         "ModelId": modelID,
-        "BrandId": 5,
+        "Price": price,
+        "BrandId": 0,
         "ColorId": color,
         "RamId": ram,
         "RomId": rom,
-        "CartRef": "4rnfdmfknsd"
+        "CartRef": cartRef
       };
       var response = await http.post(url,
         headers: headers,

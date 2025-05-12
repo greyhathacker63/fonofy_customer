@@ -29,7 +29,13 @@ const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
 
  const String deliveryPinCodeUrl = "${deliveryBaseUrl}api/pin-codes/json/";
 
+ const String searchCompareProductUrl = "${baseUrl}api/common/get-search-compare-product";
+
  const String createOrderUrl = "${baseUrl}api/forb2c/create-order";
+
+ const String createOrderForPayUrl = "${baseUrl}api/forb2c/orderdetails-for-pay";
+
+ const String orderPaymentUrl = "${baseUrl}api/forb2c/order-payment";
 
 
 

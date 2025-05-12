@@ -45,42 +45,30 @@
 // }
 
 import 'dart:convert';
+import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
 import 'package:http/http.dart' as http;
-import '../../model/ProductDetailsModel/GetSearchProductsModel.dart';
-import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
-import '../BaseUrl/AllBaseUrl.dart';
+ import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
+
 
 class SearchProductService {
-  // static Future<List<GetSearchProductsModel>> fetchProductDetailsSearch(String query) async {
-  //   final url = Uri.parse('$baseUrl/api/common/get-search-products?query=$query');
-  //
-  //   try {
-  //     final response = await http.get(url);
-  //
-  //     if (response.statusCode == 200) {
-  //       final List<dynamic> data = json.decode(response.body);
-  //       return data.map((item) => GetSearchProductsModel.fromJson(item)).toList();
-  //     } else {
-  //       throw Exception('Failed to load compare data');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Error: $e');
-  //   }
-  // }
-  static Future<List<SearchCompareProductModel>> fetchSearchProductsList(String url) async {
-    final uri = Uri.parse('$baseUrl/api/common/get-search-compare-product?query=$url');
+  static Future<List<SearchCompareProductModel>> fetchSearchProductsList(String query) async {
+    final uri = Uri.parse('$searchCompareProductUrl?query=$query');
 
     try {
-      final response = await http.get(uri);
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
+        final body = jsonDecode(response.body);
+        final List<dynamic> data = body['data'];
         return data.map((item) => SearchCompareProductModel.fromJson(item)).toList();
       } else {
-        throw Exception('Failed to load product details');
+        throw Exception('Failed to load product details: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Error: $e');
+      throw Exception('Error fetching products: $e');
     }
   }
 }

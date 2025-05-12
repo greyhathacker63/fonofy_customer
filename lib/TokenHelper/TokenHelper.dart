@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,7 +41,9 @@ class TokenHelper {
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_tokenKey);
+    print(getToken());
   }
+
 
   // Remove Token
   static Future<void> removeToken() async {

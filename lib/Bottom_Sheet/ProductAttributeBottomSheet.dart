@@ -317,11 +317,4 @@ class _ProductAttributeBottomSheetState
     final savings = newPrice - selectedPrice;
     return savings > 0 ? savings.toStringAsFixed(0) : '0';
   }
-
-  // String _calculateSavings() {
-  //   double mrp =
-  //       double.tryParse(selectedVariant?.newAmount?.toString() ?? "0") ?? 0;
-  //   double sp = double.tryParse(selectedVariant?.f1?.toString() ?? "0") ?? 0;
-  //   return (mrp - sp).toStringAsFixed(0);
-  // }
-}
+ }

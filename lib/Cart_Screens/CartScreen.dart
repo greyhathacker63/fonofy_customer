@@ -9,6 +9,7 @@ import 'package:fonofy/model/AddToCartModel/DeleteCartResponseModel.dart';
 import 'package:fonofy/model/AddToCartModel/ShippingChargeModel.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 import '../Api_Service/AddToCartService/DeleteCartService.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
@@ -37,9 +38,7 @@ class _CartScreenState extends State<CartScreen> {
     await fetchCartList();
     await fetchShippingData();
     setState(() => isLoading = false);
-
   }
-
   Future<void> fetchCartList() async {
     try {
       final userCode = await TokenHelper.getUserCode();
@@ -51,7 +50,6 @@ class _CartScreenState extends State<CartScreen> {
       setState(() => cartList = []);
     }
   }
-
   Future<void> fetchShippingData() async {
     try {
       final data = await ShippingChargeService.fetchShippingCharge();
@@ -69,7 +67,6 @@ class _CartScreenState extends State<CartScreen> {
       return sum + (price * item.quantity);
     });
   }
-
   double calculateShippingCharge(double totalAmount) {
     if (shippingChargeData == null) return 0.0;
     if (totalAmount >= (shippingChargeData?.maxAmount ?? 0)) {
@@ -133,8 +130,6 @@ class _CartScreenState extends State<CartScreen> {
       }
     }
   }
-
-
   Future<void> deleteCartItemFromList(int index) async {
     final userCode = await TokenHelper.getUserCode();
     if (userCode == null || userCode.isEmpty) {
@@ -151,7 +146,6 @@ class _CartScreenState extends State<CartScreen> {
     final romId = cartList[index].romId?.toString() ?? '';
 
     print("Deleting item with modelNo: $modelNo, ramId: $ramId, romId: $romId");
-
     final response = await DeleteCartService.deleteCartItem(modelNo: modelNo, ramId: ramId, romId: romId, customerId: userCode,
     );
     if (response == "Product removed in cart") {
@@ -169,10 +163,9 @@ class _CartScreenState extends State<CartScreen> {
 
     }
     setState(() {
-      isDeletingIndex = null; // stop loading
+      isDeletingIndex = null;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +214,7 @@ class _CartScreenState extends State<CartScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.network(
-                            "$imageAllBaseUrl${cartData.productImage}",
+                            "${imageAllBaseUrl}${cartData.productImage}",
                             height: 80,
                             width: 80,
                             fit: BoxFit.cover,
@@ -251,15 +244,20 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                               const SizedBox(height: 10),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   IconButton(
                                     icon: const Icon(Icons.remove),
                                     onPressed: () => updateQuantity(false, index),
+                                    constraints: const BoxConstraints(),
+                                    padding: EdgeInsets.zero,
                                   ),
                                   Text('${cartList[index].quantity}'),
                                   IconButton(
                                     icon: const Icon(Icons.add),
                                     onPressed: () => updateQuantity(true, index),
+                                    constraints: const BoxConstraints(),
+                                    padding: EdgeInsets.zero,
                                   ),
                                 ],
                               ),
@@ -271,7 +269,9 @@ class _CartScreenState extends State<CartScreen> {
                           onPressed: () async {
                             await deleteCartItemFromList(index);
                           },
-                        )
+                          constraints: const BoxConstraints(),
+                          padding: EdgeInsets.zero,
+                        ),
                       ],
                     ),
                   );
@@ -299,18 +299,31 @@ class _CartScreenState extends State<CartScreen> {
             const SizedBox(height: 20),
 
             ElevatedButton.icon(
-              onPressed: () {
+
+              onPressed: () async {
+                String? userCode = await TokenHelper.getUserCode();
+
+                if (userCode == null || userCode.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please login to continue")),
+                  );
+                  return;
+                }
+
+                final uuid = Uuid();
+                String cartRef = uuid.v4();
+                print('cartRef :- $cartRef');
+
                 if (cartList.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Your cart is empty!")),
                   );
                   return;
                 }
-                Get.to(() => CheckoutScreen(
-                  cartList: cartList, // Pass the entire cart list
-                  totalAmount: total, // Pass the total amount
+                Get.to(() => CheckoutScreen(cartList: cartList,customerId: userCode,cartRef: cartRef,
                 ));
               },
+
               icon: const Icon(Icons.arrow_forward, color: Colors.white),
               label: const Text("Proceed to Checkout", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(

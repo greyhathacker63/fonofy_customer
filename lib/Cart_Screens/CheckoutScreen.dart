@@ -1,58 +1,38 @@
+
 import 'package:flutter/material.dart';
-import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+ import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:fonofy/Api_Service/ShippingAddressService/ListShippingAddressService.dart';
 import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
-import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
-import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
+import 'package:fonofy/controllers/ControllerProductDetails/GetBuyNowController.dart';
+ import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
 import 'package:fonofy/model/ShippingAddressModel/ListShippingAddressModel.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shimmer/shimmer.dart';
-
+import '../Api_Service/AddToCartService/ShippingChargeService.dart';
 import '../Api_Service/ShippingAddressService/DeleteShippingAddressService.dart';
-import '../controllers/CreateOrderController.dart';
-import '../model/AddToCartModel/CreateOrderModel.dart';
+import '../ViewScreen/LoginScreen.dart';
+ import '../controllers/CreateOrder/CreateOrderController.dart';
+import '../model/AddToCartModel/GetBuynowModel.dart';
+import '../model/AddToCartModel/ShippingChargeModel.dart';
+import '../model/CreateOrderModel/CreateOrderModel.dart';
+import 'dart:io';
+
+import '../model/CreateOrderModel/OrderPaymentModel.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final List<CartListModel>? cartList;
-  final double? totalAmount;
+  final String customerId;
+  final String cartRef;
   final bool isSingleProduct;
 
-  // Single product fields
-  final String? modelNo;
-  final String? colorId;
-  final String? stockQuantity;
-  final double? price;
-  final String? productImage;
-  final String? userCode;
-  final String? productName;
-  final String? ramName;
-  final String? romName;
-  final String? colorName;
-  final String? ramId;
-  final String? romId;
-  final double? newModelAmt;
-
-  const CheckoutScreen({
+  CheckoutScreen({
     super.key,
     this.cartList,
-    this.totalAmount,
     this.isSingleProduct = false,
-    this.modelNo,
-    this.colorId,
-    this.stockQuantity,
-    this.price,
-    this.productImage,
-    this.userCode,
-    this.productName,
-    this.ramName,
-    this.romName,
-    this.colorName,
-    this.ramId,
-    this.romId,
-    this.newModelAmt,
+    required this.customerId,
+    required this.cartRef,
   });
 
   @override
@@ -60,15 +40,23 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  late Future<List<ListShippingAddressModel>> _addressFuture;
 
+  late Future<List<ListShippingAddressModel>> _addressFuture;
   String token = "";
-  int selectedAddressIndex = -1;
+  final controllerGetBuy = Get.put(ControllerGetBuyNowDetails());
 
   final CreateOrderController orderController = Get.put(CreateOrderController());
 
-   ListShippingAddressModel? shippingList;
 
+
+
+  ListShippingAddressModel? selectedAddress;
+  ShippingChargeModel? shippingChargeData;
+  List<CartListModel> cartList = [];
+  List<GetBuyNowModel> cartList1 = [];
+  int selectedAddressIndex = 0;
+
+  OrderProductList? orderProductList;
 
   List<String> paymentMethods = [
     'Cash on Delivery',
@@ -83,28 +71,87 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void initState() {
     super.initState();
     _initializeData();
+     _loadAddresses();
+    fetchShippingData();
+     if (widget.isSingleProduct) {
+      loadBuyNowData();
+    } else {
+      setState(() {
+        cartList = widget.cartList ?? [];
+      });
+    }
+  }
+
+  String getPlatformType() {
+    if (Platform.isAndroid) {
+      return 'android';
+    } else if (Platform.isIOS) {
+      return 'ios';
+    } else {
+      return 'unknown';
+    }
+  }
+
+  void loadBuyNowData() async {
+    final userCode = await TokenHelper.getUserCode();
+    if (userCode != null && widget.cartRef.isNotEmpty) {
+      await controllerGetBuy.getGetBuyNowData(
+          userCode: userCode, cartRef: widget.cartRef);
+      final buyNowData = controllerGetBuy.getBuyNowDetails.value;
+      if (buyNowData != null) {
+        setState(() {
+          cartList1 = [buyNowData];
+        });
+      } else {
+        print("❌ No Buy Now data received");
+        Get.snackbar("Error", "Failed to load product details",
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } else {
+      print("❌ Missing userCode or cartRef");
+      Get.snackbar("Error", "Invalid user or cart reference",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
+  void _loadAddresses() async {
+    String? userCode = await TokenHelper.getUserCode();
+    String? token = await TokenHelper.getToken();
+    if (userCode != null && token != null) {
+      setState(() {
+         _addressFuture = ListShippingAddressService().listShippingAddress(
+          customerId: userCode,
+          token: token,
+        );
+      });
+    } else {
+      Get.snackbar(
+          "Error", "Unable to load addresses", backgroundColor: Colors.red,
+          colorText: Colors.white);
+    }
   }
 
   Future<void> _initializeData() async {
     String? storedToken = await TokenHelper.getToken();
-    String? userCode = widget.userCode ?? await TokenHelper.getUserCode();
+    String? userCode = await TokenHelper.getUserCode();
     if (storedToken != null && storedToken.isNotEmpty && userCode != null) {
       token = storedToken;
-      _addressFuture = ListShippingAddressService().listShippingAddress(
-        customerId: userCode,
-        token: token,
-      );
-      setState(() {});
+      setState(() {
+        _addressFuture = ListShippingAddressService().listShippingAddress(
+          customerId: userCode,
+          token: token,
+        );
+      });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please log in to continue")),
-      );
+      Get.snackbar("Error", "User not logged in or token missing",
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
   void _navigateToAddNewAddressScreen() async {
-    String? userCode = widget.userCode ?? await TokenHelper.getUserCode();
-    if (userCode == null) {
+    String? userCode = await TokenHelper.getUserCode();
+    String? token = await TokenHelper.getToken();
+    if (userCode == null || token == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("User not logged in")),
       );
@@ -113,152 +160,66 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddNewAddressScreen(
-          customerId: userCode,
-          address: ListShippingAddressModel(),
-        ),
+        builder: (context) =>
+            AddNewAddressScreen(
+              customerId: userCode,
+              address: ListShippingAddressModel(),
+            ),
       ),
     );
     if (result != null) {
       setState(() {
-        selectedAddressIndex = -1; // Reset selection on new address addition
+        selectedAddressIndex = 0;
         _initializeData();
       });
     }
   }
 
-  Widget _buildAddressTile(ListShippingAddressModel address, int index) {
-    return Dismissible(
-      key: ValueKey(address.id ?? index),
-      background: Container(
-        color: Colors.red,
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: const Icon(Icons.delete, color: Colors.white),
-      ),
-      secondaryBackground: Container(
-        color: Colors.blue,
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: const Icon(Icons.edit, color: Colors.white),
-      ),
-      confirmDismiss: (direction) async {
-        if (direction == DismissDirection.endToStart) {
-
-          String? userCode = widget.userCode ?? await TokenHelper.getUserCode();
-
-
-          if (userCode == null) return false;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddNewAddressScreen(customerId: userCode, address: address,
-              ),
-            ),
-          );
-          return false;
-        } else {
-          // Delete
-          final confirm = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text("Delete Address"),
-              content:
-                  const Text("Are you sure you want to delete this address?"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text("Cancel"),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text("Delete"),
-                ),
-              ],
-            ),
-          );
-          if (confirm == true) {
-            final id = address.id;
-            final shipmentId = address.shippmentId;
-            if (id != null && shipmentId != null && shipmentId.isNotEmpty) {
-              final result = await DeleteAddressService.deleteAddress(
-                id: id,
-                shipmentId: shipmentId,
-              );
-              if (result != null && result.status == true) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("✅ ${result.message}")),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(result?.message ?? "Deleted successfully")),
-                );
-              }
-
-              setState(() {
-                _addressFuture =
-                    ListShippingAddressService().listShippingAddress(
-                  customerId: widget.userCode ?? '',
-                  token: token,
-                );
-              });
-
-              return true;
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("❌ Invalid ID or Shipment ID")),
-              );
-              return false;
-            }
-          }
-
-          return false;
-        }
-      },
-      onDismissed: (direction) {
+  Future<void> fetchShippingData() async {
+    try {
+      final data = await ShippingChargeService.fetchShippingCharge();
+      if (data != null) {
         setState(() {
-          if (selectedAddressIndex == index) {
-            selectedAddressIndex = -1;
-          } else if (selectedAddressIndex > index) {
-            selectedAddressIndex--;
-          }
+          shippingChargeData = data;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Address ${address.city} deleted")),
-        );
-      },
-      child: ListTile(
-        leading: Radio<int>(
-          value: index,
-          groupValue: selectedAddressIndex,
-          onChanged: (value) {
-            setState(() {
-              selectedAddressIndex = value!;
-              print("Selected Address Index: $selectedAddressIndex");
-            });
-          },
-        ),
-        title:
-            Text("Name: ${address.name ?? 'NA'} | ${address.workType ?? 'NA'}"),
-        subtitle: Text(
-          "${address.address ?? 'NA'}\n${address.city ?? 'NA'} - ${address.pinCode ?? 'NA'}\nPhone: ${address.mobileNo ?? 'NA'}",
-        ),
-        isThreeLine: true,
-      ),
-    );
+      } else {
+        print("❌ No shipping charge data received");
+        Get.snackbar("Error", "Failed to load shipping charges",
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } catch (e) {
+      print("❌ Error fetching shipping charge: $e");
+      Get.snackbar("Error", "Error loading shipping charges",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 
-  double _calculateSubtotal() {
+  double calculateSubtotal() {
     if (widget.isSingleProduct) {
-      return widget.price ?? 0.0;
+      return cartList1.fold(0.0, (sum, item) {
+        double price = double.tryParse(item.sellingPrice?.toString() ?? '0') ?? 0.0;
+        return sum + (price * (item.quantity ?? 1));
+      });
+    } else {
+      return cartList.fold(0.0, (sum, item) {
+        double price = double.tryParse(item.sellingPrice?.toString() ?? '0') ??
+            0.0;
+        return sum + (price * (item.quantity ?? 0));
+      });
     }
-    return widget.cartList?.fold(0.0, (sum, item) {
-          double price =
-              double.tryParse(item.sellingPrice?.toString() ?? '0') ?? 0.0;
-          return sum! + (price * item.quantity);
-        }) ??
-        0.0;
+  }
+
+  double calculateShippingCharge(double totalAmount) {
+    if (shippingChargeData == null) {
+      print("❌ Shipping charge data is null");
+      return 0.0;
+    }
+    if (totalAmount >= (shippingChargeData?.maxAmount ?? 0)) {
+      int multiples = (totalAmount / (shippingChargeData?.maxAmount ?? 1))
+          .floor();
+      return multiples * (shippingChargeData?.shippingCharge ?? 0);
+    }
+    return 0.0;
   }
 
   @override
@@ -277,24 +238,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     }
 
-    if (widget.isSingleProduct &&
-        (widget.productName == null ||
-            widget.price == null ||
-            widget.productImage == null)) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text("Checkout"),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          elevation: 1,
-        ),
-        body: const Center(child: Text("Invalid product details!")),
-      );
-    }
-
-    double subtotal = _calculateSubtotal();
-    double shippingCharge = 99.0;
+    double subtotal = calculateSubtotal();
+    double shippingCharge = calculateShippingCharge(subtotal);
     double total = subtotal + shippingCharge;
 
     return Scaffold(
@@ -315,18 +260,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Product Summary
+                    // Order Summary
                     const Text(
-                      "    Order Summary",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      "Order Summary",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 15),
                     widget.isSingleProduct
                         ? _buildSingleProductSummary()
                         : _buildCartProductsSummary(),
                     const SizedBox(height: 24),
-                    // Address Section
+                    // Delivery Address
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -361,34 +306,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             itemBuilder: (_, i) => _buildShimmerEffect(),
                           );
                         } else if (snapshot.hasError || snapshot.data == null) {
-                          return const Center(
-                              child: Text("❌ No address found!"));
+                          return const Center(child: Text("No address found!"));
                         } else if (snapshot.data!.isEmpty) {
                           return const Center(
                               child: Text("📭 No addresses available."));
                         }
                         var addresses = snapshot.data!;
-                        if (selectedAddressIndex == -1 &&
-                            addresses.isNotEmpty) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            setState(() {
-                              selectedAddressIndex = 0;
-                              print("Default Address Selected: Index 0");
-                            });
-                          });
+                        if (selectedAddressIndex < addresses.length &&
+                            selectedAddressIndex >= 0) {
+                          selectedAddress = addresses[selectedAddressIndex];
                         }
                         if (selectedAddressIndex >= addresses.length) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             setState(() {
                               selectedAddressIndex =
-                                  addresses.isNotEmpty ? 0 : -1;
-                              print(
-                                  "Adjusted Invalid Index to: $selectedAddressIndex");
+                              addresses.isNotEmpty ? 0 : -1;
+                              selectedAddress =
+                              addresses.isNotEmpty ? addresses[0] : null;
                             });
                           });
                         }
-                        print(
-                            "Address List Length: ${addresses.length}, Selected Index: $selectedAddressIndex");
                         return ListView.builder(
                           itemCount: addresses.length,
                           shrinkWrap: true,
@@ -399,12 +336,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Payment Method Section
+                    // Payment Method
                     const Text(
                       "Payment Method",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -420,9 +356,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           items: paymentMethods.map((String method) {
                             return DropdownMenuItem<String>(
                               value: method,
-                              child: Text(method,
-                                  style:
-                                      const TextStyle(color: Colors.black87)),
+                              child: Text(method, style: const TextStyle(
+                                  color: Colors.black87)),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -434,37 +369,134 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-
-                    // Price Summary
+                    // Price Details
                     const Text(
                       "Price Details",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     Column(
                       children: [
-                        _priceRow("Subtotal", subtotal),
+                        _priceRow("Item Price", subtotal),
                         _priceRow("Delivery Charges", shippingCharge),
                         const Divider(),
                         _priceRow("Total", total, isBold: true, isTotal: true),
                       ],
                     ),
-                    const SizedBox(height: 24),
-                    // Place Order Button
+                     SizedBox(height: 24),
+
+
                     ElevatedButton(
                       onPressed: () async {
+                        final userCode = await TokenHelper.getUserCode();
+                        final token = await TokenHelper.getToken();
+                        if (token == null || token.isEmpty || userCode == null || userCode.isEmpty) {
+                          Get.to(() => LoginScreen());
+                          return;
+                        }
+                        if (orderController.isLoading.value) return;
+                        if (selectedAddress == null) {
+                          Get.snackbar("Error", "Please select a delivery address",
+                              backgroundColor: Colors.red, colorText: Colors.white);
+                          return;
+                        }
+                        final getBuyNow = controllerGetBuy.getBuyNowDetails.value;
+
+                        List<OrderProductList> productList = [];
+                        if (widget.isSingleProduct && getBuyNow != null) {
+
+                          double sellingPrice =
+                              double.tryParse(getBuyNow.sellingPrice?.toString() ?? '0') ?? 0.0;
+                          double mrp = double.tryParse(getBuyNow.mrp?.toString() ?? '0') ?? 0.0;
+                          int quantity = getBuyNow.quantity ?? 1;
+                          double discount = mrp - sellingPrice;
+                          productList = [
+                            OrderProductList(
+                              productId: getBuyNow.productId ?? '',
+                              ramId: getBuyNow.ramId ?? '',
+                              romId: getBuyNow.romId ?? '',
+                              colorId: getBuyNow.colorId ?? '',
+                              orderOn: Platform.isAndroid?"android":"ios",
+                              quantity: quantity,
+                              discount: discount > 0 ? discount : 0.0,
+                              totalMrp: mrp * quantity,
+                              totalPrice: sellingPrice * quantity,
+                              discountAmount: discount * quantity,
+                              subTotalMrp: mrp * quantity,
+                              subTotalDiscount: discount * quantity,
+                              subTotalPrice: sellingPrice * quantity,
+                            ),
+                          ];
+                        } else {
+                          productList = cartList.map((cartItem) {
+                            double sellingPrice = double.tryParse(cartItem.sellingPrice?.toString() ?? '0') ?? 0.0;
+                            double mrp = double.tryParse(cartItem.mrp?.toString() ?? '0') ?? 0.0;
+                            int quantity = cartItem.quantity ?? 1;
+
+                            double discount = mrp - sellingPrice;
+                            dynamic discountPer = sellingPrice * 100 / mrp;
+
+                            return OrderProductList(
+                              productId: cartItem.productId ?? '',
+                              ramId: cartItem.ramId ?? '',
+                              romId: cartItem.romId ?? '',
+                              colorId: cartItem.colorId ?? '',
+                              quantity: quantity,
+                              discount: discountPer,
+                              totalMrp: mrp * quantity,
+                              totalPrice: sellingPrice * quantity,
+                              discountAmount: discount * quantity,
+                              subTotalMrp: mrp * quantity,
+                              subTotalDiscount: discount * quantity,
+                              subTotalPrice: sellingPrice * quantity,
+                            );
+                          }).toList();
+                        }
+                        if (productList.isEmpty) {
+                          Get.snackbar("Error", "No products to order",backgroundColor: Colors.red, colorText: Colors.white);
+                          return;
+                        }
+                        print("Placing order with productList: ${productList.map((p) => p.toJson())}");
+                        print("Selected Address: ${selectedAddress?.toJson()}");
+
+                         await orderController.placeOrder(
+                          customerId: selectedAddress?.customerId ?? '',
+                          shippingId: selectedAddress?.shippmentId ?? '',
+                          name: selectedAddress?.name ?? '',
+                          mobileNo: selectedAddress?.mobileNo ?? '',
+                          emailId: selectedAddress?.emailId ?? '',
+                          address: selectedAddress?.address ?? '',
+                          landmark: "Near Park",
+                          city: selectedAddress?.city?.toString() ?? '',
+                          state: selectedAddress?.state?.toString() ?? '',
+                          pincode: selectedAddress?.pinCode ?? '',
+                          workType: selectedAddress?.workType ?? '',
+                          totalMRP: (getBuyNow?.totalMrp ?? calculateSubtotal()).toDouble(),
+                          totalPrice: subtotal,
+                          totalAmount: total,
+                          totalDiscount: (getBuyNow?.totalDiscount ?? 0).toDouble(),
+                          deliveryCharge: (shippingChargeData?.shippingCharge ?? 0).toDouble(),
+                          couponId: null,
+                          couponAmount: 0.0,
+                          productList: productList,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorConstants.appBlueColor3,
+                        backgroundColor: Colors.blue,
                         minimumSize: const Size(double.infinity, 48),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      child:  Text(
-                          "Place Order",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    )
+                      child: Obx(() {
+                        return orderController.isLoading.value
+                            ? const CircularProgressIndicator(color: Colors.white,strokeWidth: 2,)
+                            : const Text("Place Order",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        );
+                      }),
+                    ),
                   ],
                 ),
               ),
@@ -476,20 +508,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Widget _buildSingleProductSummary() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
+    return Obx(() {
+      final productData = controllerGetBuy.getBuyNowDetails.value;
+
+      if (controllerGetBuy.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (productData == null) {
+        return const Center(child: Text("No product data found."));
+      }
+
+      return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(
-              "$imageAllBaseUrl${widget.productImage}",
+              "$imageAllBaseUrl${productData.productImage.toString()}",
               width: 70,
               height: 70,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.broken_image, size: 80),
+              const Icon(Icons.broken_image, size: 80),
             ),
           ),
           const SizedBox(width: 12),
@@ -498,41 +538,44 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.productName ?? "",
+                  productData.productName.toString(),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "(${widget.ramName ?? ''}/${widget.romName ?? ''}) | Color: ${widget.colorName ?? ''}",
+                  "(${productData.ramName.toString()}/${productData.romName
+                      .toString()}) | Color: ${productData.colorName
+                      .toString()}",
                   style: const TextStyle(color: Colors.grey, fontSize: 14),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
-                      "₹${widget.price?.toStringAsFixed(2) ?? '0.00'}",
+                      "₹${double.tryParse(productData.f2.toString())
+                          ?.toStringAsFixed(2) ?? '0.00'}",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Text(
-                        "₹${widget.newModelAmt?.toStringAsFixed(2)}",
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                            decoration: TextDecoration.lineThrough),
+                    const SizedBox(width: 15),
+                    Text(
+                      "₹${double.tryParse(productData.mrp.toString())
+                          ?.toStringAsFixed(2) ?? '0.00'}",
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildCartProductsSummary() {
@@ -542,8 +585,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       itemCount: widget.cartList!.length,
       itemBuilder: (context, index) {
         final cartItem = widget.cartList![index];
-        double price =
-            double.tryParse(cartItem.sellingPrice?.toString() ?? '0') ?? 0.0;
+        double price = double.tryParse(
+            cartItem.sellingPrice?.toString() ?? '0') ?? 0.0;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
@@ -557,7 +600,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   height: 80,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.broken_image, size: 80),
+                  const Icon(Icons.broken_image, size: 80),
                 ),
               ),
               const SizedBox(width: 12),
@@ -591,6 +634,122 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
+  Widget _buildAddressTile(ListShippingAddressModel address, int index) {
+    return Dismissible(
+      key: ValueKey(address.id ?? index),
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      secondaryBackground: Container(
+        color: Colors.blue,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: const Icon(Icons.edit, color: Colors.white),
+      ),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          String? userCode = await TokenHelper.getUserCode();
+          String? token = await TokenHelper.getToken();
+          if (userCode == null || token == null) return false;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  AddNewAddressScreen(customerId: userCode, address: address),
+            ),
+          );
+          return false;
+        } else {
+          final confirm = await showDialog<bool>(
+            context: context,
+            builder: (context) =>
+                AlertDialog(
+                  title: const Text("Delete Address"),
+                  content: const Text(
+                      "Are you sure you want to delete this address?"),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text("Cancel"),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text("Delete"),
+                    ),
+                  ],
+                ),
+          );
+          if (confirm == true) {
+            final id = address.id;
+            final shipmentId = address.shippmentId;
+            if (id != null && shipmentId != null && shipmentId.isNotEmpty) {
+              final result = await DeleteAddressService.deleteAddress(
+                id: id,
+                shipmentId: shipmentId,
+              );
+              if (result != null && result.status == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("✅ ${result.message}")),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(result?.message ?? "Deleted successfully")),
+                );
+              }
+              setState(() {
+                _addressFuture =
+                    ListShippingAddressService().listShippingAddress(
+                      customerId: widget.customerId,
+                      token: token,
+                    );
+              });
+              return true;
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("❌ Invalid ID or Shipment ID")),
+              );
+              return false;
+            }
+          }
+          return false;
+        }
+      },
+      onDismissed: (direction) {
+        setState(() {
+          if (selectedAddressIndex == index) {
+            selectedAddressIndex = 0;
+          } else if (selectedAddressIndex > index) {
+            selectedAddressIndex--;
+          }
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Address ${address.city} deleted")),
+        );
+      },
+      child: ListTile(
+        leading: Radio<int>(
+          value: index,
+          groupValue: selectedAddressIndex,
+          onChanged: (value) {
+            setState(() {
+              selectedAddressIndex = value!;
+            });
+          },
+        ),
+        title: Text("Name: ${address.name ?? ''} | ${address.workType ?? ''}"),
+        subtitle: Text(
+          "${address.address ?? ''}\n${address.city ?? ''} - ${address
+              .pinCode ?? ''}\nPhone: ${address.mobileNo ?? ''}",
+        ),
+        isThreeLine: true,
+      ),
+    );
+  }
+
   Widget _buildShimmerEffect() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
@@ -620,7 +779,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
-
   Widget _priceRow(String label, double amount,
       {bool isBold = false, bool isTotal = false}) {
     return Padding(

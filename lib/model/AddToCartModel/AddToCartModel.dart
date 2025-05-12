@@ -21,9 +21,6 @@ class AddToCartModel {
     massage: json["massage"],
     result: json["result"] == null ? null : Result.fromJson(json["result"]),
   );
-
-
-
   Map<String, dynamic> toJson() => {
     "massage": massage,
     "result": result?.toJson(),
@@ -31,20 +28,20 @@ class AddToCartModel {
 }
 
 class Result {
-  dynamic? id;
-  dynamic? productId;
+  dynamic id;
+  dynamic productId;
   String? customerId;
   DateTime? createdDate;
   dynamic updatedDate;
   bool? status;
-  dynamic? quantity;
+  dynamic quantity;
   String? type;
-  dynamic? modelId;
-  dynamic? brandId;
-  dynamic? colorId;
-  dynamic? ramId;
-  dynamic? romId;
-  dynamic? price;
+  dynamic modelId;
+  dynamic brandId;
+  dynamic colorId;
+  dynamic ramId;
+  dynamic romId;
+  dynamic price;
   String? cartRef;
 
   Result({

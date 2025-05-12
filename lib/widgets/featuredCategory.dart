@@ -34,19 +34,19 @@ Widget featuredCategory({
                 // New mapping logic
                 if (category == "Deal of the day") {
                   Get.to(() => ProductScreen(
-                      productName: "", productPage: "Deals_of_the_day"));
+                      name: "", productPage: "Deals_of_the_day"));
                 } else if (category == "Refurbished Mobiles") {
                   Get.to(() => ProductScreen(
-                      productName: "", productPage: "refurbished"));
+                      name: "", productPage: "refurbished"));
                 } else {
                   Get.to(() =>
-                      ProductScreen(productName: category, productPage: ""));
+                      ProductScreen(name: category, productPage: ""));
                       
                 }
               } else {
                 print("Clicked on dynamic category: ${item.brandName}");
                 Get.to(() => ProductScreen(
-                    productName: item.brandName ?? "", productPage: ""));
+                    name: item.brandName ?? "", productPage: ""));
               }
             },
             child: Container(

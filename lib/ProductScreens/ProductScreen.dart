@@ -14,15 +14,15 @@ import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
 class ProductScreen extends StatefulWidget {
-  final String? productName;
+  final String? name;
   final String? productPage;
   final String? ramName;
   final String? maxPrice;
   final String? underAmt;
 
-  const ProductScreen({
+   const ProductScreen({
     Key? key,
-    this.productName,
+    this.name,
     this.productPage,
     this.ramName,
     this.maxPrice,
@@ -80,7 +80,7 @@ class _ProductScreenState extends State<ProductScreen> {
     loadWishlist();
     productController.isLoading = true.obs;
     productController.fetchProducts(
-      category: widget.productName,
+      category: widget.name,
       productpage: widget.productPage,
       ramName: widget.ramName,
       maxPrice: widget.maxPrice,
@@ -139,7 +139,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         if (selectedFilters != null &&
                             selectedFilters is Map<String, dynamic>) {
                           productController.fetchProducts(
-                            category: widget.productName,
+                            category: widget.name,
                             productpage: widget.productPage,
                             ramUrl: selectedFilters['ram'],
                             romUrl: selectedFilters['rom'],
@@ -176,9 +176,9 @@ class _ProductScreenState extends State<ProductScreen> {
                 itemBuilder: (context, index) {
                   final product = productController.productsList[index];
                   final productCompare = SearchCompareProductModel(
-                    productName: product.productAndModelName,
+                    name: product.productAndModelName,
                     amount: product.amount,
-                    modelUrl: product.modelUrl,
+                    url: product.modelUrl,
                     image: product.image,
                   );
 
@@ -294,8 +294,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             : Colors.grey,
                                       ),
                                       onPressed: () async {
-                                        final userCode =
-                                            await TokenHelper.getUserCode();
+                                        final userCode = await TokenHelper.getUserCode();
                                         if (userCode == null ||
                                             userCode.isEmpty) {
                                           Get.snackbar(
@@ -309,8 +308,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
                                         final product = productController
                                             .productsList[index];
-
-                                        // Call API to add/remove from wishlist
                                         wishlistController.addProductToWishlist(
                                           productId: product.modelNo.toString(),
                                           colorId: product.colorId.toString(),
@@ -326,11 +323,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                           romId: product.romId.toString(),
                                         );
 
-                                        // Toggle local wishlistCount and rebuild
-                                        setState(() {
+                                         setState(() {
                                           productController.productsList[index]
-                                                  .wishlistCount =
-                                              product.wishlistCount == 1
+                                                  .wishlistCount = product.wishlistCount == 1
                                                   ? 0
                                                   : 1;
                                         });
@@ -352,9 +347,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                               BorderRadius.circular(8),
                                         ),
                                       ),
-                                      child: const Text("Add to Cart",
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                      child: const Text("Add to Cart", style: TextStyle(color: Colors.white)),
                                     ),
                                   ],
                                 ),
