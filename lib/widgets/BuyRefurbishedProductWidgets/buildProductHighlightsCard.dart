@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +19,12 @@ Widget buildProductHighlightsCard(ProductDetailsModel product) {
           const Divider(),
           _buildProductHighlightRow(
               "Model", product.productAndModelName ?? ""),
-          _buildProductHighlightRow("Brand", "Realme"),
+          // _buildProductHighlightRow("Brand", "Realme"),
           _buildProductHighlightRow("RAM", product.ramName ?? ""),
           _buildProductHighlightRow("ROM", product.romName ?? ""),
           _buildProductHighlightRow("Battery", product.battery ?? ""),
           _buildProductHighlightRow("Color", product.colorName ?? ""),
-          _buildProductHighlightRow("OS", "Android"),
+          // _buildProductHighlightRow("OS", Platform.isAndroid?"android":"ios"),
           _buildProductHighlightRow("Rear Camera", product.rearCamera ?? ""),
           _buildProductHighlightRow(
               "Front Camera", product.frontCamera ?? ""),

@@ -36,9 +36,7 @@ class ProductController extends GetxController {
       maxPrice: maxPrice,
       pageCount: pageCount,
       ramName: ramName,
-    
     );
-
     productsList.assignAll(products);
   } catch (e) {
     log("Error in fetchProducts: $e");
@@ -47,5 +45,4 @@ class ProductController extends GetxController {
     isLoading(false);
   }
 }
-
 }

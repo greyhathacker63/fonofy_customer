@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:fonofy/model/ProductModel.dart';
-import '../../model/common_filter_model.dart';
-import '../../Api_Service/FilterService/FilterService.dart';
+import '../../../model/common_filter_model.dart';
+import '../../../Api_Service/FilterService/FilterService.dart';
 import 'package:fonofy/Services/web_constants.dart' as WebConstants; // 👈 FIXED here
 
 class FilterController extends ChangeNotifier {

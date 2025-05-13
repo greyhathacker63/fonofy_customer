@@ -48,8 +48,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final CreateOrderController orderController = Get.put(CreateOrderController());
 
 
-
-
   ListShippingAddressModel? selectedAddress;
   ShippingChargeModel? shippingChargeData;
   List<CartListModel> cartList = [];
@@ -499,7 +497,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
-
   Widget _buildSingleProductSummary() {
     return Obx(() {
       final productData = controllerGetBuy.getBuyNowDetails.value;
@@ -784,12 +781,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               fontSize: isTotal ? 16 : 14,
             ),
           ),
-          Text(
-            "₹${amount.toStringAsFixed(2)}",
-            style: TextStyle(
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-              fontSize: isTotal ? 16 : 14,
-            ),
+          Text("₹${amount.toStringAsFixed(2)}", style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: isTotal ? 16 : 14,),
           ),
         ],
       ),

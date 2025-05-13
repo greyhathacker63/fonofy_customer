@@ -9,7 +9,7 @@ List<ProductReviewModel> productReviewModelFromJson(String str) => List<ProductR
 String productReviewModelToJson(List<ProductReviewModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProductReviewModel {
-  dynamic? rating;
+  dynamic rating;
   String? description;
   String? createdDate;
   String? firstName;

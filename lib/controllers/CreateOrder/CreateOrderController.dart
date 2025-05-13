@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 
 class CreateOrderController extends GetxController {
 
-
   RxBool isLoading = false.obs;
 
   Future<void> placeOrder({
@@ -66,12 +65,11 @@ class CreateOrderController extends GetxController {
         couponAmount: couponAmount,
         orderProductLists: productList,
       );
-
       var response = await ApiController.post(url: createOrderUrl, body: model.toJson());
       if(response.statusCode == 200){
-
         var orderId = jsonDecode(response.body);
         print("Order ID: $orderId");
+
         var orderResponse = await ApiController.get(url: '$createOrderForPayUrl?OrderId=$orderId');
         if(orderResponse.statusCode == 200){
           var orderData = jsonDecode(orderResponse.body);
