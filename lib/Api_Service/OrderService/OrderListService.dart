@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:fonofy/Services/web_constants.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
-import 'package:fonofy/model/OrderListModel/OrderListModel.dart';
+import 'package:fonofy/model/OrderModel/OrderListModel.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:shared_preferences/shared_preferences.dart';

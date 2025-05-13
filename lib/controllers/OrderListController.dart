@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:fonofy/Api_Service/OrderListService/OrderListService.dart';
-import 'package:fonofy/model/OrderListModel/OrderListModel.dart';
+import 'package:fonofy/Api_Service/OrderService/OrderListService.dart';
+import 'package:fonofy/model/OrderModel/OrderListModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderListController extends GetxController {
@@ -16,7 +16,7 @@ class OrderListController extends GetxController {
  void fetchOrderList() async {
   try {
     isLoading(true);
-    var result = await OrderListService.fetchOrders(); // No argument
+    var result = await OrderListService.fetchOrders(); 
     orders.assignAll(result);
   } catch (e) {
     print('Error fetching orders: $e');
