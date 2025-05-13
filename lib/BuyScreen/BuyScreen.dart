@@ -58,16 +58,64 @@ class _BuyScreenState extends State<BuyScreen> {
           );
         }
 
-        // Assume you fetch bannerImages from API here (example logic)
         final bannerImages = tableController.tableOptionsData?.table
                 ?.map((item) => item.bnnerImage)
                 .whereType<String>()
                 .toList() ??
             [];
+
         return SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
+                // Search Input
+                SearchWidget(
+                  hintText: 'Search products...',
+                  onSearch: (query) async {
+                    await searchController.fetchSearchProducts(query);
+                    return searchController.productList
+                        .map((e) => e.name)
+                        .toList();
+                  },
+                ),
+
+                // Search Results
+                Obx(() {
+                  if (searchController.isLoading.value) {
+                    return const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(color: Colors.blue),
+                    );
+                  }
+
+                  if (searchController.productList.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.all(7.0),
+                      // child: Text("No products found"),
+                    );
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: searchController.productList.length,
+                    itemBuilder: (context, index) {
+                      final product = searchController.productList[index];
+                      return ListTile(
+                        leading: const Icon(Icons.phone_android),
+                        title: Text(product.name),
+                        subtitle: Text(product.url),
+                        onTap: () {
+                          Get.to(() => BuyRefurbishedProductScreen(
+                                url: product.url,
+                                refNo: product.refNo,
+                              ));
+                        },
+                      );
+                    },
+                  );
+                }),
+
                 // Carousel Slider
                 if (bannerImages.isNotEmpty)
                   Padding(
@@ -89,16 +137,16 @@ class _BuyScreenState extends State<BuyScreen> {
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
                                 "$imageAllBaseUrl$imageUrl",
-                                // imageAllBaseUrl+imageUrl,
                                 fit: BoxFit.cover,
                                 width: Get.width,
                                 loadingBuilder: (context, child, progress) {
                                   if (progress == null) return child;
                                   return const Center(
-                                      child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.blue,
-                                  ));
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.blue,
+                                    ),
+                                  );
                                 },
                                 errorBuilder: (context, error, stackTrace) =>
                                     const Icon(Icons.error,
@@ -128,59 +176,7 @@ class _BuyScreenState extends State<BuyScreen> {
                       ],
                     ),
                   ),
-                Column(
-                  children: [
-                    // Search Input
-                    SearchWidget(
-                      hintText: 'Search products...',
-                      onSearch: (query) async {
-                        // This triggers fetch and stores in controller
-                        await searchController.fetchSearchProducts(query);
-                        // You can return names if needed, but not required unless you show results inside SearchWidget
-                        return searchController.productList
-                            .map((e) => e.name)
-                            .toList();
-                      },
-                    ),
 
-                    // Search Results
-                    Obx(() {
-                      if (searchController.isLoading.value) {
-                        return const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: CircularProgressIndicator(color: Colors.blue),
-                        );
-                      }
-
-                      if (searchController.productList.isEmpty) {
-                        return const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          //child: Text("No products found"),
-                        );
-                      }
-
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: searchController.productList.length,
-                        itemBuilder: (context, index) {
-                          final product = searchController.productList[index];
-                          return ListTile(
-                            leading: const Icon(Icons.phone_android),
-                            title: Text(product.name),
-                            subtitle: Text(product.url),
-                            onTap: () {
-                              Get.to(() => BuyRefurbishedProductScreen(
-                                    url: product.url,
-                                    refNo: product.refNo,
-                                  ));
-                            },
-                          );
-                        },
-                      );
-                    }),
-                  ],
-                ),
                 // Featured Categories
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
@@ -214,11 +210,15 @@ class _BuyScreenState extends State<BuyScreen> {
                 ),
 
                 SizedBox(height: Get.height * 0.03),
+
                 // Static Banner
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Image.asset("assets/images/sellBanner.png",
-                      height: Get.height * 0.18, fit: BoxFit.contain),
+                  child: Image.asset(
+                    "assets/images/sellBanner.png",
+                    height: Get.height * 0.18,
+                    fit: BoxFit.contain,
+                  ),
                 ),
 
                 // Dynamic Widgets
@@ -230,6 +230,7 @@ class _BuyScreenState extends State<BuyScreen> {
                 dealOfTheDay(
                     DealOfTheDayTable:
                         tableController.tableOptionsData?.table4),
+
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
@@ -240,13 +241,15 @@ class _BuyScreenState extends State<BuyScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.asset(
-                          'assets/images/banner2.png',
-                          fit: BoxFit.fill,
-                        )),
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.asset(
+                        'assets/images/banner2.png',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
                 ),
+
                 AmazingDeal(
                     AmazingDealTable: tableController.tableOptionsData?.table7),
 
@@ -260,19 +263,20 @@ class _BuyScreenState extends State<BuyScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.asset(
-                          'assets/images/banner3.png',
-                          fit: BoxFit.fill,
-                        )),
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.asset(
+                        'assets/images/banner3.png',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
                 ),
+
                 shopByRAM(
                     tableRamName: tableController.tableOptionsData?.table5),
 
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
+
                 byGrade(
                   grades: [
                     {"grade": "F1+ = Superb", "color": "blue"},
@@ -280,14 +284,17 @@ class _BuyScreenState extends State<BuyScreen> {
                     {"grade": "F2 = Fair", "color": "purple"},
                   ],
                 ),
+
                 networkType(
                   networks: [
                     {"imagePath": "assets/images/4g.png"},
                     {"imagePath": "assets/images/5g.png"},
                   ],
                 ),
+
                 shopByPrice(
                     shopTablePrices: tableController.tableOptionsData?.table6),
+
                 shopByOS(
                   osList: [
                     {"imagePath": "assets/images/androidBanner.png"},

@@ -4,8 +4,10 @@ import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/ViewScreen/Orders/MyOrders.dart';
 import 'package:fonofy/ViewScreen/account_details_screen_new.dart';
 import 'package:fonofy/changePassword/change_password_screen.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +27,6 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isLoading = true;
   String userCode = "";
   String token = "";
-
 
   int _secondsRemaining = 5;
   double _percent = 0.0;
@@ -56,6 +57,7 @@ class _AccountScreenState extends State<AccountScreen> {
       }
     });
   }
+
   @override
   void dispose() {
     _countdownTimer?.cancel();
@@ -66,7 +68,10 @@ class _AccountScreenState extends State<AccountScreen> {
     String? token_au = await TokenHelper.getToken();
     String? userCode_b = await TokenHelper.getUserCode();
     if (token_au == null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()),);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
     }
     setState(() {
       userCode = userCode_b ?? "";
@@ -78,11 +83,20 @@ class _AccountScreenState extends State<AccountScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? customerId = prefs.getString("UserCode");
     if (customerId != null && customerId.isNotEmpty && token.isNotEmpty) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAddressScreen(customerId: customerId)),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ManageAddressScreen(customerId: customerId)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("⚠️ User code is missing!",style: TextStyle(color: Colors.white),),backgroundColor: Colors.red,),
+        const SnackBar(
+          content: Text(
+            "⚠️ User code is missing!",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -93,7 +107,8 @@ class _AccountScreenState extends State<AccountScreen> {
     await TokenHelper.deleteUserData();
     String? tok = await TokenHelper.getToken();
     if (tok == null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }
 
@@ -106,55 +121,70 @@ class _AccountScreenState extends State<AccountScreen> {
           onWillPop: () async => false,
           child: AlertDialog(
             backgroundColor: Colors.white,
-            title: const Text("Delete Account?",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-            content: const Text("Are you sure you want to delete your account?"),
+            title: const Text(
+              "Delete Account?",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            content:
+                const Text("Are you sure you want to delete your account?"),
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey.shade300,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Cancel", style: TextStyle(color: Colors.black)),
+                child:
+                    const Text("Cancel", style: TextStyle(color: Colors.black)),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                 ),
                 onPressed: () async {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
                   try {
                     final token = await TokenHelper.getToken();
                     final userCode = await TokenHelper.getUserCode();
                     if (token == null || userCode == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Missing user credentials")),
+                        const SnackBar(
+                            content: Text("Missing user credentials")),
                       );
                       return;
                     }
-                    final success = await DeleteAccountService.deleteUserProfile(token, userCode);
+                    final success =
+                        await DeleteAccountService.deleteUserProfile(
+                            token, userCode);
                     if (success) {
                       await TokenHelper.deleteUserData();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Account deleted successfully"), backgroundColor: Colors.green),
+                        const SnackBar(
+                            content: Text("Account deleted successfully"),
+                            backgroundColor: Colors.green),
                       );
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => MainScreen()),
-                            (route) => false,
+                        (route) => false,
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Account deletion failed"), backgroundColor: Colors.red),
+                        const SnackBar(
+                            content: Text("Account deletion failed"),
+                            backgroundColor: Colors.red),
                       );
                     }
                   } catch (e) {
                     print("❌ Error: $e");
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("An unexpected error occurred")),
+                      const SnackBar(
+                          content: Text("An unexpected error occurred")),
                     );
                   }
                 },
-                child: const Text("Delete", style: TextStyle(color: Colors.white)),
+                child:
+                    const Text("Delete", style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -174,132 +204,156 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       body: isLoading
           ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularPercentIndicator(
-              radius: 30.0,
-              lineWidth: 2.0,
-              percent: _percent,
-              animation: false,
-              circularStrokeCap: CircularStrokeCap.round,
-              progressColor: Colors.blue,
-              backgroundColor: Colors.grey.shade300,
-              center: Text("$_secondsRemaining sec",style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 10.0,color: Colors.black,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularPercentIndicator(
+                    radius: 30.0,
+                    lineWidth: 2.0,
+                    percent: _percent,
+                    animation: false,
+                    circularStrokeCap: CircularStrokeCap.round,
+                    progressColor: Colors.blue,
+                    backgroundColor: Colors.grey.shade300,
+                    center: Text(
+                      "$_secondsRemaining sec",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text("Preparing your account screen... Please wait",
+                      style: TextStyle(color: Colors.grey, fontSize: 13)),
+                ],
               ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-            const Text("Preparing your account screen... Please wait",
-                style: TextStyle(color: Colors.grey, fontSize: 13)),
-          ],
-        ),
-      )
+            )
           : SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildUserInfo(),
-            const SizedBox(height: 20),
-            _buildSectionTitle("MY ORDERS"),
-            const SizedBox(height: 10),
-            _buildExpandableSection(
-              title: "SERVICES",
-              isExpanded: servicesExpanded,
-              onTap: () => setState(() => servicesExpanded = !servicesExpanded),
-              subItems: [
-                "Sell Phone",
-                "Repair Phone",
-                "Recycle Phone",
-                "Offline Stores"
-              ],
-            ),
-            _buildExpandableSection(
-              title: "SETTING",
-              isExpanded: settingsExpanded,
-              onTap: () => setState(() => settingsExpanded = !settingsExpanded),
-              subItems: [
-                "Manage Address",
-                "Manage Payments",
-                "Profile Account",
-                "Delete My Account"
-              ],
-              onItemTap: (item) {
-                if (item == "Manage Address") {
-                  _navigateToManageAddress();
-                } else if (item == "Profile Account") {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountDetailsScreen()));
-                } else if (item == "Delete My Account") {
-                  _showDeleteDialog();
-                }
-              },
-            ),
-            _buildExpandableSection(
-              title: "ABOUT",
-              isExpanded: aboutExpanded,
-              onTap: () => setState(() => aboutExpanded = !aboutExpanded),
-              subItems: ["About Us", "Contact Us", "Career"],
-            ),
-            _buildMenuItem("REFER & EARN"),
-            _buildMenuItem("NEW OFFERS"),
-            _buildMenuItem("MY EARNINGS"),
-            _buildMenuItem("HELP"),
-            _buildMenuItem("ChangePassword", onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordScreen()));
-            }),
-            const SizedBox(height: 50),
-
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8),
-                ),
-                onPressed: () {
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext alertContext) {
-                      return AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: const Text(
-                          "Logout?",
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        content: const Text("Are you sure you want to log out?"),
-                        actions: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey.shade300,
-                            ),
-                            onPressed: () {
-                              Navigator.of(alertContext).pop(); // Dismiss the dialog
-                            },
-                            child: const Text("Cancel", style: TextStyle(color: Colors.black)),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {
-                              Navigator.of(alertContext).pop(); // Close dialog
-                              _logout(); // Call your logout function
-                            },
-                            child: const Text("Logout", style: TextStyle(color: Colors.white)),
-                          ),
-                        ],
-                      );
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildUserInfo(),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => MyOrdersScreen());
                     },
-                  );
-                },
-                child: const Text("Log Out", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    child: _buildSectionTitle("MY ORDERS"),
+                  ),
+                  _buildExpandableSection(
+                    title: "SERVICES",
+                    isExpanded: servicesExpanded,
+                    onTap: () =>
+                        setState(() => servicesExpanded = !servicesExpanded),
+                    subItems: [
+                      "Sell Phone",
+                      "Repair Phone",
+                      "Recycle Phone",
+                      "Offline Stores"
+                    ],
+                  ),
+                  _buildExpandableSection(
+                    title: "SETTING",
+                    isExpanded: settingsExpanded,
+                    onTap: () =>
+                        setState(() => settingsExpanded = !settingsExpanded),
+                    subItems: [
+                      "Manage Address",
+                      "Manage Payments",
+                      "Profile Account",
+                      "Delete My Account"
+                    ],
+                    onItemTap: (item) {
+                      if (item == "Manage Address") {
+                        _navigateToManageAddress();
+                      } else if (item == "Profile Account") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AccountDetailsScreen()));
+                      } else if (item == "Delete My Account") {
+                        _showDeleteDialog();
+                      }
+                    },
+                  ),
+                  _buildExpandableSection(
+                    title: "ABOUT",
+                    isExpanded: aboutExpanded,
+                    onTap: () => setState(() => aboutExpanded = !aboutExpanded),
+                    subItems: ["About Us", "Contact Us", "Career"],
+                  ),
+                  _buildMenuItem("REFER & EARN"),
+                  _buildMenuItem("NEW OFFERS"),
+                  _buildMenuItem("MY EARNINGS"),
+                  _buildMenuItem("HELP"),
+                  _buildMenuItem("ChangePassword", onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ChangePasswordScreen()));
+                  }),
+                  const SizedBox(height: 50),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 80, vertical: 8),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext alertContext) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: const Text(
+                                "Logout?",
+                                style: TextStyle(
+                                    fontSize: 22, fontWeight: FontWeight.bold),
+                              ),
+                              content: const Text(
+                                  "Are you sure you want to log out?"),
+                              actions: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.grey.shade300,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(alertContext)
+                                        .pop(); // Dismiss the dialog
+                                  },
+                                  child: const Text("Cancel",
+                                      style: TextStyle(color: Colors.black)),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(alertContext)
+                                        .pop(); // Close dialog
+                                    _logout(); // Call your logout function
+                                  },
+                                  child: const Text("Logout",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Text("Log Out",
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -322,10 +376,15 @@ class _AccountScreenState extends State<AccountScreen> {
       ],
     );
   }
+
   Widget _buildSectionTitle(String title) {
-    return Text(title,style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+    return Text(
+      title,
+      style: const TextStyle(
+          fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
     );
   }
+
   Widget _buildExpandableSection({
     required String title,
     required bool isExpanded,
@@ -343,8 +402,14 @@ class _AccountScreenState extends State<AccountScreen> {
             children: [
               Text(title,
                   style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black)),
-              Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.black),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
+              Icon(
+                  isExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: Colors.black),
             ],
           ),
         ),
@@ -352,7 +417,8 @@ class _AccountScreenState extends State<AccountScreen> {
           Column(
             children: subItems.map((item) {
               return ListTile(
-                title: Text(item,style: const TextStyle(fontSize: 14, color: Colors.grey)),
+                title: Text(item,
+                    style: const TextStyle(fontSize: 14, color: Colors.grey)),
                 onTap: () => onItemTap?.call(item),
               );
             }).toList(),
@@ -361,6 +427,7 @@ class _AccountScreenState extends State<AccountScreen> {
       ],
     );
   }
+
   Widget _buildMenuItem(String title, {VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,
@@ -368,7 +435,8 @@ class _AccountScreenState extends State<AccountScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Text(
           title,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
     );

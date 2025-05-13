@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/OrderModel/OrderProduct&DetailModel.dart';
+
 
 class OrderDetailsCard extends StatelessWidget {
-  final Map<String, dynamic> order;
+  final OrderProductModel? product;
+  final String status;
 
-  const OrderDetailsCard({required this.order, super.key});
+  const OrderDetailsCard({required this.product, required this.status, super.key});
 
   @override
   Widget build(BuildContext context) {
+    if (product == null) {
+      return const Center(child: Text("No product data"));
+    }
+
     return Card(
       elevation: 2,
       margin: const EdgeInsets.all(12),
@@ -17,20 +24,24 @@ class OrderDetailsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                // Phone Image
-                Image.asset('assets/images/phone.png', width: 80, height: 80, fit: BoxFit.cover),
+                Image.network(
+                  "http://cdn.fonofy.in${product!.productImage}",
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const Icon(Icons.image),
+                ),
                 const SizedBox(width: 8),
-                // Product Info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(order['product'] ?? '',
+                      Text(product!.productName,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text("Configuration: ${order['size'] ?? ''}"),
-                      Text("Price: ₹${order['price'] ?? ''}"),
-                      Text("Status: ${order['status'] ?? ''}"),
+                      Text("Quantity: ${product!.quantity}"),
+                      Text("Price: ₹${product!.price}"),
+                      Text("Status: $status"),
                     ],
                   ),
                 ),
@@ -42,7 +53,7 @@ class OrderDetailsCard extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // Handle cancel order
+                      // Cancel Order logic
                     },
                     child: const Text("Cancel Order"),
                   ),
@@ -51,7 +62,7 @@ class OrderDetailsCard extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // Handle get invoice
+                      // Get Invoice logic
                     },
                     child: const Text("Get Invoice"),
                   ),

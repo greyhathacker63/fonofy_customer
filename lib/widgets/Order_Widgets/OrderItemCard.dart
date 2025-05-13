@@ -1,73 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/utils/Colors.dart';
+import 'package:fonofy/ViewScreen/Orders/OrderIdScreen.dart';
+import 'package:get/get.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart'; // ✅ Make sure this is imported
 
 class OrderItemCard extends StatelessWidget {
   final Map<String, dynamic> order;
 
-  const OrderItemCard({required this.order});
-
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Delivered':
-      case 'In-Transit':
-      case 'Order Placed':
-        return ColorConstants.appBlueColor3;
-      case 'Cancelled':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
+  const OrderItemCard({required this.order, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
           children: [
-            Image.network(
-              order['image'],
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Icon(Icons.broken_image, size: 60),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Order ID: ${order['orderId']}", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                  SizedBox(height: 4),
-                  Text(order['product'],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text("RAM/ROM: ${order['ramRom']}"),
-                ],
-              ),
-            ),
-            SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            Row(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(order['status']),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    order['status'],
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                Image.network(
+                  order['image'],
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.broken_image, size: 60),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Order ID: ${order['orderId']}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14)),
+                      const SizedBox(height: 4),
+                      Text("Date: ${order['createdDate']}",
+                          style: const TextStyle(color: Colors.grey)),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Text("₹${order['price']}", style: TextStyle(fontWeight: FontWeight.bold)),
               ],
+            ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final customerId = await TokenHelper.getUserCode(); 
+                  if (customerId != null) {
+                    Get.to(() => OrderDetailsScreen(
+                          orderId: order['orderId'],
+                          customerId: customerId,
+                          deliveryDate: order['createdDate'],
+                        ));
+                  } else {
+                    Get.snackbar('Error', 'Customer ID not found');
+                  }
+                },
+                child: const Text("View Orders"),
+              ),
             ),
           ],
         ),
