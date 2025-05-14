@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/model/OrderModel/OrderProduct&DetailModel.dart';
-
+import 'package:fonofy/widgets/ReviewDialogWidget.dart';
 
 class OrderDetailsCard extends StatelessWidget {
   final OrderProductModel? product;
   final String status;
+  final String orderId;
+  final String customerId;
 
-  const OrderDetailsCard({required this.product, required this.status, super.key});
+  const OrderDetailsCard({
+    required this.product,
+    required this.status,
+    required this.orderId,
+    required this.customerId,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (product == null) {
       return const Center(child: Text("No product data"));
     }
+
+    print("ORDER STATUS FROM API: '$status'");
 
     return Card(
       elevation: 2,
@@ -21,6 +31,7 @@ class OrderDetailsCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -53,7 +64,7 @@ class OrderDetailsCard extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // Cancel Order logic
+                      // Cancel logic
                     },
                     child: const Text("Cancel Order"),
                   ),
@@ -69,6 +80,31 @@ class OrderDetailsCard extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+
+            // ✅ Show "Add Review" only if status is "delivered"
+            if (status.trim().toLowerCase() == "delivered")
+              Align(
+                alignment: Alignment.centerLeft,
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ReviewDialog(
+                        orderId: orderId,
+                        customerId: customerId,
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(Icons.comment, color: Colors.grey),
+                      SizedBox(width: 6),
+                      Text("Add Review", style: TextStyle(color: Colors.grey)),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

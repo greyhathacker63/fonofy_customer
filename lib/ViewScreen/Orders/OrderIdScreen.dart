@@ -24,7 +24,8 @@ class OrderDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-            'Order Status: ${controller.orderDetail.value?.orderStatus ?? 'Loading...'}')),
+          'Order Status: ${controller.orderDetail.value?.orderStatus ?? 'Loading...'}',
+        )),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -32,7 +33,7 @@ class OrderDetailsScreen extends StatelessWidget {
         }
 
         final detail = controller.orderDetail.value;
-        if (detail == null) return Center(child: Text("Order not found"));
+        if (detail == null) return const Center(child: Text("Order not found"));
 
         return SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 20),
@@ -44,6 +45,8 @@ class OrderDetailsScreen extends StatelessWidget {
                     ? controller.products[0]
                     : null,
                 status: detail.orderStatus,
+                orderId: orderId,
+                customerId: customerId,
               ),
               const Divider(thickness: 1),
               Padding(
@@ -51,27 +54,29 @@ class OrderDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Delivery Details",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text(
+                      "Delivery Details",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
                     const SizedBox(height: 4),
                     Text(detail.ShippingName),
                     Text(detail.ShippingMobileNo),
                     Text(detail.ShippingEmailId),
                     Text(detail.shippingAddress),
                     const SizedBox(height: 20),
-                    const Text("Expected Delivery Date",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text(
+                      "Expected Delivery Date",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
                     const SizedBox(height: 4),
-                    Text(deliveryDate), 
+                    Text(deliveryDate),
                     const SizedBox(height: 20),
-                    const Text("Mode of Payment",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text(
+                      "Mode of Payment",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
                     const SizedBox(height: 4),
-                    Text(
-                        "Card/UPI/COD/Net Banking"), // You can replace this later if payment info is added
+                    Text("Card/UPI/COD/Net Banking"),
                   ],
                 ),
               )
