@@ -28,8 +28,7 @@ class BuyScreen extends StatefulWidget {
 
 class _BuyScreenState extends State<BuyScreen> {
   final ControllerTable tableController = Get.put(ControllerTable());
-  final SearchProductController searchController =
-      Get.put(SearchProductController());
+  final SearchProductController searchController = Get.put(SearchProductController());
 
   int _currentIndex = 0;
 
@@ -63,7 +62,6 @@ class _BuyScreenState extends State<BuyScreen> {
                 .whereType<String>()
                 .toList() ??
             [];
-
         return SafeArea(
           child: SingleChildScrollView(
             child: Column(

@@ -10,6 +10,7 @@ class ProductController extends GetxController {
   var productsList = <ProductModel>[].obs;
   var selectedProducts = <ProductModel>[].obs;
 
+
   Future<void> fetchProducts({
   String? category,
   String? productpage,

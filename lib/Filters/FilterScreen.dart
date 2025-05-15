@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/model/common_filter_model.dart';
 import 'package:fonofy/utils/Colors.dart';
 import '../Api_Service/FilterService/FilterService.dart';
@@ -88,7 +89,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 decoration: const InputDecoration(labelText: "Min", border: OutlineInputBorder()),
                 onChanged: (value) {
                   selectedFilters["Price"]["min"] = value;
-                  setState(() {}); // Ensure UI updates
+                  setState(() {});
                 },
               ),
             ),
@@ -100,7 +101,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 decoration: const InputDecoration(labelText: "Max", border: OutlineInputBorder()),
                 onChanged: (value) {
                   selectedFilters["Price"]["max"] = value;
-                  setState(() {}); // Ensure UI updates
+                  setState(() {});
                 },
               ),
             ),
@@ -200,8 +201,9 @@ class _FilterScreenState extends State<FilterScreen> {
               'minAmt': selectedFilters['Price']['min']?.isNotEmpty == true ? selectedFilters['Price']['min'] : '',
               'underAmt': selectedFilters['Price']['max']?.isNotEmpty == true ? selectedFilters['Price']['max'] : '',
             };
-            print('Applied Filters: $simplifiedFilters'); // Debug log
+            print('Applied Filters: $simplifiedFilters');
             Navigator.pop(context, simplifiedFilters);
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(),));
           },
           child: const Text("Apply", style: TextStyle(color: Colors.white, fontSize: 16)),
         ),

@@ -12,6 +12,7 @@ class FiltersGetAllProductListModel {
   String? ramName;
   String? romName;
   String? colorName;
+  String? category;
   dynamic colorId;
   dynamic ramId;
   dynamic romId;
@@ -51,6 +52,7 @@ class FiltersGetAllProductListModel {
     this.wishlistId,
     this.wishListStatus,
     this.cartQuantity,
+    this.category,
   });
 
   factory FiltersGetAllProductListModel.fromJson(Map<String, dynamic> json) => FiltersGetAllProductListModel(

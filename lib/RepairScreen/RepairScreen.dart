@@ -317,44 +317,44 @@ class _RepairScreenState extends State<RepairScreen> {
     );
   }
 
-  Widget testimonialCard(
-      {required String name, required String role, required String text}) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(1),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
-              const SizedBox(height: 10),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14, color: Colors.black54),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                name,
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                role,
-                style: const TextStyle(fontSize: 12, color: Colors.black54),
-              ),
-            ],
-          ),
+Widget testimonialCard(
+    {required String name, required String role, required String text}) {
+  return Column(
+    children: [
+      Container(
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(1),
         ),
-        const SizedBox(height: 10), 
-      ],
-    );
-  }
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
+            const SizedBox(height: 10),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              name,
+              style:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              role,
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 10),
+    ],
+  );
+}
 
   Widget serviceAvailable() {
     List<Map<String, String>> services = [
