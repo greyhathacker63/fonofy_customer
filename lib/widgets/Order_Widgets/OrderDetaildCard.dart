@@ -22,8 +22,6 @@ class OrderDetailsCard extends StatelessWidget {
       return const Center(child: Text("No product data"));
     }
 
-    print("ORDER STATUS FROM API: '$status'");
-
     return Card(
       elevation: 2,
       margin: const EdgeInsets.all(12),
@@ -47,9 +45,11 @@ class OrderDetailsCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(product!.productName,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(
+                        product!.productName,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                       Text("Quantity: ${product!.quantity}"),
                       Text("Price: ₹${product!.price}"),
                       Text("Status: $status"),
@@ -92,7 +92,10 @@ class OrderDetailsCard extends StatelessWidget {
                       context: context,
                       builder: (_) => ReviewDialog(
                         orderId: orderId,
-                        customerId: customerId,
+                        productId: product!.productId,
+                        colorId: product!.colorId,
+                        ramId: product!.ramId,
+                        romId: product!.romId,
                       ),
                     );
                   },
