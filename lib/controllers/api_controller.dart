@@ -26,5 +26,4 @@ class ApiController {
   } static Future<http.Response> delete({required String url, bool isHeader = true})async{
     return await http.delete(Uri.parse(url),headers: isHeader?await getHeaders():{});
   }
-
 }

@@ -5,8 +5,7 @@ class TokenService {
   static Timer? _refreshTimer;
 
   static void startTokenRefreshTimer() {
-    // Refresh every 14 minutes (just before token expires)
-    const duration = Duration(minutes: 14);
+     const duration = Duration(minutes: 14);
     _refreshTimer = Timer.periodic(duration, (Timer t) async {
       await refreshToken();
     });

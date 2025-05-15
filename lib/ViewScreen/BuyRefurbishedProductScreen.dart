@@ -27,7 +27,6 @@ import '../widgets/BuyRefurbishedProductWidgets/buildProductAttributesCard.dart'
 import '../widgets/BuyRefurbishedProductWidgets/buildProductHighlightsCard.dart';
 import '../widgets/BuyRefurbishedProductWidgets/buildUserReviewsSection.dart';
 
-
 class BuyRefurbishedProductScreen extends StatefulWidget {
   final String url;
   final String refNo;

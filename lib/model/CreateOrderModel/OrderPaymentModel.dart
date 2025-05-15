@@ -1,4 +1,3 @@
-// models/order_payment_model.dart
 
 class OrderPaymentModel {
   final String paymentId;
