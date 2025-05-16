@@ -69,7 +69,7 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
     IconButton(
       icon: const Icon(Icons.shopping_cart, color: Colors.black),
       onPressed: () {
-        Get.to(() => CartScreen()); // Navigate to cart screen
+        Get.to(() => CartScreen());
       },
     ),
   ],

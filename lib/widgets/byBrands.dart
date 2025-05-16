@@ -56,14 +56,14 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
       
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1),
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(11),
                           ),
       
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               '${imageAllBaseUrl}${buyBrandsDetails?.brandImage ?? ""}',
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
                               const Icon(Icons.error),
                               loadingBuilder: (context, child, loadingProgress) {

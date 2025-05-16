@@ -321,12 +321,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                           ramId: product.ramId.toString(),
                                           romId: product.romId.toString(),
                                         );
-
                                         setState(() {
                                           productController.productsList[index]
-                                              .wishlistCount = product.wishlistCount == 1
-                                              ? 0
-                                              : 1;
+                                              .wishlistCount = product.wishlistCount == 1 ? 0 : 1;
                                         });
                                       },
                                     ),
