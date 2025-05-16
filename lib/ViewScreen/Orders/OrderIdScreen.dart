@@ -3,29 +3,38 @@ import 'package:fonofy/controllers/OrderDetailsController.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/widgets/Order_Widgets/OrderDetaildCard.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+class OrderDetailsScreen extends StatefulWidget {
   final String orderId;
   final String customerId;
   final String deliveryDate;
 
-  OrderDetailsScreen({
+  const OrderDetailsScreen({
+    super.key,
     required this.orderId,
     required this.customerId,
     required this.deliveryDate,
-    super.key,
   });
 
+  @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   final controller = Get.put(OrderDetailController());
 
   @override
-  Widget build(BuildContext context) {
-    controller.loadOrderDetails(orderId, customerId);
+  void initState() {
+    super.initState();
+    controller.loadOrderDetails(widget.orderId, widget.customerId);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-          'Order Status: ${controller.orderDetail.value?.orderStatus ?? 'Loading...'}',
-        )),
+              'Order Status: ${controller.orderDetail.value?.orderStatus ?? 'Loading...'}',
+            )),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -45,8 +54,8 @@ class OrderDetailsScreen extends StatelessWidget {
                     ? controller.products[0]
                     : null,
                 status: detail.orderStatus,
-                orderId: orderId,
-                customerId: customerId,
+                orderId: widget.orderId,
+                customerId: widget.customerId,
               ),
               const Divider(thickness: 1),
               Padding(
@@ -56,7 +65,8 @@ class OrderDetailsScreen extends StatelessWidget {
                   children: [
                     const Text(
                       "Delivery Details",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 4),
                     Text(detail.ShippingName),
@@ -66,14 +76,16 @@ class OrderDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text(
                       "Expected Delivery Date",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 4),
-                    Text(deliveryDate),
+                    Text(widget.deliveryDate),
                     const SizedBox(height: 20),
                     const Text(
                       "Mode of Payment",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 4),
                     Text("Card/UPI/COD/Net Banking"),

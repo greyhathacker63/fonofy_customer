@@ -10,7 +10,6 @@ import 'package:fonofy/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
-import '../controllers/FiltersController/FiltersGetAllProductController.dart';
 import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
@@ -43,8 +42,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   final ProductController productController = Get.put(ProductController());
   final WishlistController wishlistController = Get.put(WishlistController());
-
-  final FiltersGetAllProductController filtersController = Get.put(FiltersGetAllProductController());
 
   void toggleSelection(SearchCompareProductModel product) {
     setState(() {
@@ -109,9 +106,11 @@ class _ProductScreenState extends State<ProductScreen> {
         if (productController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
+
         if (productController.productsList.isEmpty) {
           return const Center(child: Text("No products found"));
         }
+
         return Column(
           children: [
             Padding(
@@ -236,12 +235,14 @@ class _ProductScreenState extends State<ProductScreen> {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
+
                                     Text(
                                       '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
                                       style: const TextStyle(fontSize: 16),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
+
                                     Text(
                                       "₹${product.amount ?? ''}",
                                       style: const TextStyle(

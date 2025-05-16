@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/RatingService/RatingService.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
+import 'package:fonofy/ViewScreen/Orders/TrackOrdersScreen.dart';
+import 'package:fonofy/controllers/OrderController/TrackOrderController.dart';
 import 'package:fonofy/model/OrderModel/OrderProduct&DetailModel.dart';
 import 'package:fonofy/widgets/ReviewDialogWidget.dart';
 import 'package:get/get.dart';
@@ -48,6 +50,26 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
     }
   }
 
+  Future<void> handleTrackOrder() async {
+    final controller = Get.put(TrackingController());
+
+    await controller.fetchTrackingData(widget.orderId, widget.customerId);
+
+    if (controller.trackingList.isNotEmpty) {
+      final data = controller.trackingList.first;
+
+      Get.to(() => TrackOrdersScreen(
+            orderId: widget.orderId,
+            customerName: data.shippingName ?? "N/A",
+            address: data.shippingAddress ?? "N/A",
+            orderDate: data.createdDate?.toLocal().toString().split(' ')[0] ?? "N/A",
+            status: data.orderStatus ?? "Pending",
+          ));
+    } else {
+      Get.snackbar("Error", "Unable to fetch tracking information");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.product == null) {
@@ -56,12 +78,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
 
     return GestureDetector(
       onTap: () {
-        // // Navigate to BuyRefurbishedScreen
-        // Get.to(() => BuyRefurbishedProductScreen(
-        //       productId: widget.product!.productId,
-        //       ramId: widget.product!.ramId,
-        //       romId: widget.product!.romId,
-        //     ));
+        // Navigate to BuyRefurbishedProductScreen (if needed)
       },
       behavior: HitTestBehavior.translucent,
       child: Card(
@@ -85,18 +102,9 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.product!.productName,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        Text("Quantity: ${widget.product!.quantity}"),
-                        Text("Price: ₹${widget.product!.price}"),
-                        Text("Status: ${widget.status}"),
-                      ],
+                    child: Text(
+                      widget.product!.productName ?? '',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -104,24 +112,19 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
 
               const SizedBox(height: 10),
 
-              // Buttons - Wrap in IgnorePointer
               Row(
                 children: [
-                  Expanded(
-                    child: IgnorePointer(
-                      ignoring: false,
+                  if (widget.status.toLowerCase() == "pending" ||
+                      widget.status.toLowerCase() == "confirmed") ...[
+                    // Show Track Order button only
+                    Expanded(
                       child: OutlinedButton(
-                        onPressed: () {
-                          // Cancel logic
-                        },
-                        child: const Text("Cancel Order"),
+                        onPressed: handleTrackOrder,
+                        child: const Text("Track Order"),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: IgnorePointer(
-                      ignoring: false,
+                    const SizedBox(width: 10),
+                    Expanded(
                       child: OutlinedButton(
                         onPressed: () {
                           // Get Invoice logic
@@ -129,13 +132,39 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                         child: const Text("Get Invoice"),
                       ),
                     ),
-                  ),
+                  ] else if (widget.status.toLowerCase() == "cancelled") ...[
+                    // Only Get Invoice button
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // Get Invoice logic
+                        },
+                        child: const Text("Get Invoice"),
+                      ),
+                    ),
+                  ] else ...[
+                    // Default buttons (Cancel + Get Invoice)
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // Cancel logic
+                        },
+                        child: const Text("Cancel Order"),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // Get Invoice logic
+                        },
+                        child: const Text("Get Invoice"),
+                      ),
+                    ),
+                  ],
                 ],
               ),
 
-              const SizedBox(height: 10),
-
-              // Add/Edit Review
               if (widget.status.trim().toLowerCase() == "delivered")
                 IgnorePointer(
                   ignoring: false,
@@ -151,8 +180,6 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                             colorId: widget.product!.colorId,
                             ramId: widget.product!.ramId,
                             romId: widget.product!.romId,
-                            // initialRating: reviewData?['Rating'],
-                            // initialComment: reviewData?['Description'],
                           ),
                         );
                       },

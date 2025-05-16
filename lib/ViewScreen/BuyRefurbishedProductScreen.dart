@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/AddToCartService/AddToBuyNowService.dart';
 import 'package:fonofy/Cart_Screens/CartScreen.dart';
@@ -31,15 +30,20 @@ class BuyRefurbishedProductScreen extends StatefulWidget {
   final String url;
   final String refNo;
 
-  const BuyRefurbishedProductScreen({super.key, required this.url, required this.refNo,});
+  const BuyRefurbishedProductScreen({
+    super.key,
+    required this.url,
+    required this.refNo,
+  });
 
   @override
   State<BuyRefurbishedProductScreen> createState() =>
       _ProductDetailsScreenState();
 }
-class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
-  final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
+class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
+  final ControllerProductDetails controllerProductDetails =
+      Get.put(ControllerProductDetails());
 
   List<ProductDetailsListModel> productDetailsList = [];
   List<AddToCartModel> productAddToCart = [];
@@ -85,7 +89,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
   Future<void> fetchImagesList() async {
     try {
-      final productImageList = await ProductImageListService.fetchProductImagesList(
+      final productImageList =
+          await ProductImageListService.fetchProductImagesList(
         refNo: widget.refNo,
         url: widget.url,
       );
@@ -99,12 +104,14 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     }
   }
 
-  final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
+  final ControllerProductDetailsList controllerProductDetailsList =
+      Get.put(ControllerProductDetailsList());
 
   @override
   void initState() {
     super.initState();
-    controllerProductDetails.getProductDetailsData(url: widget.url, refNo: widget.refNo);
+    controllerProductDetails.getProductDetailsData(
+        url: widget.url, refNo: widget.refNo);
     controllerProductDetailsList.getProductListData();
     loadProductRating();
     loadProductReview();
@@ -181,21 +188,21 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 Center(
                   child: productImages.isNotEmpty
                       ? Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black26, width: 2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Image.network(
-                      "$imageAllBaseUrl${productImages[selectedImageIndex].image ?? ''}",
-                      height: 250,
-                      fit: BoxFit.contain,
-                    ),
-                  )
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black26, width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(8),
+                          child: Image.network(
+                            "$imageAllBaseUrl${productImages[selectedImageIndex].image ?? ''}",
+                            height: 250,
+                            fit: BoxFit.contain,
+                          ),
+                        )
                       : const CircularProgressIndicator(
-                    strokeWidth: 1,
-                    color: Colors.blue,
-                  ),
+                          strokeWidth: 1,
+                          color: Colors.blue,
+                        ),
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -270,26 +277,42 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   }
 
   Widget _buildBottomButtons(List<ProductImageListModel> productImages) {
+    final product = controllerProductDetails.productDetails.value;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         children: [
-          Expanded(
 
+          Expanded(
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-              onPressed: () async {
+              style: ElevatedButton.styleFrom(
+                backgroundColor: (product?.stockQuantity ?? 0) == 0
+                    ? Colors.red
+                    : Colors.grey,
+              ),
+              onPressed: (product?.stockQuantity ?? 0) == 0
+                  ? () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("This product is currently out of stock."),
+                    backgroundColor: Colors.redAccent,
+                  ),
+                );
+              }
+                  : () async {
                 try {
-                  final product = controllerProductDetails.productDetails.value;
                   final userCode = await TokenHelper.getUserCode();
                   final token = await TokenHelper.getToken();
+
                   if (userCode == null || token == null) {
                     Get.to(() => const LoginScreen());
                     return;
                   }
                   final uuid = Uuid();
-                  String cartRef = uuid.v4();
+                  final cartRef = uuid.v4();
                   final addToCartService = AddToCartService();
+
                   final response = await addToCartService.fetchAddToCartData(
                     userCode,
                     product?.ramId?.toString(),
@@ -300,6 +323,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     product?.sellingPrice?.toString(),
                     cartRef,
                   );
+
                   if (response != null) {
                     Get.to(() => const CartScreen());
                   } else {
@@ -320,73 +344,29 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   );
                 }
               },
-              child: const Text("ADD TO CART",style: TextStyle(color: Colors.black, fontSize: 15),
+              child: Text(
+                (product?.stockQuantity ?? 0) == 0 ? "OUT OF STOCK" : "ADD TO CART",
+                style: TextStyle(
+                  color: (product?.stockQuantity ?? 0) == 0
+                      ? Colors.white
+                      : Colors.black,
+                  fontSize: 14,
+                ),
               ),
             ),
-
           ),
-          SizedBox(width: 10),
-
-          // Expanded(
-          //   child: ElevatedButton(
-          //     onPressed: () async {
-          //       try {
-          //         final product = controllerProductDetails.productDetails.value;
-          //         final userCode = await TokenHelper.getUserCode();
-          //         if (userCode == null) {
-          //           Get.to(() => const LoginScreen());
-          //           return;
-          //         }
-          //         if (product == null || productImages.isEmpty) {
-          //           ScaffoldMessenger.of(context).showSnackBar(
-          //             const SnackBar(
-          //               content: Text("Product details not available!"),
-          //               backgroundColor: Colors.redAccent,
-          //             ),
-          //           );
-          //           return;
-          //         }
-          //         Get.to(() => CheckoutScreen(
-          //           isSingleProduct: true,
-          //           modelNo: product.modelNo?.toString() ?? '',
-          //           colorId: product.colorId?.toString() ?? '',
-          //           stockQuantity: product.stockQuantity?.toString() ?? '1',
-          //           price: product.sellingPrice?.toDouble() ?? 0.0,
-          //           productImage: productImages[0].image ?? '',
-          //           userCode: userCode,
-          //           productName: product.productAndModelName ?? '',
-          //           ramName: product.ramName ?? '',
-          //           romName: product.romName ?? '',
-          //           colorName: product.colorName ?? '',
-          //           ramId: product.ramId?.toString() ?? '',
-          //           romId: product.romId?.toString() ?? '',
-          //           newModelAmt: product.newModelAmt?.toDouble() ?? 0.0,
-          //         ));
-          //       } catch (e) {
-          //         print("Buy Now Error: $e");
-          //         ScaffoldMessenger.of(context).showSnackBar(
-          //           SnackBar(
-          //             content: Text("An error occurred: $e"),
-          //             backgroundColor: Colors.redAccent,
-          //           ),
-          //         );
-          //       }
-          //     },
-          //     style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-          //     child: const Text("BUY NOW",
-          //       style: TextStyle(color: Colors.white),
-          //     ),
-          //   ),
-          // ),
+            if ((product?.stockQuantity ?? 0) > 0) const SizedBox(width: 10),
+           SizedBox(width: 10),
+          if ((product?.stockQuantity ?? 0) > 0)
 
           Expanded(
             child: ElevatedButton(
               onPressed: () async {
+                final product = controllerProductDetails.productDetails.value;
                 try {
                   final uuid = Uuid();
                   String cartRef = uuid.v4();
                   print('cartRef :- $cartRef');
-                  final product = controllerProductDetails.productDetails.value;
 
                   final userCode = await TokenHelper.getUserCode();
                   final token = await TokenHelper.getToken();
@@ -404,7 +384,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     return;
                   }
                   final addToBuyNowService = AddToBuyNowService();
-                  final addToBuyNowDetails = await addToBuyNowService.fetchBuyNowData(
+                  final addToBuyNowDetails =
+                      await addToBuyNowService.fetchBuyNowData(
                     customerId: userCode,
                     modelId: product.modelNo.toString(),
                     colorId: product.colorId.toString(),
@@ -416,10 +397,13 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   );
 
                   if (addToBuyNowDetails != null) {
-                    Get.to(() => CheckoutScreen(
-                      isSingleProduct: true,
-                      customerId: userCode, cartRef: cartRef,
-                    ),);
+                    Get.to(
+                      () => CheckoutScreen(
+                        isSingleProduct: true,
+                        customerId: userCode,
+                        cartRef: cartRef,
+                      ),
+                    );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -439,13 +423,15 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: const Text("BUY NOW", style: TextStyle(color: Colors.white)),
+              child:
+                  const Text("BUY NOW", style: TextStyle(color: Colors.white)),
             ),
           )
-        ],
+      ]
       ),
     );
   }
+
   Widget _buildRecommendedProducts(ProductDetailsModel product) {
     return Obx(() {
       var productList = controllerProductDetailsList.productDetailsList;
@@ -506,7 +492,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   width: 55,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.image_not_supported),
+                                      const Icon(Icons.image_not_supported),
                                 ),
                               ),
                               const SizedBox(height: 15),
@@ -569,8 +555,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           top: 1,
                           right: 0,
                           child: Container(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
                             decoration: const BoxDecoration(
                               color: Colors.redAccent,
                               borderRadius: BorderRadius.only(
@@ -599,6 +585,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       );
     });
   }
+
   Widget _buildFeatureSection() {
     return GridView.builder(
       shrinkWrap: true,

@@ -20,7 +20,7 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
             Text(
               "Hot Deal",
               style: TextStyle(
-                fontSize: Get.width * 0.045, // Responsive font size
+                fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),

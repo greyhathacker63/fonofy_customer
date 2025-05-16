@@ -37,6 +37,11 @@ const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
 
  const String orderPaymentUrl = "${baseUrl}api/forb2c/order-payment";
 
+ //sell screen
+
+const String sellBrandListUrl = "${baseUrl}api/common/brand-list";
+const String sellTestimonialListUrl = "${baseUrl}api/common/testimonial-list";
+
 
 
 
