@@ -20,3 +20,4 @@ class TrackingController extends GetxController {
     }
   }
 }
+

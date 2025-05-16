@@ -50,25 +50,39 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
     }
   }
 
-  Future<void> handleTrackOrder() async {
-    final controller = Get.put(TrackingController());
+ Future<void> handleTrackOrder() async {
+  final controller = Get.put(TrackingController());
 
-    await controller.fetchTrackingData(widget.orderId, widget.customerId);
+  await controller.fetchTrackingData(widget.orderId, widget.customerId);
 
-    if (controller.trackingList.isNotEmpty) {
-      final data = controller.trackingList.first;
+  if (controller.trackingList.isNotEmpty) {
+    // Sort list by createdDate (DateTime?) ascending
+    controller.trackingList.sort((a, b) {
+      final dateA = a.createdDate;
+      final dateB = b.createdDate;
 
-      Get.to(() => TrackOrdersScreen(
-            orderId: widget.orderId,
-            customerName: data.shippingName ?? "N/A",
-            address: data.shippingAddress ?? "N/A",
-            orderDate: data.createdDate?.toLocal().toString().split(' ')[0] ?? "N/A",
-            status: data.orderStatus ?? "Pending",
-          ));
-    } else {
-      Get.snackbar("Error", "Unable to fetch tracking information");
-    }
+      if (dateA == null && dateB == null) return 0;
+      if (dateA == null) return 1;
+      if (dateB == null) return -1;
+      return dateA.compareTo(dateB);
+    });
+
+    final latestData = controller.trackingList.last;
+
+    Get.to(() => TrackOrdersScreen(
+          orderId: widget.orderId,
+          customerName: latestData.shippingName ?? "N/A",
+          address: latestData.shippingAddress ?? "N/A",
+          orderDate: latestData.createdDate != null
+              ? latestData.createdDate!.toLocal().toString().split(' ')[0]
+              : "N/A",
+          status: latestData.orderStatus ?? "Pending",
+        ));
+  } else {
+    Get.snackbar("Error", "Unable to fetch tracking information");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,44 +128,40 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
 
               Row(
                 children: [
-                  if (widget.status.toLowerCase() == "pending" ||
-                      widget.status.toLowerCase() == "confirmed") ...[
-                    // Show Track Order button only
+                  // Always show Track Order if it's not empty or invalid
+                  if ([
+                    "pending",
+                    "confirmed",
+                    "dispatched",
+                    "delivered",
+                    "cancelled"
+                  ].contains(widget.status.toLowerCase())) ...[
                     Expanded(
                       child: OutlinedButton(
                         onPressed: handleTrackOrder,
                         child: const Text("Track Order"),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                  ],
+
+                  const SizedBox(width: 10),
+
+                  // Show Cancel Order for pending and confirmed only
+                  if (["pending", "confirmed"]
+                      .contains(widget.status.toLowerCase())) ...[
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          // Get Invoice logic
-                        },
-                        child: const Text("Get Invoice"),
-                      ),
-                    ),
-                  ] else if (widget.status.toLowerCase() == "cancelled") ...[
-                    // Only Get Invoice button
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          // Get Invoice logic
-                        },
-                        child: const Text("Get Invoice"),
-                      ),
-                    ),
-                  ] else ...[
-                    // Default buttons (Cancel + Get Invoice)
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          // Cancel logic
+                          // Cancel Order logic here
                         },
                         child: const Text("Cancel Order"),
                       ),
                     ),
+                  ],
+
+                  // Show Get Invoice for confirmed, dispatched, delivered, cancelled
+                  if (["confirmed", "dispatched", "delivered", "cancelled"]
+                      .contains(widget.status.toLowerCase())) ...[
                     const SizedBox(width: 10),
                     Expanded(
                       child: OutlinedButton(

@@ -3,14 +3,12 @@ import 'package:fonofy/Api_Service/TrackingOrderServices.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/model/OrderModel/TrackingModel.dart';
 
-
 class TrackOrdersScreen extends StatefulWidget {
   final String orderId;
   final String customerName;
   final String address;
   final String orderDate;
   final String status;
-  
 
   const TrackOrdersScreen({
     super.key,
@@ -44,11 +42,24 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
         throw Exception("Customer ID not found");
       }
 
-      final data = await TrackingService.getTrackingData(widget.orderId, customerId);
+      final data =
+          await TrackingService.getTrackingData(widget.orderId, customerId);
 
       if (data.isNotEmpty) {
+        // Sort by createdDate ascending (oldest first, latest last)
+        data.sort((a, b) {
+          DateTime? dateA = a.createdDate;
+          DateTime? dateB = b.createdDate;
+
+          if (dateA == null && dateB == null) return 0;
+          if (dateA == null) return 1;
+          if (dateB == null) return -1;
+
+          return dateA.compareTo(dateB);
+        });
+
         setState(() {
-          currentStatus = data.last.orderStatus.toString(); // use last status
+          currentStatus = data.last.orderStatus.toString();
           isLoading = false;
         });
       } else {
@@ -82,7 +93,8 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int currentStep = getStatusStep(currentStatus.isNotEmpty ? currentStatus : widget.status);
+    int currentStep =
+        getStatusStep(currentStatus.isNotEmpty ? currentStatus : widget.status);
 
     List<Map<String, dynamic>> steps = [
       {'label': 'Pending', 'icon': Icons.watch_later},
@@ -109,7 +121,8 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Order ID: ${widget.orderId}",
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       Text("Customer Name: ${widget.customerName}"),
                       Text("Shipping Address: ${widget.address}"),
@@ -126,7 +139,8 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
                             children: [
                               CircleAvatar(
                                 radius: 22,
-                                backgroundColor: isActive ? Colors.blue : Colors.grey[300],
+                                backgroundColor:
+                                    isActive ? Colors.blue : Colors.grey[300],
                                 child: Icon(
                                   steps[index]['icon'],
                                   color: Colors.white,
@@ -137,7 +151,9 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
                                 steps[index]['label'],
                                 style: TextStyle(
                                   color: isActive ? Colors.black : Colors.grey,
-                                  fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                                  fontWeight: isActive
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                 ),
                               ),
                             ],
@@ -150,7 +166,9 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
                           return Expanded(
                             child: Container(
                               height: 4,
-                              color: index < currentStep ? Colors.blue : Colors.grey[300],
+                              color: index < currentStep
+                                  ? Colors.blue
+                                  : Colors.grey[300],
                             ),
                           );
                         }),
