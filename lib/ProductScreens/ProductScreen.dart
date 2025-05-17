@@ -203,19 +203,18 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ? Image.asset(product.image!,
                                     fit: BoxFit.contain)
                                 : Image.network(
-                                    '$imageAllBaseUrl${product.image ?? ""}',
-                                    fit: BoxFit.contain,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            const Icon(Icons.error),
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return const Center(
-                                          child: CircularProgressIndicator(
-                                              strokeWidth: 2));
-                                    },
-                                  ),
+                              '$imageAllBaseUrl${product.image ?? ""}',
+                              fit: BoxFit.contain,
+                              errorBuilder:
+                                  (context, error, stackTrace) =>
+                              const Icon(Icons.error),
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return const Center(
+                                    child: CircularProgressIndicator(strokeWidth: 2));
+                              },
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Expanded(
@@ -247,7 +246,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       style: const TextStyle(
                                           fontSize: 15, color: Colors.green),
                                     ),
-                                    const SizedBox(height: 5),
+                                     SizedBox(height: 5),
                                     Text(
                                       '${product.discountPercentage ?? 0} % Discount',
                                       style: const TextStyle(
@@ -258,7 +257,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-
                                     // Discounted Amount with strikethrough
                                     Text(
                                       "₹${product.newModelAmt ?? 'Discounted Amount'}",
@@ -280,9 +278,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     IconButton(
                                       icon: Icon(
                                         productController.productsList[index]
-                                                    .wishlistCount ==
-                                                1
-                                            ? Icons.favorite
+                                            .wishlistCount == 1 ? Icons.favorite
                                             : Icons.favorite_border,
                                         color: productController
                                                     .productsList[index]

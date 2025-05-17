@@ -204,6 +204,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                             colorId: widget.product!.colorId,
                             ramId: widget.product!.ramId,
                             romId: widget.product!.romId,
+                            existingReview: reviewData, 
                           ),
                         );
                       },

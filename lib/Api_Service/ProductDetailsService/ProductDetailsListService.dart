@@ -25,8 +25,7 @@ class ProductDetailsListService {
         } else if (decodedResponse is Map &&
             decodedResponse.containsKey('result') &&
             decodedResponse['result'] is List) {
-          // in case API returns something like { "result": [...] }
-          return (decodedResponse['result'] as List)
+           return (decodedResponse['result'] as List)
               .map<ProductDetailsListModel>(
                   (item) => ProductDetailsListModel.fromJson(item))
               .toList();

@@ -1,3 +1,4 @@
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ShippingAddressService/AddShippingAddressService.dart';
@@ -44,6 +45,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   List<String> workTypes = ["Home", "Office", "Another"];
   String? selectedWorkType;
 
+
   @override
   void dispose() {
     nameController.dispose();
@@ -64,6 +66,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     fetchLocationData();
 
     if (widget.address != null) {
+
       nameController.text = widget.address?.name ?? "";
       emailController.text = widget.address?.emailId ?? "";
       mobileController.text = widget.address?.mobileNo ?? "";
@@ -78,6 +81,12 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
       selectedCity = widget.address?.city;
       cityController.text = selectedCity ?? "";
+
+      // fetchCityData(int.parse(selectedState!));
+      print('City :- ${widget.address?.city}');
+
+      // fetchCityData(int.parse(selectedState!));
+      // print('City :- ${widget.address?.city}');
 
       // final selectedStateObj = locations.firstWhere(
       //       (loc) => loc.locationName == widget.address!.state,
@@ -132,6 +141,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       print("❌ Error fetching locations: $e");
     }
   }
+
   Future<void> fetchCityData(int stateId) async {
     setState(() {
       isCityLoading = true;
@@ -159,6 +169,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     }
     return null;
   }
+
   String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Email is required";
@@ -211,6 +222,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               GlobalTextField(
               hint: 'Name *', controller: nameController,
               validator: (value) => validateRequired(value, "Name"),),
+
               GlobalTextField(
                   hint: 'Email *',
                   controller: emailController,
@@ -255,11 +267,44 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   validator: (value) => value == null ? "State is required" : null,
                 ),
               ),
+
+              // Container(
+              //   margin: EdgeInsets.all(5),
+              //   child: DropdownButtonFormField2<String>(
+              //     value: selectedCity,
+              //     hint:  Text("$selectedCity"),
+              //     // hint:  Text("$selectedCity Select City"),
+              //     decoration: InputDecoration(
+              //       border: OutlineInputBorder(),
+              //     ),
+              //     items: cityList.map((city) {
+              //       return DropdownMenuItem<String>(
+              //         value: city.id.toString(),
+              //         child: Text(city.cityname, overflow: TextOverflow.ellipsis),
+              //       );
+              //     }).toList(),
+              //     onChanged: (newValue) {
+              //       if (newValue != null) {
+              //         setState(() {
+              //           selectedCity = newValue;
+              //           cityController.text = newValue;
+              //         });
+              //       }
+              //     },
+              //     validator: (value) => value == null ? "City is required" : null,
+              //   ),
+              // ),
               Container(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 child: DropdownButtonFormField2<String>(
                   value: selectedCity,
-                  hint: const Text("Select City"),
+                  hint: Padding(
+                    padding:  EdgeInsets.only(right: 10),
+                    child: Text(
+                      selectedCity ?? "Select City",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
@@ -274,18 +319,20 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       setState(() {
                         selectedCity = newValue;
                         cityController.text = newValue;
-
                       });
                     }
                   },
-                    validator: (value) => value == null ? "City is required" : null,
+                  validator: (value) => value == null ? "City is required" : null,
                 ),
               ),
+
+
               GlobalTextField(hint: 'PIN Code *',
                   controller: pinCodeController,
                   keyboardType: TextInputType.number,
                   maxLength: 6,
                 validator: validatePinCode),
+
               Container(
                 margin: EdgeInsets.all(5),
                 child: DropdownButtonFormField2<String>(
@@ -307,6 +354,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   validator: (value) => value == null ? "Work Type is required" : null,
                 ),
               ),
+
               GlobalTextField(hint: 'Address *',
                   controller: addressController,
                   maxLine: 3,
@@ -319,7 +367,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
-
                     if (_formKey.currentState!.validate()) {
                       try {
                         await AddShippingAddressService().addShippingAddress(

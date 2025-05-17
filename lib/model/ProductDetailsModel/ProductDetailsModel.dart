@@ -10,38 +10,38 @@ String productDetailsModelToJson(List<ProductDetailsModel> data) => json.encode(
 
 class ProductDetailsModel {
   String? description;
-  dynamic? modelNo;
+  dynamic modelNo;
   String? productAndModelName;
   String? modelType;
-  dynamic? newModelAmt;
-  dynamic? sellingPricePlus;
-  dynamic? sellingPriceF1;
-  dynamic? sellingPriceF2;
-  dynamic? discountPercentage;
+  dynamic newModelAmt;
+  dynamic sellingPricePlus;
+  dynamic sellingPriceF1;
+  dynamic sellingPriceF2;
+  dynamic discountPercentage;
   String? modelUrl;
   String? ramName;
   String? romName;
   String? colorName;
-  dynamic? ramId;
-  dynamic? romId;
-  dynamic? colorId;
-  dynamic? f1Plus;
-  dynamic? f1;
-  dynamic? id;
+  dynamic ramId;
+  dynamic romId;
+  dynamic colorId;
+  dynamic f1Plus;
+  dynamic f1;
+  dynamic id;
   String? ucode;
-  dynamic? sellingPrice;
+  dynamic sellingPrice;
   String? processor;
   String? display;
   String? rearCamera;
   String? frontCamera;
   String? battery;
-  dynamic? wishlistCount;
-  dynamic? reviewCount;
-  dynamic? avgReview;
-  dynamic? avgRate;
-  dynamic? stockQuantity;
-  dynamic? rowNum;
-  dynamic? wishlistId;
+  dynamic wishlistCount;
+  dynamic reviewCount;
+  dynamic avgReview;
+  dynamic avgRate;
+  dynamic stockQuantity;
+  dynamic rowNum;
+  dynamic wishlistId;
 
   ProductDetailsModel({
     this.description,
@@ -76,7 +76,7 @@ class ProductDetailsModel {
     this.avgRate,
     this.stockQuantity,
     this.rowNum,
-    this.wishlistId
+    this.wishlistId,
   });
 
   factory ProductDetailsModel.fromJson(Map<String, dynamic> json) =>
