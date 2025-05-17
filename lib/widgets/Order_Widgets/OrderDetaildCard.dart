@@ -50,39 +50,52 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
     }
   }
 
- Future<void> handleTrackOrder() async {
-  final controller = Get.put(TrackingController());
+  Future<void> handleTrackOrder() async {
+    final controller = Get.put(TrackingController());
 
-  await controller.fetchTrackingData(widget.orderId, widget.customerId);
+    await controller.fetchTrackingData(widget.orderId, widget.customerId);
 
-  if (controller.trackingList.isNotEmpty) {
-    // Sort list by createdDate (DateTime?) ascending
-    controller.trackingList.sort((a, b) {
-      final dateA = a.createdDate;
-      final dateB = b.createdDate;
+    if (controller.trackingList.isNotEmpty) {
+      // Sort list by createdDate (DateTime?) ascending
+      controller.trackingList.sort((a, b) {
+        final dateA = a.createdDate;
+        final dateB = b.createdDate;
 
-      if (dateA == null && dateB == null) return 0;
-      if (dateA == null) return 1;
-      if (dateB == null) return -1;
-      return dateA.compareTo(dateB);
-    });
+        if (dateA == null && dateB == null) return 0;
+        if (dateA == null) return 1;
+        if (dateB == null) return -1;
+        return dateA.compareTo(dateB);
+      });
 
-    final latestData = controller.trackingList.last;
+      final latestData = controller.trackingList.last;
 
-    Get.to(() => TrackOrdersScreen(
-          orderId: widget.orderId,
-          customerName: latestData.shippingName ?? "N/A",
-          address: latestData.shippingAddress ?? "N/A",
-          orderDate: latestData.createdDate != null
-              ? latestData.createdDate!.toLocal().toString().split(' ')[0]
-              : "N/A",
-          status: latestData.orderStatus ?? "Pending",
-        ));
-  } else {
-    Get.snackbar("Error", "Unable to fetch tracking information");
+      final String orderDateFormatted = latestData.createdDate != null
+          ? latestData.createdDate!.toLocal().toString().split(' ')[0]
+
+          : "N/A";
+
+      final String confirmDateFormatted = latestData.confirmDate != null
+          ? latestData.confirmDate!.toLocal().toString().split(' ')[0]
+                   : "N/A";
+
+      final String dispatchdaeformatted = latestData.dispatchDate != null
+          ? latestData.dispatchDate!.toLocal().toString().split(' ')[0]
+                   : "N/A";             
+
+
+      Get.to(() => TrackOrdersScreen(
+            orderId: widget.orderId,
+            customerName: latestData.shippingName ?? "N/A",
+            address: latestData.shippingAddress ?? "N/A",
+            orderDate: orderDateFormatted,
+            confirmDate: confirmDateFormatted,
+            dispatchDate: dispatchdaeformatted,
+            status: '',
+          ));
+    } else {
+      Get.snackbar("Error", "Unable to fetch tracking information");
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {

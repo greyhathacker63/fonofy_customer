@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/TrackingOrderServices.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/model/OrderModel/TrackingModel.dart';
+import 'package:fonofy/utils/Colors.dart';
 
 class TrackOrdersScreen extends StatefulWidget {
   final String orderId;
@@ -9,6 +10,8 @@ class TrackOrdersScreen extends StatefulWidget {
   final String address;
   final String orderDate;
   final String status;
+  final String confirmDate;
+  final String dispatchDate;
 
   const TrackOrdersScreen({
     super.key,
@@ -16,7 +19,7 @@ class TrackOrdersScreen extends StatefulWidget {
     required this.customerName,
     required this.address,
     required this.orderDate,
-    required this.status,
+    required this.status, required this.confirmDate, required this.dispatchDate,
   });
 
   @override
@@ -93,19 +96,42 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int currentStep =
-        getStatusStep(currentStatus.isNotEmpty ? currentStatus : widget.status);
+    int currentStep = getStatusStep(
+      currentStatus.isNotEmpty ? currentStatus : widget.status,
+    );
 
     List<Map<String, dynamic>> steps = [
-      {'label': 'Pending', 'icon': Icons.watch_later},
-      {'label': 'Confirm', 'icon': Icons.check_circle},
-      {'label': 'Dispatch', 'icon': Icons.local_shipping},
-      {'label': 'Deliver', 'icon': Icons.card_giftcard},
+      {
+        'label': 'Order Placed',
+        'datetime': widget.orderDate,
+        'location': '',
+        'icon': Icons.shopping_cart,
+      },
+      {
+        'label': 'Order Confirmed',
+        'datetime': widget.confirmDate, // Could be filled from tracking data
+        'location': '',
+        'icon': Icons.verified,
+      },
+      {
+        'label': 'Order Dispatched',
+        'datetime': widget.dispatchDate, // Could be filled from tracking data
+        'location': '',
+        'icon': Icons.local_shipping,
+      },
+      {
+        'label': 'Delivered Successfully',
+        'datetime': '',
+        'location': currentStatus.toLowerCase() == 'delivered'
+            ? 'Delivered to ${widget.address}'
+            : 'Not delivered yet',
+        'icon': Icons.thumb_up_alt_outlined,
+      },
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Orders Tracking"),
+        title: const Text("Order Tracking"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -130,46 +156,77 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
                       Text("Status: $currentStatus"),
                       const SizedBox(height: 30),
 
-                      // Step Progress Tracker
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      /// Vertical Timeline
+                      Column(
                         children: List.generate(steps.length, (index) {
                           bool isActive = index <= currentStep;
-                          return Column(
+
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 22,
-                                backgroundColor:
-                                    isActive ? Colors.blue : Colors.grey[300],
-                                child: Icon(
-                                  steps[index]['icon'],
-                                  color: Colors.white,
-                                ),
+                              // Timeline indicator
+                              Column(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: isActive
+                                        ? ColorConstants.appBlueColor3
+                                        : Colors.grey[300],
+                                    child: Icon(
+                                      steps[index]['icon'],
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  if (index != steps.length - 1)
+                                    Container(
+                                      width: 2,
+                                      height: 40,
+                                      color: Colors.grey,
+                                    ),
+                                ],
                               ),
-                              const SizedBox(height: 6),
-                              Text(
-                                steps[index]['label'],
-                                style: TextStyle(
-                                  color: isActive ? Colors.black : Colors.grey,
-                                  fontWeight: isActive
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
+                              const SizedBox(width: 16),
+                              // Step Content
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      steps[index]['label'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: isActive
+                                            ? ColorConstants.appBlueColor3
+                                            : Colors.grey,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    if (steps[index]['datetime'].toString().isNotEmpty)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
+                                        child: Text(
+                                          steps[index]['datetime'],
+                                          style: const TextStyle(
+                                              color: Colors.black87),
+                                        ),
+                                      ),
+                                    if (steps[index]['location'].toString().isNotEmpty)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
+                                        child: Text(
+                                          steps[index]['location'],
+                                          style: TextStyle(
+                                              color: Colors.grey[700]),
+                                        ),
+                                      ),
+                                    const SizedBox(height: 20),
+                                  ],
                                 ),
                               ),
                             ],
-                          );
-                        }),
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: List.generate(3, (index) {
-                          return Expanded(
-                            child: Container(
-                              height: 4,
-                              color: index < currentStep
-                                  ? Colors.blue
-                                  : Colors.grey[300],
-                            ),
                           );
                         }),
                       ),
