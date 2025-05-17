@@ -170,6 +170,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       ),
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
+        print("Product Ram${product?.ramName}");
         price = product?.sellingPrice.toString();
         if (product == null) {
           return const Center(
@@ -239,7 +240,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 Text(
                   "( ${product.productAndModelName ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
                   style: const TextStyle(
@@ -285,22 +286,28 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         children: [
 
           Expanded(
-            child: ElevatedButton(
+            child: (product?.stockQuantity ?? 0) == 0
+                ? ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: (product?.stockQuantity ?? 0) == 0
-                    ? Colors.red
-                    : Colors.grey,
+                backgroundColor: Colors.red,
               ),
-              onPressed: (product?.stockQuantity ?? 0) == 0
-                  ? () {
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text("This product is currently out of stock."),
                     backgroundColor: Colors.redAccent,
                   ),
                 );
-              }
-                  : () async {
+              },
+              child: const Text("OUT OF STOCK",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            )
+                : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey,
+              ),
+              onPressed: () async {
                 try {
                   final userCode = await TokenHelper.getUserCode();
                   final token = await TokenHelper.getToken();
@@ -309,6 +316,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     Get.to(() => const LoginScreen());
                     return;
                   }
+
                   final uuid = Uuid();
                   final cartRef = uuid.v4();
                   final addToCartService = AddToCartService();
@@ -337,25 +345,17 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 } catch (e) {
                   print("Add to Cart Error: $e");
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("An error occurred: $e"),
-                      backgroundColor: Colors.redAccent,
+                    SnackBar(content: Text("An error occurred: $e"),backgroundColor: Colors.redAccent,
                     ),
                   );
                 }
               },
-              child: Text(
-                (product?.stockQuantity ?? 0) == 0 ? "OUT OF STOCK" : "ADD TO CART",
-                style: TextStyle(
-                  color: (product?.stockQuantity ?? 0) == 0
-                      ? Colors.white
-                      : Colors.black,
-                  fontSize: 14,
-                ),
+              child: const Text("ADD TO CART",style: TextStyle(color: Colors.black, fontSize: 14),
               ),
             ),
-          ),
-            if ((product?.stockQuantity ?? 0) > 0) const SizedBox(width: 10),
+         ),
+
+          if ((product?.stockQuantity ?? 0) > 0) const SizedBox(width: 10),
            SizedBox(width: 10),
           if ((product?.stockQuantity ?? 0) > 0)
 
@@ -395,7 +395,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     price: product.sellingPrice?.toDouble() ?? 0.0,
                     cartRef: cartRef,
                   );
-
                   if (addToBuyNowDetails != null) {
                     Get.to(
                       () => CheckoutScreen(
@@ -439,7 +438,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         return const Center(child: CircularProgressIndicator());
       }
       if (productList.isEmpty) {
-        return const Center(child: Text("No recommended products available."));
+        // return const Center(child: Text("No recommended products available."));
+        return const Center(child: Text(""));
       }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

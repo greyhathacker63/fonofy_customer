@@ -5,6 +5,7 @@ import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/Orders/MyOrders.dart';
+import 'package:fonofy/ViewScreen/TabScreen.dart';
 import 'package:fonofy/ViewScreen/account_details_screen_new.dart';
 import 'package:fonofy/changePassword/change_password_screen.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../AccountApiService/DeleteAccountService.dart';
+import 'bottom_navgation.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -243,6 +245,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     },
                     child: _buildSectionTitle("MY ORDERS"),
                   ),
+                  SizedBox(height: 10,),
                   _buildExpandableSection(
                     title: "SERVICES",
                     isExpanded: servicesExpanded,
@@ -254,7 +257,18 @@ class _AccountScreenState extends State<AccountScreen> {
                       "Recycle Phone",
                       "Offline Stores"
                     ],
+                    onItemTap: (item) {
+                      if (item == "Sell Phone") {
+                        Get.to(()=> TabScreen(upperTabIndex: 1));
+                      } else if (item == "Repair Phone") {
+                        Get.to(()=> TabScreen(upperTabIndex: 2));
+                      }
+                      // } else if (item == "Delete My Account") {
+                      //   _showDeleteDialog();
+                      // }
+                    },
                   ),
+
                   _buildExpandableSection(
                     title: "SETTING",
                     isExpanded: settingsExpanded,

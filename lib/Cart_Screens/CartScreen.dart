@@ -3,6 +3,7 @@ import 'package:fonofy/Api_Service/AddToCartService/CartListService.dart';
 import 'package:fonofy/Api_Service/AddToCartService/ShippingChargeService.dart';
 import 'package:fonofy/Cart_Screens/CheckoutScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/ViewScreen/bottom_navgation.dart';
 import 'package:fonofy/model/AddToCartModel/AddToCartModel.dart';
 import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
 import 'package:fonofy/model/AddToCartModel/DeleteCartResponseModel.dart';
@@ -335,7 +336,9 @@ class _CartScreenState extends State<CartScreen> {
 
             const SizedBox(height: 10),
             ElevatedButton.icon(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                   Get.to(()=> BottomNavigation(upperTabIndex:  0,));
+                  },
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               label: const Text("Continue Shopping", style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(

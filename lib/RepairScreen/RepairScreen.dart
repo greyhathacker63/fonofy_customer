@@ -16,8 +16,7 @@ class _RepairScreenState extends State<RepairScreen> {
   final List<String> demoImages = [
     "assets/images/banner.png",
     "assets/images/banner.png",
-    "assets/images/banner.png",
-    "assets/images/banner.png"
+
   ];
 
   @override
@@ -135,8 +134,7 @@ class _RepairScreenState extends State<RepairScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const Text(
-                    "WHAT OUR CLIENT SAYS",
+                  const Text("WHAT OUR CLIENT SAYS",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -319,40 +317,44 @@ class _RepairScreenState extends State<RepairScreen> {
 
 Widget testimonialCard(
     {required String name, required String role, required String text}) {
-  return Column(
-    children: [
-      Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(1),
+  return SingleChildScrollView(
+    child: Column(
+
+      mainAxisSize: MainAxisSize.min, // Fix added here
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(1),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min, // Also helpful here
+            children: [
+              const CircleAvatar(radius: 35, backgroundColor: Colors.grey),
+              const SizedBox(height: 10),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                name,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                role,
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircleAvatar(radius: 30, backgroundColor: Colors.grey),
-            const SizedBox(height: 10),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: Colors.black54),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              name,
-              style:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              role,
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 10),
-    ],
+        const SizedBox(height: 10),
+      ],
+    ),
   );
 }
 
@@ -369,8 +371,7 @@ Widget testimonialCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "SERVICE AVAILABLE",
+           Text("SERVICE AVAILABLE",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),

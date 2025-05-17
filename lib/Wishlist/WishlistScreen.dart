@@ -172,27 +172,27 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                     fontSize: 13, color: Colors.green),
                               ),
                               const Spacer(),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 36,
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    Get.snackbar("Action",
-                                        "Moved to Cart feature coming soon!",
-                                        snackPosition: SnackPosition.BOTTOM);
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor:
-                                        ColorConstants.appBlueColor3,
-                                    foregroundColor: Colors.white,
-                                    side: const BorderSide(color: Colors.teal),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                  ),
-                                  child: const Text('Move to Cart',
-                                      style: TextStyle(fontSize: 13)),
-                                ),
-                              )
+                              // SizedBox(
+                              //   width: double.infinity,
+                              //   height: 36,
+                              //   child: OutlinedButton(
+                              //     onPressed: () {
+                              //       Get.snackbar("Action",
+                              //           "Moved to Cart feature coming soon!",
+                              //           snackPosition: SnackPosition.BOTTOM);
+                              //     },
+                              //     style: OutlinedButton.styleFrom(
+                              //       backgroundColor:
+                              //           ColorConstants.appBlueColor3,
+                              //       foregroundColor: Colors.white,
+                              //       side: const BorderSide(color: Colors.teal),
+                              //       shape: RoundedRectangleBorder(
+                              //           borderRadius: BorderRadius.circular(8)),
+                              //     ),
+                              //     child: const Text('Move to Cart',
+                              //         style: TextStyle(fontSize: 13)),
+                              //   ),
+                              // )
                             ],
                           ),
                         ),

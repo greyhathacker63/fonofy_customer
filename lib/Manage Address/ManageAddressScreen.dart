@@ -177,7 +177,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                   } else if (snapshot.hasError || snapshot.data == null) {
                     return const Center(child: Text("❌ No address found!"));
                   } else if (snapshot.data!.isEmpty) {
-                    return const Center(child: Text("📭 No addresses available."));
+                    // return const Center(child: Text("📭 No addresses available."));
                   }
                   var addresses = snapshot.data!;
                   return ListView.builder(

@@ -10,7 +10,6 @@ import 'package:fonofy/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
-import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -135,7 +134,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     OutlinedButton.icon(
                       onPressed: () async {
                         final selectedFilters =
-                        await Get.to(() => FilterScreen());
+                            await Get.to(() => FilterScreen());
                         if (selectedFilters != null &&
                             selectedFilters is Map<String, dynamic>) {
                           productController.fetchProducts(
@@ -162,7 +161,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         }
                       },
                       icon:
-                      const Icon(Icons.compare_arrows, color: Colors.black),
+                          const Icon(Icons.compare_arrows, color: Colors.black),
                       label: const Text("Compare",
                           style: TextStyle(color: Colors.black)),
                     ),
@@ -202,21 +201,21 @@ class _ProductScreenState extends State<ProductScreen> {
                             height: 140,
                             child: (product.image ?? '').startsWith('assets/')
                                 ? Image.asset(product.image!,
-                                fit: BoxFit.contain)
+                                    fit: BoxFit.contain)
                                 : Image.network(
-                              '$imageAllBaseUrl${product.image ?? ""}',
-                              fit: BoxFit.contain,
-                              errorBuilder:
-                                  (context, error, stackTrace) =>
-                              const Icon(Icons.error),
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const Center(
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 2));
-                              },
-                            ),
+                                    '$imageAllBaseUrl${product.image ?? ""}',
+                                    fit: BoxFit.contain,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(Icons.error),
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return const Center(
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 2));
+                                    },
+                                  ),
                           ),
                           const SizedBox(width: 8),
                           Expanded(
@@ -276,24 +275,26 @@ class _ProductScreenState extends State<ProductScreen> {
                                 const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
                                       icon: Icon(
                                         productController.productsList[index]
-                                            .wishlistCount ==
-                                            1
+                                                    .wishlistCount ==
+                                                1
                                             ? Icons.favorite
                                             : Icons.favorite_border,
                                         color: productController
-                                            .productsList[index]
-                                            .wishlistCount ==
-                                            1
+                                                    .productsList[index]
+                                                    .wishlistCount ==
+                                                1
                                             ? Colors.red
                                             : Colors.grey,
                                       ),
+                                      // Inside the IconButton's onPressed:
                                       onPressed: () async {
-                                        final userCode = await TokenHelper.getUserCode();
+                                        final userCode =
+                                            await TokenHelper.getUserCode();
                                         if (userCode == null ||
                                             userCode.isEmpty) {
                                           Get.snackbar(
@@ -307,26 +308,33 @@ class _ProductScreenState extends State<ProductScreen> {
 
                                         final product = productController
                                             .productsList[index];
-                                        wishlistController.addProductToWishlist(
-                                          productId: product.modelNo.toString(),
-                                          colorId: product.colorId.toString(),
-                                          ramId: product.ramId.toString(),
-                                          romId: product.romId.toString(),
-                                        );
-                                        wishlistController.removeFromWishlist(
-                                          wishlistId:
-                                          product.wishlistId.toString(),
-                                          modelId: product.modelNo.toString(),
-                                          colorId: product.colorId.toString(),
-                                          ramId: product.ramId.toString(),
-                                          romId: product.romId.toString(),
-                                        );
+                                        final isWishlisted =
+                                            product.wishlistCount == 1;
+
+                                        if (isWishlisted) {
+                                          wishlistController.removeFromWishlist(
+                                            wishlistId:
+                                                product.wishlistId.toString(),
+                                            modelId: product.modelNo.toString(),
+                                            colorId: product.colorId.toString(),
+                                            ramId: product.ramId.toString(),
+                                            romId: product.romId.toString(),
+                                          );
+                                        } else {
+                                          wishlistController
+                                              .addProductToWishlist(
+                                            productId:
+                                                product.modelNo.toString(),
+                                            colorId: product.colorId.toString(),
+                                            ramId: product.ramId.toString(),
+                                            romId: product.romId.toString(),
+                                          );
+                                        }
 
                                         setState(() {
                                           productController.productsList[index]
-                                              .wishlistCount = product.wishlistCount == 1
-                                              ? 0
-                                              : 1;
+                                                  .wishlistCount =
+                                              isWishlisted ? 0 : 1;
                                         });
                                       },
                                     ),
@@ -340,13 +348,15 @@ class _ProductScreenState extends State<ProductScreen> {
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
-                                        ColorConstants.appBlueColor3,
+                                            ColorConstants.appBlueColor3,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(8),
+                                              BorderRadius.circular(8),
                                         ),
                                       ),
-                                      child: const Text("Add to Cart", style: TextStyle(color: Colors.white)),
+                                      child: const Text("Add to Cart",
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                     ),
                                   ],
                                 ),
