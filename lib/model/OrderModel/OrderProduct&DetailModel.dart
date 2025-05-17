@@ -1,22 +1,34 @@
 class OrderProductModel {
+  final int productId;
   final String productName;
   final int quantity;
   final double price;
   final String productImage;
+  final int colorId;
+  final int ramId;
+  final int romId;
 
   OrderProductModel({
+    required this.productId,
     required this.productName,
     required this.quantity,
     required this.price,
     required this.productImage,
+    required this.colorId,
+    required this.ramId,
+    required this.romId,
   });
 
   factory OrderProductModel.fromJson(Map<String, dynamic> json) {
     return OrderProductModel(
-      productName: json['ProductName'],
-      quantity: json['Quantity'],
+      productId: json['ProductId'] ?? 0,
+      productName: json['ProductName'] ?? '',
+      quantity: json['Quantity'] ?? 0,
       price: (json['Price'] ?? 0).toDouble(),
       productImage: json['ProductImage'] ?? '',
+      colorId: json['ColorId'] ?? 0,
+      ramId: json['RamId'] ?? 0,
+      romId: json['RomId'] ?? 0,
     );
   }
 }

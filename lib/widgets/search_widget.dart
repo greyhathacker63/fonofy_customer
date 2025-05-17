@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/ViewScreen/WhiteScreen.dart';
 
 class SearchWidget extends StatefulWidget {
   final String? hintText;
@@ -42,28 +43,30 @@ class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: TextField(
-        controller: _controller,
-        onChanged: _handleSearch,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: _controller.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _controller.clear();
-                    widget.onSearch('');
-                  },
-                )
-              : null,
-          filled: true,
-          fillColor: Colors.grey[200],
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+      child: GestureDetector(
+        onTap: () {
+          // Navigate to full search screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const WhiteScreen()), 
+          );
+        },
+        child: AbsorbPointer(
+          child: TextField(
+            controller: _controller,
+            decoration: InputDecoration(
+              hintText: widget.hintText ?? 'Search...',
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              fillColor: Colors.white38,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.blueGrey, width: 5.0),
+
+              ),
+            ),
           ),
         ),
       ),

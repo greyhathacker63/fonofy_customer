@@ -31,11 +31,12 @@ class _BuyScreenState extends State<BuyScreen> {
   final SearchProductController searchController = Get.put(SearchProductController());
 
   int _currentIndex = 0;
-
+ 
   @override
   void initState() {
     super.initState();
     tableController.getTableOptionsData();
+     //searchController.productList.clear(); 
   }
 
   @override
@@ -67,14 +68,17 @@ class _BuyScreenState extends State<BuyScreen> {
             child: Column(
               children: [
                 // Search Input
-                SearchWidget(
-                  hintText: 'Search products...',
-                  onSearch: (query) async {
-                    await searchController.fetchSearchProducts(query);
-                    return searchController.productList
-                        .map((e) => e.name)
-                        .toList();
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SearchWidget(
+                    hintText: 'Search...',
+                    onSearch: (query) async {
+                      await searchController.fetchSearchProducts(query);
+                      return searchController.productList
+                          .map((e) => e.name)
+                          .toList();
+                    },
+                  ),
                 ),
 
                 // Search Results
@@ -117,7 +121,7 @@ class _BuyScreenState extends State<BuyScreen> {
                 // Carousel Slider
                 if (bannerImages.isNotEmpty)
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Column(
                       children: [
                         CarouselSlider(
