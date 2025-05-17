@@ -21,6 +21,7 @@ Widget buildProductAttributesCard(
 
   return GestureDetector(
     onTap: () {
+      print("Product Ram${product?.ramName}");
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,

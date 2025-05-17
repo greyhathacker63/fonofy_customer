@@ -63,7 +63,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     _initializeData();
     fetchLocationData();
 
-
     if (widget.address != null) {
       nameController.text = widget.address?.name ?? "";
       emailController.text = widget.address?.emailId ?? "";
@@ -79,7 +78,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
       selectedCity = widget.address?.city;
       cityController.text = selectedCity ?? "";
-
 
       // final selectedStateObj = locations.firstWhere(
       //       (loc) => loc.locationName == widget.address!.state,

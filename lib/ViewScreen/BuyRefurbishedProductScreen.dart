@@ -170,6 +170,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
       ),
       body: Obx(() {
         var product = controllerProductDetails.productDetails.value;
+        print("Product Ram${product?.ramName}");
         price = product?.sellingPrice.toString();
         if (product == null) {
           return const Center(
@@ -239,7 +240,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 Text(
                   "( ${product.productAndModelName ?? ''} )  ${product.ramName ?? ''}/${product.romName ?? ''}",
                   style: const TextStyle(
@@ -298,8 +299,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   ),
                 );
               },
-              child: const Text(
-                "OUT OF STOCK",
+              child: const Text("OUT OF STOCK",
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
             )
