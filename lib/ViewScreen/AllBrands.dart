@@ -30,7 +30,7 @@ class AllBrandsScreen extends StatelessWidget {
     "IQOO", "Nothing"
   ];
 
-  final String imagePath = "assets/images/phone.png"; // Your phone image path
+  final String imagePath = "assets/images/phone.png";
 
   @override
   Widget build(BuildContext context) {

@@ -14,16 +14,16 @@ class ProductDetailsListModel {
   String? ramName;
   String? romName;
   String? colorName;
-  dynamic? ramId;
-  dynamic? romId;
-  dynamic? colorId;
+  dynamic ramId;
+  dynamic romId;
+  dynamic colorId;
   String? modelType;
-  dynamic? newModelAmt;
+  dynamic newModelAmt;
   String? modelUrl;
   String? ucode;
-  dynamic? amount;
-  dynamic? discountPercentage;
-  dynamic? wishlistCount;
+  dynamic amount;
+  dynamic discountPercentage;
+  dynamic wishlistCount;
   String? image;
 
   ProductDetailsListModel({
