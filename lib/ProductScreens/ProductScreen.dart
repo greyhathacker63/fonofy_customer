@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/controllers/product_controller.dart';
 import 'package:fonofy/controllers/wishlist_controller.dart';
@@ -184,194 +185,194 @@ class _ProductScreenState extends State<ProductScreen> {
                   final isWishlisted = wishlistedProductNames
                       .contains(product.productAndModelName);
 
-                  return Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            height: 140,
-                            child: (product.image ?? '').startsWith('assets/')
-                                ? Image.asset(product.image!,
-                                    fit: BoxFit.contain)
-                                : Image.network(
-                              '$imageAllBaseUrl${product.image ?? ""}',
-                              fit: BoxFit.contain,
-                              errorBuilder:
-                                  (context, error, stackTrace) =>
-                              const Icon(Icons.error),
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const Center(
-                                    child: CircularProgressIndicator(strokeWidth: 2));
-                              },
+                  return GestureDetector(
+                    onTap: () {
+                      final refNo = product.ucode ?? '';
+                      final url = product.modelUrl ?? '';
+
+                      if (refNo.isNotEmpty && url.isNotEmpty) {
+                        Get.to(() => BuyRefurbishedProductScreen(
+                              refNo: refNo,
+                              url: url,
+                            ));
+                      } else {
+                        Get.snackbar("Invalid Product",
+                            "Missing reference number or URL");
+                      }
+                    },
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              height: 140,
+                              child: (product.image ?? '').startsWith('assets/')
+                                  ? Image.asset(product.image!,
+                                      fit: BoxFit.contain)
+                                  : Image.network(
+                                      '$imageAllBaseUrl${product.image ?? ""}',
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(Icons.error),
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return const Center(
+                                            child: CircularProgressIndicator(
+                                                strokeWidth: 2));
+                                      },
+                                    ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      product.productAndModelName ?? '',
-                                      style: const TextStyle(
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.productAndModelName ?? '',
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
+                                        fontSize: 16),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    "₹${product.amount ?? ''}",
+                                    style: const TextStyle(
+                                        fontSize: 15, color: Colors.green),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    '${product.discountPercentage ?? 0} % Discount',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500,
                                     ),
-
-                                    Text(
-                                      '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
-                                      style: const TextStyle(fontSize: 16),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    "₹${product.newModelAmt ?? 'Discounted Amount'}",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.lineThrough,
                                     ),
-
-                                    Text(
-                                      "₹${product.amount ?? ''}",
-                                      style: const TextStyle(
-                                          fontSize: 15, color: Colors.green),
-                                    ),
-                                     SizedBox(height: 5),
-                                    Text(
-                                      '${product.discountPercentage ?? 0} % Discount',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    // Discounted Amount with strikethrough
-                                    Text(
-                                      "₹${product.newModelAmt ?? 'Discounted Amount'}",
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.redAccent,
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        productController.productsList[index]
-                                            .wishlistCount == 1 ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: productController
-                                                    .productsList[index]
-                                                    .wishlistCount ==
-                                                1
-                                            ? Colors.red
-                                            : Colors.grey,
-                                      ),
-                                      // Inside the IconButton's onPressed:
-                                      onPressed: () async {
-                                        final userCode =
-                                            await TokenHelper.getUserCode();
-                                        if (userCode == null ||
-                                            userCode.isEmpty) {
-                                          Get.snackbar(
-                                            "Login Required",
-                                            "Please login to wishlist a product",
-                                            snackPosition: SnackPosition.BOTTOM,
-                                          );
-                                          Get.to(() => LoginScreen());
-                                          return;
-                                        }
-
-                                        final product = productController
-                                            .productsList[index];
-                                        final isWishlisted =
-                                            product.wishlistCount == 1;
-
-                                        if (isWishlisted) {
-                                          wishlistController.removeFromWishlist(
-                                            wishlistId:
-                                                product.wishlistId.toString(),
-                                            modelId: product.modelNo.toString(),
-                                            colorId: product.colorId.toString(),
-                                            ramId: product.ramId.toString(),
-                                            romId: product.romId.toString(),
-                                          );
-                                        } else {
-                                          wishlistController
-                                              .addProductToWishlist(
-                                            productId:
-                                                product.modelNo.toString(),
-                                            colorId: product.colorId.toString(),
-                                            ramId: product.ramId.toString(),
-                                            romId: product.romId.toString(),
-                                          );
-                                        }
-
-                                        setState(() {
-                                          productController.productsList[index]
-                                                  .wishlistCount =
-                                              isWishlisted ? 0 : 1;
-                                        });
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Get.snackbar(
-                                          "Added to Cart",
-                                          "${product.productAndModelName} added successfully!",
-                                          snackPosition: SnackPosition.BOTTOM,
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            ColorConstants.appBlueColor3,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
-                                      child: const Text("Add to Cart",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ),
-                                  ],
-                                ),
-                                if (showCheckboxes)
-                                  Column(
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Checkbox(
-                                        value: isSelected,
-                                        onChanged: (_) =>
-                                            toggleSelection(productCompare),
+                                      IconButton(
+                                        icon: Icon(
+                                          product.wishlistCount == 1
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: product.wishlistCount == 1
+                                              ? Colors.red
+                                              : Colors.grey,
+                                        ),
+                                        onPressed: () async {
+                                          final userCode =
+                                              await TokenHelper.getUserCode();
+                                          if (userCode == null ||
+                                              userCode.isEmpty) {
+                                            Get.snackbar("Login Required",
+                                                "Please login to wishlist a product",
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM);
+                                            Get.to(() => LoginScreen());
+                                            return;
+                                          }
+
+                                          final isWishlisted =
+                                              product.wishlistCount == 1;
+
+                                          if (isWishlisted) {
+                                            wishlistController
+                                                .removeFromWishlist(
+                                              wishlistId:
+                                                  product.wishlistId.toString(),
+                                              modelId:
+                                                  product.modelNo.toString(),
+                                              colorId:
+                                                  product.colorId.toString(),
+                                              ramId: product.ramId.toString(),
+                                              romId: product.romId.toString(),
+                                            );
+                                          } else {
+                                            wishlistController
+                                                .addProductToWishlist(
+                                              productId:
+                                                  product.modelNo.toString(),
+                                              colorId:
+                                                  product.colorId.toString(),
+                                              ramId: product.ramId.toString(),
+                                              romId: product.romId.toString(),
+                                            );
+                                          }
+
+                                          setState(() {
+                                            productController
+                                                    .productsList[index]
+                                                    .wishlistCount =
+                                                isWishlisted ? 0 : 1;
+                                          });
+                                        },
                                       ),
-                                      const Text("Compare",
-                                          style: TextStyle(fontSize: 14)),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Get.snackbar("Added to Cart",
+                                              "${product.productAndModelName} added successfully!",
+                                              snackPosition:
+                                                  SnackPosition.BOTTOM);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              ColorConstants.appBlueColor3,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        child: const Text("Add to Cart",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
                                     ],
                                   ),
-                              ],
+                                  if (showCheckboxes)
+                                    Column(
+                                      children: [
+                                        Checkbox(
+                                          value: isSelected,
+                                          onChanged: (_) =>
+                                              toggleSelection(productCompare),
+                                        ),
+                                        const Text("Compare",
+                                            style: TextStyle(fontSize: 14)),
+                                      ],
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
