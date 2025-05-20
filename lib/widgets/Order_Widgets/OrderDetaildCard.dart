@@ -3,6 +3,7 @@ import 'package:fonofy/Api_Service/RatingService/RatingService.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:fonofy/ViewScreen/Orders/TrackOrdersScreen.dart';
 import 'package:fonofy/controllers/OrderController/TrackOrderController.dart';
+import 'package:fonofy/controllers/OrderDetailsController.dart';
 import 'package:fonofy/model/OrderModel/OrderProduct&DetailModel.dart';
 import 'package:fonofy/widgets/ReviewDialogWidget.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,8 @@ class OrderDetailsCard extends StatefulWidget {
 
 class _OrderDetailsCardState extends State<OrderDetailsCard> {
   Map<String, dynamic>? reviewData;
+  final OrderDetailController _orderController =
+      Get.put(OrderDetailController());
 
   @override
   void initState() {
@@ -87,6 +90,41 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
     } else {
       Get.snackbar("Error", "Unable to fetch tracking information");
     }
+  }
+
+  void _showCancelDialog() {
+    final TextEditingController _commentController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Cancel Order'),
+          content: TextField(
+            controller: _commentController,
+            decoration:
+                const InputDecoration(hintText: 'Enter cancellation reason'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Close'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await _orderController.cancelOrder(
+                  widget.orderId,
+                  _commentController.text.trim(),
+                  widget.customerId,
+                );
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _navigateToProductDetails() {
@@ -164,9 +202,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                       .contains(widget.status.toLowerCase())) ...[
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {
-                          // TODO: Cancel order logic
-                        },
+                        onPressed: _showCancelDialog,
                         child: const Text("Cancel Order"),
                       ),
                     ),
@@ -204,7 +240,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                             colorId: widget.product!.colorId,
                             ramId: widget.product!.ramId,
                             romId: widget.product!.romId,
-                            existingReview: reviewData, 
+                            existingReview: reviewData,
                           ),
                         );
                       },
