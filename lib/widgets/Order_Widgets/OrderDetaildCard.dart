@@ -50,39 +50,57 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
     }
   }
 
- Future<void> handleTrackOrder() async {
-  final controller = Get.put(TrackingController());
+  Future<void> handleTrackOrder() async {
+    final controller = Get.put(TrackingController());
 
-  await controller.fetchTrackingData(widget.orderId, widget.customerId);
+    await controller.fetchTrackingData(widget.orderId, widget.customerId);
 
-  if (controller.trackingList.isNotEmpty) {
-    // Sort list by createdDate (DateTime?) ascending
-    controller.trackingList.sort((a, b) {
-      final dateA = a.createdDate;
-      final dateB = b.createdDate;
+    if (controller.trackingList.isNotEmpty) {
+      controller.trackingList.sort((a, b) {
+        final dateA = a.createdDate;
+        final dateB = b.createdDate;
 
-      if (dateA == null && dateB == null) return 0;
-      if (dateA == null) return 1;
-      if (dateB == null) return -1;
-      return dateA.compareTo(dateB);
-    });
+        if (dateA == null && dateB == null) return 0;
+        if (dateA == null) return 1;
+        if (dateB == null) return -1;
+        return dateA.compareTo(dateB);
+      });
 
-    final latestData = controller.trackingList.last;
+      final latestData = controller.trackingList.last;
 
-    Get.to(() => TrackOrdersScreen(
-          orderId: widget.orderId,
-          customerName: latestData.shippingName ?? "N/A",
-          address: latestData.shippingAddress ?? "N/A",
-          orderDate: latestData.createdDate != null
-              ? latestData.createdDate!.toLocal().toString().split(' ')[0]
-              : "N/A",
-          status: latestData.orderStatus ?? "Pending",
-        ));
-  } else {
-    Get.snackbar("Error", "Unable to fetch tracking information");
+      final String orderDateFormatted =
+          latestData.createdDate?.toLocal().toString().split(' ')[0] ?? "N/A";
+      final String confirmDateFormatted =
+          latestData.confirmDate?.toLocal().toString().split(' ')[0] ?? "N/A";
+      final String dispatchDateFormatted =
+          latestData.dispatchDate?.toLocal().toString().split(' ')[0] ?? "N/A";
+
+      Get.to(() => TrackOrdersScreen(
+            orderId: widget.orderId,
+            customerName: latestData.shippingName ?? "N/A",
+            address: latestData.shippingAddress ?? "N/A",
+            orderDate: orderDateFormatted,
+            confirmDate: confirmDateFormatted,
+            dispatchDate: dispatchDateFormatted,
+            status: '',
+          ));
+    } else {
+      Get.snackbar("Error", "Unable to fetch tracking information");
+    }
   }
-}
 
+  void _navigateToProductDetails() {
+    // TODO: Implement this navigation if needed
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => BuyRefurbishedProductScreen(
+    //       url: widget.product!.url ?? '',
+    //       refNo: widget.product!.refNo ?? '',
+    //     ),
+    //   ),
+    // );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +109,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
     }
 
     return GestureDetector(
-      onTap: () {
-        // Navigate to BuyRefurbishedProductScreen (if needed)
-      },
+      onTap: _navigateToProductDetails,
       behavior: HitTestBehavior.translucent,
       child: Card(
         elevation: 2,
@@ -104,7 +120,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image and product info
+              // Product Info
               Row(
                 children: [
                   Image.network(
@@ -126,9 +142,9 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
 
               const SizedBox(height: 10),
 
+              // Action Buttons
               Row(
                 children: [
-                  // Always show Track Order if it's not empty or invalid
                   if ([
                     "pending",
                     "confirmed",
@@ -143,30 +159,25 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                       ),
                     ),
                   ],
-
                   const SizedBox(width: 10),
-
-                  // Show Cancel Order for pending and confirmed only
                   if (["pending", "confirmed"]
                       .contains(widget.status.toLowerCase())) ...[
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          // Cancel Order logic here
+                          // TODO: Cancel order logic
                         },
                         child: const Text("Cancel Order"),
                       ),
                     ),
                   ],
-
-                  // Show Get Invoice for confirmed, dispatched, delivered, cancelled
                   if (["confirmed", "dispatched", "delivered", "cancelled"]
                       .contains(widget.status.toLowerCase())) ...[
                     const SizedBox(width: 10),
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          // Get Invoice logic
+                          // TODO: Get invoice logic
                         },
                         child: const Text("Get Invoice"),
                       ),
@@ -175,6 +186,9 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                 ],
               ),
 
+              const SizedBox(height: 10),
+
+              // Review Section
               if (widget.status.trim().toLowerCase() == "delivered")
                 IgnorePointer(
                   ignoring: false,

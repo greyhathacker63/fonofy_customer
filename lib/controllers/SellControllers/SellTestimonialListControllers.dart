@@ -28,10 +28,7 @@ import 'package:fonofy/Api_Service/SellService/SellTestimonialListSerice.dart';
 import 'package:fonofy/model/SellModel/SellTestimonialListModel.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:fonofy/Api_Service/SellService/SellTestimonialListSerice.dart';
-import 'package:fonofy/model/SellModel/SellTestimonialListModel.dart';
-import 'package:get/get.dart';
+
 
 class TestimonialListController extends GetxController {
   var isTestimonialListLoading = true.obs;
@@ -60,5 +57,10 @@ class TestimonialListController extends GetxController {
     } finally {
       isTestimonialListLoading(false);
     }
+  }
+  void refreshTestimonials() {
+    testimonialListData.clear();
+    isTestimonialListLoading.value = true;
+    getTestimonialListData();
   }
 }

@@ -25,22 +25,10 @@
 //
 // }
 
-import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ProductDetailsService/ProductDetailsService.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter/material.dart';
-import 'package:fonofy/Api_Service/ProductDetailsService/ProductDetailsService.dart';
-import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
-import 'package:get/get.dart';
-
-import 'package:flutter/material.dart';
-import 'package:fonofy/Api_Service/ProductDetailsService/ProductDetailsService.dart';
-import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
-import 'package:get/get.dart';
-
-import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ProductDetailsService/ProductDetailsService.dart';
 import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:get/get.dart';
@@ -67,7 +55,10 @@ class ControllerProductDetails extends GetxController {
     required String romName,
     required String colorName,
     required double? sellingPrice,
-    required String condition,
+    required String ramId,
+    required String romId,
+    required String colorId,
+    required dynamic discountPercentage,
   }) {
     if (productDetails.value != null) {
       productDetails.value = ProductDetailsModel(
@@ -75,20 +66,26 @@ class ControllerProductDetails extends GetxController {
         modelUrl: productDetails.value!.modelUrl,
         ucode: productDetails.value!.ucode,
         productAndModelName: productDetails.value!.productAndModelName,
-        ramId: productDetails.value!.ramId,
+        ramId: ramId,
         ramName: ramName,
-        romId: productDetails.value!.romId,
+        romId: romId,
         romName: romName,
-        colorId: productDetails.value!.colorId,
+        colorId: colorId,
         colorName: colorName,
+        discountPercentage: discountPercentage,
         sellingPrice: sellingPrice,
         sellingPriceF1: productDetails.value!.sellingPriceF1,
+        sellingPriceF2: productDetails.value!.sellingPriceF2,
         sellingPricePlus: productDetails.value!.sellingPricePlus,
         newModelAmt: productDetails.value!.newModelAmt,
         stockQuantity: productDetails.value!.stockQuantity,
         display: productDetails.value!.display,
-        // Include other fields as needed
-      );
+        battery: productDetails.value!.battery,
+        rearCamera: productDetails.value!.rearCamera,
+        frontCamera: productDetails.value!.frontCamera,
+
+       );
+      print("Updated Product: ramId=$ramId, romId=$romId, colorId=$colorId, price=$sellingPrice");
     }
   }
 }

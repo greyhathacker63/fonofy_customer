@@ -40,7 +40,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
         ),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
           : SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

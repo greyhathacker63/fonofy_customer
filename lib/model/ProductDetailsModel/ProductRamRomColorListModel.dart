@@ -14,32 +14,32 @@ String productRamRomColorListModelToJson(
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProductRamRomColorListModel {
-  dynamic? id;
-  dynamic? specificationsid;
+  dynamic id;
+  dynamic specificationsid;
   String? specificationsUcode;
-  dynamic? modelNo;
+  dynamic modelNo;
   String? ramName;
   String? romName;
   String? colorName;
-  dynamic? ramId;
-  dynamic? romId;
-  dynamic? colorId;
-  dynamic? f1Plus;
-  dynamic? f1;
-  dynamic? f2;
-  dynamic? plusDisAmt;
-  dynamic? f1DisAmt;
-  dynamic? f2DisAmt;
-  dynamic? plusDis;
-  dynamic? f1Dis;
-  dynamic? f2Dis;
+  dynamic ramId;
+  dynamic romId;
+  dynamic colorId;
+  dynamic f1Plus;
+  dynamic f1;
+  dynamic f2;
+  dynamic plusDisAmt;
+  dynamic f1DisAmt;
+  dynamic f2DisAmt;
+  dynamic plusDis;
+  dynamic f1Dis;
+  dynamic f2Dis;
   String? type;
   bool? ideleted;
   bool? status;
   DateTime? createdDate;
   dynamic updateDate;
   String? rowCode;
-  dynamic? newAmount;
+  dynamic newAmount;
 
   ProductRamRomColorListModel({
     this.id,
@@ -101,6 +101,9 @@ class ProductRamRomColorListModel {
         rowCode: json["RowCode"],
         newAmount: json["NewAmount"],
       );
+
+
+
 
   Map<String, dynamic> toJson() => {
         "Id": id,

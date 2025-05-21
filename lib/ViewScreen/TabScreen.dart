@@ -4,8 +4,11 @@ import 'package:fonofy/RepairScreen/RepairScreen.dart';
 import 'package:fonofy/SellScreen/SellScreen.dart';
 import 'package:fonofy/Wishlist/WishlistScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
-import 'package:get/get.dart'; // Import GetX for navigation
-import 'package:fonofy/Cart_Screens/CartScreen.dart'; // Import Cart Screen
+import 'package:get/get.dart';
+import 'package:fonofy/Cart_Screens/CartScreen.dart';
+
+import '../controllers/RepairController/RepairTestimonialListController.dart';
+import '../controllers/SellControllers/SellTestimonialListControllers.dart'; // Import Cart Screen
 
 class TabScreen extends StatefulWidget {
   final int upperTabIndex;
@@ -31,12 +34,19 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
       initialIndex: _selectedIndex,
     );
 
-    // ✅ Properly listen to tab changes (swipe & tap both update UI)
     _tabController.addListener(() {
       if (_tabController.index != _selectedIndex) {
         setState(() {
           _selectedIndex = _tabController.index;
         });
+        if (_selectedIndex == 1) {
+          final testimonialCtrl = Get.find<TestimonialListController>();
+          testimonialCtrl.refreshTestimonials();
+        }
+      }
+      if (_selectedIndex == 2) {
+        final testimonial = Get.find<RepairTestimonialController>();
+        testimonial.refreshRepairTestimonials();
       }
     });
   }
@@ -95,7 +105,7 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
       ),
       body: TabBarView(
         controller: _tabController,
-        children: const [BuyScreen(), Sellscreen(), RepairScreen()],
+        children:   [BuyScreen(), Sellscreen(), RepairScreen()],
       ),
     );
   }
@@ -126,7 +136,7 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
   }
 }
 
-// ✅ Function to get title based on tab index
+
 String _getTitle(int index) {
   switch (index) {
     case 0:

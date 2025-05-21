@@ -15,6 +15,7 @@ Widget buildUserReviewsSection(ProductDetailsModel product, List<ProductReviewMo
       ),
       const SizedBox(height: 12),
       Card(
+        color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 1,
         child: Padding(

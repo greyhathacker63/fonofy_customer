@@ -83,6 +83,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       cityController.text = selectedCity ?? "";
 
       // fetchCityData(int.parse(selectedState!));
+
       print('City :- ${widget.address?.city}');
 
       // fetchCityData(int.parse(selectedState!));
@@ -300,8 +301,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   value: selectedCity,
                   hint: Padding(
                     padding:  EdgeInsets.only(right: 10),
-                    child: Text(
-                      selectedCity ?? "Select City",
+                    child: Text(selectedCity ?? "Select City",
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -407,3 +407,4 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     );
   }
 }
+

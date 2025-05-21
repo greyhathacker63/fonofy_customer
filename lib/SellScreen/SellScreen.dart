@@ -1,3 +1,4 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
@@ -17,8 +18,9 @@ class Sellscreen extends StatefulWidget {
 }
 
 class _SellscreenState extends State<Sellscreen> {
-  final BrandListController brandListController = Get.put(BrandListController());
-  final TestimonialListController testimonialListController = Get.put(TestimonialListController());
+
+   final BrandListController brandListController = Get.put(BrandListController());
+  final  TestimonialListController testimonialListController = Get.put(TestimonialListController());
 
   int _currentIndex = 0;
 
@@ -29,7 +31,10 @@ class _SellscreenState extends State<Sellscreen> {
     testimonialListController.getTestimonialListData();
   }
 
-  @override
+
+
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -53,7 +58,7 @@ class _SellscreenState extends State<Sellscreen> {
             // Sell for Cash Section
             Obx(() {
               return SizedBox(
-                height: 450,
+                height: Get.height * 0.8,
                 width: double.infinity,
                 child: brandListController.isBrandListLoading.value
                     ? const Center(
@@ -64,8 +69,7 @@ class _SellscreenState extends State<Sellscreen> {
                 )
                     : brandListController.brandList.isEmpty
                     ? const Center(
-                  child: Text(
-                    'No brands available',
+                  child: Text('No brands available',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 )
@@ -113,8 +117,7 @@ class _SellscreenState extends State<Sellscreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Other",
+                  const Text("Other",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -132,9 +135,7 @@ class _SellscreenState extends State<Sellscreen> {
                         imagePath: "assets/images/recycle.png",
                         label: "Recycle",
                       ),
-                      featureCard(
-                        imagePath: "assets/images/nearby.png",
-                        label: "Nearby Stores",
+                      featureCard(imagePath: "assets/images/nearby.png", label: "Nearby Stores",
                       ),
                     ],
                   ),
@@ -197,11 +198,11 @@ class _SellscreenState extends State<Sellscreen> {
                         ),
                         itemBuilder: (context, index, realIndex) {
                           final testimonial = testimonials[index];
-                          final imageUrl = "${imageAllBaseUrl}${testimonial.image ?? ''}".replaceAll('//', '/');
-                          debugPrint('Testimonial image URL: $imageUrl');
+                          // final imageUrl = "$imageBrandBaseUrl${testimonial.image ?? ''}".replaceAll('//', '/');
+                          // debugPrint('Testimonial image URL: $imageUrl');
                           return testimonialCard(
                             name: testimonial.name ?? 'Unknown',
-                            image: imageUrl,
+                            image: testimonial.image ?? '',
                             text: testimonial.description ?? 'No description',
                           );
                         },
@@ -217,7 +218,7 @@ class _SellscreenState extends State<Sellscreen> {
                         return Container(
                           width: 8,
                           height: 8,
-                          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+                          margin:   EdgeInsets.symmetric(vertical: 5, horizontal: 4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _currentIndex == index ? Colors.blueAccent : Colors.grey,
@@ -229,8 +230,7 @@ class _SellscreenState extends State<Sellscreen> {
                 ],
               ),
             ),
-
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -288,11 +288,10 @@ class _SellscreenState extends State<Sellscreen> {
                         text1!,
                         style: const TextStyle(color: Colors.blue, fontSize: 10),
                       ),
-                      const Text(
-                        "Phone Name",
+                       Text("Phone Name",
                         style: TextStyle(color: Colors.black, fontSize: 10),
                       ),
-                      const Text(
+                       Text(
                         "Get 30,500",
                         style: TextStyle(color: Colors.black, fontSize: 10),
                       ),
@@ -382,6 +381,7 @@ class _SellscreenState extends State<Sellscreen> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+
         children: [
           // CircleAvatar(
           //   radius: 30,
@@ -410,7 +410,7 @@ class _SellscreenState extends State<Sellscreen> {
           Image.network(
             height: 55,
             width: 55,
-            '${imageAllBaseUrl}${image ?? ""}',
+            '$imageBrandBaseUrl${image ?? ''}',
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) =>
             const Icon(Icons.error),
@@ -423,12 +423,12 @@ class _SellscreenState extends State<Sellscreen> {
           const SizedBox(height: 10),
           Text(
             name,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            style:   TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
           Text(text,
-            style: const TextStyle(fontSize: 12, color: Colors.black54),
+            style:   TextStyle(fontSize: 12, color: Colors.black54),
             textAlign: TextAlign.center,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,

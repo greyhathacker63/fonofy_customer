@@ -7,6 +7,7 @@ import '../../model/ProductDetailsModel/ProductDetailsModel.dart';
 
 Widget buildProductHighlightsCard(ProductDetailsModel product) {
   return Card(
+    color: Colors.white,
     elevation: 1,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     child: Padding(

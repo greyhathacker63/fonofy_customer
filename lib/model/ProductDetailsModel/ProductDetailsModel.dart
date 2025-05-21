@@ -114,6 +114,7 @@ class ProductDetailsModel {
         stockQuantity: json["StockQuantity"],
         rowNum: json["RowNum"],
         wishlistId: json["WishlistId"],
+
       );
 
 

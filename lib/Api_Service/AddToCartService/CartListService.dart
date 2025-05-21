@@ -39,25 +39,25 @@ class CartListService {
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
 
-        // Assuming the response is a JSON array
+
         if (decoded is List) {
           return decoded.map((e) => CartListModel.fromJson(e)).toList();
         } else if (decoded is Map && decoded['data'] is List) {
-          // Or if response is wrapped like: { "data": [ ... ] }
+
           return (decoded['data'] as List)
               .map((e) => CartListModel.fromJson(e))
               .toList();
         } else {
           print("❌ Unexpected response format.");
-          return null;
+          return [];
         }
       } else {
         print('❌ HTTP Error: ${response.statusCode}');
-        return null;
+        return [];
       }
     } catch (e) {
       print('❌ Exception while fetching cart list: $e');
-      return null;
+      return [];
     }
   }
 }

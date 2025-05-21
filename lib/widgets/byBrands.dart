@@ -39,7 +39,7 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
                   // Clickable Brand Image
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => SelectProductScreen3());
+                      Get.to(() => SelectProductScreen3(brandName: '',));
                     },
                     child: LayoutBuilder(
                       builder: (context, constraints) {

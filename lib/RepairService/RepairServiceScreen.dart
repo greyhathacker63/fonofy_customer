@@ -25,13 +25,13 @@ class RepairServiceScreen extends StatelessWidget {
                 },
               ),
             ),
-            // Logo and Heading (Logo Left, Text Right)
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/images/repairservice.png", // Your logo path
-                  height: 24, // Adjust logo size as needed
+                  "assets/images/repairservice.png",
+                  height: 24,
                 ),
                 const SizedBox(width: 10),
                 const Expanded(

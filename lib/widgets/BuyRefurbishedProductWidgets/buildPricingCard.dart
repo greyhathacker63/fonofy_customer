@@ -52,7 +52,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../model/ProductDetailsModel/ProductDetailsModel.dart';
 
-Widget buildPricingCard(ProductDetailsModel product) {
+Widget buildPricingCard(ProductDetailsModel product, {double? selectedPrice}) {
+
   double? getPriceBasedOnCondition() {
     if (product.romName == "Fair") {
       return product.sellingPrice;
@@ -74,6 +75,7 @@ Widget buildPricingCard(ProductDetailsModel product) {
   // }
 
   return Card(
+    color: Colors.white,
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     child: Padding(

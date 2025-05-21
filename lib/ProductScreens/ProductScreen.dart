@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
@@ -10,8 +11,7 @@ import 'package:fonofy/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
-import '../model/ProductDetailsModel/GetSearchProductsModel.dart';
-import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
+ import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
 class ProductScreen extends StatefulWidget {
   final String? name;
@@ -20,7 +20,7 @@ class ProductScreen extends StatefulWidget {
   final String? maxPrice;
   final String? underAmt;
 
-  const ProductScreen({
+   ProductScreen({
     Key? key,
     this.name,
     this.productPage,
@@ -213,7 +213,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
                                 return const Center(
-                                    child: CircularProgressIndicator(strokeWidth: 2));
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2));
                               },
                             ),
                           ),
@@ -247,7 +248,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       style: const TextStyle(
                                           fontSize: 15, color: Colors.green),
                                     ),
-                                     SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Text(
                                       '${product.discountPercentage ?? 0} % Discount',
                                       style: const TextStyle(
@@ -258,6 +259,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
+
                                     // Discounted Amount with strikethrough
                                     Text(
                                       "₹${product.newModelAmt ?? 'Discounted Amount'}",
@@ -279,7 +281,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                     IconButton(
                                       icon: Icon(
                                         productController.productsList[index]
-                                            .wishlistCount == 1 ? Icons.favorite
+                                            .wishlistCount ==
+                                            1
+                                            ? Icons.favorite
                                             : Icons.favorite_border,
                                         color: productController
                                             .productsList[index]
