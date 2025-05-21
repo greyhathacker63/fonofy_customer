@@ -10,6 +10,7 @@ class ReviewDialog extends StatefulWidget {
   final int ramId;
   final int romId;
   final String orderId;
+  final Map<String, dynamic>? existingReview; 
 
   const ReviewDialog({
     required this.productId,
@@ -17,6 +18,7 @@ class ReviewDialog extends StatefulWidget {
     required this.ramId,
     required this.romId,
     required this.orderId,
+    this.existingReview,
     super.key,
   });
 
@@ -28,6 +30,15 @@ class _ReviewDialogState extends State<ReviewDialog> {
   double rating = 0;
   final TextEditingController _controller = TextEditingController();
   final RatingController _ratingController = Get.put(RatingController());
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.existingReview != null) {
+      rating = double.tryParse(widget.existingReview!['Rating']?.toString() ?? '0') ?? 0;
+      _controller.text = widget.existingReview!['Description'] ?? '';
+    }
+  }
 
   void submitReview() async {
     if (rating == 0) {

@@ -41,4 +41,26 @@ class OrderDetailService {
       throw Exception('Failed to fetch order details');
     }
   }
+
+static Future<bool> cancelOrder(String orderId, String comment) async {
+  final url = Uri.parse(
+    '$baseurl$b2c/cancel-order?OrderId=$orderId&Comment=$comment',
+  );
+
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+
+  final response = await http.get(
+    url,
+    headers: {'Authorization': 'Bearer $token'},
+  );
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    print('Failed to cancel order: ${response.statusCode} ${response.body}');
+    return false;
+  }
+}
+
 }
