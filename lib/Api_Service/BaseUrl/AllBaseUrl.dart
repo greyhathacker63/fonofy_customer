@@ -40,9 +40,14 @@ const String shippingChargeUrl =  "${baseUrl}api/common/get-shipping-charge";
  //sell screen
 
 const String sellBrandListUrl = "${baseUrl}api/common/brand-list";
+
 const String sellTestimonialListUrl = "${baseUrl}api/common/testimonial-list";
 
 const String brandBasedModelUrl = "${baseUrl}api/common/brand-based-model";
+
+const String repairColorsUrl = "${baseUrl}api/common/model-color-list";
+
+const String repairTableUrl = "${baseUrl}api/common/service-list";
 
 
 

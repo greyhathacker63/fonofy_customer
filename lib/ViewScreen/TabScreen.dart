@@ -18,7 +18,8 @@ class TabScreen extends StatefulWidget {
   State<TabScreen> createState() => _TabScreenState();
 }
 
-class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMixin {
+class _TabScreenState extends State<TabScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   late int _selectedIndex;
@@ -28,25 +29,53 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
     super.initState();
     _selectedIndex = widget.upperTabIndex;
 
+    Get.put(TestimonialListController());
+    Get.put(RepairTestimonialController());
+
     _tabController = TabController(
       length: 3,
       vsync: this,
       initialIndex: _selectedIndex,
     );
 
+    // _tabController.addListener(() {
+    //   if (_tabController.index != _selectedIndex) {
+    //     setState(() {
+    //       _selectedIndex = _tabController.index;
+    //     });
+    //     if (_selectedIndex == 1) {
+    //       final testimonialCtrl = Get.find<TestimonialListController>();
+    //       testimonialCtrl.refreshTestimonials();
+    //     }
+    //   }
+    //   if (_selectedIndex == 2) {
+    //     final testimonial = Get.find<RepairTestimonialController>();
+    //     testimonial.refreshRepairTestimonials();
+    //   }
+    // }
     _tabController.addListener(() {
       if (_tabController.index != _selectedIndex) {
         setState(() {
           _selectedIndex = _tabController.index;
         });
         if (_selectedIndex == 1) {
-          final testimonialCtrl = Get.find<TestimonialListController>();
-          testimonialCtrl.refreshTestimonials();
+          try {
+            final testimonialCtrl = Get.find<TestimonialListController>();
+            testimonialCtrl.refreshTestimonials();
+          } catch (e) {
+            debugPrint('Error accessing TestimonialListController: $e');
+            Get.snackbar('Error', 'Failed to refresh testimonials');
+          }
         }
-      }
-      if (_selectedIndex == 2) {
-        final testimonial = Get.find<RepairTestimonialController>();
-        testimonial.refreshRepairTestimonials();
+        if (_selectedIndex == 2) {
+          try {
+            final testimonial = Get.find<RepairTestimonialController>();
+            testimonial.refreshRepairTestimonials();
+          } catch (e) {
+            debugPrint('Error accessing RepairTestimonialController: $e');
+            Get.snackbar('Error', 'Failed to refresh repair testimonials');
+          }
+        }
       }
     });
   }
@@ -69,21 +98,21 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
           style: const TextStyle(color: Colors.black),
         ),
         actions: [
-  if (_selectedIndex == 0) ...[
-    IconButton(
-      icon: const Icon(Icons.favorite_border, color: Colors.redAccent),
-      onPressed: () {
-        Get.to(() => WishlistScreen()); // Navigate to wishlist screen
-      },
-    ),
-    IconButton(
-      icon: const Icon(Icons.shopping_cart, color: Colors.black),
-      onPressed: () {
-        Get.to(() => CartScreen());
-      },
-    ),
-  ],
-],
+          if (_selectedIndex == 0) ...[
+            IconButton(
+              icon: const Icon(Icons.favorite_border, color: Colors.redAccent),
+              onPressed: () {
+                Get.to(() => WishlistScreen()); // Navigate to wishlist screen
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.black),
+              onPressed: () {
+                Get.to(() => CartScreen());
+              },
+            ),
+          ],
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Container(
@@ -105,7 +134,7 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
       ),
       body: TabBarView(
         controller: _tabController,
-        children:   [BuyScreen(), Sellscreen(), RepairScreen()],
+        children: [BuyScreen(), Sellscreen(), RepairScreen()],
       ),
     );
   }
@@ -135,7 +164,6 @@ class _TabScreenState extends State<TabScreen> with SingleTickerProviderStateMix
     );
   }
 }
-
 
 String _getTitle(int index) {
   switch (index) {

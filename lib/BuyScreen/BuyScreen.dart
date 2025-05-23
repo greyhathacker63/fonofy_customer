@@ -212,7 +212,6 @@ class _BuyScreenState extends State<BuyScreen> {
                 ),
 
                 SizedBox(height: Get.height * 0.03),
-
                 // Static Banner
                 Padding(
                   padding: const EdgeInsets.all(10.0),

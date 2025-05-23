@@ -42,9 +42,8 @@ class RepairServiceScreen extends StatelessWidget {
                 ),
               ],
             ),
-
-            const SizedBox(height: 5),
-            const Text(
+            SizedBox(height: 5),
+             Text(
               "Please share details of your query & our team will get in touch with you with the best solution",
               style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
@@ -68,9 +67,7 @@ class RepairServiceScreen extends StatelessWidget {
             _buildIssueTextField("Power Key FPC"),
 
             const SizedBox(height: 20),
-
-            // Pincode Input Field
-            const Text(
+             Text(
               "Enter your pincode:",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),

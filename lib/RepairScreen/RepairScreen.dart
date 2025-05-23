@@ -21,9 +21,6 @@ class RepairScreen extends StatefulWidget {
 
 class _RepairScreenState extends State<RepairScreen> {
 
- // final BrandListController brandListController = Get.put(BrandListController());
- // final TestimonialListController testimonialListController = Get.put(TestimonialListController());
-
   final RepairBrandListController repairBrandListController = Get.put(RepairBrandListController());
  final RepairTestimonialController repairTestimonialController = Get.put(RepairTestimonialController());
 
@@ -39,7 +36,7 @@ class _RepairScreenState extends State<RepairScreen> {
   void initState() {
     super.initState();
     repairBrandListController.getRepairBrandListData();
-    repairTestimonialController.getRepairTestimonialListData();
+    repairTestimonialController.getTestimonialRepairListData();
   }
 
   @override
@@ -85,17 +82,17 @@ class _RepairScreenState extends State<RepairScreen> {
                 width: double.infinity,
                 child: repairBrandListController.isRepairListLoading.value
                     ? const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2,
+                  child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                   ),
                 )
-                    : repairBrandListController.brandList.isEmpty
+                    : repairBrandListController.brandListRepair.isEmpty
                     ? const Center(
                   child: Text('No brands available',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 )
-                    : topBrands(repairBrandListController.brandList),
+                    : topBrands(repairBrandListController.brandListRepair),
               );
             }),
 
@@ -164,10 +161,7 @@ class _RepairScreenState extends State<RepairScreen> {
                 ],
               ),
             ),
-
-
             serviceAvailable(),
-
             // TESTIMONIAL SECTION
             Container(
               color: Colors.blue.shade900,
@@ -230,12 +224,12 @@ class _RepairScreenState extends State<RepairScreen> {
                   SizedBox(
                     height: 250,
                     child: Obx(() {
-                      final isLoading = repairTestimonialController.isTestimonialListLoading.value;
-                      final testimonialsTop = repairTestimonialController.testimonialListRepairData;
+                      final isLoading = repairTestimonialController.isTestimonialListRepairLoading.value;
+                      final testimonialsTop = repairTestimonialController.testimonialRepairListData;
                       if (isLoading == null) {
                         return const Center(
                           child: CircularProgressIndicator(
-                            strokeWidth: 2,
+                            strokeWidth: 2,color: Colors.blue,
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         );
@@ -278,7 +272,7 @@ class _RepairScreenState extends State<RepairScreen> {
                   ),
                    SizedBox(height: 8),
                   Obx(() {
-                    final testimonialsDetails = repairTestimonialController.testimonialListRepairData;
+                    final testimonialsDetails = repairTestimonialController.testimonialRepairListData;
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(testimonialsDetails.length, (index) {

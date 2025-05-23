@@ -31,7 +31,7 @@ class RepairBrandBasedModelController extends GetxController {
 
   List<BrandBasedModel> get brandList => _brandModelList;
 
-  Future<void> getBrandModelsData(String brandName) async {
+  Future<void> getRepairBrandModelsData(String brandName) async {
     isRepairBrandModelLoading.value = true;
     try {
       _brandModelList = await RepairBrandBasedModelService.fetchModelsByBrand(brandName);

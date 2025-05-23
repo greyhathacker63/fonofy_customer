@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/SellScreen/selectColorsProductScreen.dart';
+import 'package:fonofy/SelectProductScreenRepair/selectColorsProductScreen.dart';
  import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen.dart';
 import 'package:get/get.dart';
 
  import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
-import '../../../controllers/RepairController/BrandBasedModelController.dart';
+import '../../../controllers/RepairController/RepairBrandBasedModelController.dart';
+import '../../../controllers/SellControllers/SellBrandBasedModelController.dart';
 
 // class SelectProductScreen3 extends StatelessWidget {
 //   final String brandName;
@@ -237,15 +238,14 @@ import '../../../controllers/RepairController/BrandBasedModelController.dart';
 
 class SelectProductScreen3 extends StatelessWidget {
   final String brandName;
-  final String placeholderImage = "assets/images/phone.png";
 
   SelectProductScreen3({super.key, required this.brandName});
 
-  final RepairBrandBasedModelController brandBasedRepairController = Get.put(RepairBrandBasedModelController());
+  final SellBrandBasedModelController sellBrandBasedModelController = Get.put(SellBrandBasedModelController());
 
   @override
   Widget build(BuildContext context) {
-    brandBasedRepairController.getBrandModelsData(brandName);
+    sellBrandBasedModelController.getSellBrandModelsData(brandName);
 
     return Scaffold(
       appBar: AppBar(
@@ -258,7 +258,7 @@ class SelectProductScreen3 extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon:  Icon(Icons.search),
             onPressed: () {
               // Implement search functionality if needed
             },
@@ -275,18 +275,18 @@ class SelectProductScreen3 extends StatelessWidget {
           elevation: 3,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: brandBasedRepairController.isRepairBrandModelLoading.value
-                ? const Center(
+            child: sellBrandBasedModelController.isSellBrandModelLoading.value
+                ?   Center(
               child: CircularProgressIndicator(
                 strokeWidth: 2,
                 color: Colors.blue,
               ),
             )
-                : brandBasedRepairController.brandList.isEmpty
+                : sellBrandBasedModelController.brandList.isEmpty
                 ? Center(child: Text("No models available for $brandName"))
                 : GridView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: brandBasedRepairController.brandList.length,
+              itemCount: sellBrandBasedModelController.brandList.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 8,
@@ -294,11 +294,12 @@ class SelectProductScreen3 extends StatelessWidget {
                 childAspectRatio: 0.8, // Adjusted to make cells taller
               ),
               itemBuilder: (context, index) {
-                final brandBasedModelDetails = brandBasedRepairController.brandList[index];
+                final brandBasedModelDetails = sellBrandBasedModelController.brandList[index];
+
                 return GestureDetector(
                   onTap: () {
-                    // Get.to(() => SelectProductScreen());},
-                    Get.to(() => SelectColorsProductScreen(brandName: '', modelId: ''));},
+                      Get.to(() => SelectProductScreen());
+                      },
 
                   child: Container(
                     decoration: BoxDecoration(

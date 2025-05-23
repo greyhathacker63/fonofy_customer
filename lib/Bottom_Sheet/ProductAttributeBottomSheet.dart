@@ -337,8 +337,6 @@ import '../model/ProductDetailsModel/ProductDetailsModel.dart';
 import '../model/ProductDetailsModel/ProductRamRomColorListModel.dart';
 import '../utils/Colors.dart';
 
-
-
 // class ProductAttributeBottomSheet extends StatefulWidget {
 //   final ProductDetailsModel product;
 //   final void Function(
@@ -781,6 +779,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
     }
     print("Updated condition based on storage: $selectedCondition");
   }
+
+
 @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -913,7 +913,7 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                   int index = entry.key;
                   var item = entry.value;
                   bool isSelected = selectedColorIndex == index;
-                  Color circleColor = getColorFromName(item.colorName ?? "Grey");
+                  Color circleColor = getColorFromName(item.colorName ?? "");
 
                   return GestureDetector(
                     onTap: () {
@@ -921,8 +921,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                         selectedColorIndex = index;
                         selectedVariant = _colorList[index];
                         selectedStorage =
-                        "${selectedVariant?.ramName ?? 'N/A'} / ${selectedVariant?.romName ?? 'N/A'}";
-                        _updateConditionBasedOnStorage(); // Update condition based on new storage
+                        "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
+                        _updateConditionBasedOnStorage();
                         _notifyParent();
                       });
                     },

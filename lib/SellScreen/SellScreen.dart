@@ -8,6 +8,7 @@ import 'package:fonofy/controllers/SellControllers/BrandListControllers.dart';
 import 'package:fonofy/controllers/SellControllers/SellTestimonialListControllers.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
+import '../model/table_banner_model/SelectProduct/SelectProductScreen3.dart';
 import '../widgets/SellWidgets/sellForCash.dart';
 
 class Sellscreen extends StatefulWidget {
@@ -31,9 +32,6 @@ class _SellscreenState extends State<Sellscreen> {
     testimonialListController.getTestimonialListData();
   }
 
-
-
-
    @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +42,7 @@ class _SellscreenState extends State<Sellscreen> {
             // Banner Image
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Image.asset(
-                "assets/images/banner.png",
+              child: Image.asset("assets/images/banner.png",
                 height: 120,
                 fit: BoxFit.cover,
               ),
@@ -164,11 +161,11 @@ class _SellscreenState extends State<Sellscreen> {
                     height: 250,
                     child: Obx(() {
                       final isLoading = testimonialListController.isTestimonialListLoading.value;
-                      final testimonials = testimonialListController.testimonialListData;
+                      final testimonials = testimonialListController.testimonialList;
                       if (isLoading) {
-                        return const Center(
+                        return   Center(
                           child: CircularProgressIndicator(
-                            strokeWidth: 2,
+                            strokeWidth: 2,color: Colors.blue,
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         );
@@ -211,7 +208,7 @@ class _SellscreenState extends State<Sellscreen> {
                   ),
                   const SizedBox(height: 8),
                   Obx(() {
-                    final testimonials = testimonialListController.testimonialListData;
+                    final testimonials = testimonialListController.testimonialList;
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(testimonials.length, (index) {
@@ -438,3 +435,5 @@ class _SellscreenState extends State<Sellscreen> {
     );
   }
 }
+
+

@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fonofy/model/RepairModel/RepairBrandListModel.dart';
+ import 'package:fonofy/model/RepairModel/RepairBrandListModel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
+import '../../SelectProductScreenRepair/SelectProductScreenRepair.dart';
 import '../../model/table_banner_model/SelectProduct/SelectProductScreen3.dart';
 
 // return Column(
@@ -92,11 +93,11 @@ Widget topBrands(List<RepairBrandListModel>? brandRepairListTopData) {
             childAspectRatio: 0.8,
           ),
           itemBuilder: (context, index) {
-            final brandTopDetails = brandRepairListTopData?[index];
+            final brandTopRepairDetails = brandRepairListTopData?[index];
             return GestureDetector(
               onTap: () {
-                if (brandTopDetails != null) {
-                  Get.to(() => SelectProductScreen3(brandName: brandTopDetails.brandName ?? ''));
+                if (brandTopRepairDetails != null) {
+                  Get.to(() => SelectProductRepairScreen(brandName: brandTopRepairDetails.brandName ?? ''));
                 }
               },
               child: Column(
@@ -110,21 +111,21 @@ Widget topBrands(List<RepairBrandListModel>? brandRepairListTopData) {
                     ),
                     child: ClipRect(
                       child: Image.network(
-                        '$imageAllBaseUrl${brandTopDetails?.brandImage ?? ''}',
+                        '$imageAllBaseUrl${brandTopRepairDetails?.brandImage ?? ''}',
                         height: 55,
                         width: 55,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
-                          return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                          return const Center(child: CircularProgressIndicator(strokeWidth: 1,color: Colors.blue,));
                         },
                       ),
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    brandTopDetails?.brandName ?? '',
+                    brandTopRepairDetails?.brandName ?? '',
                     style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                     maxLines: 2,

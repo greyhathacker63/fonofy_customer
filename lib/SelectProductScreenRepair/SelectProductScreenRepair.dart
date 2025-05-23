@@ -1,54 +1,47 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
- import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen3.dart';
-  import 'package:get/get.dart';
+import 'package:fonofy/SelectProductScreenRepair/selectColorsProductScreen.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: AllBrandsScreen(),
-//     );
-//   }
-// }
+import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import '../controllers/RepairController/RepairBrandBasedModelController.dart';
 
-import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
-import '../controllers/SellControllers/BrandListControllers.dart';
-class AllBrandsScreen extends StatelessWidget {
+class SelectProductRepairScreen extends StatelessWidget {
+  final String brandName;
+  final String placeholderImage = "assets/images/phone.png";
 
-  AllBrandsScreen({super.key,});
+  SelectProductRepairScreen({super.key, required this.brandName});
 
-  final BrandListController brandController = Get.put(BrandListController());
+  final RepairBrandBasedModelController brandBasedRepairController = Get.put(RepairBrandBasedModelController());
+
 
   @override
   Widget build(BuildContext context) {
-    brandController.getBrandListData();
+    brandBasedRepairController.getRepairBrandModelsData(brandName);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Brands"),
+        title: Text("Select $brandName Model"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon:  Icon(Icons.search),
             onPressed: () {
-
+              // Implement search functionality if needed
             },
           ),
         ],
       ),
       body: Obx(() => Padding(
-        padding:   EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -57,30 +50,34 @@ class AllBrandsScreen extends StatelessWidget {
           elevation: 3,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: brandController.isBrandListLoading.value
-                ? const Center(
+            child: brandBasedRepairController.isRepairBrandModelLoading.value
+                ?   Center(
               child: CircularProgressIndicator(
                 strokeWidth: 2,
                 color: Colors.blue,
               ),
             )
-                : brandController.brandList.isEmpty
-                ? const Center(child: Text("No brands available"))
+                : brandBasedRepairController.brandList.isEmpty
+                ? Center(child: Text("No models available for $brandName"))
                 : GridView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: brandController.brandList.length,
+              itemCount: brandBasedRepairController.brandList.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.8, // Adjusted to make cells taller
               ),
               itemBuilder: (context, index) {
-                final brand = brandController.brandList[index];
+                final brandBasedModelDetails = brandBasedRepairController.brandList[index];
+
                 return GestureDetector(
                   onTap: () {
-                    Get.to(() => SelectProductScreen3(brandName: brand.brandName ?? ''));
+                    Get.to(() => SelectColorsProductScreen(
+                      brandId: brandBasedModelDetails.brandId.toString(),
+                      modelId: brandBasedModelDetails.productId.toString(),));
                   },
+
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey.shade300, width: 1),
@@ -89,9 +86,8 @@ class AllBrandsScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        brand.brandImage != null && brand.brandImage!.isNotEmpty
-                            ? Image.network(
-                          "$imageAllBaseUrl${brand.brandImage}",
+                        brandBasedModelDetails.image != null && brandBasedModelDetails.image!.isNotEmpty
+                            ? Image.network("$imageAllBaseUrl${brandBasedModelDetails.image}",
                           height: 50,
                           width: 50,
                           fit: BoxFit.cover,
@@ -100,7 +96,7 @@ class AllBrandsScreen extends StatelessWidget {
                             width: 50,
                             child: Icon(
                               Icons.error,
-                              color: Colors.black,
+                              color: Colors.black87,
                               size: 40,
                             ),
                           ),
@@ -116,7 +112,7 @@ class AllBrandsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          brand.brandName ?? 'Unknown Brand',
+                          brandBasedModelDetails.productAndModelName ?? 'Unknown Model',
                           style: const TextStyle(fontSize: 12),
                           textAlign: TextAlign.center,
                           maxLines: 2,

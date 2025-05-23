@@ -108,9 +108,10 @@ Widget buildProductAttributesCard(BuildContext context,
     }) {
   final ControllerProductDetails controllerProduct = Get.find<ControllerProductDetails>();
 
-  final storageCombinations = (product.ramName?.isNotEmpty == true ? 1 : 0) * (product.romName?.isNotEmpty == true ? 1 : 0);
-  final storageMoreCount = storageCombinations > 1 ? storageCombinations - 1 : 0;
-  final colorMoreCount = product.colorName?.isNotEmpty == true ? product.colorName!.length - 1 : 0;
+   final storageCombinations = (product.ramName?.isNotEmpty == true ? 1 : 0) * (product.romName?.isNotEmpty == true ? 1 : 0);
+   final storageMoreCount = storageCombinations > 1 ? storageCombinations - 1 : 0;
+
+  final colorMoreCount = product.colorName?.isNotEmpty == true ? product.colorName!.length - 0 : 0;
 
   return GestureDetector(
     onTap: () {
@@ -149,8 +150,7 @@ Widget buildProductAttributesCard(BuildContext context,
             _buildAttributeRow(
               Icons.phone_android,
               "Condition",
-              selectedCondition ?? "Fair",
-              "+1 more",
+              selectedCondition ?? "Fair", "+1 more",
             ),
             Divider(),
             _buildAttributeRow(

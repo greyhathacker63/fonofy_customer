@@ -17,8 +17,7 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "Hot Deal",
+            Text("Hot Deal",
               style: TextStyle(
                 fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.bold,
@@ -122,7 +121,6 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
                 ),
               );
             }
-
         ),
       ),
     ],

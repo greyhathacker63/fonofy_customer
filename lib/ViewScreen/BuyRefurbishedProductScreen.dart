@@ -1447,8 +1447,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
   List<ProductImageListModel> productImages = [];
 
   ProductRatingModel? ratingData;
-  AddToCartModel? addToaCrtData;
-  GetBuyNowModel? getData;
+
 
   int selectedImageIndex = 0;
   int totalRatings = 0;
@@ -1506,8 +1505,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     }
   }
 
-  final ControllerProductDetailsList controllerProductDetailsList =
-  Get.put(ControllerProductDetailsList());
+  final ControllerProductDetailsList controllerProductDetailsList = Get.put(ControllerProductDetailsList());
 
   @override
   void initState() {
@@ -1649,9 +1647,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       const Icon(Icons.image_not_supported),
                     ),
                   )
-                      : const CircularProgressIndicator(
-                    strokeWidth: 1,
-                    color: Colors.blue,
+                      :   CircularProgressIndicator(strokeWidth: 1,color: Colors.blue,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -1702,8 +1698,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         color: Colors.blue),
                   ),
                 ),
-                Text(
-                  "Display: ${product.display ?? ''}",
+                Text("Display:  ${product.display ?? ''}",
                   style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
