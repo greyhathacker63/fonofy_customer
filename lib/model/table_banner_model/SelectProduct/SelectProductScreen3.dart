@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/SelectProductScreenRepair/selectColorsProductScreen.dart';
- import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen.dart';
+  import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen.dart';
 import 'package:get/get.dart';
 
  import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
-import '../../../controllers/RepairController/RepairBrandBasedModelController.dart';
-import '../../../controllers/SellControllers/SellBrandBasedModelController.dart';
+ import '../../../controllers/SellControllers/SellBrandBasedModelController.dart';
 
 // class SelectProductScreen3 extends StatelessWidget {
 //   final String brandName;
@@ -260,8 +258,7 @@ class SelectProductScreen3 extends StatelessWidget {
           IconButton(
             icon:  Icon(Icons.search),
             onPressed: () {
-              // Implement search functionality if needed
-            },
+             },
           ),
         ],
       ),
@@ -298,7 +295,7 @@ class SelectProductScreen3 extends StatelessWidget {
 
                 return GestureDetector(
                   onTap: () {
-                      Get.to(() => SelectProductScreen());
+                      Get.to(() => SelectProductScreen(modelno: brandBasedModelDetails.productAndModelName ?? ''));
                       },
 
                   child: Container(

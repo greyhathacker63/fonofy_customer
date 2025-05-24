@@ -123,8 +123,7 @@ class ServicePhoneItem extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text('₹$price', style: const TextStyle(fontWeight: FontWeight.bold)),
                         const SizedBox(width: 6),
-                        Text(
-                          ' ₹$mrp',
+                        Text(' ₹$mrp',
                           style:   TextStyle(
                             decoration: TextDecoration.lineThrough,
                             color: Colors.grey,

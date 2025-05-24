@@ -49,6 +49,9 @@ const String repairColorsUrl = "${baseUrl}api/common/model-color-list";
 
 const String repairTableUrl = "${baseUrl}api/common/service-list";
 
+const String variantTableUrl = "${baseUrl}api/common/model-variant";
+const String variantPriceUrl = "${baseUrl}api/common/model-variant-price";
+
 
 
 
