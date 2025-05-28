@@ -9,6 +9,8 @@ import 'package:fonofy/widgets/ReviewDialogWidget.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 
+import '../../utils/Colors.dart';
+
 class OrderDetailsCard extends StatefulWidget {
   final OrderProductModel? product;
   final String status;
@@ -97,20 +99,43 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Cancel Order'),
+          title:   Text('Cancel Order'),
           content: TextField(
             controller: _commentController,
             decoration:
                 const InputDecoration(hintText: 'Enter cancellation reason'),
           ),
           actions: [
-            TextButton(
+            // TextButton(
+            //   onPressed: () => Navigator.pop(context),
+            //   child:   Text('Close'),
+            // ),
+            OutlinedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Close'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.red,
+                side: BorderSide(color: Colors.red),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Close'),
             ),
-            TextButton(
+            // TextButton(
+            //   onPressed: () async {
+            //     Navigator.pop(context);
+            //     await _orderController.cancelOrder(
+            //       widget.orderId,
+            //       _commentController.text.trim(),
+            //       widget.customerId,
+            //     );
+            //   },
+            //   child: const Text('Confirm'),
+            // ),
+            OutlinedButton(
               onPressed: () async {
                 Navigator.pop(context);
                 await _orderController.cancelOrder(
@@ -119,7 +144,17 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                   widget.customerId,
                 );
               },
-              child: const Text('Confirm'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: ColorConstants.appBlueColor3,
+                side:   BorderSide(color: ColorConstants.appBlueColor3),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child:Text('Confirm', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,
+                ),
+              ),
             ),
           ],
         );
@@ -178,34 +213,73 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                 ],
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 25),
 
               // Action Buttons
               Row(
                 children: [
-                  if ([
-                    "pending",
-                    "confirmed",
-                    "dispatched",
-                    "delivered",
-                    "cancelled"
+                  if (["pending", "confirmed", "dispatched", "delivered", "cancelled"
                   ].contains(widget.status.toLowerCase())) ...[
+                    // Expanded(
+                    //   child: OutlinedButton(
+                    //
+                    //     onPressed: handleTrackOrder,
+                    //     child:   Text("Track Order",style: TextStyle(fontSize: 16,color: ColorConstants.appBlueColor3),),
+                    //   ),
+                    // ),
+
                     Expanded(
                       child: OutlinedButton(
                         onPressed: handleTrackOrder,
-                        child: const Text("Track Order"),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: ColorConstants.appBlueColor3, // text color
+                          side: BorderSide(color: ColorConstants.appBlueColor3), // border color
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(
+                          "Track Order",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
+
                   ],
-                  const SizedBox(width: 10),
+                    SizedBox(width: 10),
                   if (["pending", "confirmed"]
                       .contains(widget.status.toLowerCase())) ...[
+                    // Expanded(
+                    //   child: OutlinedButton(
+                    //     onPressed: _showCancelDialog,
+                    //     child: const Text("Cancel Order"),
+                    //   ),
+                    // ),
+
                     Expanded(
                       child: OutlinedButton(
                         onPressed: _showCancelDialog,
-                        child: const Text("Cancel Order"),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: ColorConstants.appBlueColor3, // Text color
+                          side: BorderSide(color: ColorConstants.appBlueColor3), // Border color
+                          padding:   EdgeInsets.symmetric(vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child:   Text("Cancel Order",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
+
                   ],
                   if (["confirmed", "dispatched", "delivered", "cancelled"]
                       .contains(widget.status.toLowerCase())) ...[

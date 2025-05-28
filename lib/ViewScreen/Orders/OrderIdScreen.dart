@@ -38,7 +38,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
         }
 
         final detail = controller.orderDetail.value;

@@ -806,7 +806,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon:   Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text("Select Product", style: TextStyle(color: Colors.black)),
@@ -885,16 +885,16 @@ class _SelectProduct2State extends State<SelectProduct2> {
                 color: Colors.amber.shade100,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: const Text(
+              child:   Text(
                 "The price stated above depends on the condition of the product and is not final. "
                     "The final price offer will be quoted at the end of the diagnosis.",
                 style: TextStyle(fontSize: 12, color: Colors.black54),
               ),
             ),
-            const SizedBox(height: 15),
+              SizedBox(height: 15),
             // New Phone Offer
             Container(
-              padding: const EdgeInsets.all(10),
+              padding:   EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(10),
@@ -902,8 +902,8 @@ class _SelectProduct2State extends State<SelectProduct2> {
               child: Row(
                 children: [
                   Image.asset("assets/images/Iphone2.png", height: 50, width: 50),
-                  const SizedBox(width: 10),
-                  const Expanded(
+                    SizedBox(width: 10),
+                    Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -959,25 +959,36 @@ class _SelectProduct2State extends State<SelectProduct2> {
             ),
             const SizedBox(height: 10),
             // Get Exact Value Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorConstants.appBlueColor3,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-                onPressed: () {
-                  Get.to(() => DeviceDetailsScreen());
-                },
-                child: const Text(
-                  "Get Exact Value",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ),
+
           ],
         ),
-      )),
+      ),
+
+      ),
+      bottomNavigationBar: Padding(
+        padding:   EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+        child: SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              Get.to(() => DeviceDetailsScreen());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorConstants.appBlueColor3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 3,
+            ),
+            child:   Text(
+              "Get Exact Value",
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+      ),
+
     );
   }
 
@@ -1020,34 +1031,5 @@ class _SelectProduct2State extends State<SelectProduct2> {
     );
   }
 
-  Widget buildOfferRow(String imagePath, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        children: [
-          Image.asset(imagePath, height: 30, width: 30),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(fontSize: 14),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget buildFaqItem(String question) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text(question, style: const TextStyle(fontSize: 14)),
-          trailing: const Icon(Icons.keyboard_arrow_down),
-        ),
-        const Divider(),
-      ],
-    );
-  }
-}
+ }

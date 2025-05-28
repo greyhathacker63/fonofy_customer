@@ -222,7 +222,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding:   EdgeInsets.all(16.0),
+        padding:   EdgeInsets.all(12.0),
         child: BookNowButton(onPressed: () {}),
       ),
     );

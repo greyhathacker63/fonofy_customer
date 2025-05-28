@@ -775,9 +775,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
+    return Text(title, style:   TextStyle(
           fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
     );
   }

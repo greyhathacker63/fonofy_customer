@@ -1,244 +1,25 @@
 import 'package:flutter/material.dart';
-  import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen.dart';
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProductScreen.dart';
 import 'package:get/get.dart';
-
- import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
-
- import '../../../controllers/SellControllers/SellBrandBasedModelController.dart';
+import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import '../../../controllers/SellControllers/SellBrandBasedModelController.dart';
 import '../../../utils/Colors.dart';
-
-// class SelectProductScreen3 extends StatelessWidget {
-//   final String brandName;
-//
-//
-//   SelectProductScreen3({super.key, required this.brandName});
-//
-//   final BrandBasedModelController modelController = Get.put(BrandBasedModelController());
-//
-//   final String placeholderImage = "assets/images/phone.png";
-//   @override
-//   Widget build(BuildContext context) {
-//     modelController.getBrandModelsData(brandName);
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Select $brandName Model"),
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back),
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//         ),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.search),
-//             onPressed: () {
-//               // Implement search functionality if needed
-//             },
-//           ),
-//         ],
-//       ),
-//       body: Obx(() => Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Card(
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(8),
-//             side: BorderSide(color: Colors.grey.shade300, width: 1),
-//           ),
-//           elevation: 3,
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: modelController.isBrandModelLoading.value
-//                 ? const Center(
-//               child: CircularProgressIndicator(
-//                 strokeWidth: 2,
-//                 color: Colors.blue,
-//               ),
-//             )
-//                 : modelController.brandList.isEmpty
-//                 ? Center(child: Text("No models available for $brandName"))
-//                 : GridView.builder(
-//               itemCount: modelController.brandList.length,
-//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 3,
-//                 crossAxisSpacing: 8,
-//                 mainAxisSpacing: 8,
-//                 childAspectRatio: 1.0,
-//               ),
-//               itemBuilder: (context, index) {
-//                 final model = modelController.brandList[index];
-//                 return GestureDetector(
-//                   onTap: () {
-//                     // Get.to(() => SelectProductScreen());
-//                   },
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       border: Border.all(color: Colors.grey.shade300, width: 1),
-//                       borderRadius: BorderRadius.circular(8),
-//                     ),
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//
-//                       children: [
-//                         model.image != null && model.image!.isNotEmpty
-//                             ? Image.network(
-//                           "$imageAllBaseUrl${model.image}",
-//                           height: 50,
-//                           width: 50,
-//                           fit: BoxFit.cover,
-//                           errorBuilder: (context, error, stackTrace) =>
-//                               Image.asset(
-//                                 placeholderImage,
-//                                 height: 50,
-//                                 width: 50,
-//                                 fit: BoxFit.cover,
-//                               ),
-//                         )
-//                             : Image.asset(
-//                           placeholderImage,
-//                           height: 50,
-//                           width: 50,
-//                           fit: BoxFit.cover,
-//                         ),
-//                         const SizedBox(height: 5),
-//                         Text(
-//                           model.productAndModelName ?? 'Unknown Model',
-//                           style: const TextStyle(fontSize: 14),
-//                           textAlign: TextAlign.center,
-//                           maxLines: 2,
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//         ),
-//       )),
-//     );
-//   }
-// }
-
-
-// class SelectProductScreen3 extends StatelessWidget {
-//   final String brandName;
-//   final String placeholderImage = "assets/images/phone.png";
-//
-//   SelectProductScreen3({super.key, required this.brandName});
-//
-//   final BrandBasedModelController brandBasedRepairController = Get.put(BrandBasedModelController());
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     brandBasedRepairController.getBrandModelsData(brandName);
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Select $brandName Model"),
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back),
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//         ),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.search),
-//             onPressed: () {
-//               // Implement search functionality if needed
-//             },
-//           ),
-//         ],
-//       ),
-//       body: Obx(() => Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Card(
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(8),
-//             side: BorderSide(color: Colors.grey.shade300, width: 1),
-//           ),
-//           elevation: 3,
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: brandBasedRepairController.isRepairBrandModelLoading.value
-//                 ? const Center(
-//               child: CircularProgressIndicator(
-//                 strokeWidth: 2,
-//                 color: Colors.blue,
-//               ),
-//             )
-//                 : brandBasedRepairController.brandList.isEmpty
-//                 ? Center(child: Text("No models available for $brandName"))
-//                 : GridView.builder(
-//               itemCount: brandBasedRepairController.brandList.length,
-//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 3,
-//                 crossAxisSpacing: 8,
-//                 mainAxisSpacing: 8,
-//                 childAspectRatio: 1.0,
-//               ),
-//               itemBuilder: (context, index) {
-//                 final brandBasedModelDetails = brandBasedRepairController.brandList[index];
-//                 return GestureDetector(
-//                   onTap: () {
-//                     Get.to(() => SelectProductScreen());
-//                   },
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       border: Border.all(color: Colors.grey.shade300, width: 1),
-//                       borderRadius: BorderRadius.circular(8),
-//                     ),
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: [
-//                         brandBasedModelDetails.image != null && brandBasedModelDetails.image!.isNotEmpty
-//                             ? Image.network(
-//                           "$imageAllBaseUrl${brandBasedModelDetails.image}",
-//                           height: 50,
-//                           width: 50,
-//                           fit: BoxFit.cover,
-//                           errorBuilder: (context, error, stackTrace) =>
-//                               Image.asset(
-//                                 placeholderImage,
-//                                 height: 50,
-//                                 width: 50,
-//                                 fit: BoxFit.cover,
-//                               ),
-//                         )
-//                             : Image.asset(
-//                           placeholderImage,
-//                           height: 50,
-//                           width: 50,
-//                           fit: BoxFit.cover,
-//                         ),
-//                         const SizedBox(height: 5),
-//                         Text(
-//                           brandBasedModelDetails.productAndModelName ?? 'Unknown Model',
-//                           style: const TextStyle(fontSize: 14),
-//                           textAlign: TextAlign.center,
-//                           maxLines: 2,
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//         ),
-//       )),
-//     );
-//   }
-// }
-
 
 class SelectProductScreen3 extends StatelessWidget {
   final String brandName;
 
   SelectProductScreen3({super.key, required this.brandName});
+
+  final List<String> seriesList = [
+    'V Series',
+    'X Series',
+    'Y Series',
+    'Nex Series',
+    'Z Series',
+    'S Series',
+    'U Series',
+    'T Series',
+  ];
 
   final SellBrandBasedModelController sellBrandBasedModelController = Get.put(SellBrandBasedModelController());
 
@@ -247,8 +28,10 @@ class SelectProductScreen3 extends StatelessWidget {
     sellBrandBasedModelController.getSellBrandModelsData(brandName);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Select $brandName Model"),
+        backgroundColor: Colors.white,
+        title: Text("Select $brandName Model", style: const TextStyle(fontSize: 18)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -257,97 +40,138 @@ class SelectProductScreen3 extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon:  Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
-             },
+              // Implement search functionality here if needed
+            },
           ),
         ],
       ),
-      body: Obx(() => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Colors.grey.shade300, width: 1),
-          ),
-          elevation: 3,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: sellBrandBasedModelController.isSellBrandModelLoading.value
-                ?   Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Colors.blue,
-              ),
-            )
-                : sellBrandBasedModelController.brandList.isEmpty
-                ? Center(child: Text("No models available for $brandName"))
-                : GridView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: sellBrandBasedModelController.brandList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 0.8, // Adjusted to make cells taller
-              ),
-              itemBuilder: (context, index) {
-                final brandBasedModelDetails = sellBrandBasedModelController.brandList[index];
-
-                return GestureDetector(
-                  onTap: () {
-                      Get.to(() => SelectProductScreen(modelno: brandBasedModelDetails.productAndModelName ?? ''));
-                      },
-
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300, width: 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        brandBasedModelDetails.image != null && brandBasedModelDetails.image!.isNotEmpty
-                            ? Image.network("$imageAllBaseUrl${brandBasedModelDetails.image}",
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: Icon(
-                              Icons.image,
-                              color: ColorConstants.appBlueColor3,
-                              size: 40,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:   EdgeInsets.all(8.0),
+          child: Card(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(color: Colors.grey.shade300, width: 1),
+            ),
+            elevation: 3,
+            child: Padding(
+              padding:   EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding:   EdgeInsets.only(right: 180),
+                    child: Text("Select Series",style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
+                  ),
+                  SizedBox(height: 30,),
+                  SizedBox(
+                    width: double.infinity,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: seriesList.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 2.0,
+                      ),
+                      itemBuilder: (context, index) {
+                        final item = seriesList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // Optionally handle tap if you want filtering in future
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              border: Border.all(color: Colors.grey.shade300, width: 1),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(item,
+                              style:  TextStyle(fontSize: 13),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                        )
-                            : SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: Icon(
-                            Icons.image,
-                            color: ColorConstants.appBlueColor3,
-                            size: 40,
-                          ),
-                        ),
-                        const SizedBox(height: 4), // Reduced spacing
-                        Text(
-                          brandBasedModelDetails.productAndModelName ?? 'Unknown Model',
-                          style: const TextStyle(fontSize: 12), // Reduced font size
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ),
-                );
-              },
+                  const SizedBox(height: 50),
+
+                  // Models GridView
+                  Obx(() => sellBrandBasedModelController.isSellBrandModelLoading.value
+                      ?   Center(child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.blue,
+                    ),
+                  )
+                      : sellBrandBasedModelController.brandList.isEmpty
+                      ? Center(child: Text("No models available for $brandName"))
+                      : GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: sellBrandBasedModelController.brandList.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemBuilder: (context, index) {
+                      final model = sellBrandBasedModelController.brandList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => SelectProductScreen(modelno: model.productAndModelName ?? ''));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              model.image != null && model.image!.isNotEmpty
+                                  ? Image.network(
+                                "$imageAllBaseUrl${model.image}",
+                                height: 50,
+                                width: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => Icon(
+                                  Icons.image,
+                                  size: 40,
+                                  color: ColorConstants.appBlueColor3,
+                                ),
+                              )
+                                  : Icon(
+                                Icons.image,
+                                size: 40,
+                                color: ColorConstants.appBlueColor3,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                model.productAndModelName ?? ' ',
+                                style: const TextStyle(fontSize: 11),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  )),
+                ],
+              ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

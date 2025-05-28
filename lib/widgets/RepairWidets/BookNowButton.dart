@@ -20,18 +20,26 @@ class BookNowButton extends StatelessWidget {
     final bool isEnabled = onPressed != null;
 
     return SizedBox(
-      width: 330,
+      width: double.infinity,
       height: 50,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-
-          backgroundColor: ColorConstants.appBlueColor3,
-          padding:   EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: isEnabled
+              ? ColorConstants.appBlueColor3
+              : Colors.grey.shade400,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: isEnabled ? 3 : 0,
+          padding:   EdgeInsets.symmetric(vertical: 13),
         ),
-        child: Text(
-          "Book Now",
-          style: TextStyle(color: isEnabled ? Colors.white : Colors.grey),
+        child: Text("Book Now",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

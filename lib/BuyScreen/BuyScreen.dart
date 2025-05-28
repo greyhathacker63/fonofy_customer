@@ -228,9 +228,7 @@ class _BuyScreenState extends State<BuyScreen> {
                 byBrands(
                     buyTableBrands: tableController.tableOptionsData?.table3),
 
-                dealOfTheDay(
-                    DealOfTheDayTable:
-                        tableController.tableOptionsData?.table4),
+                dealOfTheDay(DealOfTheDayTable: tableController.tableOptionsData?.table4),
 
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -273,8 +271,7 @@ class _BuyScreenState extends State<BuyScreen> {
                   ),
                 ),
 
-                shopByRAM(
-                    tableRamName: tableController.tableOptionsData?.table5),
+                shopByRAM(tableRamName: tableController.tableOptionsData?.table5),
 
                 SizedBox(height: 5),
 
@@ -286,12 +283,12 @@ class _BuyScreenState extends State<BuyScreen> {
                   ],
                 ),
 
-                networkType(
-                  networks: [
-                    {"imagePath": "assets/images/4g.png"},
-                    {"imagePath": "assets/images/5g.png"},
-                  ],
-                ),
+                networkType(networksData: tableController.tableOptionsData?.table8),
+                  // networks: [
+                  //   {"imagePath": "assets/images/4g.png"},
+                  //   {"imagePath": "assets/images/5g.png"},
+                  // ],
+
 
                 shopByPrice(
                     shopTablePrices: tableController.tableOptionsData?.table6),

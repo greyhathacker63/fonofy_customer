@@ -57,8 +57,8 @@ Widget sellForCash(List<BrandListModel>? brandListData) {
                         Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
-                          return const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2));
+                          return   Center(
+                              child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
                         },
                       ),
                     ),

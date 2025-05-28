@@ -6,17 +6,18 @@ import 'package:get/get.dart';
 import 'package:fonofy/widgets/Order_Widgets/OrderItemCard.dart';
 
 class MyOrdersScreen extends StatelessWidget {
+
   final OrderListController orderController = Get.put(OrderListController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Orders'),
+        title:   Text('My Orders'),
       ),
       body: Obx(() {
         if (orderController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return   Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
         }
 
         if (orderController.orders.isEmpty) {

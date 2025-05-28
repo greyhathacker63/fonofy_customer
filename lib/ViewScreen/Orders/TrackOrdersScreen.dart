@@ -138,7 +138,7 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
         ),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
           : errorMessage.isNotEmpty
               ? Center(child: Text("Error: $errorMessage"))
               : Padding(
@@ -148,12 +148,15 @@ class _TrackOrdersScreenState extends State<TrackOrdersScreen> {
                     children: [
                       Text("Order ID: ${widget.orderId}",
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      Text("Customer Name: ${widget.customerName}"),
-                      Text("Shipping Address: ${widget.address}"),
-                      Text("Order Date: ${widget.orderDate}"),
-                      Text("Status: $currentStatus"),
+                              fontSize: 17, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 15),
+                      Text("Customer Name:- ${widget.customerName}",style: TextStyle(fontSize: 16,color: Colors.black),),
+                      SizedBox(height: 5,),
+                      Text("Shipping Address:- ${widget.address}",style: TextStyle(fontSize: 16,color: Colors.black),),
+                      SizedBox(height: 8,),
+                      Text("Order Date:- ${widget.orderDate}",style: TextStyle(fontSize: 16,color: Colors.black,)),
+                      SizedBox(height: 10,),
+                      Text("Status: $currentStatus",style: TextStyle(fontSize: 17,color: Colors.black)),
                       const SizedBox(height: 30),
 
                       /// Vertical Timeline

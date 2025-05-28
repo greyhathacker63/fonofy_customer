@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../Api_Service/ProductDetailsService/SearchProductService.dart';
+import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../controllers/SearchController/SearchCompareController.dart';
-import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
 
 class CompareScreen extends StatefulWidget {
   final List<SearchCompareProductModel> selectedProducts;
@@ -90,8 +90,24 @@ class _CompareScreenState extends State<CompareScreen> {
         return product.url != null && product.url!.isNotEmpty ? "Yes" : "No";
       case 'stock':
         return product.amount != null && product.amount! > 0 ? "In Stock" : "Out of Stock";
+      case 'ram':
+        return  'N/A';
+      case 'rom':
+        return   'N/A';
+      case 'display':
+        return  'N/A';
+      case 'battery':
+        return  'N/A';
+      case 'frontCamera':
+        return   'N/A';
+      case 'rearCamera':
+        return   'N/A';
+      case 'processor':
+        return  'N/A';
+      case 'rating':
+        return   'N/A';
       default:
-        return "N/A";
+        return 'N/A';
     }
   }
 
@@ -174,7 +190,7 @@ class _CompareScreenState extends State<CompareScreen> {
                               width: 55,
                               fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.error),
+                                  Icon(Icons.image, color: Colors.blue),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -184,13 +200,13 @@ class _CompareScreenState extends State<CompareScreen> {
                                   Text(
                                     searchData.name ?? '',
                                     style: const TextStyle(
-                                        fontSize: 12, fontWeight: FontWeight.w500),
+                                        fontSize: 16, fontWeight: FontWeight.w500),
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(height: 4),
+                                    SizedBox(height: 4),
                                   Text(
                                     "₹${searchData.amount?.toString() ?? 'N/A'}",
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black),
