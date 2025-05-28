@@ -238,13 +238,13 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                     if (selectedVariant != null) {
                       final table1 = sellVariantController.tableVariantData?.table;
                       final modelName = table1 != null && table1.isNotEmpty
-                          ? (table1.first.modelName?.isNotEmpty == true
-                          ? table1.first.modelName!
+                          ? (table1.first.modelNo.isNotEmpty == true
+                          ? table1.first.modelNo
                           : widget.modelno)
                           : widget.modelno;
-                      final image = table1 != null && table1.isNotEmpty && table1.first.image != null
-                          ? table1.first.image!
-                          : null;
+                      // final image = table1 != null && table1.isNotEmpty && table1.first.image != null
+                      //     ? table1.first.image!
+                      //     : null;
 
                       final variantParts = selectedVariant!.split(' / ');
                       final ram = variantParts.isNotEmpty ? variantParts[0].trim() : ' ';

@@ -470,6 +470,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../AccountApiService/DeleteAccountService.dart';
+import '../utils/Colors.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -565,7 +566,7 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: ColorConstants.appBlueColor3,
                 ),
                 onPressed: () async {
                   try {
@@ -676,8 +677,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   _navigateToManageAddress();
                 } else if (item == "Profile Account") {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
+                      context, MaterialPageRoute(
                           builder: (context) => AccountDetailsScreen()));
                 } else if (item == "Delete My Account") {
                   _showDeleteDialog();
@@ -698,13 +698,13 @@ class _AccountScreenState extends State<AccountScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ChangePasswordScreen()));
+                      builder: (context) =>   ChangePasswordScreen()));
             }),
             const SizedBox(height: 50),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: ColorConstants.appBlueColor3,
                   padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8),
                 ),
                 onPressed: () {
@@ -714,7 +714,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     builder: (BuildContext alertContext) {
                       return AlertDialog(
                         backgroundColor: Colors.white,
-                        title: const Text(
+                        title:   Text(
                           "Logout?",
                           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
@@ -731,7 +731,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: ColorConstants.appBlueColor3,
                             ),
                             onPressed: () {
                               Navigator.of(alertContext).pop();

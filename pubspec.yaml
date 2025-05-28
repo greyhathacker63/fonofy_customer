@@ -48,6 +48,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   uuid: any
   otp_autofill: any
+  razorpay_flutter: any
+  fluttertoast: any
 
 
 dev_dependencies:

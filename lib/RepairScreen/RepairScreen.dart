@@ -22,6 +22,7 @@ class RepairScreen extends StatefulWidget {
 class _RepairScreenState extends State<RepairScreen> {
 
   final RepairBrandListController repairBrandListController = Get.put(RepairBrandListController());
+
  final RepairTestimonialController repairTestimonialController = Get.put(RepairTestimonialController());
 
 
@@ -128,7 +129,7 @@ class _RepairScreenState extends State<RepairScreen> {
                   GridView.count(
                     crossAxisCount: 2,
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics:   NeverScrollableScrollPhysics(),
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
                     children: [
@@ -219,7 +220,6 @@ class _RepairScreenState extends State<RepairScreen> {
                   //   }).toList(),
                   // ),
 
-
                   const SizedBox(height: 15),
                   SizedBox(
                     height: 250,
@@ -264,7 +264,7 @@ class _RepairScreenState extends State<RepairScreen> {
                           return testimonialCard(
                             name: testimonial.name ?? '',
                             image: testimonial.image ?? '',
-                            text: testimonial.description ?? 'No description',
+                            text: testimonial.description ?? '',
                           );
                         },
                       );

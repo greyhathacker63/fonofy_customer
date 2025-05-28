@@ -1,4 +1,6 @@
+
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
@@ -14,7 +16,6 @@ import '../MainScreen.dart';
 import '../SharedPreferences/SharedPreferences_email.dart';
 import '../ViewModel/MobileOtpSend.dart';
 import '../model/RegisterModel/register_model.dart';
-import 'otp_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String mobile;
@@ -33,8 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   final LoginService _loginService = LoginService();
-
-
 
   bool isLoading = false;
   bool isVerified = false;
@@ -56,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               SizedBox(
                 height: 90,
                 child: Image.asset('assets/images/Logo.png', fit: BoxFit.contain),
@@ -120,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   onPressed: isLoading ? null : _registerUser,
                   child: isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? const CircularProgressIndicator(color: Colors.blue,strokeWidth: 2,)
                       : const Text("SUBMIT",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
@@ -156,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "PhoneNumber": phoneNumber,
         "Email": email,
         "Password": password,
-        "PlatformType": '',
+        "PlatformType": ''
       });
 
       try {
@@ -169,7 +169,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (isActive) {
             await TokenHelper.saveUserCode(userCode);
           }
-           await SharedpreferencesEmail().saveUserCredentials(email, password);
           await Future.delayed(const Duration(seconds: 1));
           Get.offAll(() => const EmailLoginScreen());
         } else {

@@ -88,6 +88,7 @@ class GetBuyNowModel {
     totalDiscount: json["TotalDiscount"],
   );
 
+
   Map<String, dynamic> toJson() => {
     "CartId": cartId,
     "ProductName": productName,

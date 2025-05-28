@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
 import '../controllers/SellControllers/BrandListControllers.dart';
+import '../utils/Colors.dart';
 // class AllBrandsScreen extends StatelessWidget {
 //
 //   AllBrandsScreen({super.key,});
@@ -138,6 +139,7 @@ import '../controllers/SellControllers/BrandListControllers.dart';
  // Adjust path
 
 class AllBrandsScreen extends StatelessWidget {
+
   final BrandListController brandController = Get.put(BrandListController());
 
   AllBrandsScreen({super.key});
@@ -182,7 +184,7 @@ class AllBrandsScreen extends StatelessWidget {
                 : GridView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: brandController.brandList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:   SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
@@ -208,22 +210,22 @@ class AllBrandsScreen extends StatelessWidget {
                           height: 50,
                           width: 50,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => const SizedBox(
+                          errorBuilder: (context, error, stackTrace) => SizedBox(
                             height: 50,
                             width: 50,
                             child: Icon(
-                              Icons.error,
-                              color: Colors.black,
+                              Icons.image,
+                              color: ColorConstants.appBlueColor3,
                               size: 40,
                             ),
                           ),
                         )
-                            : const SizedBox(
+                            : SizedBox(
                           height: 50,
                           width: 50,
                           child: Icon(
-                            Icons.error,
-                            color: Colors.black,
+                            Icons.image,
+                            color: ColorConstants.appBlueColor3,
                             size: 40,
                           ),
                         ),

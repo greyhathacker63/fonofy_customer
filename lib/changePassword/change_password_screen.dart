@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/MainScreen.dart';
 import '../Api_Service/ChangePasswordService/ChangePasswordService.dart';
 import '../TokenHelper/TokenHelper.dart';
+import '../utils/Colors.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -32,7 +33,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       );
       return;
     }
-
     if (newPassword != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("New passwords do not match")),
@@ -51,19 +51,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     }
 
     setState(() => _isLoading = true);
-
-    final success = await ChangePasswordService.changePassword(userCode,token);
+    final success = await ChangePasswordService.changePassword(
+      customerId: userCode,
+      newPassword: newPassword, token: token,
+    );
     setState(() => _isLoading = false);
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-
-        const SnackBar(content: Text("Password changed successfully"),backgroundColor: Colors.green,),
+        const SnackBar(content: Text("Password changed successfully"), backgroundColor: Colors.green),
       );
       await Future.delayed(const Duration(seconds: 1));
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainScreen()),);
+      Navigator.pop(context);
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()),);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Failed to change password"),backgroundColor: Colors.red,),
+        const SnackBar(content: Text("Failed to change password"), backgroundColor: Colors.red),
       );
     }
   }
@@ -118,12 +120,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _handleChangePassword,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: ColorConstants.appBlueColor3,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                     child: _isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Change Password", style: TextStyle(color: Colors.white)),
+                        ? const CircularProgressIndicator(color: Colors.blue,strokeWidth: 2,)
+                        : const Text("Change Password", style: TextStyle(color: Colors.white,fontSize: 16)),
                   ),
                 ),
               ],

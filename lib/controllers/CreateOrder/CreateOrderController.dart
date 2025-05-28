@@ -7,11 +7,14 @@ import 'package:fonofy/controllers/api_controller.dart';
 import 'package:fonofy/model/CreateOrderModel/OrderDetailsForPayModel.dart';
 import 'package:fonofy/model/CreateOrderModel/OrderPaymentModel.dart';
 import 'package:get/get.dart';
- import '../../model/CreateOrderModel/CreateOrderModel.dart';
+ import '../../Cart_Screens/PaymentScreen.dart';
+import '../../model/CreateOrderModel/CreateOrderModel.dart';
 
 class CreateOrderController extends GetxController {
 
   RxBool isLoading = false.obs;
+
+
 
   Future<void> placeOrder({
     required String customerId,
@@ -33,6 +36,7 @@ class CreateOrderController extends GetxController {
     required dynamic couponId,
     required double couponAmount,
     required List<OrderProductList> productList,
+    required String selectedPaymentMethod,
   }) async {
     isLoading.value = true;
     try {
@@ -77,8 +81,12 @@ class CreateOrderController extends GetxController {
           var paymentData = OrderPaymentModel(paymentId: orderDetails.paymentId??"", customerId: orderDetails.customerId??"", orderType: orderDetails.orderType??"", orderId: orderDetails.orderId??"", paymentAmount: orderDetails.totalAmount??"");
           var paymentResponse = await ApiController.post(url: orderPaymentUrl, body: paymentData.toJson());
           isLoading.value = false;
-          if(paymentResponse.statusCode == 200){
+          if(selectedPaymentMethod=="Cash on Delivery"&&paymentResponse.statusCode == 200){
             Get.off(OrderThankYouScreen(orderId: orderDetails.orderId ?? '',));
+          }
+          else if(paymentResponse.statusCode == 200){
+            // Get.off(OrderThankYouScreen(orderId: orderDetails.orderId ?? '',));
+            Get.off(RazorpayScreen(orderId: orderDetails.orderId ?? '', totalAmount: orderDetails.totalAmount, name: orderDetails.shippingName ?? '', phone: orderDetails.shippingMobileNo ?? '',));
           }
         }
       }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../controllers/ControllerProductDetails/DeliveryPinCodeController.dart';
+import '../../utils/Colors.dart';
 
 Widget buildPincodeSection() {
 
@@ -57,7 +58,7 @@ Widget buildPincodeSection() {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    backgroundColor: Colors.blue, // You can change color if needed
+                    backgroundColor: ColorConstants.appBlueColor3, // You can change color if needed
                   ),
                   child: const Text("Check",style: TextStyle(color: Colors.white, fontSize: 15),
                   ),

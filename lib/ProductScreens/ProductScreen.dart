@@ -104,7 +104,7 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Obx(() {
         if (productController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
         }
 
         if (productController.productsList.isEmpty) {
@@ -135,7 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     OutlinedButton.icon(
                       onPressed: () async {
                         final selectedFilters =
-                            await Get.to(() => FilterScreen());
+                        await Get.to(() => FilterScreen());
                         if (selectedFilters != null &&
                             selectedFilters is Map<String, dynamic>) {
                           productController.fetchProducts(
@@ -162,7 +162,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         }
                       },
                       icon:
-                          const Icon(Icons.compare_arrows, color: Colors.black),
+                      const Icon(Icons.compare_arrows, color: Colors.black),
                       label: const Text("Compare",
                           style: TextStyle(color: Colors.black)),
                     ),
@@ -192,9 +192,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
                       if (refNo.isNotEmpty && url.isNotEmpty) {
                         Get.to(() => BuyRefurbishedProductScreen(
-                              refNo: refNo,
-                              url: url,
-                            ));
+                          refNo: refNo,
+                          url: url,
+                        ));
                       } else {
                         Get.snackbar("Invalid Product",
                             "Missing reference number or URL");
@@ -216,22 +216,22 @@ class _ProductScreenState extends State<ProductScreen> {
                               height: 140,
                               child: (product.image ?? '').startsWith('assets/')
                                   ? Image.asset(product.image!,
-                                      fit: BoxFit.contain)
+                                  fit: BoxFit.contain)
                                   : Image.network(
-                                      '$imageAllBaseUrl${product.image ?? ""}',
-                                      fit: BoxFit.contain,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              const Icon(Icons.error),
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
-                                          return child;
-                                        return const Center(
-                                            child: CircularProgressIndicator(
-                                                strokeWidth: 2));
-                                      },
-                                    ),
+                                '$imageAllBaseUrl${product.image ?? ""}',
+                                fit: BoxFit.contain,
+                                errorBuilder:
+                                    (context, error, stackTrace) =>
+                                const Icon(Icons.error),
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null)
+                                    return child;
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2));
+                                },
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -255,7 +255,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     style: const TextStyle(
                                         fontSize: 15, color: Colors.green),
                                   ),
-                                  const SizedBox(height: 5),
+                                  SizedBox(height: 5),
                                   Text(
                                     '${product.discountPercentage ?? 0} % Discount',
                                     style: const TextStyle(
@@ -276,7 +276,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   const SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       IconButton(
                                         icon: Icon(
@@ -289,13 +289,13 @@ class _ProductScreenState extends State<ProductScreen> {
                                         ),
                                         onPressed: () async {
                                           final userCode =
-                                              await TokenHelper.getUserCode();
+                                          await TokenHelper.getUserCode();
                                           if (userCode == null ||
                                               userCode.isEmpty) {
                                             Get.snackbar("Login Required",
                                                 "Please login to wishlist a product",
                                                 snackPosition:
-                                                    SnackPosition.BOTTOM);
+                                                SnackPosition.BOTTOM);
                                             Get.to(() => LoginScreen());
                                             return;
                                           }
@@ -307,11 +307,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                             wishlistController
                                                 .removeFromWishlist(
                                               wishlistId:
-                                                  product.wishlistId.toString(),
+                                              product.wishlistId.toString(),
                                               modelId:
-                                                  product.modelNo.toString(),
+                                              product.modelNo.toString(),
                                               colorId:
-                                                  product.colorId.toString(),
+                                              product.colorId.toString(),
                                               ramId: product.ramId.toString(),
                                               romId: product.romId.toString(),
                                             );
@@ -319,19 +319,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                             wishlistController
                                                 .addProductToWishlist(
                                               productId:
-                                                  product.modelNo.toString(),
+                                              product.modelNo.toString(),
                                               colorId:
-                                                  product.colorId.toString(),
+                                              product.colorId.toString(),
                                               ramId: product.ramId.toString(),
                                               romId: product.romId.toString(),
                                             );
                                           }
 
                                           setState(() {
-                                            productController
-                                                    .productsList[index]
-                                                    .wishlistCount =
-                                                isWishlisted ? 0 : 1;
+                                            productController.productsList[index].wishlistCount = isWishlisted ? 0 : 1;
                                           });
                                         },
                                       ),
@@ -340,19 +337,19 @@ class _ProductScreenState extends State<ProductScreen> {
                                           Get.snackbar("Added to Cart",
                                               "${product.productAndModelName} added successfully!",
                                               snackPosition:
-                                                  SnackPosition.BOTTOM);
+                                              SnackPosition.BOTTOM);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
-                                              ColorConstants.appBlueColor3,
+                                          ColorConstants.appBlueColor3,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(8),
+                                            BorderRadius.circular(8),
                                           ),
                                         ),
                                         child: const Text("Add to Cart",
                                             style:
-                                                TextStyle(color: Colors.white)),
+                                            TextStyle(color: Colors.white)),
                                       ),
                                     ],
                                   ),

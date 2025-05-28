@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
+import '../utils/Colors.dart';
 
 Widget shopByRAM({List<Table5>? tableRamName}) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding:   EdgeInsets.all(8.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,7 +50,7 @@ Widget shopByRAM({List<Table5>? tableRamName}) {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade900,
+                              color:  Colors.blue,
                           ),
                         ),
                         const Text(
@@ -65,7 +66,7 @@ Widget shopByRAM({List<Table5>? tableRamName}) {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 18, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.blue.shade700,
+                            color:  ColorConstants.appBlueColor3,
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Text(

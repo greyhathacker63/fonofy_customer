@@ -5,6 +5,7 @@ import 'package:get/get.dart';
  import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
  import '../../../controllers/SellControllers/SellBrandBasedModelController.dart';
+import '../../../utils/Colors.dart';
 
 // class SelectProductScreen3 extends StatelessWidget {
 //   final String brandName;
@@ -315,8 +316,8 @@ class SelectProductScreen3 extends StatelessWidget {
                             height: 50,
                             width: 50,
                             child: Icon(
-                              Icons.error,
-                              color: Colors.black87,
+                              Icons.image,
+                              color: ColorConstants.appBlueColor3,
                               size: 40,
                             ),
                           ),
@@ -325,8 +326,8 @@ class SelectProductScreen3 extends StatelessWidget {
                           height: 50,
                           width: 50,
                           child: Icon(
-                            Icons.error,
-                            color: Colors.black,
+                            Icons.image,
+                            color: ColorConstants.appBlueColor3,
                             size: 40,
                           ),
                         ),

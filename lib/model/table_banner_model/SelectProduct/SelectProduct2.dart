@@ -773,11 +773,6 @@ import '../../../widgets/SellWidgets/buildOfferRow.dart';
 
 
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-
-
 class SelectProduct2 extends StatefulWidget {
   final String selectedVariant;
   final String modelNo;
@@ -798,17 +793,12 @@ class SelectProduct2 extends StatefulWidget {
 }
 
 class _SelectProduct2State extends State<SelectProduct2> {
-  static const String imageAllBaseUrl = 'https://api.fonofy.in';
-  late SellVariantControllerPrice sellVariantPriceController;
+   final SellVariantControllerPrice sellVariantPriceController = Get.put(SellVariantControllerPrice());
 
   @override
   void initState() {
     super.initState();
-    sellVariantPriceController = Get.put(SellVariantControllerPrice());
-    // Use async to avoid blocking main thread
-    Future.microtask(() {
-      sellVariantPriceController.getPriceVariantData(widget.modelNo, widget.ram, widget.rom);
-    });
+    sellVariantPriceController.getPriceVariantData(widget.modelNo, widget.ram, widget.rom);
   }
 
   @override
@@ -824,7 +814,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
         elevation: 0,
       ),
       body: Obx(() => sellVariantPriceController.isVariantPriceLoading.value
-          ?   Center(child: CircularProgressIndicator())
+          ?   Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
           : sellVariantPriceController.priceVariantData == null
           ?   Center(child: Text("No price data available. Please try again or contact support."))
           : SingleChildScrollView(
@@ -849,52 +839,48 @@ class _SelectProduct2State extends State<SelectProduct2> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${sellVariantPriceController.priceVariantData?.modelName ?? widget.modelNo}\n"
-                              "(${sellVariantPriceController.priceVariantData?.ramName ?? widget.ram} / "
-                              "${sellVariantPriceController.priceVariantData?.romName ?? widget.rom})",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.blue,
+                          "${sellVariantPriceController.priceVariantData?.modelName.toString()}\n"
+                              "(${sellVariantPriceController.priceVariantData?.ramName.toString()} / "
+                              "${sellVariantPriceController.priceVariantData?.romName.toString()})",
+
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: ColorConstants.appBlueColor3,
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        const Text("Get Upto", style: TextStyle(color: Colors.black54)),
+                          SizedBox(height: 5),
+                          Text("Get Up to", style: TextStyle(color: Colors.black54)),
                         Row(
                           children: [
                             const SizedBox(width: 8),
                             Text(
-                              "₹${sellVariantPriceController.priceVariantData?.maxPrice?.toStringAsFixed(0) ?? '2899'}",
+                              "₹ ${sellVariantPriceController.priceVariantData?.basePrice.toStringAsFixed(0) ?? 0}",
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.red,
+                                color: Colors.black,
                               ),
                             ),
-                            Text(
-                              sellVariantPriceController.priceVariantData?.basePrice != null
-                                  ? " ₹${sellVariantPriceController.priceVariantData!.basePrice!.toStringAsFixed(0)}"
-                                  : " ₹3130",
-                              style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
+                            // Text(
+                            //   sellVariantPriceController.priceVariantData?.basePrice != null
+                            //       ? " ₹${sellVariantPriceController.priceVariantData!.basePrice.toStringAsFixed(0)}" : " ₹3130",
+                            //   style: const TextStyle(
+                            //     fontSize: 17,
+                            //     color: Colors.grey,
+                            //     decoration: TextDecoration.lineThrough,
+                            //   ),
+                            // ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-
+                          SizedBox(height: 5),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
-            // Price Disclaimer
+              SizedBox(height: 10),
+
             Container(
-              padding: const EdgeInsets.all(10),
+              padding:   EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.amber.shade100,
                 borderRadius: BorderRadius.circular(5),
@@ -1004,8 +990,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
         : null;
     debugPrint('SelectProduct2 Image URL: $imageUrl');
 
-    return imageUrl != null
-        ? Image.network(imageUrl,
+    return imageUrl != null ? Image.network(imageUrl,
       height: 80,
       width: 80,
       fit: BoxFit.cover,

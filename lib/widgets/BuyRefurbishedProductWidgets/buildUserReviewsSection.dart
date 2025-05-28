@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../model/ProductDetailsModel/ProductDetailsModel.dart';
 import '../../model/ProductDetailsModel/ProductRatingModel.dart';
 import '../../model/ProductDetailsModel/ProductReviewModel.dart';
+import '../../utils/Colors.dart';
 
 Widget buildUserReviewsSection(ProductDetailsModel product, List<ProductReviewModel> reviews) {
   final ratingData = ProductRatingModel();
@@ -25,7 +26,7 @@ Widget buildUserReviewsSection(ProductDetailsModel product, List<ProductReviewMo
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: ColorConstants.appBlueColor3,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

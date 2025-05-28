@@ -718,6 +718,7 @@ import '../model/ProductDetailsModel/ProductDetailsListModel.dart';
 import '../model/ProductDetailsModel/ProductDetailsModel.dart';
 import '../model/ProductDetailsModel/ProductImageListModel.dart';
 import '../model/ProductDetailsModel/ProductRatingModel.dart';
+import '../utils/Colors.dart';
 import '../widgets/BuyRefurbishedProductWidgets/buildPincodeSection.dart';
 import '../widgets/BuyRefurbishedProductWidgets/buildPricingCard.dart';
 import '../widgets/BuyRefurbishedProductWidgets/buildProductAttributesCard.dart';
@@ -1642,9 +1643,9 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     padding: const EdgeInsets.all(8),
                     child: Image.network("$imageAllBaseUrl${productImages[selectedImageIndex].image ?? ''}",
                       height: 250,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.image_not_supported),
+                      Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                     ),
                   )
                       :   CircularProgressIndicator(strokeWidth: 1,color: Colors.blue,
@@ -1664,11 +1665,11 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           });
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          margin:   EdgeInsets.symmetric(horizontal: 5),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: selectedImageIndex == index
-                                  ? Colors.black26
+                                  ? ColorConstants.appBlueColor3
                                   : Colors.transparent,
                               width: 2,
                             ),
@@ -1680,7 +1681,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                             width: 50,
                             fit: BoxFit.contain,
                             errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.image_not_supported),
+                            Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                           ),
                         ),
                       );
@@ -1692,17 +1693,17 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   onTap: () => _showAttributeBottomSheet(product),
                   child: Text(
                     "( ${product.productAndModelName ?? ''} ) / (${selectedRamName ?? product.ramName ?? ''}/${selectedRomName ?? product.romName ?? ''} )",
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue),
+                        color: ColorConstants.appBlueColor3),
                   ),
                 ),
                 Text("Display:  ${product.display ?? ''}",
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                      color: ColorConstants.appBlueColor3),
                 ),
                 const SizedBox(height: 10),
                 buildPricingCard(product, selectedPrice: selectedPrice),
@@ -1897,7 +1898,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     );
                   }
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                style: ElevatedButton.styleFrom(backgroundColor: ColorConstants.appBlueColor3),
                 child: const Text("BUY NOW",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -1958,7 +1959,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     child: Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding:   EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -1969,7 +1970,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   width: 55,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.image_not_supported),
+                                   Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                                 ),
                               ),
                               const SizedBox(height: 15),

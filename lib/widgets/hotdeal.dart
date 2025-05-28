@@ -43,10 +43,11 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
           shrinkWrap: true,
             itemBuilder: (context, index) {
               final hotDealDetails = hotTableDeal?[index];
-              return Padding(
+               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
+
                     Get.to(() => BuyRefurbishedProductScreen(
                       url: hotDealDetails?.modelUrl.toString() ?? '',
                       refNo: hotDealDetails?.ucode.toString() ?? '',
@@ -68,11 +69,11 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
                           '${imageAllBaseUrl}${hotDealDetails?.image ?? ""}',
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.error),
+                          Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
                             return const Center(
-                                child: CircularProgressIndicator(strokeWidth: 2));
+                                child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
                           },
                         ),
                         Text(
@@ -100,13 +101,13 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstants.appBlueColor3,
                               foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
+                              padding:   EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            child: const Text(
+                            child:   Text(
                               "Add",
                               style: TextStyle(
                                 fontSize: 11,

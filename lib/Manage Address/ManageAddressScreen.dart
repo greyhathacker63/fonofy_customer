@@ -230,6 +230,8 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                             ),
                                           ),
                                         );
+                                        print("Address Data Debug ${address.city}");
+                                        print("Address Data Debug ${address.state}");
                                       },
                                     ),
                                     IconButton(

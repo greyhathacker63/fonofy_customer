@@ -8,8 +8,7 @@ import 'package:fonofy/controllers/SellControllers/BrandListControllers.dart';
 import 'package:fonofy/controllers/SellControllers/SellTestimonialListControllers.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
-import '../model/table_banner_model/SelectProduct/SelectProductScreen3.dart';
-import '../widgets/SellWidgets/sellForCash.dart';
+ import '../widgets/SellWidgets/sellForCash.dart';
 
 class Sellscreen extends StatefulWidget {
   const Sellscreen({super.key});
@@ -198,7 +197,7 @@ class _SellscreenState extends State<Sellscreen> {
                           // final imageUrl = "$imageBrandBaseUrl${testimonial.image ?? ''}".replaceAll('//', '/');
                           // debugPrint('Testimonial image URL: $imageUrl');
                           return testimonialCard(
-                            name: testimonial.name ?? 'Unknown',
+                            name: testimonial.name ?? ' ',
                             image: testimonial.image ?? '',
                             text: testimonial.description ?? 'No description',
                           );
@@ -370,8 +369,8 @@ class _SellscreenState extends State<Sellscreen> {
     required String text,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding:  EdgeInsets.all(12),
+      margin:  EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -407,14 +406,14 @@ class _SellscreenState extends State<Sellscreen> {
           Image.network(
             height: 55,
             width: 55,
-            '$imageBrandBaseUrl${image ?? ''}',
+            '$imageAllBaseUrl${image ?? ''}',
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.error),
+            Icon(Icons.image,color: ColorConstants.appBlueColor3,),
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2));
+                  child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
             },
           ),
           const SizedBox(height: 10),

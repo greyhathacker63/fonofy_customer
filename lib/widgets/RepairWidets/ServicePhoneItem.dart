@@ -4,6 +4,8 @@ import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 
+import '../../utils/Colors.dart';
+
 // class ServicePhoneItem extends StatelessWidget {
 //   final String icon;
 //   final String title;
@@ -153,7 +155,7 @@ class ServicePhoneItem extends StatelessWidget {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
+          backgroundColor: ColorConstants.appBlueColor3,
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),

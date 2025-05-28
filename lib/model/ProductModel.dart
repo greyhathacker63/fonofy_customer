@@ -1,3 +1,4 @@
+
 class ProductModel {
    String? ramName;
    String? romName;
@@ -18,6 +19,7 @@ class ProductModel {
    int? wishlistCount;
    int? cartQuantity;
    int? wishlistId;
+   int? isInStock;
 
   ProductModel({
     this.ramName,
@@ -39,7 +41,7 @@ class ProductModel {
     this.wishlistCount,
     this.cartQuantity,
     this.wishlistId,
-  });
+   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -62,6 +64,7 @@ class ProductModel {
       wishlistCount: (json["WishlistCount"] as num?)?.toInt(),
       cartQuantity: (json["CartQuantity"] as num?)?.toInt(),
         wishlistId: json["WishlistId"],
+
     );
   }
 
@@ -85,6 +88,7 @@ class ProductModel {
       "Ucode": ucode,
       "WishlistCount": wishlistCount,
       "CartQuantity": cartQuantity,
+      "WishlistId": wishlistId,
       "WishlistId": wishlistId,
 
     };

@@ -115,7 +115,7 @@ Widget topBrands(List<RepairBrandListModel>? brandRepairListTopData) {
                         height: 55,
                         width: 55,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.image,color: Colors.blueGrey,),
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return const Center(child: CircularProgressIndicator(strokeWidth: 1,color: Colors.blue,));

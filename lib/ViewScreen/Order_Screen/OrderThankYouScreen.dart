@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../utils/Colors.dart';
 import '../bottom_navgation.dart';
 
 class OrderThankYouScreen extends StatelessWidget {
@@ -19,34 +20,35 @@ class OrderThankYouScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.check_circle_rounded, color: Colors.green, size: 100),
+                Icon(Icons.check_circle_rounded, color: ColorConstants.appBlueColor3, size: 100),
                 const SizedBox(height: 20),
                 const Text(
                   "Thank You!",
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
+
                 Text(
                   "Your order has been placed successfully.",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),   Text("OrderID: $orderId",
-            style: TextStyle(fontSize: 16, color: Colors.black),
-            textAlign: TextAlign.center,
-          ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey,fontWeight: FontWeight.normal),
+                  textAlign: TextAlign.start,
+                ), SizedBox(height: 30,),
 
-                const SizedBox(height: 10),
-                 const SizedBox(height: 30),
+                Text("OrderID :- $orderId",
+                            style: TextStyle(fontSize: 15, color: Colors.black,fontWeight: FontWeight.bold),
+                            textAlign: TextAlign. start,
+                          ),
+
+                    SizedBox(height: 50),
                 ElevatedButton(
                   onPressed: () {
                    Get.to(()=> BottomNavigation(upperTabIndex:  0,));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: ColorConstants.appBlueColor3,
                     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
-                  child: const Text(
+                  child:   Text(
                     "Continue Shopping",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),

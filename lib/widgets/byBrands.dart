@@ -6,7 +6,8 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
-import '../model/ByScreenTableModel/ByScreenTableModel.dart';
+ import '../model/ByScreenTableModel/ByScreenTableModel.dart';
+import '../utils/Colors.dart';
 
 Widget byBrands({List<Table1Element>? buyTableBrands}) {
   return Column(
@@ -33,13 +34,13 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
           itemBuilder: (context, index) {
             final buyBrandsDetails = buyTableBrands?[index];
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding:   EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 children: [
                   // Clickable Brand Image
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => SelectProductScreen3(brandName: '',));
+                      Get.to(() => SelectProductScreen3(brandName: buyBrandsDetails?.brandName ?? '',));
                     },
                     child: LayoutBuilder(
                       builder: (context, constraints) {
@@ -63,9 +64,9 @@ Widget byBrands({List<Table1Element>? buyTableBrands}) {
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               '${imageAllBaseUrl}${buyBrandsDetails?.brandImage ?? ""}',
-                              fit: BoxFit.cover,
+                              fit: BoxFit. fitHeight,
                               errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.error),
+                              Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                               loadingBuilder: (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
                                 return const Center(

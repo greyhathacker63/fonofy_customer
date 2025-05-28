@@ -1,17 +1,15 @@
-// To parse this JSON data, do
-//
-//     final sellVariantPriceModel = sellVariantPriceModelFromJson(jsonString);
-
 import 'dart:convert';
 
-List<SellVariantPriceModel> sellVariantPriceModelFromJson(String str) => List<SellVariantPriceModel>.from(json.decode(str).map((x) => SellVariantPriceModel.fromJson(x)));
+List<SellVariantPriceModel> sellVariantPriceModelFromJson(String str) =>
+    List<SellVariantPriceModel>.from(json.decode(str).map((x) => SellVariantPriceModel.fromJson(x)));
 
-String sellVariantPriceModelToJson(List<SellVariantPriceModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String sellVariantPriceModelToJson(List<SellVariantPriceModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SellVariantPriceModel {
-  int basePrice;
-  int maxPrice;
-  int minPrice;
+  dynamic basePrice;
+  dynamic maxPrice;
+  dynamic minPrice;
   String modelName;
   String image;
   String ramName;
@@ -27,17 +25,17 @@ class SellVariantPriceModel {
     required this.romName,
   });
 
-  factory SellVariantPriceModel.fromJson(Map<String, dynamic> json) => SellVariantPriceModel(
-    basePrice: json["BasePrice"],
-    maxPrice: json["MaxPrice"],
-    minPrice: json["MinPrice"],
-    modelName: json["ModelName"],
-    image: json["Image"],
-    ramName: json["RamName"],
-    romName: json["RomName"],
+  factory SellVariantPriceModel.fromJson(Map<dynamic, dynamic> json) => SellVariantPriceModel(
+    basePrice: json["BasePrice"] ?? '',
+    maxPrice: json["MaxPrice"] ?? '',
+    minPrice: json["MinPrice"] ?? '',
+    modelName: json["ModelName"] ?? '',
+    image: json["Image"] ?? '',
+    ramName: json["RamName"] ?? '',
+    romName: json["RomName"] ?? '',
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<dynamic, dynamic> toJson() => {
     "BasePrice": basePrice,
     "MaxPrice": maxPrice,
     "MinPrice": minPrice,

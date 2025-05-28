@@ -5,28 +5,69 @@ import '../../Services/web_constants.dart';
  import 'package:http/http.dart' as http;
 import '../BaseUrl/AllBaseUrl.dart';
 
+// class SellVariantPriceService {
+//   static Future<SellVariantPriceModel> fetchVariantPriceData(String modelNo,String ram, String rom) async {
+//     try {
+//       final uri = Uri.parse(variantPriceUrl).replace(queryParameters: {
+//         'ModelName': modelNo,
+//         'Ram': ram,
+//         'Rom': rom,
+//       });
+//
+//       final request = http.Request('GET', uri);
+//       request.headers.addAll(headers);
+//       log('Request: $request');
+//
+//       final response = await request.send();
+//       final responseBody = await response.stream.bytesToString();
+//       log('Response: $responseBody');
+//
+//       final data = jsonDecode(responseBody);
+//       return SellVariantPriceModel.fromJson(data);
+//     } catch (e) {
+//       log('Error fetching repair table data: $e');
+//       rethrow;
+//     }
+//   }
+// }
+
+
+
+
+
+
 class SellVariantPriceService {
-  static Future<SellVariantPriceModel> fetchVariantPriceData(String modelNo,String ram, String rom) async {
-    try {
-      final uri = Uri.parse(variantPriceUrl).replace(queryParameters: {
+  static Future<SellVariantPriceModel?> fetchVariantPriceData(
+      String modelNo, String ram, String rom) async {
+    final uri = Uri.https('api.fonofy.in','/api/common/model-variant-price',
+      {
         'ModelNo': modelNo,
-        'ramName': ram,
-        'romName': rom,
-      });
+        'Ram': ram,
+        'Rom': rom,
+      },
+    );
 
-      final request = http.Request('GET', uri);
-      request.headers.addAll(headers);
-      log('Request: $request');
+    print('Requesting: $uri');
 
-      final response = await request.send();
-      final responseBody = await response.stream.bytesToString();
-      log('Response: $responseBody');
+    try {
+      final response = await http.get(uri);
 
-      final data = jsonDecode(responseBody);
-      return SellVariantPriceModel.fromJson(data);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        if (data.isNotEmpty) {
+          return SellVariantPriceModel.fromJson(data[0]);
+        } else {
+          print('Empty data received');
+        }
+      } else {
+        print('Failed to load variant price: ${response.statusCode}');
+        print('Body: ${response.body}');
+      }
     } catch (e) {
-      log('Error fetching repair table data: $e');
-      rethrow;
+      print('Error fetching rating: $e');
     }
+    return null;
   }
 }
+
+

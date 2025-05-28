@@ -4,55 +4,104 @@ import 'package:get/get.dart';
 import '../MainScreen.dart';
 import 'RegisterScreen.dart';
 
-class EmailLoginScreen extends StatefulWidget {
-  const EmailLoginScreen({super.key});
+class PhoneLoginScreen extends StatefulWidget {
+  const PhoneLoginScreen({super.key});
 
   @override
   _EmailLoginScreenState createState() => _EmailLoginScreenState();
 }
 
-class _EmailLoginScreenState extends State<EmailLoginScreen> {
-  final TextEditingController emailController = TextEditingController();
+class _EmailLoginScreenState extends State<PhoneLoginScreen> {
+
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   bool isLoading = false;
   bool isPasswordVisible = false;
 
   @override
   void dispose() {
-    emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
     super.dispose();
   }
 
-  Future<void> _handleLogin() async {
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
+  // Future<void> _handleLogin() async {
+  //   final phone = phoneController.text.trim();
+  //   final password = passwordController.text.trim();
+  //
+  //
+  //   if (phone.isEmpty || password.isEmpty) {
+  //     Get.to(()=>MainScreen());
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text("❌ Phone & Password can't be empty!"),
+  //         duration: Duration(seconds: 2),
+  //
+  //       ),
+  //     );
+  //     return;
+  //
+  //   }
+  //
+  //   setState(() => isLoading = true);
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? storedPhone = prefs.getString("Phone");
+  //   String? storedPassword = prefs.getString("Password");
+  //
+  //   await Future.delayed(Duration(seconds: 2));
+  //
+  //   if (storedPhone != null && storedPassword != null && storedPhone == phone && storedPassword == password) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("✅ Login Successful!"), duration: Duration(seconds: 2)),
+  //     );
+  //     Get.offAll(() => MainScreen());
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("❌ Invalid Phone  or Password!"), duration: Duration(seconds: 2)),
+  //     );
+  //     passwordController.clear();
+  //   }
+  //   setState(() => isLoading = false);
+  // }
 
-    if (email.isEmpty || password.isEmpty) {
+  Future<void> _handleLogin() async {
+    final phone = phoneController.text.trim();
+    final password = passwordController.text.trim();
+    if (phone.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("❌ Email & Password can't be empty!"),
+          content: Text("❌ Phone & Password can't be empty!"),
+          backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
         ),
       );
       return;
     }
-
     setState(() => isLoading = true);
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? storedEmail = prefs.getString("Email");
+    String? storedPhone = prefs.getString("Phone");
     String? storedPassword = prefs.getString("Password");
 
-    await Future.delayed(Duration(seconds: 2)); // API call simulation
+    await Future.delayed(Duration(seconds: 2));
 
-    if (storedEmail != null && storedPassword != null && storedEmail == email && storedPassword == password) {
+    if (storedPhone != null && storedPassword != null && storedPhone == phone && storedPassword == password) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("✅ Login Successful!"), duration: Duration(seconds: 2)),
+        const SnackBar(
+          content: Text("✅ Login Successful!"),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
       );
-      Get.offAll(() => MainScreen());
+      Get.offAll(() =>  MainScreen());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("❌ Invalid Email or Password!"), duration: Duration(seconds: 2)),
+        const SnackBar(
+          content: Text("❌ Invalid Phone or Password!"),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
       );
       passwordController.clear();
     }
@@ -75,15 +124,19 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
               const SizedBox(height: 20),
 
               TextField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: "Email",
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                maxLength: 10,
+                decoration: const InputDecoration(
+                  labelText: "Phone",
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.phone),
+                  counterText: '', // hides character counter
                 ),
+
               ),
-              const SizedBox(height: 15),
+
+                SizedBox(height: 15),
 
               TextField(
                 controller: passwordController,
@@ -99,7 +152,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+                SizedBox(height: 20),
 
               SizedBox(
                 width: double.infinity,
@@ -112,18 +165,17 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   onPressed: isLoading ? null : _handleLogin,
                   child: isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                    "SUBMIT",
+                      : const Text("SUBMIT",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ),
-                SizedBox(height: 20),
+              SizedBox(height: 20),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                    Text("Not a member? "),
+                  Text("Not a member? "),
                   GestureDetector(
                     onTap: () => Get.to(() => RegisterScreen(mobile: '')),
                     child: Text(

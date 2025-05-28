@@ -12,8 +12,7 @@ class LoginService {
       final apiUrl = "https://api.fonofy.in/api/common/get-register-data?mobileNumber=$number";
       final url = Uri.parse(apiUrl);
 
-      // Create an HttpClient that ignores SSL errors
-      final httpClient = HttpClient();
+       final httpClient = HttpClient();
       httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
 
       final request = await httpClient.getUrl(url);
@@ -43,18 +42,17 @@ class LoginService {
       if (response.statusCode == 200) {
         var data = jsonDecode(responseBody);
         print("📩 OTP Sent Successfully: ${data['otp']}");
-        return {"otp": data['otp'], "status": true}; // Returns OTP and status
+        return {"otp": data['otp'], "status": true};
       } else {
         print("❌ Failed to Send OTP: ${response.statusCode}");
-        return {"status": false}; // Failed OTP response
+        return {"status": false};
       }
     } catch (e) {
       print("❌ Exception in getOtp: $e");
-      return {"status": false}; // Exception handling
+      return {"status": false};
     }
   }
 
-  // ✅ Verify OTP & Save Mobile Number Locally
   Future<bool> verifyOTP({required String userOTP, required String otp, required String phoneNumber}) async {
     if (userOTP == otp) {
       try {
@@ -64,10 +62,10 @@ class LoginService {
         return true;
       } catch (e) {
         print("❌ Exception in verifyOTP: $e");
-        return false; // Error in saving number
+        return false;
       }
     }
     print("❌ OTP Mismatch - Verification Failed");
-    return false; // OTP mismatch
+    return false;
   }
 }

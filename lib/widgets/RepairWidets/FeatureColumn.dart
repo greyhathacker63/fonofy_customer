@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/Colors.dart';
+
 class FeatureColumn extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -12,7 +14,7 @@ class FeatureColumn extends StatelessWidget {
     return Column(
       children: [
 
-        Icon(icon, size: 28, color: Colors.blue),
+        Icon(icon, size: 28, color: ColorConstants.appBlueColor3,),
         SizedBox(height: 4),
         Text(label, style: TextStyle(fontSize: 12)),
       ],

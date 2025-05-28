@@ -8,6 +8,7 @@ import '../TokenHelper/TokenHelper.dart';
 import '../model/LocationModel/CityModel.dart';
 import '../model/ShippingAddressModel/ListShippingAddressModel.dart';
 import '../model/LocationModel/LocationModel.dart';
+import '../utils/Colors.dart';
 import '../widgets/TextField.dart';
 
 class AddNewAddressScreen extends StatefulWidget {
@@ -205,7 +206,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
       appBar: AppBar(
         title: const Text("Add Address", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue,
+        backgroundColor: ColorConstants.appBlueColor3,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -390,14 +391,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   },
                   style: ElevatedButton.styleFrom(
 
-                    backgroundColor: Colors.blue,
+                    backgroundColor: ColorConstants.appBlueColor3,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text("Save", style: TextStyle(fontSize: 16, color: Colors.white)),
+                  child:   Text("Save", style: TextStyle(fontSize: 17, color: Colors.white)),
                 ),
               ),
             ],

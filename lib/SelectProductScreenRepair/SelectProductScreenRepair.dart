@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../controllers/RepairController/RepairBrandBasedModelController.dart';
+import '../utils/Colors.dart';
 
 
 class SelectProductRepairScreen extends StatelessWidget {
@@ -95,8 +96,8 @@ class SelectProductRepairScreen extends StatelessWidget {
                             height: 50,
                             width: 50,
                             child: Icon(
-                              Icons.error,
-                              color: Colors.black87,
+                              Icons.image,
+                              color: ColorConstants.appBlueColor3,
                               size: 40,
                             ),
                           ),
@@ -105,8 +106,8 @@ class SelectProductRepairScreen extends StatelessWidget {
                           height: 50,
                           width: 50,
                           child: Icon(
-                            Icons.error,
-                            color: Colors.black,
+                            Icons.image,
+                            color:ColorConstants.appBlueColor3,
                             size: 40,
                           ),
                         ),

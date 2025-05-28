@@ -261,6 +261,7 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/mobileOtpService/login_service.dart';
 import 'package:fonofy/ViewScreen/EmailLoginScreen.dart';
+import 'package:fonofy/ViewScreen/PhoneLoginScreen.dart';
 import 'package:fonofy/ViewScreen/RegisterScreen.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -295,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context, viewModel, child) {
             return Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding:   EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -346,7 +347,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         onPressed: isLoading ? null : _handleLogin,
                         child: isLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ?   CircularProgressIndicator(color: Colors.blue,strokeWidth: 2,)
                             : const Text("SUBMIT",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
@@ -355,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Success/Error Message
                     if (viewModel.statusMessage.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                        padding:   EdgeInsets.only(top: 10.0),
                         child: Text(
                           viewModel.statusMessage,
                           style: TextStyle(
@@ -365,7 +366,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                    const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                     // Signup / Email Login
                     Column(
@@ -376,10 +377,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Text("Not a member? "),
                             GestureDetector(
                               onTap: () {
-                                // Get.to(RegisterScreen(mobile: '')
-                                // );
+                                Get.to(RegisterScreen(mobile: '')
+                                );
                               },
-                              child: const Text(
+                              child:  Text(
                                 "Signup Now",
                                 style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                               ),
@@ -393,10 +394,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Text("or "),
                             GestureDetector(
                               onTap: () {
-                                Get.to(EmailLoginScreen());
+                                // Get.to(EmailLoginScreen());
+                                Get.to(PhoneLoginScreen());
                               },
                               child: const Text(
-                                "Login with Email",
+                                "Login with Phone",
                                 style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                               ),
                             ),

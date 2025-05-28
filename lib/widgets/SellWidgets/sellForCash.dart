@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../../ViewScreen/AllBrands.dart';
 import '../../model/SellModel/BrandListModel.dart';
+import '../../utils/Colors.dart';
 
 Widget sellForCash(List<BrandListModel>? brandListData) {
   return ListView(
@@ -53,7 +54,7 @@ Widget sellForCash(List<BrandListModel>? brandListData) {
                         width: 55,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.error),
+                        Icon(Icons.image,color: ColorConstants.appBlueColor3,),
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return const Center(

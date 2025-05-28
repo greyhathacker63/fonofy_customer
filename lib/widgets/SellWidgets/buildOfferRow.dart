@@ -12,3 +12,4 @@ Widget buildOfferRow(String iconPath, String text) {
     ),
   );
 }
+

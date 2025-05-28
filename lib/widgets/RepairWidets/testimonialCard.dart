@@ -82,14 +82,14 @@ Widget testimonialCard(
         Image.network(
           height: 55,
           width: 55,
-          '$imageBrandBaseUrl${image ?? ""}',
+          '$imageAllBaseUrl$image',
           fit: BoxFit.fill,
           errorBuilder: (context, error, stackTrace) =>
           const Icon(Icons.error),
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) return child;
             return const Center(
-                child: CircularProgressIndicator(strokeWidth: 2));
+                child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
           },
         ),
         const SizedBox(height: 10),
