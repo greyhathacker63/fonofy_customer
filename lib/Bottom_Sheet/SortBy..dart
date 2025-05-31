@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 void showSortBySheet(BuildContext context, Function(String) onSortSelected) {
@@ -27,32 +26,30 @@ void showSortBySheet(BuildContext context, Function(String) onSortSelected) {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const Divider(),
-
-                _buildSortOption("Price -- Low to High", selectedSort, setState, (newSort) {
-                  setState(() {
-                    selectedSort = newSort; // ✅ Updates selection
-                  });
-                  onSortSelected(newSort); // ✅ Sends selection back
-                }),
-                _buildSortOption("Price -- High to Low", selectedSort, setState, (newSort) {
+                _buildSortOption("Price -- Low to High", selectedSort, setState,
+                    (newSort) {
                   setState(() {
                     selectedSort = newSort;
                   });
                   onSortSelected(newSort);
                 }),
-
-                _buildSortOption("Newest First", selectedSort, setState, (newSort) {
+                _buildSortOption("Price -- High to Low", selectedSort, setState,
+                    (newSort) {
                   setState(() {
                     selectedSort = newSort;
                   });
                   onSortSelected(newSort);
                 }),
-
+                _buildSortOption("Newest First", selectedSort, setState,
+                    (newSort) {
+                  setState(() {
+                    selectedSort = newSort;
+                  });
+                  onSortSelected(newSort);
+                }),
                 const SizedBox(height: 20),
-
-                // ✅ Close Button
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(context), // Manually close
+                  onPressed: () => Navigator.pop(context),
                   child: const Text("Done"),
                 ),
               ],
@@ -63,12 +60,13 @@ void showSortBySheet(BuildContext context, Function(String) onSortSelected) {
     },
   );
 }
+
 Widget _buildSortOption(
-    String title,
-    String? selectedSort,
-    Function(void Function()) setState,
-    Function(String) onTap,
-    ) {
+  String title,
+  String? selectedSort,
+  Function(void Function()) setState,
+  Function(String) onTap,
+) {
   return ListTile(
     title: Text(title, style: const TextStyle(fontSize: 16)),
     trailing: Radio<String>(

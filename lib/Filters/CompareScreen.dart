@@ -8,7 +8,8 @@ import '../utils/Colors.dart';
 class CompareScreen extends StatefulWidget {
   final List<SearchCompareProductModel> selectedProducts;
 
-  const CompareScreen({Key? key, required this.selectedProducts}) : super(key: key);
+  const CompareScreen({Key? key, required this.selectedProducts})
+      : super(key: key);
 
   @override
   State<CompareScreen> createState() => _CompareScreenState();
@@ -39,7 +40,8 @@ class _CompareScreenState extends State<CompareScreen> {
   @override
   void initState() {
     super.initState();
-    selectedProducts = List<SearchCompareProductModel?>.from(widget.selectedProducts);
+    selectedProducts =
+        List<SearchCompareProductModel?>.from(widget.selectedProducts);
     while (selectedProducts.length < 3) {
       selectedProducts.add(null);
     }
@@ -117,7 +119,10 @@ class _CompareScreenState extends State<CompareScreen> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(28),
                   boxShadow: const [
-                    BoxShadow(color: Colors.black12, blurRadius: 2, offset: Offset(0, 1)),
+                    BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 2,
+                        offset: Offset(0, 1)),
                   ],
                 ),
                 child: Row(
@@ -149,81 +154,93 @@ class _CompareScreenState extends State<CompareScreen> {
               ),
             ),
           if (isLoading) const LinearProgressIndicator(),
-
           if (showSearch)
             Expanded(
               child: _searchResults.isEmpty && !isLoading
                   ? const Center(child: Text('No product found'))
                   : ListView.builder(
-                itemCount: _searchResults.length,
-                itemBuilder: (context, index) {
-                  final item = _searchResults[index];
-                  return InkWell(
-                    onTap: () async {
-                      try {
-                        final productToCompare = SearchCompareProductModel(
-                          name: item.name,
-                          amount: item.amount,
-                          image: item.image,
-                          url: item.url,
-                        );
-                        final firstNullIndex = selectedProducts.indexWhere((p) => p == null);
-                        if (firstNullIndex != -1) {
-                          setState(() {
-                            selectedProducts[firstNullIndex] = productToCompare;
-                            showSearch = false;
-                            _searchResults.clear();
-                            searchProductController.clear();
-                          });
-                        }
-                      } catch (e) {
-                        print("Compare API error: $e");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error: $e')),
-                        );
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      child: Row(
-                        children: [
-                          Image.network(
-                            '${imageAllBaseUrl}${item.image ?? ""}',
-                            height: 55,
-                            width: 55,
-                            fit: BoxFit.fill,
-                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(child: CircularProgressIndicator(strokeWidth: 2));
-                            },
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      itemCount: _searchResults.length,
+                      itemBuilder: (context, index) {
+                        final item = _searchResults[index];
+                        return InkWell(
+                          onTap: () async {
+                            try {
+                              final productToCompare =
+                                  SearchCompareProductModel(
+                                name: item.name,
+                                amount: item.amount,
+                                image: item.image,
+                                url: item.url,
+                              );
+                              final firstNullIndex =
+                                  selectedProducts.indexWhere((p) => p == null);
+                              if (firstNullIndex != -1) {
+                                setState(() {
+                                  selectedProducts[firstNullIndex] =
+                                      productToCompare;
+                                  showSearch = false;
+                                  _searchResults.clear();
+                                  searchProductController.clear();
+                                });
+                              }
+                            } catch (e) {
+                              print("Compare API error: $e");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Error: $e')),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            child: Row(
                               children: [
-                                Text(
-                                  item.name ?? '',
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                                  overflow: TextOverflow.ellipsis,
+                                Image.network(
+                                  '${imageAllBaseUrl}${item.image ?? ""}',
+                                  height: 55,
+                                  width: 55,
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.error),
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2));
+                                  },
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "₹${item.amount ?? ''}",
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.name ?? '',
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        "₹${item.amount ?? ''}",
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
-
           if (!showSearch)
             Expanded(
               child: Row(
@@ -237,104 +254,125 @@ class _CompareScreenState extends State<CompareScreen> {
                       ),
                       child: product != null
                           ? SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Image.network(
-                                    '${imageAllBaseUrl}${product.image ?? ""}',
-                                    height: 120,
-                                    fit: BoxFit.contain,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        Image.asset('assets/images/placeholder.png', height: 120),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 5,
-                                  right: 5,
-                                  child: GestureDetector(
-                                    onTap: () => _removeProduct(index),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Image.network(
+                                          '${imageAllBaseUrl}${product.image ?? ""}',
+                                          height: 120,
+                                          fit: BoxFit.contain,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/phone.png',
+                                              height: 120,
+                                              fit: BoxFit.contain,
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      padding: const EdgeInsets.all(5),
-                                      child: const Icon(Icons.close, size: 18, color: Colors.black),
-                                    ),
+                                      Positioned(
+                                        top: 5,
+                                        right: 5,
+                                        child: GestureDetector(
+                                          onTap: () => _removeProduct(index),
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            padding: const EdgeInsets.all(5),
+                                            child: const Icon(Icons.close,
+                                                size: 18, color: Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                product.name ?? '',
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            ...featureList.map((feature) {
-                              final value = getFeatureValue(feature['key']!, product);
-                              return Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border(top: BorderSide(color: Colors.grey.shade200)),
-                                  color: Colors.blue.shade50,
-                                ),
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      feature['label']!,
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(
+                                      product.name ?? '',
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 13),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(value, style: const TextStyle(fontSize: 13)),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      )
-                          : GestureDetector(
-                        onTap: () => _addProduct(index),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(12),
-                          child: FittedBox(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: ColorConstants.appBlueColor3,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Icon(Icons.add, color: Colors.white, size: 30),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    "Add Product",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
+                                  const SizedBox(height: 10),
+                                  ...featureList.map((feature) {
+                                    final value = getFeatureValue(
+                                        feature['key']!, product);
+                                    return Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                            top: BorderSide(
+                                                color: Colors.grey.shade200)),
+                                        color: Colors.blue.shade50,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            feature['label']!,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(value,
+                                              style: const TextStyle(
+                                                  fontSize: 13)),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                                 ],
                               ),
+                            )
+                          : GestureDetector(
+                              onTap: () => _addProduct(index),
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(12),
+                                child: FittedBox(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: ColorConstants.appBlueColor3,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: const [
+                                        Icon(Icons.add,
+                                            color: Colors.white, size: 30),
+                                        SizedBox(width: 6),
+                                        Text(
+                                          "Add Product",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                     ),
                   );
                 }),
