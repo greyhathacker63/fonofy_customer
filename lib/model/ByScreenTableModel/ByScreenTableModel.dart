@@ -14,6 +14,7 @@ class ByTableModel {
   List<Table5>? table5;
   List<Table6>? table6;
   List<Table2Element>? table7;
+  List<Table8>? table8;
 
   ByTableModel({
     this.table,
@@ -24,6 +25,7 @@ class ByTableModel {
     this.table5,
     this.table6,
     this.table7,
+    this.table8,
   });
 
   factory ByTableModel.fromJson(Map<String, dynamic> json) => ByTableModel(
@@ -35,6 +37,8 @@ class ByTableModel {
     table5: json["Table5"] == null ? [] : List<Table5>.from(json["Table5"]!.map((x) => Table5.fromJson(x))),
     table6: json["Table6"] == null ? [] : List<Table6>.from(json["Table6"]!.map((x) => Table6.fromJson(x))),
     table7: json["Table7"] == null ? [] : List<Table2Element>.from(json["Table7"]!.map((x) => Table2Element.fromJson(x))),
+    table8: json["Table8"] == null ? [] : List<Table8>.from(json["Table8"]!.map((x) => Table8.fromJson(x))),
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -46,22 +50,25 @@ class ByTableModel {
     "Table5": table5 == null ? [] : List<dynamic>.from(table5!.map((x) => x.toJson())),
     "Table6": table6 == null ? [] : List<dynamic>.from(table6!.map((x) => x.toJson())),
     "Table7": table7 == null ? [] : List<dynamic>.from(table7!.map((x) => x.toJson())),
+    "Table8": table8 == null ? [] : List<dynamic>.from(table8!.map((x) => x.toJson())),
   };
 }
 
+
+
 class Table {
-  dynamic? id;
+  dynamic id;
   String? title;
   String? tagLine;
   bool? isActive;
-  dynamic? sequenceId;
+  dynamic sequenceId;
   String? ramdomCode;
   String? bnnerImage;
   String? cmpCode;
   bool? status;
   bool? isdeleted;
   DateTime? createdDate;
-  dynamic? createdby;
+  dynamic createdby;
   dynamic updatedDate;
   dynamic updatedBy;
 
@@ -161,7 +168,7 @@ class Table2Element {
   String? modelNo;
   String? productAndModelName;
   BToC? modelType;
-  dynamic? amount;
+  dynamic amount;
   String? image;
   dynamic? newModelAmt;
   dynamic? discountPercentage;
@@ -234,7 +241,7 @@ class Table5 {
 }
 
 class Table6 {
-  dynamic? priceRange;
+  dynamic priceRange;
   String? image;
 
   Table6({
@@ -250,6 +257,32 @@ class Table6 {
   Map<String, dynamic> toJson() => {
     "PriceRange": priceRange,
     "Image": image,
+  };
+}
+
+class Table8 {
+  dynamic name;
+  String? image;
+  dynamic id ;
+
+
+
+  Table8({
+    this.name,
+    this.image,
+    this.id,
+  });
+
+  factory Table8.fromJson(Map<String, dynamic> json) => Table8(
+    name: json["Name"],
+    image: json["Image"],
+    id: json["Id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "Name": name,
+    "Image": image,
+    "Id": id,
   };
 }
 

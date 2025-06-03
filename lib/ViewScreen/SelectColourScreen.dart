@@ -47,7 +47,7 @@ class SelectColourScreen extends StatelessWidget {
             ),
             child: GridView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics:   NeverScrollableScrollPhysics(),
               itemCount: colors.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, // 3 items per row

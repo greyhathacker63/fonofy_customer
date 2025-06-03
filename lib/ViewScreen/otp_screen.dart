@@ -125,7 +125,8 @@ class _OtpScreenState extends State<OtpScreen> {
                   });
                 },
               ),
-              const SizedBox(height: 20),
+
+              SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 height: 50.0,
@@ -218,3 +219,5 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 }
+
+

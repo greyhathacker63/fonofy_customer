@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/SelectProduct/SelectAddressScreen.dart';
+
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectAddressScreen.dart';
 import 'package:get/get.dart';
 
 class RepairServiceScreen extends StatelessWidget {
@@ -24,13 +25,13 @@ class RepairServiceScreen extends StatelessWidget {
                 },
               ),
             ),
-            // Logo and Heading (Logo Left, Text Right)
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/images/repairservice.png", // Your logo path
-                  height: 24, // Adjust logo size as needed
+                  "assets/images/repairservice.png",
+                  height: 24,
                 ),
                 const SizedBox(width: 10),
                 const Expanded(
@@ -41,9 +42,8 @@ class RepairServiceScreen extends StatelessWidget {
                 ),
               ],
             ),
-
-            const SizedBox(height: 5),
-            const Text(
+            SizedBox(height: 5),
+             Text(
               "Please share details of your query & our team will get in touch with you with the best solution",
               style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
@@ -67,9 +67,7 @@ class RepairServiceScreen extends StatelessWidget {
             _buildIssueTextField("Power Key FPC"),
 
             const SizedBox(height: 20),
-
-            // Pincode Input Field
-            const Text(
+             Text(
               "Enter your pincode:",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),

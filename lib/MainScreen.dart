@@ -13,55 +13,57 @@ class MainScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.only(top: 100),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Logo
-            Container(
-              margin: EdgeInsets.only(bottom: 30),
-              color: Colors.white,
-              child: Image.asset(
-                // height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width * 0.50,
-                'assets/images/Logo.png',
+        child: SingleChildScrollView(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Logo
+              Container(
+                margin: EdgeInsets.only(bottom: 30),
+                color: Colors.white,
+                child: Image.asset(
+                  // height: MediaQuery.of(context).size.height * 0.25,
+                  width: MediaQuery.of(context).size.width * 0.50,
+                  'assets/images/Logo.png',
+                ),
               ),
-            ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // Buy Card
-            GestureDetector(
-              onTap: () => Get.to(BottomNavigation(upperTabIndex:0)),
-              child: _buildCard(
-                  "Buy",
-                  "Shop for certified refusrbished devices with 6 months warranty",
-                  context),
-            ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Buy Card
+              GestureDetector(
+                onTap: () => Get.to(BottomNavigation(upperTabIndex:0)),
+                child: _buildCard(
+                    "Buy",
+                    "Shop for certified refusrbished devices with 6 months warranty",
+                    context),
+              ),
 
-            // Sell Card
-            GestureDetector(
-              onTap: () => Get.to(BottomNavigation(upperTabIndex: 1)),
-              child: _buildCard(
-                  "Sell",
-                  "Get the best price for your old phone within 60 Seconds",
-                  context),
-            ),
+              // Sell Card
+              GestureDetector(
+                onTap: () => Get.to(BottomNavigation(upperTabIndex: 1)),
+                child: _buildCard(
+                    "Sell",
+                    "Get the best price for your old phone within 60 Seconds",
+                    context),
+              ),
 
-            // Repair Card
-             GestureDetector(
-              onTap: () => Get.to(BottomNavigation(upperTabIndex: 2)),
-              child: _buildCard(
-                  "Repair",
-                  "Expert Phone repair with 6 months warranty at doorstep or at store",
-                  context),
-            ),
-            // GestureDetector
-            // _buildCard(
-            //     "Repair",
-            //     "Expert Phone repair with 6-month warranty at doorstep or at store",
-            //     context),
-          ],
+              // Repair Card
+               GestureDetector(
+                onTap: () => Get.to(BottomNavigation(upperTabIndex: 2)),
+                child: _buildCard(
+                    "Repair",
+                    "Expert Phone repair with 6 months warranty at doorstep or at store",
+                    context),
+              ),
+              // GestureDetector
+              // _buildCard(
+              //     "Repair",
+              //     "Expert Phone repair with 6-month warranty at doorstep or at store",
+              //     context),
+            ],
+          ),
         ),
       ),
     );

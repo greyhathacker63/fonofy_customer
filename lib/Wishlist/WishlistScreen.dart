@@ -1,177 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/controllers/product_controller.dart';
+import 'package:fonofy/controllers/wishlist_controller.dart';
+import 'package:fonofy/utils/Colors.dart';
+import 'package:get/get.dart';
 
-class WishlistScreen extends StatelessWidget {
-  final List<Map<String, String>> wishlistItems = [
-    {
-      'image': 'https://m.media-amazon.com/images/I/71ZDY57yTQL._AC_UY218_.jpg',
-      'name': 'iPhone 13 (128 GB, Midnight) - Refurbished',
-      'price': '₹48,999',
-      'originalPrice': '₹69,999',
-      'save': 'Save ₹21,000',
-    },
-    {
-      'image': 'https://m.media-amazon.com/images/I/61l9ppRIiqL._AC_UY218_.jpg',
-      'name': 'OnePlus Nord CE 2 Lite - Refurbished',
-      'price': '₹13,499',
-      'originalPrice': '₹19,999',
-      'save': 'Save ₹6,500',
-    },
-    {
-      'image': 'https://m.media-amazon.com/images/I/81CgtwSII3L._AC_UY218_.jpg',
-      'name': 'Redmi Note 12 5G - Refurbished',
-      'price': '₹14,999',
-      'originalPrice': '₹21,999',
-      'save': 'Save ₹7,000',
-    },
-    {
-      'image': 'https://m.media-amazon.com/images/I/71ZDY57yTQL._AC_UY218_.jpg',
-      'name': 'Samsung Galaxy S21 FE 5G - Refurbished',
-      'price': '₹29,999',
-      'originalPrice': '₹49,999',
-      'save': 'Save ₹20,000',
-    },
-  ];
+import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+
+class WishlistScreen extends StatefulWidget {
+  @override
+  State<WishlistScreen> createState() => _WishlistScreenState();
+}
+
+class _WishlistScreenState extends State<WishlistScreen> {
+
+  final WishlistController wishlistController = Get.put(WishlistController());
+  final ProductController productController = Get.put(ProductController());
+
+  @override
+  void initState() {
+    super.initState();
+    wishlistController.fetchWishlistData();
+  }
+
+  Future<void> _onRefresh() async {
+    await wishlistController.fetchWishlistData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Wishlist'),
+        title: const Text('Your Wishlist'),
         backgroundColor: Colors.white,
         elevation: 1,
-        iconTheme: IconThemeData(color: Colors.black),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: Colors.black),
+        titleTextStyle: const TextStyle(
           color: Colors.black,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: wishlistItems.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 0.58, // Increased height
-          ),
-          itemBuilder: (context, index) {
-            final item = wishlistItems[index];
-            return Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  // Image
-                  ClipRRect(
-                    borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(12)),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Image.network(
-                        item['image']!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(Icons.broken_image, size: 50),
-                      ),
-                    ),
-                  ),
+      body: SafeArea(
+        child: Obx(() {
+          if (wishlistController.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                  // Info & Button (Scroll-safe)
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return SingleChildScrollView(
-                            physics: NeverScrollableScrollPhysics(),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  minHeight: constraints.maxHeight),
-                              child: IntrinsicHeight(
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // Product details
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item['name']!,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          item['price']!,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.green),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              item['originalPrice']!,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey,
-                                                decoration:
-                                                TextDecoration.lineThrough,
-                                              ),
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              item['save']!,
-                                              style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: Colors.green),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 6),
-                                    // Button
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: 36,
-                                      child: OutlinedButton(
-                                        onPressed: () {},
-                                        child: Text('Move to Cart',
-                                            style: TextStyle(fontSize: 13)),
-                                        style: OutlinedButton.styleFrom(
-                                          foregroundColor: Colors.teal,
-                                          side: BorderSide(color: Colors.teal),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+          if (wishlistController.wishlistItems.isEmpty) {
+            return const Center(child: Text("No items in wishlist"));
+          }
+
+          return RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: GridView.builder(
+              padding: const EdgeInsets.all(8.0),
+              itemCount: wishlistController.wishlistItems.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.58,
               ),
-            );
-          },
-        ),
+              itemBuilder: (context, index) {
+                var wishlistItem = wishlistController.wishlistItems[index];
+
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      // Image + Delete icon overlay
+                      Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12)),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: (wishlistItem.image ?? '')
+                                      .startsWith('assets/')
+                                  ? Image.asset(wishlistItem.image!,
+                                      fit: BoxFit.cover)
+                                  : Image.network(
+                                      '$imageAllBaseUrl${wishlistItem.image ?? ""}',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error,
+                                              stackTrace) =>
+                                          const Center(
+                                              child: Icon(Icons.broken_image,
+                                                  size: 50)),
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return const Center(
+                                            child: CircularProgressIndicator(
+                                                strokeWidth: 2));
+                                      },
+                                    ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 6,
+                            right: 6,
+                            child: GestureDetector(
+                              onTap: () async {
+                                final confirm = await showDialog<bool>(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text("Remove Item"),
+                                    content: const Text(
+                                        "Are you sure you want to remove this item from wishlist?"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(ctx, false),
+                                          child: const Text("Cancel")),
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(ctx, true),
+                                          child: const Text("Remove")),
+                                    ],
+                                  ),
+                                );
+                                if (confirm == true) {
+                                  wishlistController.removeFromWishlist(
+                                    wishlistId: wishlistItem.id.toString(),
+                                    modelId: wishlistItem.modelNo.toString(),
+                                    colorId: wishlistItem.colorId.toString(),
+                                    ramId: wishlistItem.ramId.toString(),
+                                    romId: wishlistItem.romId.toString(),
+                                  );
+
+                                  // Remove item from the list immediately
+                                  wishlistController.wishlistItems
+                                      .removeAt(index);
+                                }
+                            
+                              },
+                              child: const Icon(Icons.close,
+                                  size: 18, color: Colors.black26),
+                            ),
+                          )
+                        ],
+                      ),
+
+                      // Info + button
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                wishlistItem.productAndModelName ?? 'N/A',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${wishlistItem.ramName ?? 'Ram'} | ${wishlistItem.romName ?? 'Rom'}',
+                                style: const TextStyle(fontSize: 10),
+                                maxLines: 1,
+                              ),
+                              Text(
+                                '₹${wishlistItem.price ?? ''}',
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.green),
+                              ),
+                              const Spacer(),
+                              // SizedBox(
+                              //   width: double.infinity,
+                              //   height: 36,
+                              //   child: OutlinedButton(
+                              //     onPressed: () {
+                              //       Get.snackbar("Action",
+                              //           "Moved to Cart feature coming soon!",
+                              //           snackPosition: SnackPosition.BOTTOM);
+                              //     },
+                              //     style: OutlinedButton.styleFrom(
+                              //       backgroundColor:
+                              //           ColorConstants.appBlueColor3,
+                              //       foregroundColor: Colors.white,
+                              //       side: const BorderSide(color: Colors.teal),
+                              //       shape: RoundedRectangleBorder(
+                              //           borderRadius: BorderRadius.circular(8)),
+                              //     ),
+                              //     child: const Text('Move to Cart',
+                              //         style: TextStyle(fontSize: 13)),
+                              //   ),
+                              // )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        }),
       ),
     );
   }

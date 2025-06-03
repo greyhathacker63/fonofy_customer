@@ -1,20 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../ProductScreens/ProductScreen.dart';
 import '../model/ByScreenTableModel/ByScreenTableModel.dart';
 
 Widget featuredCategory({
-
-  required List<Map<String, String>> categories,
-  required List<Table1Element>? featuredCategoryTable,
+  List<Map<String, String>>? categories,
+  List<Table1Element>? featuredCategoryTable,
 }) {
-  final List<dynamic> combinedItems = [
-    ...categories,
+  List<dynamic> combinedItems = [
+    ...?categories,
     ...(featuredCategoryTable ?? []),
   ];
 
@@ -32,10 +27,27 @@ Widget featuredCategory({
           padding: EdgeInsets.all(Get.width * 0.02),
           child: GestureDetector(
             onTap: () {
-              Get.to(()=> ProductScreen());
-              // Get.to(() => BuyRefurbishedProductScreen(url: '', refNo: '',), arguments: {
-              //   "category": isStatic ? item["text1"] : item.brandName,
-              // });
+              if (isStatic) {
+                String category = item["text1"] ?? "";
+                print("Clicked on static category: $category");
+
+                // New mapping logic
+                if (category == "Deal of the day") {
+                  Get.to(() => ProductScreen(
+                      name: "", productPage: "Deals_of_the_day"));
+                } else if (category == "Refurbished Mobiles") {
+                  Get.to(() => ProductScreen(
+                      name: "", productPage: "refurbished"));
+                } else {
+                  Get.to(() =>
+                      ProductScreen(name: category, productPage: ""));
+                      
+                }
+              } else {
+                print("Clicked on dynamic category: ${item.brandName}");
+                Get.to(() => ProductScreen(
+                    name: item.brandName ?? "", productPage: ""));
+              }
             },
             child: Container(
               padding: EdgeInsets.all(Get.width * 0.025),
@@ -48,29 +60,28 @@ Widget featuredCategory({
                 children: [
                   isStatic
                       ? Image.asset(
-                    item["imagePath"]!,
-                    height: Get.height * 0.07,
-                    width: Get.width * 0.18,
-                    fit: BoxFit.contain,
-                  )
+                          item["imagePath"]!,
+                          height: Get.height * 0.07,
+                          width: Get.width * 0.18,
+                          fit: BoxFit.contain,
+                        )
                       : ClipOval(
-                    child: Image.network(
-                      '${imageAllBaseUrl}${item.offerImage ?? ""}',
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.error),
-                      loadingBuilder:
-                          (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const Center(
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2),
-                        );
-                      },
-                    ),
-                  ),
+                          child: Image.network(
+                            '${imageAllBaseUrl}${item.offerImage ?? ""}',
+                            height: 60,
+                            width: 60,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.error),
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const Center(
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              );
+                            },
+                          ),
+                        ),
                   SizedBox(height: Get.height * 0.01),
                   SizedBox(
                     width: Get.width * 0.18,

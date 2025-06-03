@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+ import 'package:fonofy/ProductScreens/ProductScreen.dart';
+
+import '../ViewScreen/bottom_navgation.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
@@ -18,18 +22,30 @@ class ServicesScreen extends StatelessWidget {
           children: [
             _buildCategory("Sell for cash", [
               Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: _buildServiceItem("Sell Phone", "assets/images/phone.png"),
+                padding: EdgeInsets.all(12.0),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation(upperTabIndex: 1,)),
+                    );
+                  },
+                  child: _buildServiceItem("Sell Phone", "assets/images/phone.png"),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: _buildServiceItem("Sell Laptop", "assets/images/Laptop.png"),
-              ),
+
+              // Padding(
+              //   padding: const EdgeInsets.all(12.0),
+              //   child: _buildServiceItem("Sell Laptop", "assets/images/Laptop.png"),
+              // ),
             ]),
             _buildCategory("Buy Refurbished", [
               Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: _buildServiceItem("Refurbished Phones", "assets/images/refurbished_phone.png"),
+                padding:   EdgeInsets.all(12.0),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen()));
+                  },
+                  child: _buildServiceItem("Refurbished Phones", "assets/images/refurbished_phone.png"),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -40,8 +56,13 @@ class ServicesScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: _buildCategory("Other", [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _buildServiceItem("Repair Phone", "assets/images/Repair_phone.png"),
+                  padding:  EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context,  MaterialPageRoute(builder: (context) => BottomNavigation(upperTabIndex: 2),));
+                    },
+                    child: _buildServiceItem("Repair Phone", "assets/images/Repair_phone.png"),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -93,7 +114,7 @@ class ServicesScreen extends StatelessWidget {
       children: [
         Image.asset(imagePath, height: 80),
         const SizedBox(height: 5),
-        Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+        Text(title, style:  TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
       ],
     );
   }

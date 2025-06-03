@@ -44,6 +44,12 @@ dependencies:
   dropdown_button2: ^2.3.9
   shimmer: any
   percent_indicator: ^4.2.5
+  flutter_launcher_icons: ^0.14.3
+  jwt_decoder: ^2.0.1
+  uuid: any
+  otp_autofill: any
+  razorpay_flutter: any
+  fluttertoast: any
 
 
 dev_dependencies:
@@ -73,6 +79,10 @@ flutter:
     - assets/images/
   
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/appFonofy.jpeg"
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
@@ -98,3 +108,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+

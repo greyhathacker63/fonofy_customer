@@ -5,7 +5,7 @@ import '../MainScreen.dart';
 import 'RegisterScreen.dart';
 
 class EmailLoginScreen extends StatefulWidget {
-  const EmailLoginScreen({Key? key}) : super(key: key);
+  const EmailLoginScreen({super.key});
 
   @override
   _EmailLoginScreenState createState() => _EmailLoginScreenState();
@@ -118,15 +118,15 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+                SizedBox(height: 20),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Not a member? "),
+                    Text("Not a member? "),
                   GestureDetector(
-                    onTap: () => Get.to(() => RegisterScreen(mobile: "")),
-                    child: const Text(
+                    onTap: () => Get.to(() => RegisterScreen(mobile: '')),
+                    child: Text(
                       "Signup Now",
                       style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                     ),

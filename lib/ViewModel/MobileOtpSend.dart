@@ -12,9 +12,6 @@ class OtpViewModel extends ChangeNotifier {
   String get statusMessage => _statusMessage;
 
 
-
-
-  // ✅ Function to send OTP with improved error handling
   Future<void> sendOtp(String mobileNumber) async {
     _isLoading = true;
     notifyListeners();
@@ -22,7 +19,6 @@ class OtpViewModel extends ChangeNotifier {
     try {
       MobileOtp otpResponse = await _otpService.sendOtp(mobileNumber);
 
-      // ✅ Handle API response correctly
       if (otpResponse.status == "Otp Sent Succesfully.") {
         _statusMessage = "success";
       } else {

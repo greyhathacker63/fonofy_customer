@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:fonofy/ProductScreens/ProductScreen.dart';
 import 'package:fonofy/model/common_filter_model.dart';
- import 'package:fonofy/utils/Colors.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:fonofy/utils/Colors.dart';
 import '../Api_Service/FilterService/FilterService.dart';
-
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -16,7 +13,6 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   String selectedCategory = "Price";
-
   CommonFilterModel? commonFilters;
 
   Map<String, dynamic> selectedFilters = {
@@ -34,8 +30,7 @@ class _FilterScreenState extends State<FilterScreen> {
 
   final TextEditingController minPriceController = TextEditingController();
   final TextEditingController maxPriceController = TextEditingController();
-
-  final filterService = FilterService();
+  final FilterService filterService = FilterService();
 
   @override
   void initState() {
@@ -52,13 +47,14 @@ class _FilterScreenState extends State<FilterScreen> {
     }
   }
 
-  void toggleSelection(String category, String value) {
+  void toggleSelection(String category, String value, bool isSelected) {
     setState(() {
-      if (selectedFilters[category].contains(value)) {
-        selectedFilters[category].remove(value);
-      } else {
+      if (isSelected) {
         selectedFilters[category].add(value);
+      } else {
+        selectedFilters[category].remove(value);
       }
+      print('Updated $category: ${selectedFilters[category]}'); // Debug log
     });
   }
 
@@ -74,6 +70,7 @@ class _FilterScreenState extends State<FilterScreen> {
           selectedFilters[key].clear();
         }
       }
+      print('Cleared filters: $selectedFilters'); // Debug log
     });
   }
 
@@ -90,7 +87,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 controller: minPriceController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: "Min", border: OutlineInputBorder()),
-                onChanged: (value) => selectedFilters["Price"]["min"] = value,
+                onChanged: (value) {
+                  selectedFilters["Price"]["min"] = value;
+                  setState(() {});
+                },
               ),
             ),
             const SizedBox(width: 10),
@@ -99,7 +99,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 controller: maxPriceController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: "Max", border: OutlineInputBorder()),
-                onChanged: (value) => selectedFilters["Price"]["max"] = value,
+                onChanged: (value) {
+                  selectedFilters["Price"]["max"] = value;
+                  setState(() {});
+                },
               ),
             ),
           ],
@@ -117,7 +120,11 @@ class _FilterScreenState extends State<FilterScreen> {
           return CheckboxListTile(
             title: Text(option),
             value: selectedFilters[category]?.contains(option) ?? false,
-            onChanged: (isSelected) => toggleSelection(category, option),
+            onChanged: (bool? isSelected) {
+              if (isSelected != null) {
+                toggleSelection(category, option, isSelected);
+              }
+            },
           );
         },
       ),
@@ -152,10 +159,17 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> categories = [
-      "Price", "RAM", "ROM", "Display", "Battery", "Front Camera",
-      "Rear Camera", "Processor", "Color", "Brand"
+      "Price",
+      "RAM",
+      "ROM",
+      "Display",
+      "Battery",
+      "Front Camera",
+      "Rear Camera",
+      "Processor",
+      "Color",
+      "Brand",
     ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Filters"),
@@ -163,7 +177,7 @@ class _FilterScreenState extends State<FilterScreen> {
           TextButton(
             onPressed: clearFilters,
             child: const Text("Clear Filters", style: TextStyle(color: Colors.blue)),
-          )
+          ),
         ],
       ),
       bottomNavigationBar: Padding(
@@ -174,7 +188,22 @@ class _FilterScreenState extends State<FilterScreen> {
             padding: const EdgeInsets.symmetric(vertical: 14),
           ),
           onPressed: () {
-            Navigator.pop(context, selectedFilters);
+            final simplifiedFilters = {
+              'ram': selectedFilters['RAM'].isNotEmpty ? selectedFilters['RAM'].join(',') : '',
+              'rom': selectedFilters['ROM'].isNotEmpty ? selectedFilters['ROM'].join(',') : '',
+              'brand': selectedFilters['Brand'].isNotEmpty ? selectedFilters['Brand'].join(',') : '',
+              'color': selectedFilters['Color'].isNotEmpty ? selectedFilters['Color'].join(',') : '',
+              'display': selectedFilters['Display'].isNotEmpty ? selectedFilters['Display'].join(',') : '',
+              'battery': selectedFilters['Battery'].isNotEmpty ? selectedFilters['Battery'].join(',') : '',
+              'front': selectedFilters['Front Camera'].isNotEmpty ? selectedFilters['Front Camera'].join(',') : '',
+              'rear': selectedFilters['Rear Camera'].isNotEmpty ? selectedFilters['Rear Camera'].join(',') : '',
+              'processor': selectedFilters['Processor'].isNotEmpty ? selectedFilters['Processor'].join(',') : '',
+              'minAmt': selectedFilters['Price']['min']?.isNotEmpty == true ? selectedFilters['Price']['min'] : '',
+              'underAmt': selectedFilters['Price']['max']?.isNotEmpty == true ? selectedFilters['Price']['max'] : '',
+            };
+            print('Applied Filters: $simplifiedFilters');
+            Navigator.pop(context, simplifiedFilters);
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(),));
           },
           child: const Text("Apply", style: TextStyle(color: Colors.white, fontSize: 16)),
         ),
@@ -183,7 +212,6 @@ class _FilterScreenState extends State<FilterScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Row(
         children: [
-          // Category Sidebar
           Container(
             width: 120,
             color: Colors.grey[200],
@@ -202,8 +230,6 @@ class _FilterScreenState extends State<FilterScreen> {
               }).toList(),
             ),
           ),
-
-          // Filter Options
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12.0),

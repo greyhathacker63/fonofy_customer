@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../AccountApiService/account_api_service.dart';
 import '../AccountApiService/UpdateAccountDetails.dart';
 import '../AccountDetailsModel/account_details_model.dart';
+import '../utils/Colors.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
   const AccountDetailsScreen({super.key});
@@ -33,14 +34,14 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Account Details", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue,
+        backgroundColor: ColorConstants.appBlueColor3,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
           : SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -57,12 +58,12 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: ColorConstants.appBlueColor3,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: isUpdating ? null : _fetchAccountUpdate,
                 child: isUpdating
-                    ? const CircularProgressIndicator(color: Colors.white)
+                    ? const CircularProgressIndicator(color: Colors.blue,strokeWidth: 2,)
                     : const Text("Save Changes", style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
             ),
@@ -82,7 +83,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
         readOnly: isReadOnly,
         decoration: InputDecoration(
           labelText: label,
-          border: const OutlineInputBorder(),
+          border:   OutlineInputBorder(),
         ),
       ),
     );

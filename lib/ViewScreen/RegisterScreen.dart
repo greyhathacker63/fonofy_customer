@@ -1,4 +1,6 @@
+
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
@@ -14,7 +16,6 @@ import '../MainScreen.dart';
 import '../SharedPreferences/SharedPreferences_email.dart';
 import '../ViewModel/MobileOtpSend.dart';
 import '../model/RegisterModel/register_model.dart';
-import 'otp_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String mobile;
@@ -25,6 +26,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool _obscurePassword = true;
 
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
@@ -35,6 +37,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool isLoading = false;
   bool isVerified = false;
+  bool isSuccess = false;
+  String otp = "";
+
   @override
   void initState() {
     super.initState();
@@ -50,8 +55,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               SizedBox(
-                height: 100,
+                height: 90,
                 child: Image.asset('assets/images/Logo.png', fit: BoxFit.contain),
               ),
               const SizedBox(height: 20),
@@ -64,8 +70,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hint: 'First Name',
                 controller: firstNameController,
               ),
+              SizedBox(height: 10,),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:  EdgeInsets.all(8.0),
                 child: GlobalTextFieldWithVerify(
                   hint: 'Phone No.',
                   controller: phoneNumberController,
@@ -77,11 +84,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hint: "Email ID",
                 controller: emailController,
               ),
+              // GlobalTextField(
+              //   hint: "Password",
+              //   controller: passwordController,
+              // ),
+              SizedBox(height: 15,),
               GlobalTextField(
                 hint: "Password",
                 controller: passwordController,
+                obscureText: _obscurePassword,
+                border:  OutlineInputBorder(),
+                maxLine: 1,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -94,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   onPressed: isLoading ? null : _registerUser,
                   child: isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? const CircularProgressIndicator(color: Colors.blue,strokeWidth: 2,)
                       : const Text("SUBMIT",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
@@ -109,6 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
   Future<void> _registerUser() async {
+
     if(isVerified){
       final firstName = firstNameController.text.trim();
       final phoneNumber = phoneNumberController.text.trim();
@@ -129,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "PhoneNumber": phoneNumber,
         "Email": email,
         "Password": password,
-        "PlatformType": "App",
+        "PlatformType": ''
       });
 
       try {
@@ -142,8 +169,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (isActive) {
             await TokenHelper.saveUserCode(userCode);
           }
-          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("✅ Registration Successful!"),backgroundColor: Colors.green,),);
-          await SharedpreferencesEmail().saveUserCredentials(email, password);
           await Future.delayed(const Duration(seconds: 1));
           Get.offAll(() => const EmailLoginScreen());
         } else {
@@ -175,17 +200,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return false;
     }
   }
+
   void _showVerificationDialog(BuildContext context, String mobileNumber) {
+
     String otp = "";
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding:  EdgeInsets.all(20),
             width: MediaQuery.of(context).size.width * 0.85,
-            constraints: const BoxConstraints(maxWidth: 400),
-            decoration: const BoxDecoration(
+            constraints:   BoxConstraints(maxWidth: 400),
+            decoration:   BoxDecoration(
+
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
@@ -251,9 +280,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orangeAccent,
+                        backgroundColor: Colors.blue,
                       ),
-                      child: const Text("Verify"),
+                      child:  Text("Verify",style: TextStyle(fontSize: 16,color: Colors.white, fontWeight: FontWeight.bold),),
                     ),
                   ],
                 ),
@@ -269,7 +298,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await prefs.setString("Email", email);
       await prefs.setString("Password", password);
     }
-
   }
 }
+
+
 
