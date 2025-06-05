@@ -10,7 +10,8 @@ class SelectProductScreen3 extends StatelessWidget {
 
   SelectProductScreen3({super.key, required this.brandName});
 
-  final SellBrandBasedModelController sellBrandBasedModelController = Get.put(SellBrandBasedModelController());
+  final SellBrandBasedModelController sellBrandBasedModelController =
+      Get.put(SellBrandBasedModelController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,8 @@ class SelectProductScreen3 extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("Select $brandName Model", style: const TextStyle(fontSize: 18)),
+        title: Text("Select $brandName Model",
+            style: const TextStyle(fontSize: 18)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -56,17 +58,22 @@ class SelectProductScreen3 extends StatelessWidget {
                     padding: EdgeInsets.only(right: 180),
                     child: Text(
                       "Select Series",
-                      style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 30),
 
                   Obx(() {
-                    if (sellBrandBasedModelController.isSellBrandModelLoading.value) {
+                    if (sellBrandBasedModelController
+                        .isSellBrandModelLoading.value) {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (sellBrandBasedModelController.series.isEmpty) {
-                      return Center(child: Text("No series available for $brandName"));
+                      return Center(
+                          child: Text("No series available for $brandName"));
                     }
 
                     return SizedBox(
@@ -75,22 +82,26 @@ class SelectProductScreen3 extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: sellBrandBasedModelController.series.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
                           childAspectRatio: 2.0,
                         ),
                         itemBuilder: (context, index) {
-                          final series = sellBrandBasedModelController.series[index];
+                          final series =
+                              sellBrandBasedModelController.series[index];
                           return GestureDetector(
                             onTap: () {
-                              // You can add filtering by series here later if needed
+                              sellBrandBasedModelController
+                                  .fetchSeriesData(series.seriesName);
                             },
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade100,
-                                border: Border.all(color: Colors.grey.shade300, width: 1),
+                                border: Border.all(
+                                    color: Colors.grey.shade300, width: 1),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               alignment: Alignment.center,
@@ -110,7 +121,8 @@ class SelectProductScreen3 extends StatelessWidget {
 
                   // Models GridView
                   Obx(() {
-                    if (sellBrandBasedModelController.isSellBrandModelLoading.value) {
+                    if (sellBrandBasedModelController
+                        .isSellBrandModelLoading.value) {
                       return const Center(
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
@@ -119,27 +131,32 @@ class SelectProductScreen3 extends StatelessWidget {
                       );
                     }
                     if (sellBrandBasedModelController.models.isEmpty) {
-                      return Center(child: Text("No models available for $brandName"));
+                      return Center(
+                          child: Text("No models available for $brandName"));
                     }
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: sellBrandBasedModelController.models.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 8,
                         mainAxisSpacing: 8,
                         childAspectRatio: 0.8,
                       ),
                       itemBuilder: (context, index) {
-                        final model = sellBrandBasedModelController.models[index];
+                        final model =
+                            sellBrandBasedModelController.models[index];
                         return GestureDetector(
                           onTap: () {
-                            Get.to(() => SelectProductScreen(modelno: model.productAndModelName ?? ''));
+                            Get.to(() => SelectProductScreen(
+                                modelno: model.productAndModelName ?? ''));
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade300, width: 1),
+                              border: Border.all(
+                                  color: Colors.grey.shade300, width: 1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Column(
@@ -151,7 +168,9 @@ class SelectProductScreen3 extends StatelessWidget {
                                         height: 50,
                                         width: 50,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) => Icon(
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Icon(
                                           Icons.image,
                                           size: 40,
                                           color: ColorConstants.appBlueColor3,

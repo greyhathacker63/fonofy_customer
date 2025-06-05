@@ -94,3 +94,41 @@ class BrandSeries {
         "brandId": brandId,
       };
 }
+
+class SeriesItem {
+  final String? seriesName;
+  final String? brandName;
+  final String? seriesImage;
+  final int? seriesId;
+  final int? brandId;
+
+  SeriesItem({this.seriesName, this.brandName, this.seriesImage, this.seriesId, this.brandId});
+
+  factory SeriesItem.fromJson(Map<String, dynamic> json) {
+    return SeriesItem(
+      seriesName: json['SeriesName'],
+      brandName: json['BrandName'],
+      seriesImage: json['SeriesImage'],
+      seriesId: json['SeriesId'],
+      brandId: json['brandId'],
+    );
+  }
+}
+
+class ProductItem {
+  final int? productId;
+  final String? productAndModelName;
+  final String? image;
+  final int? brandId;
+
+  ProductItem({this.productId, this.productAndModelName, this.image, this.brandId});
+
+  factory ProductItem.fromJson(Map<String, dynamic> json) {
+    return ProductItem(
+      productId: json['ProductId'],
+      productAndModelName: json['ProductAndModelName'],
+      image: json['Image'],
+      brandId: json['BrandId'],
+    );
+  }
+}
