@@ -3,12 +3,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:fonofy/ViewScreen/AllBrands.dart';
-import 'package:fonofy/RepairScreen/RepairScreen.dart';
-import 'package:fonofy/controllers/SellControllers/BrandListControllers.dart';
+ import 'package:fonofy/controllers/SellControllers/BrandListControllers.dart';
 import 'package:fonofy/controllers/SellControllers/SellTestimonialListControllers.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
- import '../widgets/SellWidgets/sellForCash.dart';
+ import '../ViewScreen/bottom_navgation.dart';
+import '../widgets/SellWidgets/sellForCash.dart';
 
 class Sellscreen extends StatefulWidget {
   const Sellscreen({super.key});
@@ -40,7 +40,7 @@ class _SellscreenState extends State<Sellscreen> {
           children: [
             // Banner Image
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding:   EdgeInsets.all(12.0),
               child: Image.asset("assets/images/banner.png",
                 height: 120,
                 fit: BoxFit.cover,
@@ -109,7 +109,7 @@ class _SellscreenState extends State<Sellscreen> {
 
             // Other Section
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding:   EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -121,7 +121,11 @@ class _SellscreenState extends State<Sellscreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () => Get.to(() => RepairScreen()),
+                        // onTap: () => Get.to(() => RepairScreen()),
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation(upperTabIndex:2),));
+                        },
+
                         child: featureCard(
                           imagePath: "assets/images/phone.png",
                           label: "Repair Phone",
@@ -304,7 +308,7 @@ class _SellscreenState extends State<Sellscreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
+                    child:   Text(
                       "Sell Now",
                       style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                     ),

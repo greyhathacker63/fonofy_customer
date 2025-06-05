@@ -40,16 +40,16 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Select Services"),
+        title:   Text("Select Services"),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0.5,
-        leading: const BackButton(),
+        leading:BackButton(),
       ),
       body: Obx(
             () => repairController.isRepairTableLoading.value
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
             : SingleChildScrollView(
           child: Column(
             children: [
@@ -61,8 +61,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                   padding: EdgeInsets.all(16.0),
                   child: Text("No device data available"),
                 ),
-              // ServicePhoneItem for each Table1 entry
-              if (repairController.tableRepairData?.table1?.isNotEmpty ?? false)
+               if (repairController.tableRepairData?.table1?.isNotEmpty ?? false)
                 ...repairController.tableRepairData!.table1!.map(
                       (service) => ServicePhoneItem(
                     image: "$imageAllBaseUrl${service.serviceImage}",
@@ -76,13 +75,13 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                   ),
                 )
               else
-                const Padding(
+                  Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text("No services available"),
                 ),
-              const SizedBox(height: 16),
-              const OtherRepairTile(),
-              const SizedBox(height: 16),
+                SizedBox(height: 16),
+                OtherRepairTile(),
+                SizedBox(height: 16),
               Container(
                 height: 130,
                 child: Card(
@@ -102,7 +101,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               SizedBox(
                 height: 240,
                 child: Card(
@@ -155,7 +154,6 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                Padding(
                 padding: EdgeInsets.only(right: 50),
                 child: Align(
-
                   child: Text(
                     'Frequently Asked Questions',
                     style: TextStyle(fontSize : 18, fontWeight: FontWeight.bold),

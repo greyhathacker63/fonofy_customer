@@ -783,7 +783,6 @@ class SelectProduct2 extends StatefulWidget {
     super.key,
     required this.selectedVariant,
     required this.modelNo,
-
     required this.ram,
     required this.rom,
    });
@@ -793,6 +792,7 @@ class SelectProduct2 extends StatefulWidget {
 }
 
 class _SelectProduct2State extends State<SelectProduct2> {
+
    final SellVariantControllerPrice sellVariantPriceController = Get.put(SellVariantControllerPrice());
 
   @override
@@ -842,7 +842,6 @@ class _SelectProduct2State extends State<SelectProduct2> {
                           "${sellVariantPriceController.priceVariantData?.modelName.toString()}\n"
                               "(${sellVariantPriceController.priceVariantData?.ramName.toString()} / "
                               "${sellVariantPriceController.priceVariantData?.romName.toString()})",
-
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: ColorConstants.appBlueColor3,
                           ),
                         ),
@@ -853,7 +852,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
                             const SizedBox(width: 8),
                             Text(
                               "₹ ${sellVariantPriceController.priceVariantData?.basePrice.toStringAsFixed(0) ?? 0}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -976,14 +975,11 @@ class _SelectProduct2State extends State<SelectProduct2> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorConstants.appBlueColor3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
               ),
               elevation: 3,
             ),
-            child:   Text(
-              "Get Exact Value",
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+            child:   Text("Get Exact Value",style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -1010,7 +1006,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
         return   SizedBox(
           height: 80,
           width: 80,
-          child: Center(child: CircularProgressIndicator()),
+          child: Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,)),
         );
       },
       errorBuilder: (context, error, stackTrace) {
@@ -1023,11 +1019,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
         );
       },
     )
-        : Image.asset(
-      "assets/images/Phone3.png",
-      height: 80,
-      width: 80,
-      fit: BoxFit.cover,
+        : Image.asset("assets/images/Phone3.png",height: 80,width: 80,fit: BoxFit.cover,
     );
   }
 

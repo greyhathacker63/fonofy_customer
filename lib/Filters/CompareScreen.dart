@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../Api_Service/ProductDetailsService/SearchProductService.dart';
 import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../controllers/SearchController/SearchCompareController.dart';
+import '../utils/Colors.dart';
 
 class CompareScreen extends StatefulWidget {
   final List<SearchCompareProductModel> selectedProducts;
@@ -22,7 +22,6 @@ class _CompareScreenState extends State<CompareScreen> {
 
   final TextEditingController searchProductController = TextEditingController();
   final SearchCompareController searchCompareController = Get.put(SearchCompareController());
-
   Timer? _debounce;
 
   final List<Map<String, String>> featureList = [
@@ -58,22 +57,24 @@ class _CompareScreenState extends State<CompareScreen> {
 
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(Duration(milliseconds: 500), () {
       if (query.trim().isEmpty) {
         searchCompareController.productSearchList.clear();
         return;
       }
       searchCompareController.searchProducts(query);
+      print('Search Query: $query');
+      print('Search Results: ${searchCompareController.productSearchList.map((e) => {'Name': e.name, 'Amount': e.amount}).toList()}');
     });
   }
 
   void _removeProduct(int index) {
     final count = selectedProducts.where((e) => e != null).length;
-    if (count > 1) {
+    if (count > 0) { // Require at least 2 products for comparison
       setState(() => selectedProducts[index] = null);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('At least one product must remain.')),
+        const SnackBar(content: Text('At least two products must remain for comparison.')),
       );
     }
   }
@@ -93,21 +94,21 @@ class _CompareScreenState extends State<CompareScreen> {
       case 'stock':
         return product.amount != null && product.amount! > 0 ? "In Stock" : "Out of Stock";
       case 'ram':
-        return  'N/A';
+        return 'N/A';
       case 'rom':
-        return   'N/A';
+        return 'N/A';
       case 'display':
-        return  'N/A';
+        return 'N/A';
       case 'battery':
-        return  'N/A';
+        return 'N/A';
       case 'frontCamera':
-        return   'N/A';
+        return 'N/A';
       case 'rearCamera':
-        return   'N/A';
+        return 'N/A';
       case 'processor':
-        return  'N/A';
+        return 'N/A';
       case 'rating':
-        return   'N/A';
+        return 'N/A';
       default:
         return 'N/A';
     }
@@ -116,14 +117,15 @@ class _CompareScreenState extends State<CompareScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Compare Products")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(title: Text("Compare Products"),backgroundColor: Colors.white,),
       body: Column(
         children: [
           if (showSearch)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(28),
@@ -137,7 +139,7 @@ class _CompareScreenState extends State<CompareScreen> {
                       child: TextField(
                         controller: searchProductController,
                         onChanged: _onSearchChanged,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'Search product...',
                           border: InputBorder.none,
                         ),
@@ -146,12 +148,12 @@ class _CompareScreenState extends State<CompareScreen> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          showSearch = false;
+                          showSearch = true; // Fixed: Hide search bar
                           searchProductController.clear();
                           searchCompareController.productSearchList.clear();
                         });
                       },
-                      child: const Icon(Icons.close, color: Colors.black),
+                      child: Icon(Icons.close, color: Colors.black),
                     ),
                   ],
                 ),
@@ -159,20 +161,19 @@ class _CompareScreenState extends State<CompareScreen> {
             ),
           Obx(() {
             if (searchCompareController.isLoading.value) {
-              return const LinearProgressIndicator();
+              return LinearProgressIndicator(color: ColorConstants.appBlueColor3);
             }
             if (showSearch) {
               return Expanded(
                 child: searchCompareController.productSearchList.isEmpty
-                    ? const Center(child: Text('No products found'))
+                    ? Center(child: Text('No products found'))
                     : ListView.builder(
                   itemCount: searchCompareController.productSearchList.length,
                   itemBuilder: (context, index) {
                     final searchData = searchCompareController.productSearchList[index];
                     return InkWell(
                       onTap: () {
-                        final firstNullIndex =
-                        selectedProducts.indexWhere((p) => p == null);
+                        final firstNullIndex = selectedProducts.indexWhere((p) => p == null);
                         if (firstNullIndex != -1) {
                           setState(() {
                             selectedProducts[firstNullIndex] = searchData;
@@ -183,7 +184,7 @@ class _CompareScreenState extends State<CompareScreen> {
                         }
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         child: Row(
                           children: [
                             Image.network(
@@ -192,26 +193,27 @@ class _CompareScreenState extends State<CompareScreen> {
                               width: 55,
                               fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) =>
-                                  Icon(Icons.image, color: Colors.blue),
+                                  Icon(Icons.image, color: ColorConstants.appBlueColor3),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     searchData.name ?? '',
-                                    style: const TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.w500),
+                                    style: TextStyle(
+                                        fontSize: 12, fontWeight: FontWeight.w500),
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                    SizedBox(height: 4),
+                                  SizedBox(height: 4),
                                   Text(
-                                    "₹${searchData.amount?.toString() ?? 'N/A'}",
-                                    style:  TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
+                                    "₹ ${searchData.amount?.toString() ?? 'Price not available'}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: searchData.amount != null ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -262,8 +264,8 @@ class _CompareScreenState extends State<CompareScreen> {
                                           shape: BoxShape.circle,
                                           color: Colors.white,
                                         ),
-                                        padding: const EdgeInsets.all(5),
-                                        child: const Icon(Icons.close,
+                                        padding: EdgeInsets.all(5),
+                                        child: Icon(Icons.close,
                                             size: 18, color: Colors.black),
                                       ),
                                     ),
@@ -271,39 +273,34 @@ class _CompareScreenState extends State<CompareScreen> {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   product.name ?? '',
-                                  style: const TextStyle(
+                                  style:   TextStyle(
                                       fontSize: 14, fontWeight: FontWeight.bold),
                                 ),
                               ),
                               const SizedBox(height: 10),
                               ...featureList.map((feature) {
-                                final value =
-                                getFeatureValue(feature['key']!, product);
+                                final value = getFeatureValue(feature['key']!, product);
                                 return Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     border: Border(
-                                        top: BorderSide(
-                                            color: Colors.grey.shade200)),
+                                        top: BorderSide(color: Colors.grey.shade200)),
                                     color: Colors.blue.shade50,
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 8),
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         feature['label']!,
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
+                                            fontWeight: FontWeight.bold, fontSize: 13),
                                       ),
                                       const SizedBox(height: 4),
-                                      Text(value,
-                                          style: const TextStyle(fontSize: 13)),
+                                      Text(value, style: const TextStyle(fontSize: 13)),
                                     ],
                                   ),
                                 );
@@ -315,25 +312,24 @@ class _CompareScreenState extends State<CompareScreen> {
                           onTap: () => _addProduct(index),
                           child: Container(
                             alignment: Alignment.center,
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                             child: FittedBox(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 14),
+                                    vertical: 18, horizontal: 8),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color: Colors.blue,
+                                  color: ColorConstants.appBlueColor3,
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Icon(Icons.add,
-                                        color: Colors.white, size: 30),
+                                  children: [
+                                    Icon(Icons.add, color: Colors.white, size: 30),
                                     SizedBox(width: 6),
                                     Text(
                                       "Add Product",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),

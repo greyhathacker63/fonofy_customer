@@ -191,7 +191,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
         ),
       ),
       body: Obx(() => sellVariantController.isVariantTableLoading.value
-          ? const Center(child: CircularProgressIndicator())
+          ?   Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
           : Padding(
               padding: const EdgeInsets.all(15.0),
               child: SingleChildScrollView(
@@ -199,21 +199,21 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildProductCard(),
-                    const SizedBox(height: 18),
-                    const Text("Choose a variant",
+                      SizedBox(height: 18),
+                      Text("Choose a variant",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 15),
+                      SizedBox(height: 15),
 
                     _buildVariantList(),
 
-                    const SizedBox(height: 10),
+                      SizedBox(height: 10),
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                           color: Colors.amber.shade100,
                           borderRadius: BorderRadius.circular(8)),
-                      child: const Text(
+                      child: Text(
                         "The price stated above depends on the condition of the product and is not final. "
                         "The final price offer will be quoted at the end of the diagnosis.",
                         style: TextStyle(fontSize: 12),
@@ -294,7 +294,6 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                 //     ? table1.first.image!
                 //     : null;
                 final variantParts = selectedVariant!.split(' / ');
-
                 final ram = variantParts.isNotEmpty ? variantParts[0].trim() : ' ';
                 final rom = variantParts.length > 1 ? variantParts[1].trim() : ' ';
 

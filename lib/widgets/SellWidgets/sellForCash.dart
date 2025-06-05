@@ -8,7 +8,7 @@ import '../../utils/Colors.dart';
 Widget sellForCash(List<BrandListModel>? brandListData) {
   return ListView(
     shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
+    physics:   NeverScrollableScrollPhysics(),
     children: [
       // Title
       const Padding(

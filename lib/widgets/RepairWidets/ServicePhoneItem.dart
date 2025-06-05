@@ -1,9 +1,12 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
+import 'package:fonofy/ViewScreen/SelectColourScreen.dart';
 import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 
+import '../../SelectProductScreenRepair/selectColorsProductScreen.dart';
 import '../../utils/Colors.dart';
 
 // class ServicePhoneItem extends StatelessWidget {
@@ -137,48 +140,86 @@ class ServicePhoneItem extends StatelessWidget {
                 ),
               ),
                 SizedBox(width: 10),
-    Container(
-      height: 40,
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 1),
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: ElevatedButton(
-        onPressed: () async {
+    // Container(
+    //   height: 40,
+    //   padding:   EdgeInsets.symmetric(horizontal: 0, vertical: 1),
+    //   decoration: BoxDecoration(
+    //     color: Colors.blue,
+    //     borderRadius: BorderRadius.circular(5),
+    //   ),
+    //   child: ElevatedButton(
+    //     onPressed: () async {
+    //      final token = TokenHelper.getToken();
+    //       if (token == null) {
+    //         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+    //       } else {
+    //         Navigator.pushNamed(context, '/selectServices');
+    //       }
+    //     },
+    //     style: ElevatedButton.styleFrom(
+    //       backgroundColor: ColorConstants.appBlueColor3,
+    //       elevation: 0,
+    //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    //     ),
+    //     child:   Text("Add +",
+    //       style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+    //     ),
+    //   ),
+    // )
 
-         final token = TokenHelper.getToken();
-          if (token == null) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
-          } else {
-            Navigator.pushNamed(context, '/selectServices');
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ColorConstants.appBlueColor3,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        child: const Text(
-          "Add +",
-          style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-      ),
-    )
+              Container(
+                height: 40,
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 1),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final token = await TokenHelper.getToken();
+                    if (token == null || token.isEmpty) {
+
+                      Navigator.push(context ,MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    } else {
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SelectColorsProductScreen(brandId: '', modelId: '',)),
+                      );
+                      // Navigator.pushNamed(context, '/selectServices');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorConstants.appBlueColor3,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  child: Text(
+                    "Add +",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+
 
             ],
           ),
           if (note != null)
             Container(
-              margin: const EdgeInsets.only(top: 20),
-              padding: const EdgeInsets.all(8),
+              margin: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFF3E0),
+                color: Color(0xFFFFF3E0),
                 borderRadius: BorderRadius.circular(9),
               ),
-              child: Text(note!, style: const TextStyle(fontSize: 11)),
+              child: Text(note!, style:TextStyle(fontSize: 11)),
             ),
-          const Divider(height: 32),
+            Divider(height: 32),
         ],
       ),
     );

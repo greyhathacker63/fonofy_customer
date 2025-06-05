@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+
+ import 'package:flutter/material.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
@@ -177,7 +178,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   final product = productController.productsList[index];
                   final productCompare = SearchCompareProductModel(
                     name: product.productAndModelName,
-                    amount: product.amount,
+                    // amount: product.amount,
                     url: product.modelUrl,
                     image: product.image,
                   );
@@ -204,7 +205,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       elevation: 5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
-                      margin: const EdgeInsets.symmetric(
+                      margin:   EdgeInsets.symmetric(
                           vertical: 10, horizontal: 15),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
@@ -361,7 +362,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                           onChanged: (_) =>
                                               toggleSelection(productCompare),
                                         ),
-                                        const Text("Compare",
+                                        Text("Compare",
                                             style: TextStyle(fontSize: 14)),
                                       ],
                                     ),

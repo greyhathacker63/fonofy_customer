@@ -24,8 +24,7 @@ import '../../model/ProductDetailsModel/SearchCompareProductModel.dart';
 //     }
 //   }
 // }
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 class SearchProductService {
   static Future<List<SearchCompareProductModel>> fetchSearchProductsList(String query) async {
