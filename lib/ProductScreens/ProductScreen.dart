@@ -37,7 +37,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   String sortBy = "None";
   List<SearchCompareProductModel> selectedProducts = [];
-  bool showCheckboxes = false;
+  bool showCheckboxes =  false;
 
   Set<String> wishlistedProductNames = {};
 
