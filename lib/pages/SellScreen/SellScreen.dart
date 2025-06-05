@@ -193,8 +193,6 @@ class _SellscreenState extends State<Sellscreen> {
                         ),
                         itemBuilder: (context, index, realIndex) {
                           final testimonial = testimonials[index];
-                          // final imageUrl = "$imageBrandBaseUrl${testimonial.image ?? ''}".replaceAll('//', '/');
-                          // debug// print('Testimonial image URL: $imageUrl');
                           return testimonialCard(
                             name: testimonial.name ?? ' ',
                             image: testimonial.image ?? '',
@@ -378,30 +376,7 @@ class _SellscreenState extends State<Sellscreen> {
         mainAxisAlignment: MainAxisAlignment.center,
 
         children: [
-          // CircleAvatar(
-          //   radius: 30,
-          //   backgroundColor: image.isEmpty ? Colors.grey : null,
-          //   child: image.isNotEmpty
-          //       ? ClipOval(
-          //     child: Image.network(
-          //       image,
-          //       width: 60,
-          //       height: 60,
-          //       fit: BoxFit.cover,
-          //       loadingBuilder: (context, child, loadingProgress) {
-          //         if (loadingProgress == null) return child;
-          //         return const Center(
-          //           child: CircularProgressIndicator(strokeWidth: 2),
-          //         );
-          //       },
-          //       errorBuilder: (context, error, stackTrace) {
-          //         debug// print('Image load error: $error');
-          //         return const Icon(Icons.error, color: Colors.red, size: 30);
-          //       },
-          //     ),
-          //   )
-          //       : const Icon(Icons.person, color: Colors.white, size: 30),
-          // ),
+
           Image.network(
             height: 55,
             width: 55,

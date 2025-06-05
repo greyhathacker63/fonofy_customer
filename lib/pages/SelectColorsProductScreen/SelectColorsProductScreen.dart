@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
-import 'package:fonofy/pages/RepairServiceScreen/RepairServiceScreen.dart';
-import 'package:fonofy/controllers/RepairController/ColorRepairController.dart';
 
-import '../RepairScreen/SelectRepairServices.dart';
-import '../../widgets/ColorConstants/Colors.dart';
+
+import 'package:flutter/material.dart';
+import 'package:fonofy/controllers/RepairController/ColorRepairController.dart';
+import 'package:fonofy/pages/RepairScreen/SelectRepairServices.dart';
+import 'package:get/get.dart';
 
 class SelectColorsProductScreen extends StatefulWidget {
   final String brandId;
@@ -30,8 +28,6 @@ String getAssetImagePath = 'assets/images/Repair_phone.png';
     super.initState();
 // Defer API call
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // print(
-          'Fetching colors for brandId: ${widget.brandId}, modelId: ${widget.modelId}');
       repairColorController.getRepairColorsData(widget.brandId,widget.modelId );
 
     });
@@ -91,9 +87,6 @@ String getAssetImagePath = 'assets/images/Repair_phone.png';
                               final colorDetails = repairColorController.colorListRepair[index];
                               return GestureDetector(
                                 onTap: () {
-                                  final colorData =
-                                  // print('Selected color: ${colorDetails.colorName}, ID: ${colorDetails.colorId}');
-                                  // Get.to(() => RepairServiceScreen());
                                   Get.to(() => SelectServicesScreen(brandId: colorDetails.brand ?? '', productId: colorDetails.modelNo ?? '', colorId: colorDetails.colorId.toString(),));
                                 },
                                 child: Container(

@@ -12,7 +12,6 @@ class GetShippingAddressService {
     try {
       String? token = await TokenHelper.getToken();
       if (token == null) {
-        // print('❌ Error: No authentication token found.');
         return [];
       }
 
@@ -20,8 +19,6 @@ class GetShippingAddressService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       };
-      // final idd=4;
-      // final  ShippmentIdd='SIP_29032025101409AM';
       var url = Uri.parse("https://api.fonofy.in/api/forb2c/get-shipping-address?Id=$id&ShippmentId=$shipmentId");
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
@@ -31,15 +28,12 @@ class GetShippingAddressService {
               .map((item) => ListShippingAddressModel.fromJson(item))
               .toList();
         } else {
-          // print("❌ Error: Unexpected data format");
           return [];
         }
       } else {
-        // print('❌ Error: ${response.statusCode} - ${response.body}');
         return [];
       }
     } catch (e) {
-      // print('❌ Exception: $e');
       return [];
     }
   }

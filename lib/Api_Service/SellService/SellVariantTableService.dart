@@ -15,16 +15,13 @@ class SellVariantTableService {
 
       final request = http.Request('GET', uri);
       request.headers.addAll(headers);
-      log('Request: $request');
 
       final response = await request.send();
       final responseBody = await response.stream.bytesToString();
-      log('Response: $responseBody');
 
       final data = jsonDecode(responseBody);
       return SellVariantTableModel.fromJson(data);
     } catch (e) {
-      log('Error fetching repair table data: $e');
       rethrow;
     }
   }

@@ -41,14 +41,11 @@ class LoginService {
 
       if (response.statusCode == 200) {
         var data = jsonDecode(responseBody);
-        // print("📩 OTP Sent Successfully: ${data['otp']}");
         return {"otp": data['otp'], "status": true};
       } else {
-        // print("❌ Failed to Send OTP: ${response.statusCode}");
         return {"status": false};
       }
     } catch (e) {
-      // print("❌ Exception in getOtp: $e");
       return {"status": false};
     }
   }
@@ -58,14 +55,11 @@ class LoginService {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("number", phoneNumber);
-        // print("✅ OTP Verified & Number Saved Locally: $phoneNumber");
         return true;
       } catch (e) {
-        // print("❌ Exception in verifyOTP: $e");
         return false;
       }
     }
-    // print("❌ OTP Mismatch - Verification Failed");
     return false;
   }
 }

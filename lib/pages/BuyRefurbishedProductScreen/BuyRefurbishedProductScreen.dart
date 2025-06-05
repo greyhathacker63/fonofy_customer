@@ -1,31 +1,32 @@
+
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/AddToCartService/AddToBuyNowService.dart';
-import 'package:fonofy/pages/CartScreen/CartScreen.dart';
-import 'package:fonofy/pages/AuthScreens/LoginScreen/LoginScreen.dart';
+import 'package:fonofy/Api_Service/AddToCartService/AddToCartService.dart';
+import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import 'package:fonofy/Api_Service/ProductDetailsService/ProductImageListService.dart';
+import 'package:fonofy/Api_Service/ProductDetailsService/ProductRatingService.dart';
+import 'package:fonofy/Api_Service/ProductDetailsService/ProductReviewService.dart';
+import 'package:fonofy/Bottom_Sheet/ProductAttributeBottomSheet.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
+import 'package:fonofy/controllers/ControllerProductDetails/ControllerProductDetails.dart';
+import 'package:fonofy/controllers/ControllerProductDetails/ControllerProductList.dart';
 import 'package:fonofy/models/AddToCartModel/AddToCartModel.dart';
+import 'package:fonofy/models/ProductDetailsListModel/ProductDetailsListModel.dart';
+import 'package:fonofy/models/ProductDetailsModel/ProductDetailsModel.dart';
+import 'package:fonofy/models/ProductImageListModel/ProductImageListModel.dart';
+import 'package:fonofy/models/ProductRatingModel/ProductRatingModel.dart';
 import 'package:fonofy/models/ProductReviewModel/ProductReviewModel.dart';
+import 'package:fonofy/pages/AuthScreens/LoginScreen/LoginScreen.dart';
+import 'package:fonofy/pages/CartScreen/CartScreen.dart';
+import 'package:fonofy/pages/CheckoutScreen/CheckoutScreen.dart';
+import 'package:fonofy/widgets/BuyRefurbishedProductWidgets/buildPincodeSection.dart';
+import 'package:fonofy/widgets/BuyRefurbishedProductWidgets/buildPricingCard.dart';
+import 'package:fonofy/widgets/BuyRefurbishedProductWidgets/buildProductAttributesCard.dart';
+import 'package:fonofy/widgets/BuyRefurbishedProductWidgets/buildProductHighlightsCard.dart';
+import 'package:fonofy/widgets/BuyRefurbishedProductWidgets/buildUserReviewsSection.dart';
+import 'package:fonofy/widgets/ColorConstants/Colors.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
-import '../../Api_Service/AddToCartService/AddToCartService.dart';
-import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
-import '../../Api_Service/ProductDetailsService/ProductImageListService.dart';
-import '../../Api_Service/ProductDetailsService/ProductRatingService.dart';
-import '../../Api_Service/ProductDetailsService/ProductReviewService.dart';
-import '../CheckoutScreen/CheckoutScreen.dart';
-import '../../TokenHelper/TokenHelper.dart';
-import '../../controllers/ControllerProductDetails/ControllerProductDetails.dart';
-import '../../controllers/ControllerProductDetails/ControllerProductList.dart';
-import '../../models/ProductDetailsListModel/ProductDetailsListModel.dart';
-import '../../models/ProductDetailsModel/ProductDetailsModel.dart';
-import '../../models/ProductImageListModel/ProductImageListModel.dart';
-import '../../models/ProductRatingModel/ProductRatingModel.dart';
-import '../../widgets/ColorConstants/Colors.dart';
-import '../../widgets/BuyRefurbishedProductWidgets/buildPincodeSection.dart';
-import '../../widgets/BuyRefurbishedProductWidgets/buildPricingCard.dart';
-import '../../widgets/BuyRefurbishedProductWidgets/buildProductAttributesCard.dart';
-import '../../widgets/BuyRefurbishedProductWidgets/buildProductHighlightsCard.dart';
-import '../../widgets/BuyRefurbishedProductWidgets/buildUserReviewsSection.dart';
-import '../../Bottom_Sheet/ProductAttributeBottomSheet.dart';
 
 class BuyRefurbishedProductScreen extends StatefulWidget {
   final String url;
@@ -104,7 +105,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
         isLoading = false;
       });
     } catch (e) {
-      // print("Error loading images: $e");
       setState(() => isLoading = false);
     }
   }
@@ -162,9 +162,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
               discountPercentage: discountPercentage,
             );
           });
-          // print(
-              "Parent updated: Price=$price, Condition=$condition, RamId=$ramId, RomId=$romId, ColorId=$colorId");
-        },
+           },
       ),
     );
   }
@@ -197,7 +195,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
           Obx(() {
             var product = controllerProductDetails.productDetails.value;
             if (product == null) {
-              return const SizedBox.shrink();
+              return  SizedBox();
             }
             return IconButton(
               icon: Icon(
@@ -407,9 +405,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
                         final price = getPriceBasedOnCondition();
 
-                        // print(
-                            "Buy Now - ramId: $selectedRamId, romId: $selectedRomId, colorId: $selectedColorId, price: $price");
-                        final response =
+                         final response =
                             await addToCartService.fetchAddToCartData(
                           userCode,
                           selectedRamId ?? product?.ramId?.toString() ?? '',
@@ -433,7 +429,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           );
                         }
                       } catch (e) {
-                        // print("Add to Cart Error: $e");
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("An error occurred: $e"),
@@ -463,7 +458,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                   try {
                     final uuid = Uuid();
                     String cartRef = uuid.v4();
-                    // print('cartRef :- $cartRef');
 
                     final userCode = await TokenHelper.getUserCode();
                     final token = await TokenHelper.getToken();
@@ -481,11 +475,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       return;
                     }
                     final addToBuyNowService = AddToBuyNowService();
-                    final price = getPriceBasedOnCondition();
 
-                    // print(
-                        "Buy Now - ramId: $selectedRamId, romId: $selectedRomId, colorId: $selectedColorId, price: $price");
-
+                   
                     final addToBuyNowDetails =
                         await addToBuyNowService.fetchBuyNowData(
                       customerId: userCode,
@@ -515,7 +506,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       );
                     }
                   } catch (e) {
-                    // print("Buy Now Error: $e");
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("An error occurred: $e"),

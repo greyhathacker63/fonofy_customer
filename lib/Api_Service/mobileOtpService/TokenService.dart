@@ -29,15 +29,12 @@ class TokenService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         String token = data["token"];
-        // print("✅ Token Generated: $token");
-        // Store token securely for future use (e.g., SharedPreferences)
+      
         return token;
       } else {
-        // print("❌ Error: ${response.statusCode} - ${response.body}");
         return null;
       }
     } catch (e) {
-      // print("❌ Exception: $e");
       return null;
     }
   }

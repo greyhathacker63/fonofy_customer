@@ -13,11 +13,9 @@ class ShippingChargeService {
       if (response.statusCode == 200) {
         return ShippingChargeModel.fromJson(json.decode(response.body));
       } else {
-        // print('❌ HTTP Error: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      // print('❌ Exception while fetching shipping charge: $e');
       return null;
     }
   }

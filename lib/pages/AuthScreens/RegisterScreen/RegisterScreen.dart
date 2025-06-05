@@ -194,7 +194,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return true;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("❌ OTP Sending Failed: ${otpViewModel.statusMessage}")),);
-      // print("OTP Sending Failed: ${otpViewModel.statusMessage}");
 
       return false;
     }

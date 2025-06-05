@@ -20,7 +20,6 @@ class LocationService {
     final responseBody = await response.transform(utf8.decoder).join();
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(responseBody);
-      // print("🌍 States API Response: $data");
       return data.map((json) => LocationModel.fromJson(json)).toList();
     } else {
       throw Exception("Failed to load states");
@@ -31,7 +30,6 @@ class LocationService {
   // Fetch Cities Based on Selected State
   Future<List<CityModel>> fetchCities(int stateId) async {
     final uri = Uri.parse("$cityEndPoint$stateId");
-    final url = Uri.parse(stateEndPoint);
     final httpClient = HttpClient();
     httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
     final request = await httpClient.getUrl(uri);
@@ -40,7 +38,6 @@ class LocationService {
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(responseBody);
-      // print("🏙️ Cities API Response for stateId $stateId: $data");
       return data.map((json) => CityModel.fromJson(json)).toList();
     } else {
       throw Exception("Failed to load cities");

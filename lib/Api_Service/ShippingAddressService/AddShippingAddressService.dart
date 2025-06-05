@@ -42,20 +42,16 @@ class AddShippingAddressService {
       request.add(utf8.encode(json.encode(requestBody)));
 
       final HttpClientResponse response = await request.close();
-      final String responseBody = await response.transform(utf8.decoder).join();
 
       httpClient.close();
 
       // ✅ Handle Response
       if (response.statusCode == 200) {
-        // print('✅ Address inserted successfully: $responseBody');
         return true;
       } else {
-        // print('❌ Error ${response.statusCode}: $responseBody');
         return false;
       }
     } catch (e) {
-      // print('❗ Exception: $e');
       return false;
     }
   }

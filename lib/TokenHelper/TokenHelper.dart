@@ -41,7 +41,6 @@ class TokenHelper {
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_tokenKey);
-    // print(getToken());
   }
 
 

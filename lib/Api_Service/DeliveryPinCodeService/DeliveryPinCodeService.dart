@@ -15,14 +15,11 @@ class DeliveryPinCodeService {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        // print("TokenDelivery: $_tokenDelivery PinCode: $pinCode");
         final jsonBody = json.decode(response.body);
         return DeliveryPinCodeModel.fromJson(jsonBody);
       } else {
-        // print('Failed to fetch pin code data: ${response.statusCode}');
       }
     } catch (e) {
-      // print('Exception while fetching pin code data: $e');
     }
     return null;
   }

@@ -58,7 +58,6 @@ static Future<bool> cancelOrder(String orderId, String comment) async {
   if (response.statusCode == 200) {
     return true;
   } else {
-    // print('Failed to cancel order: ${response.statusCode} ${response.body}');
     return false;
   }
 }

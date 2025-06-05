@@ -72,7 +72,6 @@ class CreateOrderController extends GetxController {
       var response = await ApiController.post(url: createOrderUrl, body: model.toJson());
       if(response.statusCode == 200){
         var orderId = jsonDecode(response.body);
-        // print("Order ID: $orderId");
 
         var orderResponse = await ApiController.get(url: '$createOrderForPayUrl?OrderId=$orderId');
         if(orderResponse.statusCode == 200){

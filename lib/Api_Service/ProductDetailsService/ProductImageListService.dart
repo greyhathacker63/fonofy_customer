@@ -23,15 +23,12 @@ class ProductImageListService {
       );
 
       if (response.statusCode == 200) {
-        // print("✅ API Response: ${response.body}");
         return productImageListModelFromJson(response.body);
       } else {
-        // print("❌ Failed with status code: ${response.statusCode}");
-        // print("❗ Response Body: ${response.body}");
+       
         throw Exception('Failed to load product images');
       }
     } catch (e) {
-      // print("❌ Error in ProductImageListService: $e");
       throw Exception('Error fetching product images: $e');
     }
   }

@@ -13,7 +13,6 @@ class OrderDetailController extends GetxController {
       products.value = await OrderDetailService.fetchOrderProducts(orderId, customerId);
       orderDetail.value = await OrderDetailService.fetchOrderDetails(orderId);
     } catch (e) {
-      // print('Error loading order data: $e');
     } finally {
       isLoading(false);
     }

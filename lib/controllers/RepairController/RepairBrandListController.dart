@@ -1,32 +1,10 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairBrandListService.dart';
 import 'package:fonofy/models/RepairBrandListModel/RepairBrandListModel.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-// class RepairBrandListController extends GetxController {
-//   var isRepairListLoading = true.obs;
-//   List<RepairBrandListModel> _brandList = [];
-//
-//   List<RepairBrandListModel> get brandList => _brandList;
-//
-//   Future<void> getRepairBrandListData() async {
-//     isRepairListLoading.value = true;
-//     try {
-//       _brandList = await RepairBrandListService.fetchRepairBrandList();
-//     } catch (err) {
-//       debug// print('Brand List Error: $err');
-//     } finally {
-//       isRepairListLoading.value = false;
-//       update(); // Notify UI
-//     }
-//   }
-// }
 
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 
 class RepairBrandListController extends GetxController {
   var isRepairListLoading = true.obs;
@@ -36,7 +14,6 @@ class RepairBrandListController extends GetxController {
   void onInit() {
     super.onInit();
      WidgetsBinding.instance.addPostFrameCallback((_) {
-      // print('Initializing RepairBrandListController');
       getRepairBrandListData();
       refreshRepairBrandList();
     });
@@ -60,7 +37,6 @@ class RepairBrandListController extends GetxController {
         });
       }
     } catch (err) {
-      debug// print('Repair Brand List Error: $err');
       brandListRepair.clear();
       Future.microtask(() {
         Get.snackbar(

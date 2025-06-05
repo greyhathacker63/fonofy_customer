@@ -48,7 +48,6 @@ class _TabScreenState extends State<TabScreen>
             final testimonialCtrl = Get.find<TestimonialListController>();
             testimonialCtrl.refreshTestimonials();
           } catch (e) {
-            debug// print('Error accessing TestimonialListController: $e');
             Get.snackbar('Error', 'Failed to refresh testimonials');
           }
         }
@@ -57,7 +56,6 @@ class _TabScreenState extends State<TabScreen>
             final testimonial = Get.find<RepairTestimonialController>();
             testimonial.refreshRepairTestimonials();
           } catch (e) {
-            debug// print('Error accessing RepairTestimonialController: $e');
             Get.snackbar('Error', 'Failed to refresh repair testimonials');
           }
         }

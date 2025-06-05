@@ -74,7 +74,6 @@ class SearchService {
       final uri = Uri.parse("$baseurl$common$productList")
           .replace(queryParameters: queryParams);
 
-      log("API URL: ${uri.toString()}");
 
       final response = await http.get(uri);
 
@@ -83,15 +82,12 @@ class SearchService {
         if (data is List) {
           return data.map((json) => ProductModel.fromJson(json)).toList();
         } else {
-          log("Unexpected response format: $data");
           return [];
         }
       } else {
-        log("API Error - Status Code: ${response.statusCode}, Body: ${response.body}");
         throw Exception('Failed to load products: ${response.statusCode}');
       }
     } catch (e, stackTrace) {
-      log("Error fetching products: $e", stackTrace: stackTrace);
       throw Exception('Error fetching products: $e');
     }
   }

@@ -68,7 +68,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       setState(() => _isLoading = true);
       _razorpay.open(options);
     } catch (e) {
-      debug// print('Razorpay Error: $e');
       setState(() => _isLoading = false);
     }
   }
@@ -89,7 +88,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
           (route) => false,
     );
-    // print("Payments :- ${response.paymentId}");
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

@@ -30,15 +30,12 @@ class ProductDetailsListService {
                   (item) => ProductDetailsListModel.fromJson(item))
               .toList();
         } else {
-          // print("❌ Error: Unexpected data format");
           return [];
         }
       } else {
-        // print('❌ Error: ${response.statusCode} - ${response.body}');
         return [];
       }
     } catch (e) {
-      // print('❌ Exception: $e');
       return [];
     }
   }

@@ -28,15 +28,12 @@ class ProductDetailsService {
               .map((item) => ProductDetailsModel.fromJson(item))
               .toList();
         } else {
-          // print("❌ Error: Unexpected data format");
           return [];
         }
       } else {
-        // print('❌ Error: ${response.statusCode} - ${response.body}');
         return [];
       }
     } catch (e) {
-      // print('❌ Exception: $e');
       return [];
     }
   }

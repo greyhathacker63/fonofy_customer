@@ -12,7 +12,6 @@ class DeleteAddressService {
     try {
       String? token = await TokenHelper.getToken();
       if (token == null) {
-        // print('❌ Error: No authentication token found.');
         return null;
       }
       var headers = {
@@ -21,7 +20,6 @@ class DeleteAddressService {
       };
       var url = Uri.parse("$deleteShippingUrl?Id=$id&ShippmentId=$shipmentId");
       var response = await http.get(url, headers: headers);
-      // print("🔍 Response body: ${response.body}");
       if (response.statusCode == 200) {
         var decodedResponse = jsonDecode(response.body);
         if (decodedResponse is List && decodedResponse.isNotEmpty) {
@@ -30,11 +28,9 @@ class DeleteAddressService {
            return null;
         }
       } else {
-        // print("❌ Error: ${response.statusCode} - ${response.body}");
         return null;
       }
     } catch (e) {
-      // print("❌ Exception during delete: $e");
       return null;
     }
   }

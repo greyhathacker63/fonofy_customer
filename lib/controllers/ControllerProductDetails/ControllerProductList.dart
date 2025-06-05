@@ -20,7 +20,6 @@ class ControllerProductDetailsList extends GetxController {
         productDetailsList.clear(); // No data
       }
     } catch (e) {
-      debug// print("❌ Error fetching product details: $e");
     } finally {
       isLoading.value = false;
     }

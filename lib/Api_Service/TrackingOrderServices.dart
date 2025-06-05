@@ -26,8 +26,6 @@ class TrackingService {
       final List data = json.decode(response.body);
       return data.map((item) => TrackingModel.fromJson(item)).toList();
     } else {
-      // print("Failed to fetch tracking data. Status code: ${response.statusCode}");
-      // print("Response body: ${response.body}");
       throw Exception("Failed to load tracking data");
     }
   }

@@ -25,14 +25,9 @@ class TokenService {
       );
 
       if (response.statusCode == 200) {
-        // Save the new token (to shared preferences or a provider)
-        // print("Token refreshed successfully.");
       } else {
-        // print("Failed to refresh token: ${response.statusCode}");
       }
     } catch (e, stack) {
-      // print("Exception while refreshing token: $e");
-      // print("Stacktrace: $stack");
     }
   }
 }

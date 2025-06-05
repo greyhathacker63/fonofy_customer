@@ -75,7 +75,6 @@ class _OtpScreenState extends State<OtpScreen> {
         startTimer();
       }
     } catch (e) {
-      // print("❌ Error resending OTP: $e");
     }
   }
 

@@ -26,7 +26,6 @@ class DeliveryPinCodeController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = 'Error fetching delivery data.';
-      // print("Error in fetchPinCode: $e");
     } finally {
       isLoading.value = false;
     }

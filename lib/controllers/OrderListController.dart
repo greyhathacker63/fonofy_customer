@@ -19,7 +19,6 @@ class OrderListController extends GetxController {
     var result = await OrderListService.fetchOrders(); 
     orders.assignAll(result);
   } catch (e) {
-    // print('Error fetching orders: $e');
   } finally {
     isLoading(false);
   }

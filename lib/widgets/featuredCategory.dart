@@ -29,7 +29,6 @@ Widget featuredCategory({
             onTap: () {
               if (isStatic) {
                 String category = item["text1"] ?? "";
-                // print("Clicked on static category: $category");
 
                 // New mapping logic
                 if (category == "Deal of the day") {
@@ -44,7 +43,6 @@ Widget featuredCategory({
                       
                 }
               } else {
-                // print("Clicked on dynamic category: ${item.brandName}");
                 Get.to(() => ProductScreen(
                     name: item.brandName ?? "", productPage: ""));
               }

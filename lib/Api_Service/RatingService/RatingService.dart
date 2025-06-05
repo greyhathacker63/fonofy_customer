@@ -65,7 +65,6 @@ class ProductRatingService {
     if (response.statusCode == 200 && response.body.isNotEmpty) {
       return jsonDecode(response.body);
     } else {
-      // print('Rating fetch failed: ${response.statusCode}');
       return null;
     }
   }

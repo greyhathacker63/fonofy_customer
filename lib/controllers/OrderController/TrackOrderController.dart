@@ -13,8 +13,7 @@ class TrackingController extends GetxController {
       final data = await TrackingService.getTrackingData(orderId, customerId);
       trackingList.assignAll(data);
     } catch (e) {
-      // print("Error fetching tracking data: $e");
-      // Optionally show a snackbar or dialog
+      
     } finally {
       isLoading.value = false;
     }

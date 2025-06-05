@@ -27,7 +27,6 @@ Widget hotdeal({List<Table2Element>? hotTableDeal}) {
             GestureDetector(
               onTap: () {
                 Get.to(() => ProductScreen(name: 'viewall'));
-                // print("View All Pressed");
               },
               child: const Text("View All"),
             )

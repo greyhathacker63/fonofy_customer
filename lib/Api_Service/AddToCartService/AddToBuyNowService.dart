@@ -27,22 +27,18 @@ class AddToBuyNowService {
         "CartRef": cartRef,
       };
 
-      // print("📤 Request Body: ${jsonEncode(requestBody)}");
        String jsonData = "";
       final response = await http.post(uri, headers: headers, body: jsonEncode(requestBody));
       final body = response.body.trim();
 
-      // print("🔵 Raw Response: $body");
 
       if (response.statusCode == 200) {
          jsonData = json.decode(body);
         }
       else {
-        // print("❌ HTTP Error: ${response.statusCode}");
       }
       return jsonData;
     } catch (e) {
-      // print("❌ Exception in addToBuyNow: $e");
     }
     return null;
 

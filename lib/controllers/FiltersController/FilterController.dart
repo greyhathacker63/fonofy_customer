@@ -101,10 +101,8 @@ class FilterController extends ChangeNotifier {
             .toList();
         notifyListeners();
       } else {
-        // print("Error fetching filtered products: ${response.body}");
       }
     } catch (e) {
-      // print("Exception: $e");
     }
   }
 }

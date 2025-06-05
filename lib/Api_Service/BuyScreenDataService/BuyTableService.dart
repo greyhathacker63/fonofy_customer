@@ -11,12 +11,10 @@ class BuyTableService {
   static Future<ByTableModel> fetchBuyTableData() async {
     var url = tableUrl ;
     var request = http.Request('GET', Uri.parse(url));
-    log(request.toString());
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
     var data = jsonDecode(await response.stream.bytesToString());
-      // print("$data");
     if (response.statusCode == 200) {
       return ByTableModel.fromJson(data);
     } else {

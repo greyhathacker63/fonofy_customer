@@ -235,7 +235,6 @@ class _SelectProductScreen2State extends State<SelectProductScreen2> {
         ? '$imageAllBaseUrl$imagePath'
         : '$imageAllBaseUrl/$imagePath'
         : null;
-    debug// print('SelectProduct2 Image URL: $imageUrl');
 
     return imageUrl != null ? Image.network(imageUrl,
       height: 80,
@@ -250,7 +249,6 @@ class _SelectProductScreen2State extends State<SelectProductScreen2> {
         );
       },
       errorBuilder: (context, error, stackTrace) {
-        debug// print('SelectProduct2 Image Error: $error, URL: $imageUrl');
         return Image.asset(
           "assets/images/Phone3.png",
           height: 80,

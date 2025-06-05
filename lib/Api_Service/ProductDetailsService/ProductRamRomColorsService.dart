@@ -30,15 +30,12 @@ class ProductRamRomColorsService{
         if (decodedResponse is List) {
           return decodedResponse.map((item) => ProductRamRomColorListModel.fromJson(item)).toList();
         } else {
-          // print("❌ Error: Unexpected data format");
           return [];
         }
       } else {
-        // print('❌ Error: ${response.statusCode} - ${response.body}');
         return [];
       }
     } catch (e) {
-      // print('❌ Exception: $e');
       return [];
     }
   }

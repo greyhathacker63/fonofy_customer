@@ -13,10 +13,8 @@ class ProductReviewService {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((item) => ProductReviewModel.fromJson(item)).toList();
       } else {
-        // print("Failed to load product reviews: ${response.statusCode}");
       }
     } catch (e) {
-      // print("Error fetching product reviews: $e");
     }
     return [];
   }

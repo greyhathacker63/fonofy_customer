@@ -7,7 +7,6 @@ class ApiController {
   static Future<Map<String, String>?> getHeaders() async {
 
     var token = await TokenHelper.getToken();
-    // print("API Token: $token");
 
     return {
       "Content-Type": "application/json",

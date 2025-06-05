@@ -47,7 +47,6 @@ import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
        final response = await CartListService.fetchCartList(userCode);
        setState(() => cartList = response ?? []);
      } catch (e) {
-       // print("❌ Error fetching cart list: $e");
        setState(() => cartList = []);
      }
    }
@@ -58,7 +57,6 @@ import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
          setState(() => shippingChargeData = data);
        }
      } catch (e) {
-       // print("❌ Error fetching shipping charge: $e");
      }
    }
 
@@ -146,7 +144,6 @@ import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
      final ramId = cartList[index].ramId?.toString() ?? '';
      final romId = cartList[index].romId?.toString() ?? '';
 
-     // print("Deleting item with modelNo: $modelNo, ramId: $ramId, romId: $romId");
      final response = await DeleteCartService.deleteCartItem(modelNo: modelNo, ramId: ramId, romId: romId, customerId: userCode,
      );
      if (response == "Product removed in cart") {
@@ -313,7 +310,6 @@ import '../../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 
                  final uuid = Uuid();
                  String cartRef = uuid.v4();
-                 // print('cartRef :- $cartRef');
 
                  if (cartList.isEmpty) {
                    ScaffoldMessenger.of(context).showSnackBar(

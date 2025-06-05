@@ -7,11 +7,9 @@ import 'package:http/http.dart' as http;
 class SearchService {
   static Future<List<SearchProductModel>> fetchSearchProducts(String query) async {
     final String url = '$baseurl$common$Search?query=$query'; 
-    // print('Fetching from: $url'); 
 
     final response = await http.get(Uri.parse(url));
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
+
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);

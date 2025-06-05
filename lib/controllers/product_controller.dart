@@ -40,7 +40,6 @@ class ProductController extends GetxController {
     );
     productsList.assignAll(products);
   } catch (e) {
-    log("Error in fetchProducts: $e");
     rethrow;
   } finally {
     isLoading(false);

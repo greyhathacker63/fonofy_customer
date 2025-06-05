@@ -258,8 +258,6 @@ class _RepairScreenState extends State<RepairScreen> {
                         ),
                         itemBuilder: (context, index, realIndex) {
                           final testimonial = testimonialsTop[index];
-                          // final imageUrl = "$imageBrandBaseUrl${testimonial.image ?? ''}".replaceAll('//', '/');
-                          // debug// print('Testimonial image URL: $imageUrl');
                           return testimonialCard(
                             name: testimonial.name ?? '',
                             image: testimonial.image ?? '',

@@ -37,11 +37,9 @@ class AddToCartService {
       if (response.statusCode == 200) {
         return AddToCartModel.fromJson(json.decode(response.body));
       } else {
-        // print('❌ HTTP Error: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      // print('❌ Exception while fetching shipping charge: $e');
       return null;
     }
   }

@@ -141,7 +141,6 @@ class _AccountScreenState extends State<AccountScreen> {
                       );
                     }
                   } catch (e) {
-                    // print("❌ Error: $e");
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("An unexpected error occurred")),
                     );

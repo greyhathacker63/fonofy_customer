@@ -83,37 +83,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       selectedCity = widget.address?.city;
       cityController.text = selectedCity ?? "";
 
-      // fetchCityData(int.parse(selectedState!));
-
-      // print('City :- ${widget.address?.city}');
-
-      // fetchCityData(int.parse(selectedState!));
-      // // print('City :- ${widget.address?.city}');
-
-      // final selectedStateObj = locations.firstWhere(
-      //       (loc) => loc.locationName == widget.address!.state,
-      //   orElse: () => LocationModel(id: 0, locationName: ""),
-      // );
-      //
-      // if (selectedStateObj.id != 0) {
-      //   selectedState = selectedStateObj.id.toString();
-      //   stateController.text = selectedStateObj.locationName;
-      //
-      //   // Fetch cities using then instead of await
-      //   LocationService().fetchCities(selectedStateObj.id).then((fetchedCities) {
-      //     setState(() {
-      //       cityList = fetchedCities;
-      //       final selectedCityObj = cityList.firstWhere(
-      //             (city) => city.cityname == widget.address!.city,
-      //         orElse: () => CityModel(id: 0, stateId: 0, cityname: ""),
-      //       );
-      //       if (selectedCityObj.id != 0) {
-      //         selectedCity = selectedCityObj.id.toString(); // Use ID
-      //         cityController.text = selectedCityObj.cityname;
-      //       }
-      //     });
-      //   });
-      // }
+    
     }
   }
   Future<void> _initializeData() async {
@@ -125,7 +95,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       userCode = user_Code ?? "";
     });
     if (storedToken == null || storedToken.isEmpty) {
-      // print("⚠️ Token is missing. Please log in again.");
     }
   }
 
@@ -140,7 +109,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       setState(() {
         isLoading = false;
       });
-      // print("❌ Error fetching locations: $e");
     }
   }
 
@@ -161,7 +129,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       setState(() {
         isCityLoading = false;
       });
-      // print("❌ Error fetching cities: $e");
     }
   }
 

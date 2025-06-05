@@ -94,12 +94,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           cartList1 = [buyNowData];
         });
       } else {
-        // print("❌ No Buy Now data received");
         Get.snackbar("Error", "Failed to load product details",
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } else {
-      // print("❌ Missing userCode or cartRef");
       Get.snackbar("Error", "Invalid user or cart reference",
           backgroundColor: Colors.red, colorText: Colors.white);
     }
@@ -173,12 +171,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           shippingChargeData = data;
         });
       } else {
-        // print("❌ No shipping charge data received");
         Get.snackbar("Error", "Failed to load shipping charges",
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
-      // print("❌ Error fetching shipping charge: $e");
       Get.snackbar("Error", "Error loading shipping charges",
           backgroundColor: Colors.red, colorText: Colors.white);
     }
@@ -200,7 +196,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   double calculateShippingCharge(double totalAmount) {
     if (shippingChargeData == null) {
-      // print("❌ Shipping charge data is null");
       return 0.0;
     }
     if (totalAmount >= (shippingChargeData?.maxAmount ?? 0)) {
@@ -443,8 +438,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Get.snackbar("Error", "No products to order",backgroundColor: Colors.red, colorText: Colors.white);
                           return;
                         }
-                        // print("Placing order with productList: ${productList.map((p) => p.toJson())}");
-                        // print("Selected Address: ${selectedAddress?.toJson()}");
 
                         await orderController.placeOrder(
                           customerId: selectedAddress?.customerId ?? '',

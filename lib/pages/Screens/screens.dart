@@ -5,7 +5,7 @@ import 'package:fonofy/pages/ReferAndEarnScreen/ReferAndEarnScreen.dart';
 import 'package:fonofy/pages/MyOrdersScreen/MyOrdersScreen.dart';
 import 'package:fonofy/pages/SelectColourScreen/SelectColourScreen.dart';
 import 'package:fonofy/pages/SelectSlotScreen/SelectSlotScreen.dart';
-import 'package:fonofy/YourDeviceScreen/YourDeviceScreen5.dart';
+import 'package:fonofy/pages/YourDeviceScreen/YourDeviceScreen5.dart';
 import 'package:get/get.dart';
 
 class Screens extends StatefulWidget {

@@ -26,11 +26,9 @@ class ListShippingAddressService {
         List<dynamic> data = jsonDecode(responseBody);
         return data.map((item) => ListShippingAddressModel.fromJson(item)).toList();
       } else {
-        debug// print("❌ API Error (${response.statusCode}): $responseBody");
         return [];
       }
     } catch (e) {
-      debug// print("❌ Exception in listShippingAddress: $e");
       return [];
     }
   }

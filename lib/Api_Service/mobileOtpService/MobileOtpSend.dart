@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:fonofy/models/MobileOtpModel/MobileOtpModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,14 +6,11 @@ class OtpService {
   static const String apiUrl = 'https://api.fonofy.in/api/common/sendotp';
 
   Future<MobileOtpModel> sendOtp(String mobileNumber) async {
-    // print("API URL: $apiUrl");
     final response = await http.get(Uri.parse('$apiUrl?mobileNumber=$mobileNumber'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      // print("Inside Data: ${jsonEncode(data)}");
       return MobileOtpModel.fromJson(data);
     } else {
-      // print("❌ Error: ${response.body}");
       throw Exception('Failed to send OTP');
     }
   }

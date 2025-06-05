@@ -54,7 +54,6 @@ class _FilterScreenState extends State<FilterScreen> {
       } else {
         selectedFilters[category].remove(value);
       }
-      // print('Updated $category: ${selectedFilters[category]}'); // Debug log
     });
   }
 
@@ -70,7 +69,6 @@ class _FilterScreenState extends State<FilterScreen> {
           selectedFilters[key].clear();
         }
       }
-      // print('Cleared filters: $selectedFilters'); // Debug log
     });
   }
 
@@ -201,9 +199,7 @@ class _FilterScreenState extends State<FilterScreen> {
               'minAmt': selectedFilters['Price']['min']?.isNotEmpty == true ? selectedFilters['Price']['min'] : '',
               'underAmt': selectedFilters['Price']['max']?.isNotEmpty == true ? selectedFilters['Price']['max'] : '',
             };
-            // print('Applied Filters: $simplifiedFilters');
             Navigator.pop(context, simplifiedFilters);
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(),));
           },
           child: const Text("Apply", style: TextStyle(color: Colors.white, fontSize: 16)),
         ),

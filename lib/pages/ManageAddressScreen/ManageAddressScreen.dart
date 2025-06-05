@@ -25,16 +25,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     _initializeData();
   }
 
-  // Future<void> _initializeData() async {
-  //   String? storedToken = await TokenHelper.getToken();
-  //
-  //   if (storedToken != null && storedToken.isNotEmpty) {
-  //     token = storedToken;
-  //     await _fetchAddressList();
-  //   } else {
-  //     // print("⚠️ Token is missing. Please log in again.");
-  //   }
-  // }
+  
 
   Future<void> _initializeData() async {
     String? storedToken = await TokenHelper.getToken();
@@ -43,7 +34,6 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
       token = storedToken;
       await _fetchAddressList();
     } else {
-      // print("⚠️ Token is missing. Please log in again.");
     }
   }
 
@@ -230,8 +220,6 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                             ),
                                           ),
                                         );
-                                        // print("Address Data Debug ${address.city}");
-                                        // print("Address Data Debug ${address.state}");
                                       },
                                     ),
                                     IconButton(

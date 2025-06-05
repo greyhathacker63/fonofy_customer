@@ -20,11 +20,8 @@ class WishlistController extends GetxController {
         _wishlistItems = response;
       } else {
         _wishlistItems = [];
-        debug// print('Wishlist API returned empty list');
       }
     } catch (e, stackTrace) {
-      debug// print('Error in Wishlist Data: $e');
-      debug// print('Stacktrace: $stackTrace');
       _wishlistItems = [];
     } finally {
       isLoading.value = false;
@@ -49,7 +46,6 @@ class WishlistController extends GetxController {
     currentWishlist = await WishlistService.fetchWishlist();
   } catch (e) {
     // Handle cases like 404 or failed network calls by treating it as empty
-    debug// print("fetchWishlist failed (assume empty): $e");
   }
 
   // Check if same variant is already in wishlist

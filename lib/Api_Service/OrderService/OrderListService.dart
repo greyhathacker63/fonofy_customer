@@ -33,8 +33,6 @@ class OrderListService {
       final List data = json.decode(response.body);
       return data.map((item) => OrderModel.fromJson(item)).toList();
     } else {
-      // print("Failed with status: ${response.statusCode}");
-      // print("Body: ${response.body}");
       throw Exception('Failed to load orders');
     }
   }

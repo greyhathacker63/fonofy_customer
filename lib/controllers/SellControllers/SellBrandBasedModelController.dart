@@ -17,7 +17,6 @@ class SellBrandBasedModelController extends GetxController {
     try {
       brandResponse.value = await SellBrandBasedModelService.fetchSellModelsByBrand(brandName);
     } catch (err) {
-      // print('Brand Model Error: $err');
       Get.snackbar("Error", "Failed to load models: $err", backgroundColor: Colors.redAccent);
     } finally {
       isSellBrandModelLoading.value = false;

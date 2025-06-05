@@ -12,12 +12,9 @@ class RepairColorsController extends GetxController {
 
   Future<void> getRepairColorsData(String brandId, String modelId) async {
     try {
-      // colorListRepair.value = true as List<RepairColorModel>;
       final data = await RepairColorService.fetchRepairColorList(brandId, modelId);
       colorListRepair.assignAll(data);
     } catch (e) {
-      // print("Error fetching tracking data: $e");
-      // Optionally show a snackbar or dialog
     } finally {
       isRepairColorsLoading.value = false;
     }

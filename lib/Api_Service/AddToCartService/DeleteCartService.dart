@@ -21,11 +21,9 @@ class DeleteCartService {
         final jsonData = json.decode(response.body);
         return jsonData;
       } else {
-        // print('❌ Failed with status: ${response.statusCode}');
         return "";
       }
     } catch (e) {
-      // print('❌ DeleteCartService Error: $e');
       return " ";
     }
   }
