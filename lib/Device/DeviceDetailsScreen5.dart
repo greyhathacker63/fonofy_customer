@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/Device/DeviceDetailsScreen5.dart';
-
+import 'package:fonofy/YourDevice/YourDevice.dart';
 import 'package:fonofy/controllers/DeviceQuestions/DeviceQuestionsController.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
-class DeviceDetailsScreen4 extends StatefulWidget {
-  const DeviceDetailsScreen4({super.key});
+class DeviceDetailsScreen5 extends StatefulWidget {
+  const DeviceDetailsScreen5({super.key});
 
   @override
-  State<DeviceDetailsScreen4> createState() => _DeviceDetailsScreen4State();
+  State<DeviceDetailsScreen5> createState() => _DeviceDetailsScreen5State();
 }
 
-class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
+class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
   final DeviceQuestionnaireController controller =
       Get.put(DeviceQuestionnaireController());
 
@@ -70,7 +69,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
         }
 
         final questions = controller.questions
-            .where((q) => q.pageId == 4)
+            .where((q) => q.pageId == 5)
             .toList();
 
         return Padding(
@@ -132,7 +131,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                 child: ElevatedButton(
                   onPressed: selectedAccessories.containsValue(true)
                       ? () {
-                          Get.to(() => DeviceDetailsScreen5());
+                          Get.to(() => YourDeviceScreen());
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
@@ -193,4 +192,3 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
     );
   }
 }
-

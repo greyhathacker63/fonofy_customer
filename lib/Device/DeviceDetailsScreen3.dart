@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen4.dart';
+import 'package:fonofy/controllers/DeviceQuestions/DeviceQuestionsController.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
@@ -9,19 +10,41 @@ class DeviceDetailsScreen3 extends StatefulWidget {
 }
 
 class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
-  Map<String, bool> selectedIssues = {
-    "front_camera": false,
-    "back_camera": false,
-    "volume_button": false,
-    "finger_touch": false,
-  };
+  final DeviceQuestionnaireController controller =
+      Get.put(DeviceQuestionnaireController());
 
-  final List<Map<String, String>> issues = [
-    {"key": "front_camera", "name": "Front Camera not working", "icon": "assets/images/front.png"},
-    {"key": "back_camera", "name": "Back Camera not working", "icon": "assets/images/back.png"},
-    {"key": "volume_button", "name": "Volume Button not working", "icon": "assets/images/volume.png"},
-    {"key": "finger_touch", "name": "Finger touch not working", "icon": "assets/images/finger.png"},
+  Map<String, bool> selectedIssues = {};
+
+  final List<String> staticImages = [
+    "assets/images/front.png",
+    "assets/images/back.png",
+    "assets/images/volume.png",
+    "assets/images/finger.png",
   ];
+
+  final int bid = 2;
+  final int pid = 14;
+  final int raid = 9;
+  final int roid = 15;
+  final String model = "iphone 13";
+  final int ram = 8;
+  final int rom = 256;
+  final int basePrice = 65000;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchQuestions(
+      bid: bid,
+      pid: pid,
+      raid: raid,
+      roid: roid,
+      model: model,
+      ram: ram,
+      rom: rom,
+      basePrice: basePrice,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,66 +53,78 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
         title: const Text("Device Details"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Select the issue(s) applicable to your device!",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text("Please select appropriate conditions."),
-            const SizedBox(height: 16),
-            
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.9,
-                children: issues.map((issue) {
-                  return buildIssueTile(
-                    issue["key"] ?? "", 
-                    issue["name"] ?? "Unknown Issue", 
-                    issue["icon"] ?? "assets/images/default.png"
-                  );
-                }).toList(),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final issues = controller.questions
+            .where((q) => q.pageId == 3)
+            .take(4) // take only 4 questions for 4 static images
+            .toList();
+
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Select the issue(s) applicable to your device!",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-           SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorConstants.appBlueColor3, 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+              const SizedBox(height: 8),
+              const Text("Please select appropriate conditions."),
+              const SizedBox(height: 16),
+
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.9,
+                  children: List.generate(issues.length, (index) {
+                    final question = issues[index];
+                    selectedIssues.putIfAbsent(question.questionId, () => false);
+                    return buildIssueTile(
+                      question.questionId,
+                      question.questionTitle,
+                      staticImages[index],
+                    );
+                  }),
+                ),
+              ),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorConstants.appBlueColor3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.to(() => DeviceDetailsScreen4());
+                  },
+                  child: const Text(
+                    "Continue",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
-                onPressed: () {
-                  Get.to(() => DeviceDetailsScreen4());
-                },
-                child: const Text(
-                  "Continue",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
   Widget buildIssueTile(String key, String label, String imagePath) {
     bool isSelected = selectedIssues[key] ?? false;
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -107,7 +142,8 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
             Image.asset(
               imagePath,
               height: 80,
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, size: 80, color: Colors.grey),
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.broken_image, size: 80, color: Colors.grey),
             ),
             const SizedBox(height: 8),
             Container(
