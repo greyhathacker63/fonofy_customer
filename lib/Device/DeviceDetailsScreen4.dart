@@ -113,7 +113,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
 
                     return _buildAccessoryCard(
                       imagePath,
-                      q.questionTitle,
+                      q.question,
                       selectedAccessories[q.questionId]!,
                       () {
                         setState(() {

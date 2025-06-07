@@ -120,7 +120,7 @@ class QuestionDetails {
   final String question;
   final String questionDescription;
   final String questionSelection;
-  final String questionTitle;
+  String ? questionTitle;
   final String priceType;
   final double amount;
   final double weightage;

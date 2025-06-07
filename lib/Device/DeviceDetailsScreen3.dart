@@ -90,7 +90,7 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
                     selectedIssues.putIfAbsent(question.questionId, () => false);
                     return buildIssueTile(
                       question.questionId,
-                      question.questionTitle,
+                      question.questionTitle!,
                       staticImages[index],
                     );
                   }),

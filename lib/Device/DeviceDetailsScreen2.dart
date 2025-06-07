@@ -92,7 +92,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
                     selectedDefects.putIfAbsent(question.questionId, () => false);
                     return buildDefectTile(
                       question.questionId,
-                      question.questionTitle,
+                      question.question,
                       staticImages[index], // static image used
                     );
                   }),

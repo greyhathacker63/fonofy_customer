@@ -87,7 +87,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                   // Dynamic Questions
                   ...filteredQuestions.map((q) => _buildQuestion(
                         q.questionId, // this is a String
-                        q.questionTitle,
+                        q.question,
                         q.questionDescription,
                         answers[q.questionId],
                         (value) {

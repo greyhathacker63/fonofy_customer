@@ -48,6 +48,8 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
       orderId: widget.orderId,
     );
 
+    print("Fetched review data: $data"); // Add this
+    
     if (data != null) {
       setState(() {
         reviewData = data;
@@ -102,7 +104,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title:   Text('Cancel Order'),
+          title: Text('Cancel Order'),
           content: TextField(
             controller: _commentController,
             decoration:
@@ -146,13 +148,18 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: ColorConstants.appBlueColor3,
-                side:   BorderSide(color: ColorConstants.appBlueColor3),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                side: BorderSide(color: ColorConstants.appBlueColor3),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child:Text('Confirm', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,
+              child: Text(
+                'Confirm',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -218,7 +225,12 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
               // Action Buttons
               Row(
                 children: [
-                  if (["pending", "confirmed", "dispatched", "delivered", "cancelled"
+                  if ([
+                    "pending",
+                    "confirmed",
+                    "dispatched",
+                    "delivered",
+                    "cancelled"
                   ].contains(widget.status.toLowerCase())) ...[
                     // Expanded(
                     //   child: OutlinedButton(
@@ -232,8 +244,11 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                       child: OutlinedButton(
                         onPressed: handleTrackOrder,
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: ColorConstants.appBlueColor3, // text color
-                          side: BorderSide(color: ColorConstants.appBlueColor3), // border color
+                          foregroundColor:
+                              ColorConstants.appBlueColor3, // text color
+                          side: BorderSide(
+                              color:
+                                  ColorConstants.appBlueColor3), // border color
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -248,9 +263,8 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                         ),
                       ),
                     ),
-
                   ],
-                    SizedBox(width: 10),
+                  SizedBox(width: 10),
                   if (["pending", "confirmed"]
                       .contains(widget.status.toLowerCase())) ...[
                     // Expanded(
@@ -264,14 +278,18 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                       child: OutlinedButton(
                         onPressed: _showCancelDialog,
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: ColorConstants.appBlueColor3, // Text color
-                          side: BorderSide(color: ColorConstants.appBlueColor3), // Border color
-                          padding:   EdgeInsets.symmetric(vertical: 10),
+                          foregroundColor:
+                              ColorConstants.appBlueColor3, // Text color
+                          side: BorderSide(
+                              color:
+                                  ColorConstants.appBlueColor3), // Border color
+                          padding: EdgeInsets.symmetric(vertical: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child:   Text("Cancel Order",
+                        child: Text(
+                          "Cancel Order",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -279,7 +297,6 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                         ),
                       ),
                     ),
-
                   ],
                   if (["confirmed", "dispatched", "delivered", "cancelled"]
                       .contains(widget.status.toLowerCase())) ...[
