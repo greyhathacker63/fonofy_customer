@@ -55,7 +55,7 @@ String getAssetImagePath = 'assets/images/Repair_phone.png';
         // ],
       ),
       body: Obx(() => Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:   EdgeInsets.all(8.0),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -63,9 +63,9 @@ String getAssetImagePath = 'assets/images/Repair_phone.png';
               ),
               elevation: 3,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:   EdgeInsets.all(8.0),
                 child: repairColorController.isRepairColorsLoading.value
-                    ? const Center(
+                    ?   Center(
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           color: Colors.blue,
@@ -88,10 +88,10 @@ String getAssetImagePath = 'assets/images/Repair_phone.png';
                               final colorDetails = repairColorController.colorListRepair[index];
                               return GestureDetector(
                                 onTap: () {
-                                  final colorData =
+
                                   print('Selected color: ${colorDetails.colorName}, ID: ${colorDetails.colorId}');
                                   // Get.to(() => RepairServiceScreen());
-                                  Get.to(() => SelectServicesScreen(brandId: colorDetails.brand ?? '', productId: colorDetails.modelNo ?? '', colorId: colorDetails.colorId.toString(),));
+                                  Get.to(() => SelectServicesScreen(brandId: colorDetails.brand ?? '', productId: colorDetails.modelNo ?? '', colorId: colorDetails.colorId.toString(), ));
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

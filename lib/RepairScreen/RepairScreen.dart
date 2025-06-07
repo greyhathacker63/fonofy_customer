@@ -163,10 +163,9 @@ class _RepairScreenState extends State<RepairScreen> {
               ),
             ),
             serviceAvailable(),
-            // TESTIMONIAL SECTION
-            Container(
+             Container(
               color: Colors.blue.shade900,
-              padding: const EdgeInsets.all(20),
+              padding:   EdgeInsets.all(20),
               child: Column(
                 children: [
                   const Text("WHAT OUR CLIENT SAYS",
@@ -175,8 +174,7 @@ class _RepairScreenState extends State<RepairScreen> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  const SizedBox(height: 15),
-
+                   SizedBox(height: 15),
                   // CarouselSlider.builder(
                   //   itemCount: demoImages.length,
                   //   options: CarouselOptions(
@@ -219,8 +217,7 @@ class _RepairScreenState extends State<RepairScreen> {
                   //     );
                   //   }).toList(),
                   // ),
-
-                  const SizedBox(height: 15),
+                  SizedBox(height: 15),
                   SizedBox(
                     height: 250,
                     child: Obx(() {

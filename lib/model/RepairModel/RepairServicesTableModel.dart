@@ -68,7 +68,7 @@ class Table1 {
   dynamic mrp;
   dynamic discountAmount;
   dynamic disPercentage;
-  dynamic price;
+  double price;
 
   Table1({
     this.id,
@@ -77,7 +77,7 @@ class Table1 {
     this.mrp,
     this.discountAmount,
     this.disPercentage,
-    this.price,
+    required this.price,
   });
 
   factory Table1.fromJson(Map<String, dynamic> json) => Table1(
@@ -89,7 +89,6 @@ class Table1 {
     disPercentage: json["DisPercentage"],
     price: json["Price"],
   );
-
   Map<String, dynamic> toJson() => {
     "Id": id,
     "ServiceName": serviceName,

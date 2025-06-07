@@ -795,8 +795,7 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.product.productAndModelName ?? "Product",
+              Text(widget.product.productAndModelName ?? "Product",
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),

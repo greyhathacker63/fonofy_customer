@@ -1,30 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/Cart_Screens/CartScreen.dart';
+ import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SelectAddressScreen(),
-    );
-  }
-}
 
 class SelectAddressScreen extends StatelessWidget {
-  const SelectAddressScreen({super.key});
 
+  const SelectAddressScreen({super.key});
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -34,41 +19,41 @@ class SelectAddressScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title:
-            const Text("Select Address", style: TextStyle(color: Colors.black)),
+              Text("Select Address", style: TextStyle(color: Colors.black)),
       ),
       body: Column(
-        children: [
-          const SizedBox(height: 10),
-
+        children:[
+            SizedBox(height: 10),
           // Stepper UI with Adjusted Alignment
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildStepBox("1", true),
               Container(
-                width: Get.width * 0.55, // Shorter Line
+                width: Get.width * 0.55,
                 height: 1.5,
                 color: Colors.black26,
               ),
               _buildStepBox("2", false),
             ],
           ),
-          const SizedBox(height: 5),
+            SizedBox(height: 5),
 
-          // Step Labels
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 60.0),
+            padding:EdgeInsets.symmetric(horizontal: 60.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children:[
                 Text("Address",
                     style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
                 Text("Time Slot",
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black45)),
+                        color: Colors.black45),
+                ),
               ],
             ),
           ),
@@ -82,7 +67,9 @@ class SelectAddressScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => AddNewAddressScreen(customerId: '', address: null,));
+            },
             child: Text(
               "+Add New Address",
               style: TextStyle(fontSize: 16, color: Colors.white),
@@ -91,9 +78,8 @@ class SelectAddressScreen extends StatelessWidget {
 
           const Spacer(),
 
-          // Bottom Price & Book Now Button
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+           Container(
+            padding:   EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               border: const Border(top: BorderSide(color: Colors.black12)),
@@ -104,9 +90,9 @@ class SelectAddressScreen extends StatelessWidget {
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("₹99",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    // Text("₹99",
+                    //     style: TextStyle(
+                    //         fontSize: 16, fontWeight: FontWeight.bold)),
                     Text("Apply Coupon",
                         style: TextStyle(fontSize: 12, color: Colors.green)),
                   ],
@@ -114,16 +100,28 @@ class SelectAddressScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appBlueColor3,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
+                    padding:   EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: () {
-                    // Get.to(() => CartScreen(customerId: '',));
+                    // Get.to(() => SelectAddressRepairScreen());
                   },
-                  child: const Text("Book Now",
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:   EdgeInsets.only(left: 22),
+                        child: Text("Book Now",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                    ],
+                  ),
                 ),
               ],
             ),
