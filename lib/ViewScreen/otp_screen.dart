@@ -164,7 +164,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       );
 
                       await Future.delayed(const Duration(seconds: 1));
-                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => const AccountScreen()),
+                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => AccountScreen()),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
