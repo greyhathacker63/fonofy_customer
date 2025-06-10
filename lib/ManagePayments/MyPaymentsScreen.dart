@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/ManagePayments/AddBankDetailsScreen.dart';
+import 'package:fonofy/ManagePayments/UpiIdBottomSheet.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
@@ -99,23 +100,46 @@ class _MyPaymentsScreenState extends State<MyPaymentsScreen> {
 }
 
 
-  Widget _buildUpiCard() {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-        title: const Text("Upi"),
-        subtitle: const Text("XXivam@ybl"),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: Colors.black54),
-          onPressed: () {
-            // Handle delete
-          },
-        ),
-      ),
-    );
-  }
+String? upiId; // Define in your parent widget (State class)
+
+Widget _buildUpiCard() {
+  return Card(
+    elevation: 0,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    child: ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+      title: const Text("UPI"),
+      subtitle: Text(upiId ?? "Add"),
+      trailing: upiId == null
+          ? const Icon(Icons.add, color: Colors.black54)
+          : IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.black54),
+              onPressed: () {
+                setState(() {
+                  upiId = null;
+                });
+              },
+            ),
+      onTap: () {
+        if (upiId == null) {
+          Get.bottomSheet(
+            AddUpiBottomSheet(
+              onSubmit: (value) {
+                setState(() {
+                  upiId = value;
+                });
+                Get.back();
+              },
+            ),
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+          );
+        }
+      },
+    ),
+  );
+}
+
 
   Widget _buildVoucherCard(String title, String subtitle) {
     return Card(

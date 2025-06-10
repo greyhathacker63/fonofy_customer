@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/ManagePayments/MyPaymentsScreen.dart';
+import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
@@ -227,7 +228,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     onTap: () => setState(() => aboutExpanded = !aboutExpanded),
                     subItems: ["About Us", "Contact Us", "Career"],
                   ),
-                  _buildMenuItem("REFER & EARN"),
+                  _buildMenuItem("REFER & EARN", onTap: (){Get.to(() => ReferAndEarnScreen());}),
                   _buildMenuItem("NEW OFFERS"),
                   _buildMenuItem("MY EARNINGS"),
                   _buildMenuItem("HELP"),
