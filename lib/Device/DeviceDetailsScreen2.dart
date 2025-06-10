@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen3.dart';
+import 'package:fonofy/controllers/DeviceQuestions/DeviceQuestionsController.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
@@ -11,13 +12,41 @@ class DeviceDetailScreen2 extends StatefulWidget {
 }
 
 class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
-  // To track selected defects
-  Map<String, bool> selectedDefects = {
-    "broken_screen": false,
-    "dead_spot": false,
-    "scratch_body": false,
-    "device_panel_broken": false,
-  };
+  final DeviceQuestionnaireController controller =
+      Get.put(DeviceQuestionnaireController());
+
+  final Map<String, bool> selectedDefects = {};
+
+  final List<String> staticImages = [
+    "assets/images/broken.png",
+    "assets/images/DeadSpot.png",
+    "assets/images/scratch.png",
+    "assets/images/DevicePanelMissing.png",
+  ];
+
+  final int bid = 2;
+  final int pid = 14;
+  final int raid = 9;
+  final int roid = 15;
+  final String model = "iphone 13";
+  final int ram = 8;
+  final int rom = 256;
+  final int basePrice = 65000;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchQuestions(
+      bid: bid,
+      pid: pid,
+      raid: raid,
+      roid: roid,
+      model: model,
+      ram: ram,
+      rom: rom,
+      basePrice: basePrice,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,69 +55,78 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
         title: const Text("Device Details"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Select screen/body defect that are applicable!",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text("Please provide correct details."),
-            const SizedBox(height: 16),
-            
-            // Grid of defect options
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.9,
-                children: [
-                  buildDefectTile("broken_screen", "Broken/scratch on device screen", "assets/images/broken.png"),
-                  buildDefectTile("dead_spot", "Dead Spot/Visible line and Discoloration", "assets/images/DeadSpot.png"),
-                  buildDefectTile("scratch_body", "Scratch/Dent on device body", "assets/images/scratch.png"),
-                  buildDefectTile("device_panel_broken", "Device panel missing/broken", "assets/images/DevicePanelMissing.png"),
-                ],
-              ),
-            ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-            // Continue Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorConstants.appBlueColor3, // Button color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+        final defects = controller.questions
+            .where((q) => q.pageId == 2)
+            .take(4) // only take 4 questions
+            .toList();
+
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Select screen/body defect that are applicable!",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              const Text("Please provide correct details."),
+              const SizedBox(height: 16),
+
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.9,
+                  children: List.generate(defects.length, (index) {
+                    final question = defects[index];
+                    selectedDefects.putIfAbsent(question.questionId, () => false);
+                    return buildDefectTile(
+                      question.questionId,
+                      question.question,
+                      staticImages[index], // static image used
+                    );
+                  }),
+                ),
+              ),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorConstants.appBlueColor3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.to(() => DeviceDetailsScreen3());
+                  },
+                  child: const Text(
+                    "Continue",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
-                onPressed: () {
-                 Get.to(() => DeviceDetailsScreen3());
-                },
-                child: const Text(
-                  "Continue",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  // Widget for selectable defect option
   Widget buildDefectTile(String key, String label, String imagePath) {
     bool isSelected = selectedDefects[key] ?? false;
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -103,7 +141,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imagePath, height: 80,width: 70,), // Image
+            Image.asset(imagePath, height: 80, width: 70),
             const SizedBox(height: 8),
             Container(
               width: double.infinity,
