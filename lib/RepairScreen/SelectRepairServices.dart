@@ -299,7 +299,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
           child: BookNowButton(
             onPressed: repairController.selectedServices.isNotEmpty
                 ? () {
-              Get.to(() => SelectAddressScreen());
+              Get.to(() => SelectRepairAddressScreen());
             }: null,
             totalPrice: repairController.totalPrice.value,
           ),

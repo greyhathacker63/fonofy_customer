@@ -116,8 +116,7 @@ class RepairServiceScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-
-                  Get.to (() => SelectAddressScreen());
+                  Get.to (() => SelectRepairAddressScreen());
                   // Submit action
                 },
                 child: const Text("Submit", style: TextStyle(fontSize: 16, color: Colors.white)),

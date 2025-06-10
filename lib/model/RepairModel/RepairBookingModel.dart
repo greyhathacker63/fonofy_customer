@@ -1,8 +1,7 @@
-
 // To parse this JSON data, do
 //
 //     final repairBookingModel = repairBookingModelFromJson(jsonString);
-import 'package:meta/meta.dart';
+
 import 'dart:convert';
 
 RepairBookingModel repairBookingModelFromJson(String str) => RepairBookingModel.fromJson(json.decode(str));
@@ -14,7 +13,7 @@ class RepairBookingModel {
   dynamic romId;
   dynamic ramId;
   dynamic colorId;
-  String customerId;
+  dynamic customerId;
   String orderId;
   dynamic servieCharge;
   dynamic couponId;
@@ -227,11 +226,11 @@ class RepairBookingModel {
 class RepairDetail {
   String customerId;
   String orderId;
-  dynamic serviceId;
+  int serviceId;
   String serviceName;
-  dynamic serviceAmount;
-  dynamic serviceDiscount;
-  dynamic servicePercent;
+  int serviceAmount;
+  int serviceDiscount;
+  int servicePercent;
 
   RepairDetail({
     required this.customerId,
@@ -248,9 +247,9 @@ class RepairDetail {
     String? orderId,
     int? serviceId,
     String? serviceName,
-    dynamic serviceAmount,
-    dynamic serviceDiscount,
-    dynamic servicePercent,
+    int? serviceAmount,
+    int? serviceDiscount,
+    int? servicePercent,
   }) =>
       RepairDetail(
         customerId: customerId ?? this.customerId,

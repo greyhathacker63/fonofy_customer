@@ -8,7 +8,6 @@ import '../../../model/RepairModel/RepairBookingModel.dart';
 class RepairBookingService {
   static const String baseUrl = 'https://api.fonofy.in/api/forb2c/repair-booking';
 
-  /// Submits the repair booking to the server.
   static Future<bool> submitRepairBooking({
     required String token,
     required RepairBookingModel bookingModel,

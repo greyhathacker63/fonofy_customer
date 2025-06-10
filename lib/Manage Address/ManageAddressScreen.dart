@@ -57,10 +57,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
   }
 
   void _navigateToAddNewAddressScreen() async {
-    final result = await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddNewAddressScreen(
+    final result = await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddNewAddressScreen(
           customerId: widget.customerId,
           address: ListShippingAddressModel(),
         ),
