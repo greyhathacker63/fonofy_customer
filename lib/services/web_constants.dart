@@ -15,4 +15,5 @@ const String Order_List='order-list';
 const String ratings='add-product-rating';
 const String getRatings='get-product-rating';
 const String tracking='order-tracking';
+const String getBankDetails= "account-detials-list";
 
