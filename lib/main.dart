@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/ViewModel/MobileOtpSend.dart';
-import 'package:fonofy/services/token_service.dart'; // make sure this file exists
+import 'package:fonofy/Services/token_service.dart'; // make sure this file exists
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
