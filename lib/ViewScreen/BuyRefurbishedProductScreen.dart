@@ -1752,7 +1752,10 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
             child: Builder(
               builder: (context) {
                 final isOutOfStock = (product?.stockQuantity ?? 0) == 0;
-                if (isOutOfStock) {
+               if(controllerProductDetails.isLoading.value){
+                 return Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
+               }
+               else  if (isOutOfStock) {
                   return ElevatedButton(
                     style:
                     ElevatedButton.styleFrom(backgroundColor: Colors.red),
