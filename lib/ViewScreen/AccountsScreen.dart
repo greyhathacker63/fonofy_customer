@@ -198,29 +198,29 @@ class _AccountScreenState extends State<AccountScreen> {
                       }
                     },
                   ),
-                 _buildExpandableSection(
-  title: "SETTING",
-  isExpanded: settingsExpanded,
-  onTap: () => setState(() => settingsExpanded = !settingsExpanded),
-  subItems: [
-    "Manage Address",
-    "Manage Payments",
-    "Profile Account",
-    "Delete My Account"
-  ],
-  onItemTap: (item) {
-    if (item == "Manage Address") {
-      Get.to(() => ManageAddressScreen(customerId: userCode));
-    } else if (item == "Manage Payments") {
-      Get.to(() => MyPaymentsScreen()); // FIXED ✅
-    } else if (item == "Profile Account") {
-      Get.to(() => AccountDetailsScreen());
-    } else if (item == "Delete My Account") {
-      _showDeleteDialog();
-    }
-  },
-)
-,
+                  _buildExpandableSection(
+                    title: "SETTING",
+                    isExpanded: settingsExpanded,
+                    onTap: () =>
+                        setState(() => settingsExpanded = !settingsExpanded),
+                    subItems: [
+                      "Manage Address",
+                      "Manage Payments",
+                      "Profile Account",
+                      "Delete My Account"
+                    ],
+                    onItemTap: (item) {
+                      if (item == "Manage Address") {
+                        Get.to(() => ManageAddressScreen(customerId: userCode));
+                      } else if (item == "Manage Payments") {
+                        Get.to(() => MyPaymentsScreen()); // FIXED ✅
+                      } else if (item == "Profile Account") {
+                        Get.to(() => AccountDetailsScreen());
+                      } else if (item == "Delete My Account") {
+                        _showDeleteDialog();
+                      }
+                    },
+                  ),
                   _buildExpandableSection(
                     title: "ABOUT",
                     isExpanded: aboutExpanded,

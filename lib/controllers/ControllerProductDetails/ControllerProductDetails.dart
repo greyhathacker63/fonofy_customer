@@ -34,6 +34,7 @@ import 'package:fonofy/model/ProductDetailsModel/ProductDetailsModel.dart';
 import 'package:get/get.dart';
 
 class ControllerProductDetails extends GetxController {
+
   var productDetails = Rxn<ProductDetailsModel>();
 
   Future<void> getProductDetailsData({required String url, required String refNo}) async {
@@ -43,7 +44,9 @@ class ControllerProductDetails extends GetxController {
         Refno: refNo,
       );
       if (response.isNotEmpty) {
+
         productDetails.value = response.first;
+
       }
     } catch (e) {
       print("Error fetching product details: $e");

@@ -14,7 +14,7 @@ class CreateOrderController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-
+  var productCreateDetails = Rx<CreateOrderModel?>(null);
 
   Future<void> placeOrder({
     required String customerId,

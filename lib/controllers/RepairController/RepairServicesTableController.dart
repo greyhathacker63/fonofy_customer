@@ -53,9 +53,6 @@ class RepairControllerTable extends GetxController {
 
   RepairServicesTableModel? get tableRepairData => _appRepairTableData;
 
-
-
-
   Future<void> getTableRepairData(String bid, String pid, String cid) async {
     try {
       isRepairTableLoading(true);
