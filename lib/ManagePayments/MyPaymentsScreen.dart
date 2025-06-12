@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fonofy/ManagePayments/AddBankDetailsScreen.dart';
 import 'package:fonofy/ManagePayments/UpiIdBottomSheet.dart';
 import 'package:fonofy/controllers/ManagePaymentController/BankDetialsController.dart';
+import 'package:fonofy/controllers/ManagePaymentController/UpiController.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
-
 
 class MyPaymentsScreen extends StatefulWidget {
   const MyPaymentsScreen({super.key});
@@ -20,12 +20,39 @@ class _MyPaymentsScreenState extends State<MyPaymentsScreen> {
     {"title": "Tata Cliq", "subtitle": "Not linked yet."},
   ];
   final _controller = Get.put(BankController());
+  final _upiController = Get.put(UpiController());
+
   String? _upiId;
 
   @override
   void initState() {
     super.initState();
     _controller.fetchBankDetailsList();
+  }
+
+  void _confirmDelete(int id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Bank Detail"),
+        content:
+            const Text("Are you sure you want to delete this bank detail?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(); // Close the dialog
+              await _controller.deleteBankDetail(id);
+              _controller.fetchBankDetailsList(); 
+            },
+            child: const Text("Delete", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -125,8 +152,13 @@ class _MyPaymentsScreenState extends State<MyPaymentsScreen> {
         itemBuilder: (context, index) {
           final account = _controller.bankDetailsList[index];
           return _buildCard(
-            title: account.beneficiaryName ?? '',
-            subtitle: "A/C: ${account.accountNumber}\nIFSC: ${account.ifscCode}",
+            title: account.beneficiaryName,
+            subtitle:
+                "A/C: ${account.accountNumber}\nIFSC: ${account.ifscCode}",
+            trailingIcon: IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.black54),
+              onPressed: () => _confirmDelete(account.id),
+            ),
           );
         },
       );
@@ -134,28 +166,45 @@ class _MyPaymentsScreenState extends State<MyPaymentsScreen> {
   }
 
   Widget _buildUpiCard() {
-    return _buildCard(
-      title: "UPI",
-      subtitle: _upiId ?? "Add",
-      trailingIcon: _upiId == null
-          ? const Icon(Icons.add, color: Colors.black54)
-          : IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.black54),
-              onPressed: () => setState(() => _upiId = null),
+    return Obx(() {
+      if (_upiController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final upis = _upiController.upiDetailsList;
+
+      return Column(
+        children: [
+          ...upis.map((upi) {
+            return _buildCard(
+              title: "UPI",
+              subtitle: upi.upiId.toString(),
+              trailingIcon: IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.black54),
+                onPressed: () {
+                  _upiController.deleteUpi(upi.id ?? 0);
+                },
+              ),
+            );
+          }).toList(),
+          _buildCard(
+            title: "UPI",
+            subtitle: "Add",
+            trailingIcon: const Icon(Icons.add, color: Colors.black54),
+            onTap: () => Get.bottomSheet(
+              AddUpiBottomSheet(
+                onSubmit: (value) {
+                  _upiController.submitUpi(value);
+                  Get.back();
+                },
+              ),
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
             ),
-      onTap: _upiId == null
-          ? () => Get.bottomSheet(
-                AddUpiBottomSheet(
-                  onSubmit: (value) {
-                    setState(() => _upiId = value);
-                    Get.back();
-                  },
-                ),
-                isScrollControlled: true,
-                backgroundColor: Colors.transparent,
-              )
-          : null,
-    );
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildCard({

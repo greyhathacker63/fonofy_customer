@@ -75,3 +75,18 @@ class BankDetails {
     };
   }
 }
+class UpiDetails {
+  final String? upiId;
+  final String? customerId;
+  final int? id;
+
+  UpiDetails({this.upiId, this.customerId, this.id});
+
+  factory UpiDetails.fromJson(Map<String, dynamic> json) {
+    return UpiDetails(
+      id: json['Id'],
+      customerId: json['CustomerId'],
+      upiId: json['AccountNumber'], // <-- Key Fix
+    );
+  }
+}

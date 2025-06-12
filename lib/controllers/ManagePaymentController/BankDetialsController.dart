@@ -1,13 +1,13 @@
 import 'package:fonofy/Api_Service/ManagePaymentService/BankDetailsService.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
-import 'package:fonofy/model/ManagePaymentsModel/BandDetailsModel.dart';
+import 'package:fonofy/model/ManagePaymentsModel/BankDetailsModel.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
-
 
 class BankController extends GetxController {
   final isLoading = false.obs;
   final bankDetailsList = <BankDetails>[].obs;
+  final upiDetailsList = <UpiDetails>[].obs;
 
   void _showSnackbar(String title, String message) {
     Get.snackbar(title, message, snackPosition: SnackPosition.TOP);
@@ -40,6 +40,7 @@ class BankController extends GetxController {
     required bool isChecked,
   }) async {
     log("submitBankDetails called with accountNo: $accountNo, beneficiary: $beneficiary");
+
     final validationError = _validateBankDetails(
       accountNo: accountNo,
       confirmAccountNo: confirmAccountNo,
@@ -94,16 +95,37 @@ class BankController extends GetxController {
     isLoading.value = false;
 
     if (result.success) {
-      log("fetchBankDetailsList succeeded with ${result.data.length} items");
-      bankDetailsList.value = result.data;
-      if (result.data.isEmpty) {
-        log("No bank details found");
-        _showSnackbar("Info", "No bank details found.");
+      final data = result.data;
+      log("Fetched ${data.bankDetails.length} bank details and ${data.upiDetails.length} UPI details");
+
+      bankDetailsList.value = data.bankDetails;
+      upiDetailsList.value = data.upiDetails;
+
+      if (data.bankDetails.isEmpty && data.upiDetails.isEmpty) {
+        _showSnackbar("Info", "No payment details found.");
       }
     } else {
-      log("fetchBankDetailsList failed: ${result.errorMessage}");
-      bankDetailsList.value = [];
+      log("Failed to fetch bank/upi details: ${result.errorMessage}");
+      bankDetailsList.clear();
+      upiDetailsList.clear();
       _showSnackbar("Failed", result.errorMessage ?? "Could not fetch bank details.");
+    }
+  }
+
+  /// 🔥 NEW: Delete bank detail by ID
+  Future<void> deleteBankDetail(int id) async {
+    log("deleteBankDetail called with id: $id");
+    isLoading.value = true;
+    final success = await BankService.deleteBankDetails(id);
+    isLoading.value = false;
+
+    if (success) {
+      log("Bank detail deleted successfully");
+      _showSnackbar("Success", "Bank detail deleted successfully");
+      await fetchBankDetailsList();
+    } else {
+      log("Failed to delete bank detail");
+      _showSnackbar("Error", "Could not delete bank detail. Please try again.");
     }
   }
 }
