@@ -13,6 +13,7 @@ class DeviceQuestionnaireService {
     required int ram,
     required int rom,
     required int basePrice,
+    dynamic weightage,
   }) async {
     final uri = Uri.https('api.fonofy.in', '/api/common/sell-calculator-question-list', {
       'bid': bid.toString(),
@@ -23,6 +24,7 @@ class DeviceQuestionnaireService {
       'ram': ram.toString(),
       'rom': rom.toString(),
       'baseprice': basePrice.toString(),
+      'weightage': weightage,
     });
 
     final response = await http.get(uri);

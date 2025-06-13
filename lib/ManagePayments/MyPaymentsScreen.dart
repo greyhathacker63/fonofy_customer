@@ -46,7 +46,7 @@ class _MyPaymentsScreenState extends State<MyPaymentsScreen> {
             onPressed: () async {
               Navigator.of(context).pop(); // Close the dialog
               await _controller.deleteBankDetail(id);
-              _controller.fetchBankDetailsList(); 
+              _controller.fetchBankDetailsList();
             },
             child: const Text("Delete", style: TextStyle(color: Colors.red)),
           ),
@@ -195,7 +195,7 @@ class _MyPaymentsScreenState extends State<MyPaymentsScreen> {
               AddUpiBottomSheet(
                 onSubmit: (value) {
                   _upiController.submitUpi(value);
-                  Get.back();
+                  // ❌ Don't call Get.back() here — it's already called inside the sheet
                 },
               ),
               isScrollControlled: true,

@@ -17,6 +17,7 @@ class DeviceQuestionnaireController extends GetxController {
     required int ram,
     required int rom,
     required int basePrice,
+    dynamic weightage,
   }) async {
     try {
       isLoading.value = true;
