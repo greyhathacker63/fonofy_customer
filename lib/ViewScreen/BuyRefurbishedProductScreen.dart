@@ -1689,7 +1689,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 GestureDetector(
                   onTap: () => _showAttributeBottomSheet(product),
                   child: Text(
@@ -1706,19 +1706,19 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       fontWeight: FontWeight.bold,
                       color: ColorConstants.appBlueColor3),
                 ),
-                const SizedBox(height: 10),
+                 SizedBox(height: 10),
                 buildPricingCard(product, selectedPrice: selectedPrice),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 buildProductAttributesCard(context, product, selectedCondition: selectedCondition,selectedRamName: selectedRamName, selectedRomName: selectedRomName,),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 buildProductHighlightsCard(product),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 _buildRecommendedProducts(product),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 _buildFeatureSection(),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 buildPincodeSection(),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 buildUserReviewsSection(product, reviews),
               ],
             ),
@@ -1745,7 +1745,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         children: [
           Expanded(
@@ -1779,9 +1779,8 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       try {
                         final userCode = await TokenHelper.getUserCode();
                         final token = await TokenHelper.getToken();
-
                         if (userCode == null || token == null) {
-                          Get.to(() => const LoginScreen());
+                          Get.to(() => LoginScreen());
                           return;
                         }
 

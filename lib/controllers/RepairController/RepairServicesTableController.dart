@@ -53,6 +53,8 @@ class RepairControllerTable extends GetxController {
 
   RepairServicesTableModel? get tableRepairData => _appRepairTableData;
 
+
+
   Future<void> getTableRepairData(String bid, String pid, String cid) async {
     try {
       isRepairTableLoading(true);
@@ -64,8 +66,7 @@ class RepairControllerTable extends GetxController {
     }
   }
 
-  // Add a service to selected services
-  void addService(Table1 service) {
+   void addService(Table1 service) {
     if (!selectedServices.contains(service)) {
       selectedServices.add(service);
 

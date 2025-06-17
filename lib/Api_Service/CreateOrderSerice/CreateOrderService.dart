@@ -41,7 +41,6 @@ class CreateOrderService {
         },
         body: jsonBody,
       );
-
       print("API Response: ${response.statusCode} - ${response.body}");
 
       if (response.statusCode == 200) {
@@ -75,9 +74,5 @@ class CreateOrderService {
       return false;
     }
   }
-
-//   create order and return id
-// call create order method then call next api
-// pass order id and all order details api and return details
 
 }

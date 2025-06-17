@@ -36,19 +36,15 @@ import 'package:get/get.dart';
 class ControllerProductDetails extends GetxController {
 
   var productDetails = Rxn<ProductDetailsModel>();
+
   RxBool isLoading = false.obs;
 
   Future<void> getProductDetailsData({required String url, required String refNo}) async {
     try {
       isLoading.value = true;
-      var response = await ProductDetailsService().fetchProductDetailsData(
-        Url: url,
-        Refno: refNo,
-      );
+      var response = await ProductDetailsService().fetchProductDetailsData(Url: url, Refno: refNo);
       if (response.isNotEmpty) {
-
         productDetails.value = response.first;
-
       }
     } catch (e) {
       print("Error fetching product details: $e");

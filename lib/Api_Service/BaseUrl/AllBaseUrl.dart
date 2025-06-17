@@ -55,6 +55,8 @@ const String variantPriceUrl = "${baseUrl}api/common/model-variant-price";
 
 const String changePasswordUrl = "${baseUrl}api/forb2c/change-password";
 
+const String repairBookingdUrl = "${baseUrl}api/forb2c/repair-booking";
+
 
 
 

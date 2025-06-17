@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:fonofy/Api_Service/OrderService/OrderListService.dart';
 import 'package:fonofy/model/OrderModel/OrderListModel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderListController extends GetxController {
   var isLoading = true.obs;
