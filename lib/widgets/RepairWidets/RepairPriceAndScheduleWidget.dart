@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../RepairScreen/CancelRepairOrderScreen.dart';
+import '../../RepairScreen/RescheduleOrderRepairScreen.dart';
 import '../../utils/Colors.dart';
 
 class Repairpriceandschedulewidget extends StatelessWidget {
@@ -133,10 +134,11 @@ class Repairpriceandschedulewidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => RescheduleOrderRepairScreen(),) );
+                        },
                         child: Text(
                           'RESCHEDULE',
-
                           style: GoogleFonts.poppins(
                             color: Colors.white,fontSize: 13,
                             fontWeight: FontWeight.w500,
