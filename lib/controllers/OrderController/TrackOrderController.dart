@@ -7,6 +7,8 @@ class TrackingController extends GetxController {
   var isLoading = false.obs;
   var trackingList = <TrackingModel>[].obs;
 
+  var trackingData = Rxn<TrackingModel>();
+
   Future<void> fetchTrackingData(String orderId, String customerId) async {
     try {
       isLoading.value = true;
