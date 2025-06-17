@@ -18,10 +18,10 @@ class TrackingModel {
   String? customerId;
   String? orderId;
   String? orderStatus;
-  int? totalMrp;
-  int? totalDiscount;
-  int? totalPrice;
-  int? deliveryCharge;
+  dynamic? totalMrp;
+  dynamic? totalDiscount;
+  dynamic? totalPrice;
+  dynamic? deliveryCharge;
   DateTime? createdDate;
   DateTime? confirmDate;
   String? confirmBy;
@@ -47,7 +47,7 @@ class TrackingModel {
   String? shippingState;
   String? shippingPincode;
   String? orderOn;
-  int? totalAmount;
+  dynamic? totalAmount;
   int? couponAmount;
   String? couponName;
   String? couponDiscountType;
