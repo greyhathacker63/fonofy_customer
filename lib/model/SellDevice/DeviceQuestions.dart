@@ -1,187 +1,158 @@
 import 'dart:convert';
 
-// Parent model for the entire API response
-class DeviceQuestions {
-  final List<PageDetails> table;
-  final List<PageQuestionMapping> table1;
-  final List<QuestionDetails> table2;
+SellQuestion sellQuestionFromJson(String str) => SellQuestion.fromJson(json.decode(str));
 
-  DeviceQuestions({
-    required this.table,
-    required this.table1,
-    required this.table2,
-  });
+String sellQuestionToJson(SellQuestion data) => json.encode(data.toJson());
 
-  factory DeviceQuestions.fromJson(Map<String, dynamic> json) {
-    return DeviceQuestions(
-      table: (json['Table'] as List)
-          .map((item) => PageDetails.fromJson(item))
-          .toList(),
-      table1: (json['Table1'] as List)
-          .map((item) => PageQuestionMapping.fromJson(item))
-          .toList(),
-      table2: (json['Table2'] as List)
-          .map((item) => QuestionDetails.fromJson(item))
-          .toList(),
+class SellQuestion {
+    bool? status;
+    String? message;
+    List<Datum>? data;
+
+    SellQuestion({
+        this.status,
+        this.message,
+        this.data,
+    });
+
+    factory SellQuestion.fromJson(Map<String, dynamic> json) => SellQuestion(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
     );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'Table': table.map((item) => item.toJson()).toList(),
-      'Table1': table1.map((item) => item.toJson()).toList(),
-      'Table2': table2.map((item) => item.toJson()).toList(),
+    Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     };
-  }
 }
 
-// Model for "Table" - Page details
-class PageDetails {
-  final int pageId;
-  final String pageTitle;
-  final String pageDescription;
-  final String refNo;
-  final String rowUCode;
+class Datum {
+    dynamic pageId;
+    String? pageTitle;
+    String? refNo;
+    dynamic rowUCode;
+    List<Question>? questions;
 
-  PageDetails({
-    required this.pageId,
-    required this.pageTitle,
-    required this.pageDescription,
-    required this.refNo,
-    required this.rowUCode,
-  });
+    Datum({
+        this.pageId,
+        this.pageTitle,
+        this.refNo,
+        this.rowUCode,
+        this.questions,
+    });
 
-  factory PageDetails.fromJson(Map<String, dynamic> json) {
-    return PageDetails(
-      pageId: json['PageId'] as int,
-      pageTitle: json['PageTitle'] as String,
-      pageDescription: json['PageDescription'] as String,
-      refNo: json['RefNo'] as String,
-      rowUCode: json['RowUCode'] as String,
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        pageId: json["PageId"],
+        pageTitle: json["PageTitle"],
+        refNo: json["RefNo"],
+        rowUCode: ["RowUCode"],
+        questions: json["Questions"] == null ? [] : List<Question>.from(json["Questions"]!.map((x) => Question.fromJson(x))),
     );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'PageId': pageId,
-      'PageTitle': pageTitle,
-      'PageDescription': pageDescription,
-      'RefNo': refNo,
-      'RowUCode': rowUCode,
+    Map<String, dynamic> toJson() => {
+        "PageId": pageId,
+        "PageTitle": pageTitle,
+        "RefNo": refNo,
+        "RowUCode": [rowUCode],
+        "Questions": questions == null ? [] : List<dynamic>.from(questions!.map((x) => x.toJson())),
     };
-  }
 }
 
-// Model for "Table1" - Page and question mapping
-class PageQuestionMapping {
-  final int pageId;
-  final String pageName;
-  final String questionId;
-  final int brandId;
-  final String rowUCode;
-  final String refNo;
+class Question {
+    String? questionId;
+    String? question;
+    String? questionDescription;
+    String? refNo;
+    dynamic rowUCode;
+    List<Option>? options;
 
-  PageQuestionMapping({
-    required this.pageId,
-    required this.pageName,
-    required this.questionId,
-    required this.brandId,
-    required this.rowUCode,
-    required this.refNo,
-  });
+    Question({
+        this.questionId,
+        this.question,
+        this.questionDescription,
+        this.refNo,
+        this.rowUCode,
+        this.options,
+    });
 
-  factory PageQuestionMapping.fromJson(Map<String, dynamic> json) {
-    return PageQuestionMapping(
-      pageId: json['PageId'] as int,
-      pageName: json['PageName'] as String,
-      questionId: json['QuestionId'] as String,
-      brandId: json['BrandId'] as int,
-      rowUCode: json['RowUCode'] as String,
-      refNo: json['RefNo'] as String,
+    factory Question.fromJson(Map<String, dynamic> json) => Question(
+        questionId: json["QuestionId"],
+        question: json["Question"],
+        questionDescription: json["QuestionDescription"],
+        refNo: json["RefNo"],
+        rowUCode: ["RowUCode"],
+        options: json["Options"] == null ? [] : List<Option>.from(json["Options"]!.map((x) => Option.fromJson(x))),
     );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'PageId': pageId,
-      'PageName': pageName,
-      'QuestionId': questionId,
-      'BrandId': brandId,
-      'RowUCode': rowUCode,
-      'RefNo': refNo,
+    Map<String, dynamic> toJson() => {
+        "QuestionId": questionId,
+        "Question": question,
+        "QuestionDescription": questionDescription,
+        "RefNo": refNo,
+        "RowUCode": [rowUCode],
+        "Options": options == null ? [] : List<dynamic>.from(options!.map((x) => x.toJson())),
     };
-  }
 }
 
-// Model for "Table2" - Question details with options
-class QuestionDetails {
-  final int pageId;
-  final int id;
-  final String question;
-  final String questionDescription;
-  final String questionSelection;
-  String ? questionTitle;
-  final String priceType;
-  final double amount;
-  final double weightage;
-  final String questionId;
-  final String listOptionAns;
-  final String checkStatus;
-  final String refNo;
-  final String rowUCode;
+class Option {
+    dynamic pageId;
+    dynamic sellQuestionId;
+    String? questionSelection;
+    String? questionTitle;
+    String? priceType;
+    dynamic amount;
+    double? weightage;
+    String? questionId;
+    String? listOptionAns;
+    String? checkStatus;
+    String? refNo;
+    dynamic  rowUCode;
 
-  QuestionDetails({
-    required this.pageId,
-    required this.id,
-    required this.question,
-    required this.questionDescription,
-    required this.questionSelection,
-    required this.questionTitle,
-    required this.priceType,
-    required this.amount,
-    required this.weightage,
-    required this.questionId,
-    required this.listOptionAns,
-    required this.checkStatus,
-    required this.refNo,
-    required this.rowUCode,
-  });
+    Option({
+        this.pageId,
+        this.sellQuestionId,
+        this.questionSelection,
+        this.questionTitle,
+        this.priceType,
+        this.amount,
+        this.weightage,
+        this.questionId,
+        this.listOptionAns,
+        this.checkStatus,
+        this.refNo,
+        this.rowUCode,
+    });
 
-  factory QuestionDetails.fromJson(Map<String, dynamic> json) {
-    return QuestionDetails(
-      pageId: json['PageId'] as int,
-      id: json['Id'] as int,
-      question: json['Question'] as String,
-      questionDescription: json['QuestionDescription'] as String,
-      questionSelection: json['QuestionSelection'] as String,
-      questionTitle: json['QuestionTitle'] as String,
-      priceType: json['PriceType'] as String,
-      amount: (json['Amount'] as num).toDouble(),
-      weightage: (json['weightage'] as num).toDouble(),
-      questionId: json['QuestionId'] as String,
-      listOptionAns: json['ListOptionAns'] as String,
-      checkStatus: json['CheckStatus'] as String,
-      refNo: json['RefNo'] as String,
-      rowUCode: json['RowUCode'] as String,
+    factory Option.fromJson(Map<String, dynamic> json) => Option(
+        pageId: json["PageId"],
+        sellQuestionId: json["SellQuestionId"],
+        questionSelection:json ["QuestionSelection"],
+        questionTitle: json["QuestionTitle"],
+        priceType: json["PriceType"],
+        amount: json["Amount"],
+        weightage: json["weightage"]?.toDouble(),
+        questionId: json["QuestionId"],
+        listOptionAns: json["ListOptionAns"],
+        checkStatus: json["CheckStatus"],
+        refNo: json["RefNo"],
+        rowUCode:json["RowUCode"],
     );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'PageId': pageId,
-      'Id': id,
-      'Question': question,
-      'QuestionDescription': questionDescription,
-      'QuestionSelection': questionSelection,
-      'QuestionTitle': questionTitle,
-      'PriceType': priceType,
-      'Amount': amount,
-      'weightage': weightage,
-      'QuestionId': questionId,
-      'ListOptionAns': listOptionAns,
-      'CheckStatus': checkStatus,
-      'RefNo': refNo,
-      'RowUCode': rowUCode,
+    Map<String, dynamic> toJson() => {
+        "PageId": pageId,
+        "SellQuestionId": sellQuestionId,
+        "QuestionSelection": questionSelection,
+        "QuestionTitle": questionTitle,
+        "PriceType":priceType,
+        "Amount": amount,
+        "weightage": weightage,
+        "QuestionId": questionId,
+        "ListOptionAns": listOptionAns,
+        "CheckStatus": checkStatus,
+        "RefNo": refNo,
+        "RowUCode": rowUCode,
     };
-  }
 }
+

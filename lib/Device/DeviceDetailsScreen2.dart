@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen3.dart';
 import 'package:fonofy/controllers/DeviceQuestions/DeviceQuestionsController.dart';
+import 'package:fonofy/model/SellDevice/DeviceQuestions.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class DeviceDetailScreen2 extends StatefulWidget {
-  const DeviceDetailScreen2({Key? key}) : super(key: key);
+  final String? pid;
+  final String bid;
+  final String baseprice;
+  final String raid;
+  final String roid;
+  final String? selectedVariant;
+  final String modelNo;
+  final String ram;
+  final String rom;
+  final String modelName;
+
+  const DeviceDetailScreen2({
+    Key? key,
+    this.pid,
+    required this.bid,
+    required this.baseprice,
+    required this.raid,
+    required this.roid,
+    this.selectedVariant,
+    required this.modelNo,
+    required this.ram,
+    required this.rom, required this.modelName,
+  }) : super(key: key);
 
   @override
-  _DeviceDetailScreen2State createState() => _DeviceDetailScreen2State();
+  State<DeviceDetailScreen2> createState() => _DeviceDetailScreen2State();
 }
 
 class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
-  final DeviceQuestionnaireController controller =
-      Get.put(DeviceQuestionnaireController());
-
+  final SellQuestionController controller = Get.put(SellQuestionController());
   final Map<String, bool> selectedDefects = {};
 
   final List<String> staticImages = [
@@ -24,29 +45,23 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
     "assets/images/DevicePanelMissing.png",
   ];
 
-  final int bid = 2;
-  final int pid = 14;
-  final int raid = 9;
-  final int roid = 15;
-  final String model = "iphone 13";
-  final int ram = 8;
-  final int rom = 256;
-  final int basePrice = 65000;
-
-  @override
-  void initState() {
-    super.initState();
-    controller.fetchQuestions(
-      bid: bid,
-      pid: pid,
-      raid: raid,
-      roid: roid,
-      model: model,
-      ram: ram,
-      rom: rom,
-      basePrice: basePrice,
+ @override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    controller.loadSellQuestions(
+       bid: int.parse(widget.bid),
+      pid: int.tryParse(widget.pid ?? '') ?? 1,
+      raid: int.parse(widget.raid),
+      roid: int.parse(widget.roid),
+      model: widget.modelNo,
+      ram: widget.ram,
+     rom: widget.rom,
+      basePrice: widget.baseprice,
     );
-  }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +78,18 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final defects = controller.questions
-            .where((q) => q.pageId == 2)
-            .take(4) // only take 4 questions
-            .toList();
+        if (controller.errorMessage.isNotEmpty) {
+          return Center(child: Text(controller.errorMessage.value));
+        }
+
+        final pageData = controller.sellQuestion.value?.data
+            ?.firstWhere((d) => d.pageId == 2, orElse: () => Datum(questions: []));
+
+        final defects = pageData?.questions ?? [];
+
+        if (defects.isEmpty) {
+          return const Center(child: Text("No defect questions found."));
+        }
 
         return Padding(
           padding: const EdgeInsets.all(10.0),
@@ -74,31 +97,38 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Select screen/body defect that are applicable!",
+                "Select screen/body defects that are applicable!",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text("Please provide correct details."),
               const SizedBox(height: 16),
-
               Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.9,
-                  children: List.generate(defects.length, (index) {
+                child: GridView.builder(
+                  itemCount: defects.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 0.9,
+                  ),
+                  itemBuilder: (context, index) {
                     final question = defects[index];
-                    selectedDefects.putIfAbsent(question.questionId, () => false);
+                    final imagePath = staticImages.length > index
+                        ? staticImages[index]
+                        : staticImages[index % staticImages.length];
+
+                    selectedDefects.putIfAbsent(
+                        question.questionId ?? '', () => false);
+
                     return buildDefectTile(
-                      question.questionId,
-                      question.question,
-                      staticImages[index], // static image used
+                      question.questionId ?? '',
+                      question.question ?? '',
+                      imagePath,
                     );
-                  }),
+                  },
                 ),
               ),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -109,11 +139,34 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
                     ),
                   ),
                   onPressed: () {
-                    Get.to(() => DeviceDetailsScreen3());
+                    final anySelected =
+                        selectedDefects.values.any((v) => v == true);
+
+                    if (!anySelected) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content:
+                                Text("Please select at least one defect.")),
+                      );
+                      return;
+                    }
+
+                    Get.to(() => DeviceDetailsScreen3(
+                          baseprice: widget.baseprice,
+                          bid: widget.bid,
+                          raid: widget.raid,
+                          roid: widget.roid,
+                          modelNo: widget.modelNo,
+                          ram: widget.ram,
+                          rom: widget.rom, modelName: widget.modelName,
+                        ));
                   },
                   child: const Text(
                     "Continue",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ),
@@ -125,7 +178,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
   }
 
   Widget buildDefectTile(String key, String label, String imagePath) {
-    bool isSelected = selectedDefects[key] ?? false;
+    final isSelected = selectedDefects[key] ?? false;
 
     return GestureDetector(
       onTap: () {
@@ -150,7 +203,8 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+                style:
+                    TextStyle(color: isSelected ? Colors.white : Colors.black),
               ),
             ),
           ],

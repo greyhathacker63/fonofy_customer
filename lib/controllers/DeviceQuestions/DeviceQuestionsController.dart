@@ -2,41 +2,46 @@ import 'package:fonofy/Api_Service/SellService/DeviceQuestionsService/Deviceques
 import 'package:fonofy/model/SellDevice/DeviceQuestions.dart';
 import 'package:get/get.dart';
 
-class DeviceQuestionnaireController extends GetxController {
-  var pages = <PageDetails>[].obs;
-  var mappings = <PageQuestionMapping>[].obs;
-  var questions = <QuestionDetails>[].obs;
-  var isLoading = false.obs;
 
-  Future<void> fetchQuestions({
+class SellQuestionController extends GetxController {
+  final SellQuestionService _service = SellQuestionService();
+
+  var isLoading = false.obs;
+  var sellQuestion = Rxn<SellQuestion>();
+  var errorMessage = ''.obs;
+
+  Future<void> loadSellQuestions({
     required int bid,
     required int pid,
     required int raid,
     required int roid,
     required String model,
-    required int ram,
-    required int rom,
-    required int basePrice,
-    dynamic weightage,
+    required String ram,
+    required String rom,
+    required String basePrice,
   }) async {
     try {
       isLoading.value = true;
-      final response = await DeviceQuestionnaireService.fetchDeviceQuestions(
+      errorMessage.value = '';
+
+      final result = await _service.fetchSellQuestions(
         bid: bid,
         pid: pid,
         raid: raid,
         roid: roid,
         model: model,
         ram: ram,
-        rom: rom,
+        rom: rom ,
         basePrice: basePrice,
       );
-      pages.assignAll(response.table);
-      mappings.assignAll(response.table1);
-      questions.assignAll(response.table2);
+
+      if (result != null) {
+        sellQuestion.value = result;
+      } else {
+        errorMessage.value = 'Failed to fetch data';
+      }
     } catch (e) {
-      print("प्रश्नावली प्राप्त करने में त्रुटि: $e");
-      Get.snackbar("त्रुटि", e.toString());
+      errorMessage.value = 'Error: $e';
     } finally {
       isLoading.value = false;
     }

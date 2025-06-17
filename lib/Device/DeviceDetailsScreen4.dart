@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen5.dart';
-
 import 'package:fonofy/controllers/DeviceQuestions/DeviceQuestionsController.dart';
+import 'package:fonofy/model/SellDevice/DeviceQuestions.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
 class DeviceDetailsScreen4 extends StatefulWidget {
-  const DeviceDetailsScreen4({super.key});
+  final String? pid;
+  final String bid;
+  final String baseprice;
+  final String raid;
+  final String roid;
+  final String? selectedVariant;
+  final String modelNo;
+  final String ram;
+  final String rom;
+  final String modelName;
+
+  const DeviceDetailsScreen4({
+    Key? key,
+    this.pid,
+    required this.bid,
+    required this.baseprice,
+    required this.raid,
+    required this.roid,
+    this.selectedVariant,
+    required this.modelNo,
+    required this.ram,
+    required this.rom, required this.modelName,
+  }) : super(key: key);
 
   @override
   State<DeviceDetailsScreen4> createState() => _DeviceDetailsScreen4State();
 }
 
 class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
-  final DeviceQuestionnaireController controller =
-      Get.put(DeviceQuestionnaireController());
-
+  final SellQuestionController controller = Get.put(SellQuestionController());
   final Map<String, bool> selectedAccessories = {};
 
   final List<String> staticImages = [
@@ -27,36 +47,27 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
     "assets/images/default2.png",
   ];
 
-  final int bid = 2;
-  final int pid = 14;
-  final int raid = 9;
-  final int roid = 15;
-  final String model = "iphone 13";
-  final int ram = 8;
-  final int rom = 256;
-  final int basePrice = 65000;
-
-  @override
   void initState() {
-    super.initState();
-    controller.fetchQuestions(
-      bid: bid,
-      pid: pid,
-      raid: raid,
-      roid: roid,
-      model: model,
-      ram: ram,
-      rom: rom,
-      basePrice: basePrice,
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    controller.loadSellQuestions(
+       bid: int.parse(widget.bid),
+      pid: int.tryParse(widget.pid ?? '') ?? 1,
+      raid: int.parse(widget.raid),
+      roid: int.parse(widget.roid),
+      model: widget.modelNo,
+      ram: widget.ram,
+     rom: widget.rom,
+      basePrice: widget.baseprice,
     );
-  }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text("Device Details", style: TextStyle(color: Colors.black)),
+        title: const Text("Device Details", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
@@ -69,9 +80,18 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final questions = controller.questions
-            .where((q) => q.pageId == 4)
-            .toList();
+        if (controller.errorMessage.isNotEmpty) {
+          return Center(child: Text(controller.errorMessage.value));
+        }
+
+        final pageData = controller.sellQuestion.value?.data
+            ?.firstWhere((d) => d.pageId == 4, orElse: () => Datum(questions: []));
+
+        final questions = pageData?.questions ?? [];
+
+        if (questions.isEmpty) {
+          return const Center(child: Text("No accessory questions found."));
+        }
 
         return Padding(
           padding: const EdgeInsets.all(16),
@@ -92,8 +112,6 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Accessories as cards
               Expanded(
                 child: GridView.builder(
                   itemCount: questions.length,
@@ -105,34 +123,45 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                   ),
                   itemBuilder: (context, index) {
                     final q = questions[index];
+                    final qId = q.questionId ?? '';
+                    final qText = q.question ?? '';
+
+                    if (qId.isEmpty) return const SizedBox(); // skip invalid entries
+
                     final imagePath = index < staticImages.length
                         ? staticImages[index]
                         : "assets/images/default.png";
 
-                    selectedAccessories.putIfAbsent(q.questionId, () => false);
+                    selectedAccessories.putIfAbsent(qId, () => false);
 
                     return _buildAccessoryCard(
                       imagePath,
-                      q.question,
-                      selectedAccessories[q.questionId]!,
+                      qText,
+                      selectedAccessories[qId]!,
                       () {
                         setState(() {
-                          selectedAccessories[q.questionId] =
-                              !selectedAccessories[q.questionId]!;
+                          selectedAccessories[qId] = !selectedAccessories[qId]!;
                         });
                       },
                     );
                   },
                 ),
               ),
-
-              // Continue Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: selectedAccessories.containsValue(true)
                       ? () {
-                          Get.to(() => DeviceDetailsScreen5());
+                          Get.to(() => DeviceDetailsScreen5(
+                                baseprice: widget.baseprice,
+                                bid: widget.bid,
+                                raid: widget.raid,
+                                roid: widget.roid,
+                                modelNo: widget.modelNo,
+                                ram: widget.ram,
+                                rom: widget.rom,
+                                modelName: widget.modelName,
+                              ));
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
@@ -193,4 +222,3 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
     );
   }
 }
-

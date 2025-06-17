@@ -3,7 +3,6 @@ import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:fonofy/model/table_banner_model/SelectProduct/SelectProduct2.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
-
 import '../../../controllers/SellControllers/SellVariantTableControllers.dart';
 
 class SelectProductScreen extends StatefulWidget {

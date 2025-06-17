@@ -1,32 +1,26 @@
+import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/SellService/SellCalculatorService.dart';
+import 'package:fonofy/model/SellCalculationModel.dart';
 import 'package:get/get.dart';
 
 
 class SellCalculatorController extends GetxController {
   final SellCalculatorService _service = SellCalculatorService();
 
-  var isLoading = false.obs;
-  var basePrice = 0.0.obs;
-  var weightedScore = 0.0.obs;
-  var finalPrice = 0.0.obs;
+  var isLoading = true.obs;
+  var _getSellCalcData;
 
-  Future<void> calculate({
-    required List<double> questWeights,
-    required double inputBasePrice,
-  }) async {
-    isLoading.value = true;
+  PriceEvaluation? get mSellPhoneListData => _getSellCalcData;
 
-    final result = await _service.calculateSellPrice(
-      questWeights: questWeights,
-      basePrice: inputBasePrice,
-    );
-
-    if (result != null) {
-      basePrice.value = result["BasePrice"];
-      weightedScore.value = result["WeightedScore"];
-      finalPrice.value = result["FinalPrice"];
-    }
-
-    isLoading.value = false;
+  Future<void> calculatePrice( { required List<double> questWeights,
+    required double basePrice}) {
+    return _service.calculateSellPrice(basePrice: basePrice, questWeights: questWeights)
+        .then((response) {
+          isLoading(true);
+          _getSellCalcData = response;
+        })
+        .catchError(
+            (err) => debugPrint('Error in Sell Price Data!!!!! : $err'))
+        .whenComplete(() => isLoading(false));
   }
 }
