@@ -217,7 +217,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
 
   final repairController = Get.find<RepairControllerTable>();
   final productControllerDetails = Get.put(ControllerProductDetails());
-  final trackingController = Get.put(TrackingController());
+  final TrackingController trackingController = Get.find<TrackingController>();
   final bookingController = Get.put(RepairBookingController());
 
   List<DateTime> getNext7Days() {
@@ -270,11 +270,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     itemBuilder: (context, index) {
                       final date = dateList[index];
                       final isSelected = selectedIndex == index;
-                      final label = index == 0
-                          ? "TODAY"
-                          : index == 1
-                              ? "TOMORROW"
-                              : null;
+                      final label = index == 0 ? "TODAY" : index == 1 ? "TOMORROW" : null;
 
                       return GestureDetector(
                         onTap: () {
