@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/Device/DeviceDetailsScreen3.dart';
+import 'package:fonofy/YourDevice/SelectPickupSlot.dart';
 import 'package:fonofy/YourDevice/YourDeviceScreen2.dart';
+import 'package:fonofy/controllers/DeviceQuestions/DeviceQuestionsController.dart';
 import 'package:fonofy/controllers/SellControllers/SellCalculatorController.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
@@ -32,11 +35,14 @@ class YourDeviceScreen extends StatefulWidget {
 
   @override
   State<YourDeviceScreen> createState() => _YourDeviceScreenState();
+
 }
 
 class _YourDeviceScreenState extends State<YourDeviceScreen> {
   final SellCalculatorController controller =
-      Get.put(SellCalculatorController());
+  Get.put(SellCalculatorController());
+  final SellQuestionController questionController = Get.put(SellQuestionController());
+
   final RxDouble finalPrice = 0.0.obs;
 
   @override
@@ -50,6 +56,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
     await controller.calculatePrice(
       questWeights: [0.95, 0.85, 1.0, 0.65],
       basePrice: base,
+
     );
 
     finalPrice.value = controller.mSellPhoneListData?.finalPrice ?? "Error";
@@ -341,7 +348,7 @@ class _OfferCard extends StatelessWidget {
           Text(label,
               textAlign: TextAlign.center,
               style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 5),
           Text(price,
               style: const TextStyle(
