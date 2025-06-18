@@ -43,8 +43,7 @@ import 'package:fonofy/controllers/OrderListController.dart';
 import 'package:fonofy/widgets/Order_Widgets/OrderItemCard.dart';
 import 'package:get/get.dart';
 
-import '../../RepairScreen/RepairOrderScreen.dart';
-import '../../utils/Colors.dart';
+ import '../../utils/Colors.dart';
 
 
 class MyOrdersScreen extends StatelessWidget {
@@ -131,9 +130,8 @@ class MyOrdersScreen extends StatelessWidget {
         selectedType.value = label;
         print("$label Clicked");
 
-        // 👇 Navigate if label is "Repair"
         if (label == "Repair") {
-          Get.to(() => RepairOrderScreen()); // Make sure this screen is imported
+          // Get.to(() => RepairOrderListScreen());
         }
       },
       child: Text(label),

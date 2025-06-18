@@ -168,7 +168,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("❌ Invalid OTP! Please try again.")),
+                          SnackBar(content: Text("❌ Invalid OTP! Please try again.")),
                       );
                     }
                     setState(() {
