@@ -34,7 +34,7 @@ class YourDeviceScreen extends StatefulWidget {
 }
 
 class _YourDeviceScreenState extends State<YourDeviceScreen> {
-  final SellCalculatorController controllerSellCalculator = Get.put(SellCalculatorController());
+  final SellCalculatorController controller = Get.put(SellCalculatorController());
   final RxDouble finalPrice = 0.0.obs;
 
   @override
@@ -45,37 +45,14 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
 
   Future<void> _recalculatePrice() async {
     final base = double.tryParse(widget.baseprice) ?? 0.0;
-    await controllerSellCalculator.calculatePrice(
+    await controller.calculatePrice(
       questWeights: [0.95, 0.85, 1.0, 0.65],
       basePrice: base,
     );
-   print("Final Price (calculated): ₹ ${controllerSellCalculator.mSellPhoneListData?.finalPrice ?? "ccdcdascd"}");
+ 
+print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice ?? "ccdcdascd"}");
+   
   }
-
-  // Future<void> _recalculatePrice() async {
-  //   final double priceBase = double.tryParse(widget.baseprice) ?? 0.0;
-  //   if (priceBase == 0.0) {
-  //     print("Error: Base price is invalid or zero.");
-  //     return;
-  //   }
-  //
-  //   List<double> questionWeights = [0.95, 0.85, 1.0, 0.65];
-  //
-  //   await controllerSellCalculator.calculatePrice(
-  //     questWeights: questionWeights,
-  //     basePrice: base,
-  //   );
-  //
-  //   final priceStr = controllerSellCalculator.mSellPhoneListData?.finalPrice;
-  //   if (priceStr != null) {
-  //     final parsedPrice = double.tryParse(priceStr) ?? 0.0;
-  //     finalPrice.value = parsedPrice;
-  //
-  //     print("✅ Final Price (calculated): ₹ $parsedPrice");
-  //   } else {
-  //     print("Final price not calculated. Check controller logic.");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -85,20 +62,22 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("Your Device", style: TextStyle(color: Colors.black)),
+        title: const Text("Your Device", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Obx(() {
-        if (controllerSellCalculator.isLoading.value) {
-          return   Center(child: CircularProgressIndicator());
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
         }
+
+
         if (finalPrice.value > 0) {
           print("Final Price (display): ${finalPrice.value}");
         }
 
         return SingleChildScrollView(
-          padding:  EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -115,7 +94,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
                 child: Row(
                   children: [
                     Image.asset("assets/images/iphone.png", height: 73),
-                      SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,15 +108,16 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
                             children: [
                               const Text("Selling Price: ",
                                   style: TextStyle(fontSize: 14, color: Colors.black54)),
-                              Obx(()=>Text("₹ ${finalPrice.value.toStringAsFixed(0)}",
-                                  style:  TextStyle(
+                              Obx(()=>Text(finalPrice.value.toString(),
+                                  style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.red))),
                               const Spacer(),
                               GestureDetector(
                                 onTap: _recalculatePrice,
-                                child: Text("Recalculate",
+                                child: const Text(
+                                  "Recalculate",
                                   style: TextStyle(
                                       color: Colors.blue,
                                       fontSize: 11,
@@ -291,7 +271,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
                         padding:
                             const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                       ),
-                      child:  Text("Sell Now",
+                      child: const Text("Sell Now",
                           style: TextStyle(fontSize: 16, color: Colors.white)),
                     ),
                   ],

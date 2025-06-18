@@ -30,16 +30,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Fonofy',
-      theme: ThemeData(useMaterial3: true),
-      home:  MainScreen(),
-      // You can use getPages or routes if needed
-      getPages: [
-        GetPage(name: '/main', page: () =>  MainScreen()),
-        // Add other screens here
-      ],
+    return SafeArea(
+      bottom: true,
+      left: false,
+      right: false,
+      top: false,
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Fonofy',
+        theme: ThemeData(useMaterial3: true),
+        home: MainScreen(),
+        // You can use getPages or routes if needed
+        getPages: [
+          GetPage(name: '/main', page: () => MainScreen()),
+          // Add other screens here
+        ],
+      ),
     );
   }
 }
@@ -48,6 +54,7 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

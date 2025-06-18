@@ -690,31 +690,32 @@ import '../utils/Colors.dart';
 
 class ProductAttributeBottomSheet extends StatefulWidget {
   final ProductDetailsModel product;
-    void Function(
-      String ramName,
-      String romName,
-      String colorName,
-      double? price,
-      String condition,
-      String ramId,
-      String romId,
-      String colorId,
-      dynamic discountPercentage,
-      ) onVariantSelected;
+  void Function(
+    String ramName,
+    String romName,
+    String colorName,
+    double? price,
+    String condition,
+    String ramId,
+    String romId,
+    String colorId,
+    dynamic discountPercentage,
+  ) onVariantSelected;
 
-    ProductAttributeBottomSheet({
+  ProductAttributeBottomSheet({
     super.key,
     required this.product,
     required this.onVariantSelected,
   });
 
   @override
-  _ProductAttributeBottomSheetState createState() => _ProductAttributeBottomSheetState();
+  _ProductAttributeBottomSheetState createState() =>
+      _ProductAttributeBottomSheetState();
 }
 
-class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomSheet> {
-
-  String selectedCondition = "Fair";
+class _ProductAttributeBottomSheetState
+    extends State<ProductAttributeBottomSheet> {
+  String selectedCondition = "";
   String selectedStorage = "";
   int selectedColorIndex = 0;
   bool showDealsOnly = false;
@@ -733,7 +734,7 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
   Future<void> _fetchColors() async {
     try {
       List<ProductRamRomColorListModel> colors =
-      await _serviceProductRamRom.fetchProductRamRomListColorsData(
+          await _serviceProductRamRom.fetchProductRamRomListColorsData(
         widget.product.modelUrl ?? '',
         widget.product.ucode ?? '',
       );
@@ -742,14 +743,14 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
         _colorList = colors;
         if (_colorList.isNotEmpty) {
           selectedVariant = _colorList.firstWhere(
-                (item) =>
-            item.ramName == widget.product.ramName &&
+            (item) =>
+                item.ramName == widget.product.ramName &&
                 item.romName == widget.product.romName &&
                 item.colorName == widget.product.colorName,
             orElse: () => _colorList.first,
           );
           selectedStorage =
-          "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
+              "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
           selectedColorIndex = _colorList.indexOf(selectedVariant!);
           _updateConditionBasedOnStorage();
           _notifyParent();
@@ -765,8 +766,10 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
       selectedCondition = "Fair";
       return;
     }
-    final ram = selectedVariant!.ramName?.toLowerCase().replaceAll('gb', '').trim();
-    final rom = selectedVariant!.romName?.toLowerCase().replaceAll('gb', '').trim();
+    final ram =
+        selectedVariant!.ramName?.toLowerCase().replaceAll('gb', '').trim();
+    final rom =
+        selectedVariant!.romName?.toLowerCase().replaceAll('gb', '').trim();
 
     if (ram == "4" && rom == "64") {
       selectedCondition = "Fair";
@@ -780,8 +783,7 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
     print("Updated condition based on storage: $selectedCondition");
   }
 
-
-@override
+  @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       expand: false,
@@ -795,8 +797,10 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.product.productAndModelName ?? "Product",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Text(
+                widget.product.productAndModelName ?? "Product",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
@@ -806,7 +810,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
               const SizedBox(height: 10),
               Text.rich(
                 TextSpan(
-                  text: "₹${_getSelectedConditionPrice()?.toStringAsFixed(0) ?? '0'} ",
+                  text:
+                      "₹${getSelectedConditionPrice()?.toStringAsFixed(0) ?? '0'} ",
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -814,7 +819,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                   ),
                   children: [
                     TextSpan(
-                      text: " ₹${widget.product.newModelAmt?.toStringAsFixed(0) ?? '0'} ",
+                      text:
+                          " ₹${widget.product.newModelAmt?.toStringAsFixed(0) ?? '0'} ",
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
@@ -844,7 +850,9 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                     },
                     selectedColor: Colors.teal.shade100,
                     labelStyle: TextStyle(
-                      color: selectedCondition == condition ? Colors.white : Colors.black,
+                      color: selectedCondition == condition
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   );
                 }).toList(),
@@ -853,7 +861,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                 children: [
                   Checkbox(
                     value: showDealsOnly,
-                    onChanged: (val) => setState(() => showDealsOnly = val ?? false),
+                    onChanged: (val) =>
+                        setState(() => showDealsOnly = val ?? false),
                   ),
                   const Text("Show deals only"),
                 ],
@@ -868,7 +877,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                 children: _colorList.asMap().entries.map((entry) {
                   int index = entry.key;
                   var item = entry.value;
-                  String storage = "${item.ramName ?? 'N/A'} / ${item.romName ?? 'N/A'}";
+                  String storage =
+                      "${item.ramName ?? 'N/A'} / ${item.romName ?? 'N/A'}";
                   bool isSelected = selectedStorage == storage;
 
                   return OutlinedButton(
@@ -882,16 +892,19 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                       });
                     },
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: isSelected ? Colors.teal : Colors.grey),
+                      side: BorderSide(
+                          color: isSelected ? Colors.teal : Colors.grey),
                       backgroundColor: isSelected ? Colors.teal.shade50 : null,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           storage,
-                          style: TextStyle(color: isSelected ? Colors.teal : Colors.black),
+                          style: TextStyle(
+                              color: isSelected ? Colors.teal : Colors.black),
                         ),
                         if (isSelected) ...[
                           const SizedBox(width: 6),
@@ -920,7 +933,7 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                         selectedColorIndex = index;
                         selectedVariant = _colorList[index];
                         selectedStorage =
-                        "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
+                            "${selectedVariant?.ramName ?? ''} / ${selectedVariant?.romName ?? ''}";
                         _updateConditionBasedOnStorage();
                         _notifyParent();
                       });
@@ -934,7 +947,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                               radius: 15,
                               backgroundColor: circleColor,
                               child: isSelected
-                                  ? const Icon(Icons.check, color: Colors.black87, size: 16)
+                                  ? const Icon(Icons.check,
+                                      color: Colors.black87, size: 16)
                                   : null,
                             ),
                           ],
@@ -949,9 +963,6 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                   );
                 }).toList(),
               ),
-
-
-
               const SizedBox(height: 10),
             ],
           ),
@@ -962,25 +973,31 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
 
   void _notifyParent() {
     print("Notifying parent: Condition=$selectedCondition, "
-
-        "Price=${_getSelectedConditionPrice()}, ""RAM=${selectedVariant?.ramName}, ROM=${selectedVariant?.romName}, Color=${selectedVariant?.colorName}");
+        "Price=${getSelectedConditionPrice()}, "
+        "RAM=${selectedVariant?.ramName}, ROM=${selectedVariant?.romName}, Color=${selectedVariant?.colorName}");
     widget.onVariantSelected(
       selectedVariant?.ramName ?? widget.product.ramName ?? '',
       selectedVariant?.romName ?? widget.product.romName ?? '',
       selectedVariant?.colorName ?? widget.product.colorName ?? '',
-      _getSelectedConditionPrice(),
+      getSelectedConditionPrice(),
       selectedCondition,
-      selectedVariant?.ramId?.toString() ?? widget.product.ramId?.toString() ?? '',
-      selectedVariant?.romId?.toString() ?? widget.product.romId?.toString() ?? '',
-      selectedVariant?.colorId?.toString() ?? widget.product.colorId?.toString() ?? '',
+      selectedVariant?.ramId?.toString() ??
+          widget.product.ramId?.toString() ??
+          '',
+      selectedVariant?.romId?.toString() ??
+          widget.product.romId?.toString() ??
+          '',
+      selectedVariant?.colorId?.toString() ??
+          widget.product.colorId?.toString() ??
+          '',
       widget.product.discountPercentage,
     );
   }
 
   Widget _sectionTitle(String text) => Text(
-    text,
-    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  );
+        text,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      );
 
   Widget _buildWarrantyCard() {
     return Card(
@@ -1000,7 +1017,8 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                     TextSpan(
                       text: "Add ",
                       children: [
-                        TextSpan(text: "6 Months",
+                        TextSpan(
+                          text: "6 Months",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(text: " extended warranty at ₹899"),
@@ -1011,7 +1029,7 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
                 ),
                 ElevatedButton(
                   onPressed: () {},
-                  child:  Text("Add"),
+                  child: Text("Add"),
                 ),
               ],
             ),
@@ -1026,35 +1044,43 @@ class _ProductAttributeBottomSheetState extends State<ProductAttributeBottomShee
     );
   }
 
-  double? _getSelectedConditionPrice() {
+  double? getSelectedConditionPrice() {
     double? price;
     if (selectedVariant != null) {
       if (selectedCondition == "Fair") {
         price = selectedVariant!.f2 ?? widget.product.sellingPrice ?? 0.0;
       } else if (selectedCondition == "Good") {
-        price = selectedVariant!.f1 ?? widget.product.sellingPriceF1 ?? widget.product.sellingPrice ?? 0.0;
+        price = selectedVariant!.f1 ??
+            widget.product.sellingPriceF1 ??
+            widget.product.sellingPrice ??
+            0.0;
       } else if (selectedCondition == "Superb") {
-        price = selectedVariant!.f1Plus ?? widget.product.sellingPricePlus ?? widget.product.sellingPrice ?? 0.0;
+        price = selectedVariant!.f1Plus ??
+            widget.product.sellingPricePlus ??
+            widget.product.sellingPrice ??
+            0.0;
       }
     } else {
       if (selectedCondition == "Fair") {
         price = widget.product.sellingPrice ?? 0.0;
       } else if (selectedCondition == "Good") {
-        price = widget.product.sellingPriceF1 ?? widget.product.sellingPrice ?? 0.0;
+        price =
+            widget.product.sellingPriceF1 ?? widget.product.sellingPrice ?? 0.0;
       } else if (selectedCondition == "Superb") {
-        price = widget.product.sellingPricePlus ?? widget.product.sellingPrice ?? 0.0;
+        price = widget.product.sellingPricePlus ??
+            widget.product.sellingPrice ??
+            0.0;
       }
     }
-    print("Selected Condition: $selectedCondition, Storage: $selectedStorage, Price: $price");
+    print(
+        "Selected Condition: $selectedCondition, Storage: $selectedStorage, Price: $price");
     return price;
   }
+
   String _calculateSavings() {
-    final selectedPrice = _getSelectedConditionPrice() ?? 0;
+    final selectedPrice = getSelectedConditionPrice() ?? 0;
     final newPrice = widget.product.newModelAmt ?? 0;
     final savings = newPrice - selectedPrice;
     return savings > 0 ? savings.toStringAsFixed(0) : '0';
   }
-
 }
-
-
