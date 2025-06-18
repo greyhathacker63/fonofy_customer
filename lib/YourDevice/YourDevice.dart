@@ -303,7 +303,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
   }
 }
 
-// _FeatureIcon, _OfferCard, and _FAQItem remain unchanged...
+/// _FeatureIcon, _OfferCard, and _FAQItem remain unchanged...
 
 class _FeatureIcon extends StatelessWidget {
   final IconData icon;
