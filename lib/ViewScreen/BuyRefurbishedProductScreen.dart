@@ -459,7 +459,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
               },
             ),
           ),
-          if ((product?.stockQuantity ?? 0) > 0) const SizedBox(width: 10),
+          if ((product?.stockQuantity ?? 0) > 0)   SizedBox(width: 10),
           if ((product?.stockQuantity ?? 0) > 0)
 
             // boy Now Screen
@@ -533,8 +533,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appBlueColor3),
-                child: const Text(
-                  "BUY NOW",
+                child: const Text("BUY NOW",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
