@@ -3,6 +3,7 @@ import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../model/RepairModel/RepairOderListModel.dart';
+import '../../BaseUrl/AllBaseUrl.dart';
 
 // class RepairOrderListService {
 //   static const String baseUrl = 'https://api.fonofy.in/api/forb2c/repair-order-list';
@@ -24,11 +25,11 @@ import '../../../model/RepairModel/RepairOderListModel.dart';
 // }
 
 class RepairOrderListService {
-  static const String baseUrl = 'https://api.fonofy.in/api/forb2c/repair-order-list';
+  // static const String baseUrl = 'https://api.fonofy.in/api/forb2c/repair-order-list';
 
   static Future<List<RepairOderListModel>> fetchRepairOrdersList(String customerId) async {
     final token = await TokenHelper.getToken();
-    final url = Uri.parse('$baseUrl?CustomerId=$customerId');
+    final url = Uri.parse('$repairOrderLisUrl?CustomerId=$customerId');
 
     final response = await http.get(
       url,

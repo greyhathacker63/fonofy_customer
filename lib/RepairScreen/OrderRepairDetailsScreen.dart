@@ -23,7 +23,7 @@ class OrderRepairDetailsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:   EdgeInsets.all(16.0),
           child: Column(
             children: [
               Card(
@@ -37,12 +37,10 @@ class OrderRepairDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// Header
-                      Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            'Repair : -',
+                          Text('Repair : -',
                             style: TextStyle(
                               fontSize: 16,
                               color: ColorConstants.appBlueColor3,
@@ -128,73 +126,19 @@ class OrderRepairDetailsScreen extends StatelessWidget {
                         ),
                       ),
 
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 15),
                       _buildDashedLine(),
-                        SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Text(
-                            'Status: ',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            'Order Confirmed',
-                            style: GoogleFonts.poppins(color: ColorConstants.appBlueColor3),
-                          ),
-                        ],
-                      ),
 
-                      const SizedBox(height: 16),
-                      buildStatusItem('Order Placed', true),
-                      buildStatusItem('Order Confirmed', true),
-                      buildStatusItem('Agent Assigned', false),
-                      buildStatusItem('Order Complete', false),
 
-                      const SizedBox(height: 10),
 
-                      Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: ColorConstants.appBlueColor3,
-                                ),
-                                child: Icon(
-                                  Icons.question_mark,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                "Have Some Query, Need Help?",
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                     ],
                   ),
                 ),
 
               ),
 
                 SizedBox(height: 20),
-              Repairpriceandschedulewidget(),
+              RepairPriceAndScheduleWidget(),
             ],
           ),
         ),
@@ -202,29 +146,6 @@ class OrderRepairDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildStatusItem(String title, bool isCompleted) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Column(
-            children: [
-              CircleAvatar(
-                radius: 12,
-                backgroundColor: isCompleted ? ColorConstants.appBlueColor3 : Colors.grey[300],
-                child: isCompleted
-                    ? Icon(Icons.check, size: 16, color: Colors.white)
-                    : null,
-              ),
-              Container(width: 2, height: 30, color: Colors.grey[300]),
-            ],
-          ),
-            SizedBox(width: 12),
-          Text(title, style: GoogleFonts.poppins(fontSize: 16)),
-        ],
-      ),
-    );
-  }
 
   Widget _buildDashedLine() {
     return LayoutBuilder(

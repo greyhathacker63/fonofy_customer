@@ -389,8 +389,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         ),
                       );
                     },
-                    child: Text(
-                      "OUT OF STOCK",
+                    child: Text("OUT OF STOCK",
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   );
@@ -406,7 +405,6 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                           Get.to(() => LoginScreen());
                           return;
                         }
-
                         final uuid = Uuid();
                         final cartRef = uuid.v4();
                         final addToCartService = AddToCartService();
@@ -415,8 +413,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
 
                         //getPriceBasedOnCondition();
 
-                        print(
-                            "Buy Now - ramId: $selectedRamId, romId: $selectedRomId, colorId: $selectedColorId, price: $price");
+                        print("Buy Now - ramId: $selectedRamId, romId: $selectedRomId, colorId: $selectedColorId, price: $price");
                         final response =
                             await addToCartService.fetchAddToCartData(
                           userCode,
@@ -450,8 +447,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                         );
                       }
                     },
-                    child: Text(
-                      "ADD TO CART",
+                    child: Text("ADD TO CART",
                       style: TextStyle(color: Colors.black, fontSize: 14),
                     ),
                   );
@@ -489,6 +485,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                       return;
                     }
                     final addToBuyNowService = AddToBuyNowService();
+                    
                     final price = updatedValue;
                     // getPriceBasedOnCondition();
 
@@ -533,7 +530,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appBlueColor3),
-                child: const Text("BUY NOW",
+                child: Text("BUY NOW",
                   style: TextStyle(color: Colors.white),
                 ),
               ),

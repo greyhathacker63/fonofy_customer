@@ -175,8 +175,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                   }).toList(),
                 ),
         
-                /// TextField
-                Padding(
+                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 20),
                   child: TextField(
                     controller: otherReasonController,
@@ -187,8 +186,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                   ),
                 ),
         
-                /// Confirm Button
-                SizedBox(
+                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
@@ -201,8 +199,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                       ),
                       padding: EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: Text(
-                      "CONFIRM",
+                    child: Text("CONFIRM",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

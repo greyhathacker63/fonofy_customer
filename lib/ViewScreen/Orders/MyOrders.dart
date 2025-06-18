@@ -43,7 +43,8 @@ import 'package:fonofy/controllers/OrderListController.dart';
 import 'package:fonofy/widgets/Order_Widgets/OrderItemCard.dart';
 import 'package:get/get.dart';
 
- import '../../utils/Colors.dart';
+import '../../RepairScreen/RepairOrderScreen.dart';
+import '../../utils/Colors.dart';
 
 
 class MyOrdersScreen extends StatelessWidget {
@@ -75,13 +76,11 @@ class MyOrdersScreen extends StatelessWidget {
             )),
           ),
 
-
-          Obx(() => selectedType.value.isNotEmpty
-              ? Text(
-            "Selected Type: ${selectedType.value}",
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          )
-              : const SizedBox()),
+          // Obx(() => selectedType.value.isNotEmpty
+          //     ? Text("Selected Type: ${selectedType.value}",
+          //   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // )
+          //     : const SizedBox()),
 
           const SizedBox(height: 20),
 
@@ -89,7 +88,7 @@ class MyOrdersScreen extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (orderController.isLoading.value) {
-                return const Center(
+                return   Center(
                   child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
                 );
               }
@@ -129,9 +128,8 @@ class MyOrdersScreen extends StatelessWidget {
       onPressed: () {
         selectedType.value = label;
         print("$label Clicked");
-
         if (label == "Repair") {
-          // Get.to(() => RepairOrderListScreen());
+          Get.to(() => RepairOrderListScreen(customerId: '',));
         }
       },
       child: Text(label),

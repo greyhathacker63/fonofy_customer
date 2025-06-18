@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../RepairScreen/CancelRepairOrderScreen.dart';
+import '../../RepairScreen/ReapirOrderTrackingScreen.dart';
 import '../../RepairScreen/RescheduleOrderRepairScreen.dart';
 import '../../utils/Colors.dart';
 
-class Repairpriceandschedulewidget extends StatelessWidget {
-  const Repairpriceandschedulewidget({super.key});
+class RepairPriceAndScheduleWidget  extends StatelessWidget {
+  const RepairPriceAndScheduleWidget ({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +48,7 @@ class Repairpriceandschedulewidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Arrival time of executive',
+                Text('Arrival time of executive',
                   style: GoogleFonts.poppins(
                       color: ColorConstants.appBlueColor3,
                       fontSize: 14,
@@ -91,16 +91,7 @@ class Repairpriceandschedulewidget extends StatelessWidget {
                   '9554346561',
                   style: GoogleFonts.poppins(fontSize: 13, ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  '+Add Alternative No.',
-                  style: GoogleFonts.poppins(
-                      color: ColorConstants.appBlueColor3,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold
-                    // decoration: TextDecoration.underline,
-                  ),
-                ),
+
                 const SizedBox(height: 16),
                 Row(
                   children: [
@@ -135,12 +126,12 @@ class Repairpriceandschedulewidget extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => RescheduleOrderRepairScreen(),) );
+                          // Navigator.push(context,MaterialPageRoute(builder: (context) => RescheduleOrderRepairScreen(),) );
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => ReapirOrderTrackingScreen(),) );
                         },
-                        child: Text(
-                          'RESCHEDULE',
+                        child: Text('Tracking',
                           style: GoogleFonts.poppins(
-                            color: Colors.white,fontSize: 13,
+                            color: Colors.white,fontSize: 15,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
