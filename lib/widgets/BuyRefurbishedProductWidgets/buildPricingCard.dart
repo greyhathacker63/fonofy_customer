@@ -48,23 +48,26 @@
 //   );
 // }
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../model/ProductDetailsModel/ProductDetailsModel.dart';
 
-Widget buildPricingCard(ProductDetailsModel product, {double? selectedPrice}) {
+String updatedValue = "0.0";
 
-  double? getPriceBasedOnCondition() {
-    if (product.romName == "Fair") {
-      return product.sellingPrice;
-    } else if (product.romName == "Good") {
-      return product.sellingPriceF1;
-    } else if (product.romName == "Superb") {
-      return product.sellingPricePlus;
-    }
-    return product.sellingPrice;
+double? getPriceBasedOnCondition(
+    {required ProductDetailsModel productDetails}) {
+  if (productDetails.romName == "Fair") {
+    return productDetails.sellingPrice;
+  } else if (productDetails.romName == "Good") {
+    return productDetails.sellingPriceF1;
+  } else if (productDetails.romName == "Superb") {
+    return productDetails.sellingPricePlus;
   }
+  updatedValue = productDetails.sellingPrice.toString();
+  print("product Details Check " + updatedValue);
+  return productDetails.sellingPrice;
+}
 
+Widget buildPricingCard(ProductDetailsModel product, {double? selectedPrice}) {
   // String condition = product.ramName ?? "Fair";
   // if (product.romName == "64GB" && condition != "Fair") {
   //   condition = "Fair";
@@ -92,7 +95,8 @@ Widget buildPricingCard(ProductDetailsModel product, {double? selectedPrice}) {
                       fontSize: 16,
                       fontWeight: FontWeight.bold)),
               const SizedBox(width: 10),
-              Text("₹${getPriceBasedOnCondition()?.toString() ?? ""}",
+              Text(
+                  "₹${getPriceBasedOnCondition(productDetails: product)?.toString() ?? ""}",
                   style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

@@ -26,7 +26,8 @@ class YourDeviceScreen extends StatefulWidget {
     this.selectedVariant,
     required this.modelNo,
     required this.ram,
-    required this.rom, required this.modelName,
+    required this.rom,
+    required this.modelName,
   });
 
   @override
@@ -34,7 +35,8 @@ class YourDeviceScreen extends StatefulWidget {
 }
 
 class _YourDeviceScreenState extends State<YourDeviceScreen> {
-  final SellCalculatorController controller = Get.put(SellCalculatorController());
+  final SellCalculatorController controller =
+      Get.put(SellCalculatorController());
   final RxDouble finalPrice = 0.0.obs;
 
   @override
@@ -49,9 +51,8 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
       questWeights: [0.95, 0.85, 1.0, 0.65],
       basePrice: base,
     );
- 
-print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice ?? "ccdcdascd"}");
-   
+
+    finalPrice.value = controller.mSellPhoneListData?.finalPrice ?? "Error";
   }
 
   @override
@@ -70,7 +71,6 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-
 
         if (finalPrice.value > 0) {
           print("Final Price (display): ${finalPrice.value}");
@@ -101,14 +101,16 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
                         children: [
                           Text(
                             "${widget.modelName.toString()} (${widget.ram}/${widget.rom})",
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 5),
                           Row(
                             children: [
                               const Text("Selling Price: ",
-                                  style: TextStyle(fontSize: 14, color: Colors.black54)),
-                              Obx(()=>Text(finalPrice.value.toString(),
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.black54)),
+                              Obx(() => Text(finalPrice.value.toString(),
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -139,7 +141,8 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
                   _FeatureIcon(icon: Icons.payment, label: "Fast Payments"),
-                  _FeatureIcon(icon: Icons.local_shipping, label: "Free Pickup"),
+                  _FeatureIcon(
+                      icon: Icons.local_shipping, label: "Free Pickup"),
                   _FeatureIcon(icon: Icons.security, label: "100% Safe"),
                 ],
               ),
@@ -158,9 +161,11 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
                     Icon(Icons.local_offer, color: Colors.blue),
                     SizedBox(width: 10),
                     Text("Apply Coupons",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500)),
                     Spacer(),
-                    Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
+                    Icon(Icons.arrow_forward_ios,
+                        size: 16, color: Colors.black54),
                   ],
                 ),
               ),
@@ -176,8 +181,10 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _OfferCard("assets/images/iphone.png", "iPhone Voucher", finalPrice.value.toString()),
-                  _OfferCard("assets/images/amazon.png", "Amazon Pay Gift Card", finalPrice.value.toString()),
+                  _OfferCard("assets/images/iphone.png", "iPhone Voucher",
+                      finalPrice.value.toString()),
+                  _OfferCard("assets/images/amazon.png", "Amazon Pay Gift Card",
+                      finalPrice.value.toString()),
                 ],
               ),
               const SizedBox(height: 10),
@@ -186,8 +193,10 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _OfferCard("assets/images/flipkart.png", "Flipkart Gift Card", finalPrice.value.toString()),
-                  _OfferCard("assets/images/croma.png", "Croma", finalPrice.value.toString()),
+                  _OfferCard("assets/images/flipkart.png", "Flipkart Gift Card",
+                      finalPrice.value.toString()),
+                  _OfferCard("assets/images/croma.png", "Croma",
+                      finalPrice.value.toString()),
                 ],
               ),
               const SizedBox(height: 12),
@@ -214,7 +223,8 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("FAQs",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,13 +273,14 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        print("Final Price (button tap): ₹ ${finalPrice.value}");
+                        print(
+                            "Final Price (button tap): ₹ ${finalPrice.value}");
                         Get.to(() => YourDeviceScreen2());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorConstants.appBlueColor3,
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 12),
                       ),
                       child: const Text("Sell Now",
                           style: TextStyle(fontSize: 16, color: Colors.white)),
@@ -285,9 +296,7 @@ print("Final Price (calculated): ₹ ${controller.mSellPhoneListData?.finalPrice
   }
 }
 
-
 // _FeatureIcon, _OfferCard, and _FAQItem remain unchanged...
-
 
 class _FeatureIcon extends StatelessWidget {
   final IconData icon;
