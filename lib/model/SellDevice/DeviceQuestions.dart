@@ -103,7 +103,7 @@ class Option {
     String? questionTitle;
     String? priceType;
     dynamic amount;
-    double? weightage;
+    dynamic weightage;
     String? questionId;
     String? listOptionAns;
     String? checkStatus;

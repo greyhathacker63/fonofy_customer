@@ -11,10 +11,10 @@ class SellQuestionController extends GetxController {
   var errorMessage = ''.obs;
 
   Future<void> loadSellQuestions({
-    required int bid,
-    required int pid,
-    required int raid,
-    required int roid,
+    required dynamic bid,
+    required dynamic pid,
+    required dynamic raid,
+    required dynamic roid,
     required String model,
     required String ram,
     required String rom,
