@@ -490,17 +490,15 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                     }
                     final addToBuyNowService = AddToBuyNowService();
                     final price = updatedValue;
-                    //getPriceBasedOnCondition();
+                    // getPriceBasedOnCondition();
 
-                    print(
-                        "Buy Now - ramId: $selectedRamId, romId: $selectedRomId, colorId: $selectedColorId, price: $price");
+                    print("Buy Now - ramId: $selectedRamId, romId: $selectedRomId, colorId: $selectedColorId, price: $price");
 
                     final addToBuyNowDetails =
                         await addToBuyNowService.fetchBuyNowData(
                       customerId: userCode,
                       modelId: product.modelNo?.toString() ?? '',
-                      colorId:
-                          selectedColorId ?? product.colorId?.toString() ?? '',
+                      colorId: selectedColorId ?? product.colorId?.toString() ?? '',
                       ramId: selectedRamId ?? product.ramId?.toString() ?? '',
                       romId: selectedRomId ?? product.romId?.toString() ?? '',
                       quantity: product.stockQuantity ?? 0,
@@ -614,7 +612,7 @@ class _ProductDetailsScreenState extends State<BuyRefurbishedProductScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 15),
+                                SizedBox(height: 15),
                               Text(
                                 recommendedProduct.productAndModelName ?? '',
                                 maxLines: 2,
