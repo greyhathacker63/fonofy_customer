@@ -18,6 +18,7 @@ class YourDeviceScreen extends StatefulWidget {
   final String ram;
   final String rom;
   final String modelName;
+  final List finalhPageAns;
 
   const YourDeviceScreen({
     super.key,
@@ -30,36 +31,54 @@ class YourDeviceScreen extends StatefulWidget {
     required this.modelNo,
     required this.ram,
     required this.rom,
-    required this.modelName,
+    required this.modelName, required this.finalhPageAns,
   });
 
   @override
   State<YourDeviceScreen> createState() => _YourDeviceScreenState();
-  
 }
 
 class _YourDeviceScreenState extends State<YourDeviceScreen> {
   final SellCalculatorController controller =
       Get.put(SellCalculatorController());
-   final SellQuestionController questionController = Get.put(SellQuestionController());   
-  
+  final SellQuestionController questionController =
+      Get.put(SellQuestionController());
+
   final RxDouble finalPrice = 0.0.obs;
 
   @override
   void initState() {
     super.initState();
-    _recalculatePrice();
+
+    // Delay updates until after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _recalculatePrice();
+    });
   }
 
   Future<void> _recalculatePrice() async {
     final base = double.tryParse(widget.baseprice) ?? 0.0;
+
+    await questionController.loadSellQuestions(
+      bid: widget.bid,
+      pid: widget.pid,
+      raid: widget.raid,
+      roid: widget.roid,
+      model: widget.modelName,
+      ram: widget.ram,
+      rom: widget.rom,
+      basePrice: base.toString(),
+    );
+final List<String> weights = List<String>.from(widget.finalhPageAns);
+
+
+  
     await controller.calculatePrice(
-      questWeights: [0.95, 0.85, 1.0, 0.65],
+      questWeights: weights,
       basePrice: base,
-      
     );
 
-    finalPrice.value = controller.mSellPhoneListData?.finalPrice ?? "Error";
+    finalPrice.value = controller.mSellPhoneListData?.finalPrice ?? 0.0;
   }
 
   @override

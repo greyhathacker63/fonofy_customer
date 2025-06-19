@@ -12,7 +12,7 @@ class SellCalculatorController extends GetxController {
 
   PriceEvaluation? get mSellPhoneListData => _getSellCalcData;
 
-  Future<void> calculatePrice( { required List<double> questWeights,
+  Future<void> calculatePrice( { required List<String> questWeights,
     required double basePrice}) {
     return _service.calculateSellPrice(basePrice: basePrice, questWeights: questWeights)
         .then((response) {

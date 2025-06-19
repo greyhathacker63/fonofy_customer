@@ -2,13 +2,26 @@ import 'package:fonofy/Api_Service/SellService/DeviceQuestionsService/Deviceques
 import 'package:fonofy/model/SellDevice/DeviceQuestions.dart';
 import 'package:get/get.dart';
 
-
 class SellQuestionController extends GetxController {
   final SellQuestionService _service = SellQuestionService();
 
   var isLoading = false.obs;
-  var sellQuestion = Rxn<SellQuestion>();
+  var sellQuestion = SellQuestion().obs;
+
   var errorMessage = ''.obs;
+
+  // Step 2: Track selected options for each question
+  final selectedOptions = <String, Option>{}.obs;
+
+  void selectOption(String questionId, Option option) {
+    selectedOptions[questionId] = option;
+  }
+
+  List<double> getSelectedWeights() {
+    return selectedOptions.values
+        .map<double>((option) => (option.weightage ?? 1.0).toDouble())
+        .toList();
+  }
 
   Future<void> loadSellQuestions({
     required dynamic bid,
@@ -31,12 +44,12 @@ class SellQuestionController extends GetxController {
         roid: roid,
         model: model,
         ram: ram,
-        rom: rom ,
+        rom: rom,
         basePrice: basePrice,
       );
 
       if (result != null) {
-        sellQuestion.value = result;
+        sellQuestion.value = result; // ✅ No need to call fromJson again
       } else {
         errorMessage.value = 'Failed to fetch data';
       }

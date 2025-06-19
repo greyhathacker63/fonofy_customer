@@ -16,6 +16,7 @@ class DeviceDetailScreen2 extends StatefulWidget {
   final String ram;
   final String rom;
   final String modelName;
+  final List<String> secondPageAns;
 
   const DeviceDetailScreen2({
     Key? key,
@@ -27,7 +28,9 @@ class DeviceDetailScreen2 extends StatefulWidget {
     this.selectedVariant,
     required this.modelNo,
     required this.ram,
-    required this.rom, required this.modelName,
+    required this.rom,
+    required this.modelName,
+    required this.secondPageAns,
   }) : super(key: key);
 
   @override
@@ -37,6 +40,7 @@ class DeviceDetailScreen2 extends StatefulWidget {
 class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
   final SellQuestionController controller = Get.put(SellQuestionController());
   final Map<String, bool> selectedDefects = {};
+  
 
   final List<String> staticImages = [
     "assets/images/broken.png",
@@ -45,23 +49,22 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
     "assets/images/DevicePanelMissing.png",
   ];
 
- @override
-void initState() {
-  super.initState();
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    controller.loadSellQuestions(
-       bid: int.parse(widget.bid),
-      pid: int.tryParse(widget.pid ?? '') ?? 1,
-      raid: int.parse(widget.raid),
-      roid: int.parse(widget.roid),
-      model: widget.modelNo,
-      ram: widget.ram,
-     rom: widget.rom,
-      basePrice: widget.baseprice,
-    );
-  });
-}
-
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.loadSellQuestions(
+        bid: int.parse(widget.bid),
+        pid: int.tryParse(widget.pid ?? '') ?? 1,
+        raid: int.parse(widget.raid),
+        roid: int.parse(widget.roid),
+        model: widget.modelNo,
+        ram: widget.ram,
+        rom: widget.rom,
+        basePrice: widget.baseprice,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +85,9 @@ void initState() {
           return Center(child: Text(controller.errorMessage.value));
         }
 
-        final pageData = controller.sellQuestion.value?.data
-            ?.firstWhere((d) => d.pageId == 2, orElse: () => Datum(questions: []));
+        final pageData = controller.sellQuestion.value?.data?.firstWhere(
+            (d) => d.pageId == 2,
+            orElse: () => Datum(questions: []));
 
         final defects = pageData?.questions ?? [];
 
@@ -125,6 +129,7 @@ void initState() {
                       question.questionId ?? '',
                       question.question ?? '',
                       imagePath,
+                      index,
                     );
                   },
                 ),
@@ -148,6 +153,7 @@ void initState() {
                             content:
                                 Text("Please select at least one defect.")),
                       );
+                      print("Selected" + anySelected.toString());
                       return;
                     }
 
@@ -158,7 +164,9 @@ void initState() {
                           roid: widget.roid,
                           modelNo: widget.modelNo,
                           ram: widget.ram,
-                          rom: widget.rom, modelName: widget.modelName,
+                          rom: widget.rom,
+                          modelName: widget.modelName, thirdPageAns:widget.secondPageAns,
+                          
                         ));
                   },
                   child: const Text(
@@ -177,14 +185,32 @@ void initState() {
     );
   }
 
-  Widget buildDefectTile(String key, String label, String imagePath) {
+  Widget buildDefectTile(
+      String key, String label, String imagePath, int index) {
     final isSelected = selectedDefects[key] ?? false;
+    final pageData = controller.sellQuestion.value?.data
+        ?.firstWhere((d) => d.pageId == 2, orElse: () => Datum(questions: []));
+
+    final defects = pageData?.questions ?? [];
 
     return GestureDetector(
       onTap: () {
         setState(() {
           selectedDefects[key] = !isSelected;
         });
+        print("Selecteddefects" + selectedDefects.toString());
+        print("b" + isSelected.toString());
+        if (!isSelected) {
+          // On selecting a defect (i.e., was unselected before, now selected)
+          final selectedOptions = defects[index].options;
+
+          for (var opt in selectedOptions!) {
+            final weight = opt.weightage?.toString() ?? '1.0';
+            widget.secondPageAns.add(weight);
+          }
+
+          print("Collected secondPageAns: ${widget.secondPageAns}");
+        }
       },
       child: Container(
         decoration: BoxDecoration(
