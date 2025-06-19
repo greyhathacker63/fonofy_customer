@@ -42,8 +42,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    'Cancel',
+                  child: Text('Cancel',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -70,16 +69,15 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                           child: OutlinedButton(
                             onPressed: () => Navigator.pop(context),
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Color(0xFF3DD598)),
+                              side: BorderSide(color: ColorConstants.appBlueColor3),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               padding: EdgeInsets.symmetric(vertical: 12),
                             ),
-                            child: Text(
-                              'NO',
+                            child: Text('NO',
                               style: TextStyle(
-                                color: Color(0xFF3DD598),
+                                color: ColorConstants.appBlueColor3,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -90,12 +88,12 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              // TODO: Handle confirmed cancellation
+
                               print('Cancelled with reason: $selectedReason');
                               print('Other reason: ${otherReasonController.text}');
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF3DD598),
+                              backgroundColor: ColorConstants.appBlueColor3,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
@@ -121,7 +119,6 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +146,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
         
                   SizedBox(height: 18),
         
-                Text(
-                  "Please tell us the reason",
+                Text("Please tell us the reason",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
         

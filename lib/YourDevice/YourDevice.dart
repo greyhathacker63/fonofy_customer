@@ -7,6 +7,8 @@ import 'package:fonofy/controllers/SellControllers/SellCalculatorController.dart
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
+import '../model/SellDevice/DeviceQuestions.dart';
+
 class YourDeviceScreen extends StatefulWidget {
   final String baseprice;
   final String? pid;
@@ -44,6 +46,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
   final SellQuestionController questionController = Get.put(SellQuestionController());
 
   final RxDouble finalPrice = 0.0.obs;
+  late final daa= SellQuestion;
 
   @override
   void initState() {
@@ -123,16 +126,22 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.red))),
                               const Spacer(),
-                              GestureDetector(
-                                onTap: _recalculatePrice,
-                                child: const Text(
-                                  "Recalculate",
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 11,
-                                      decoration: TextDecoration.underline),
-                                ),
-                              ),
+                              // GestureDetector(
+                              //   onTap: _recalculatePrice,
+                              //   child: Text("",
+                              //     style: TextStyle(
+                              //         color: Colors.blue,
+                              //         fontSize: 11,
+                              //         decoration: TextDecoration.underline),
+                              //   ),
+                              //   // child: Text(
+                              //   //   "Recalculate",
+                              //   //   style: TextStyle(
+                              //   //       color: Colors.blue,
+                              //   //       fontSize: 11,
+                              //   //       decoration: TextDecoration.underline),
+                              //   // ),
+                              // ),
                             ],
                           ),
                         ],
@@ -303,7 +312,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
   }
 }
 
-// _FeatureIcon, _OfferCard, and _FAQItem remain unchanged...
+/// _FeatureIcon, _OfferCard, and _FAQItem remain unchanged...
 
 class _FeatureIcon extends StatelessWidget {
   final IconData icon;
