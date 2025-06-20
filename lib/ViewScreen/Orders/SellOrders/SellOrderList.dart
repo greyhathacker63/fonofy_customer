@@ -66,13 +66,14 @@ class _SellOrderListScreenState extends State<SellOrderListScreen> {
                               Icon(Icons.image, color: ColorConstants.appBlueColor3),
                         ),
                       ),
-                      title: Text("Order ID: ${order.orderId ?? 'N/A'}",
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      title: Text("Order ID: ${order.orderId ?? ''}",
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
                       subtitle: Text("Sell Date: ${order.createdDate ?? ''}",
                           style: const TextStyle(fontSize: 11)),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        // TODO: Navigate to order detail screen
+
                       },
                     ),
                   );

@@ -39,12 +39,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/controllers/OrderListController.dart';
 import 'package:fonofy/widgets/Order_Widgets/OrderItemCard.dart';
 import 'package:get/get.dart';
 
 import '../../RepairScreen/RepairOrderScreen.dart';
 import '../../utils/Colors.dart';
+import 'SellOrders/SellOrderList.dart';
 
 
 class MyOrdersScreen extends StatelessWidget {
@@ -78,8 +80,7 @@ class MyOrdersScreen extends StatelessWidget {
 
 
           Obx(() => selectedType.value.isNotEmpty
-              ? Text(
-            "Selected Type: ${selectedType.value}",
+              ? Text("",
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           )
               : const SizedBox()),
@@ -127,15 +128,20 @@ class MyOrdersScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      onPressed: () {
+      onPressed: () async {
         selectedType.value = label;
         print("$label Clicked");
 
-        if (label == "Repair") {
-          Get.to(() => RepairOrderScreen()); // Make sure this screen is imported
+        final customerId = await TokenHelper.getUserCode(); // Get customer ID
+
+        if (customerId == null || customerId.isEmpty) {
+          print("Customer ID not found!");
+          return;
         }
-      if(label=="Sell"){
-          Get.to(() => RepairOrderScreen());
+        if (label == "Repair") {
+          Get.to(() => RepairOrderListScreen(customerId: customerId));
+        } else if (label == "Sell") {
+          Get.to(() => SellOrderListScreen(customerId: customerId));
         }
       },
       child: Text(label),
