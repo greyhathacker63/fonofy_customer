@@ -48,19 +48,15 @@ class RepairOrderProductDetailsController extends GetxController {
       isLoading.value = true;
 
       final token = await TokenHelper.getToken();
-
       if (token == null || token.isEmpty) {
         print('Token is null or empty. User might not be logged in.');
-
         return;
       }
-
       final response = await RepairOrderProductDetailsService.fetchRepairOrderProductDetails(
         orderId: orderId,
         customerId: customerId,
         token: token,
       );
-
       detailsRepairOrderProduct.value = response;
     } catch (e) {
       print('Error fetching repair order details: $e');

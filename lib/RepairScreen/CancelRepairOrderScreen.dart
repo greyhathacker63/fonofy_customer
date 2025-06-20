@@ -232,7 +232,6 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
 
   String? selectedReasonId;
 
-
   TextEditingController otherReasonController = TextEditingController();
 
   @override
@@ -259,9 +258,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: Center(
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+                  child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
@@ -269,8 +266,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 child: Column(
                   children: [
-                    Text(
-                      'Do you really want to cancel?',
+                    Text('Do you really want to cancel?',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 14),
                     ),
@@ -313,7 +309,6 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                                 reasone: reasonText,
                                 reasonId: selectedReasonId ?? '',
                                 reasonRemark: enteredRemark,
-
                               );
                             //   final message = cancelController.cancelMessage.value;
                             //   print("Cancel Message: $message");

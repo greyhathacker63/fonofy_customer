@@ -28,22 +28,6 @@ import 'package:get/get.dart';
 import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairServicesTableService.dart';
 import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 
-import 'package:get/get.dart';
-import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairServicesTableService.dart';
-import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairServicesTableService.dart';
-import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
-
-import 'package:get/get.dart';
-import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairServicesTableService.dart';
-import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
-
-import 'package:get/get.dart';
-import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairServicesTableService.dart';
-import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 
 class RepairControllerTable extends GetxController {
   var isRepairTableLoading = true.obs;
@@ -52,8 +36,6 @@ class RepairControllerTable extends GetxController {
   var totalPrice = 0.obs;
 
   RepairServicesTableModel? get tableRepairData => _appRepairTableData;
-
-
 
   Future<void> getTableRepairData(String bid, String pid, String cid) async {
     try {

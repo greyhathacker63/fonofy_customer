@@ -241,8 +241,6 @@ class RepairPriceAndScheduleWidget extends StatelessWidget {
                   ),
 
                   SizedBox(height: 6),
-
-                  /// ✅ Total Amount Row
                   _buildPriceRow('Total Amount',
                     '₹${dataTable1.fold<double>(0, (sum, item) => sum + (item.serviceAmount ?? 0)).toStringAsFixed(2)}',
                     isBold: true,
