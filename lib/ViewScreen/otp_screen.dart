@@ -6,6 +6,8 @@ import 'package:fonofy/ViewScreen/AccountsScreen.dart';
 import 'package:fonofy/Api_Service/mobileOtpService/TokenService.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 
+import '../utils/Colors.dart';
+
 class OtpScreen extends StatefulWidget {
   final String otp;
   final String number;
@@ -117,7 +119,7 @@ class _OtpScreenState extends State<OtpScreen> {
               OtpTextField(
                 fieldWidth: 50,
                 numberOfFields: 4,
-                borderColor: const Color(0xFF512DA8),
+                borderColor: ColorConstants.appBlueColor3,
                 showFieldAsBox: true,
                 onSubmit: (String verificationCode) {
                   setState(() {
@@ -181,9 +183,9 @@ class _OtpScreenState extends State<OtpScreen> {
                       ? const SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                    child: CircularProgressIndicator(color: Colors.blue, strokeWidth: 2),
                   )
-                      : const Text("Verify OTP",
+                      :   Text("Verify OTP",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
@@ -207,7 +209,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         });
                         await _resendOtp();
                       },
-                      child: const Text("Resend OTP",style: TextStyle(fontSize: 14, color: Colors.blue),
+                      child: Text("Resend OTP",style: TextStyle(fontSize: 14, color: ColorConstants.appBlueColor3),
                       ),
                     ),
                 ],

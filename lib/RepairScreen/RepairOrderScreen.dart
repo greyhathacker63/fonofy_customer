@@ -55,7 +55,7 @@ class _RepairOrderListScreenState extends State<RepairOrderListScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     elevation: 2,
                     child: ListTile(
-                      contentPadding: const EdgeInsets.all(12),
+                      contentPadding:  EdgeInsets.all(12),
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
@@ -70,7 +70,7 @@ class _RepairOrderListScreenState extends State<RepairOrderListScreen> {
                       subtitle: Text("Repair Date :- ${orderDetails.createdDate}" "",style: TextStyle(fontSize: 11),),
                       trailing:   Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => OrderRepairDetailsScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => OrderRepairDetailsScreen(orderId: orderDetails.orderId ?? '', customerId: orderDetails.customerId ?? '',)));
                       },
                     ),
                   );

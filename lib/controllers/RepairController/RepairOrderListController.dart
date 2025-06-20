@@ -6,7 +6,10 @@ import '../../model/RepairModel/RepairOderListModel.dart';
 
 class RepairOrderListController extends GetxController {
   var isLoading = false.obs;
+
   var repairOrdersList = <RepairOderListModel>[].obs;
+
+  var repairOderList = Rxn<RepairOderListModel>();
 
   Future<void> getRepairOrdersList(String customerId) async {
     try {
@@ -20,3 +23,8 @@ class RepairOrderListController extends GetxController {
     }
   }
 }
+
+
+
+
+

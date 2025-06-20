@@ -57,6 +57,10 @@ const String changePasswordUrl = "${baseUrl}api/forb2c/change-password";
 
 const String repairBookingdUrl = "${baseUrl}api/forb2c/repair-booking";
 const String repairOrderLisUrl = "${baseUrl}api/forb2c/repair-order-list";
+const String repairCancelReasonListUrl = "${baseUrl}api/forb2c/cancel-reason-list";
+
+const String cancelRepairOrderUrl = "${baseUrl}api/forb2c/cancel-repair-order";
+const String repairOrderProductDetailsUrl = "${baseUrl}api/forb2c/repair-order-product-details";
 
 
 
