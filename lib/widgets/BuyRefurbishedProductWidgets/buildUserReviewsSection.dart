@@ -30,7 +30,7 @@ Widget buildUserReviewsSection(ProductDetailsModel product, List<ProductReviewMo
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "${product.avgReview?.toString() ?? '0.0'}",
+                  product.avgReview?.toString() ?? '0.0',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

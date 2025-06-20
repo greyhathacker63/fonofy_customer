@@ -10,6 +10,7 @@ class SellCalculatorController extends GetxController {
   var isLoading = true.obs;
   var _getSellCalcData;
 
+
   PriceEvaluation? get mSellPhoneListData => _getSellCalcData;
 
   Future<void> calculatePrice( { required List<String> questWeights,

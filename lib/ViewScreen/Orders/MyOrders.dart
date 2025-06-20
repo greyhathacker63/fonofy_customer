@@ -39,6 +39,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import 'package:fonofy/ViewScreen/Orders/SellOrders/SellOrderList.dart';
 import 'package:fonofy/controllers/OrderListController.dart';
 import 'package:fonofy/widgets/Order_Widgets/OrderItemCard.dart';
 import 'package:get/get.dart';
@@ -132,11 +133,11 @@ class MyOrdersScreen extends StatelessWidget {
         print("$label Clicked");
 
         if (label == "Repair") {
-          Get.to(() => RepairOrderScreen()); // Make sure this screen is imported
-        }
-      if(label=="Sell"){
-          Get.to(() => RepairOrderScreen());
-        }
+          Get.off(()=> RepairOrderListScreen(customerId: ''));
+         }
+         if(label == "Sell") {
+          Get.off(() => SellOrderListScreen(customerId: ''));
+         }
       },
       child: Text(label),
     );

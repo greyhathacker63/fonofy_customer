@@ -11,6 +11,7 @@ import 'package:fonofy/widgets/TextField.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Api_Service/mobileOtpService/api_register.dart';
 import '../Api_Service/mobileOtpService/login_service.dart';
+import '../utils/Colors.dart';
 import 'EmailLoginScreen.dart';
 import '../MainScreen.dart';
 import '../SharedPreferences/SharedPreferences_email.dart';
@@ -113,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:   Color(0xFF19628B),
+                    backgroundColor:   ColorConstants.appBlueColor3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -156,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "PhoneNumber": phoneNumber,
         "Email": email,
         "Password": password,
-        "PlatformType": ''
+        "PlatformType": 'Home'
       });
 
       try {
@@ -240,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   numberOfFields: 4,
                   borderWidth: 2,
                   fieldWidth: 50,
-                  borderColor: Colors.blue,
+                  borderColor: ColorConstants.appBlueColor3,
                   showFieldAsBox: true,
                   onCodeChanged: (String verificationCode){
                     otp = verificationCode;
@@ -252,7 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text("Cancel",
+                      child:   Text("Cancel",
                         style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -263,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (isVerified) {
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("✅ OTP Verified Successfully!"),backgroundColor: Colors.green,),
+                                SnackBar(content: Text("✅ OTP Verified Successfully!"),backgroundColor: Colors.green,),
                             );
                             await Future.delayed(const Duration(seconds: 1));
                             //Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainScreen()),);
@@ -280,7 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: ColorConstants.appBlueColor3,
                       ),
                       child:  Text("Verify",style: TextStyle(fontSize: 16,color: Colors.white, fontWeight: FontWeight.bold),),
                     ),

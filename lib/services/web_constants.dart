@@ -18,4 +18,4 @@ const String tracking='order-tracking';
 const String addUpiEndpoint = "add-upi";
 const String getBankDetails = "account-detials-list";
 const String sellCalculator = "sell-calculator";
-
+const String sellOrderListUrl="sell-order-list";

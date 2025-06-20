@@ -4,15 +4,18 @@ import '../../Api_Service/SellService/RepairColorModelService/RepairOrderListSer
 import '../../model/RepairModel/RepairOderListModel.dart';
 
 
-class RepairOrderController extends GetxController {
+class RepairOrderListController extends GetxController {
   var isLoading = false.obs;
-  var repairOrders = <RepairOderListModel>[].obs;
 
-  Future<void> loadRepairOrders(String customerId) async {
+  var repairOrdersList = <RepairOderListModel>[].obs;
+
+  var repairOderList = Rxn<RepairOderListModel>();
+
+  Future<void> getRepairOrdersList(String customerId) async {
     try {
       isLoading.value = true;
       final orders = await RepairOrderListService.fetchRepairOrdersList(customerId);
-      repairOrders.assignAll(orders);
+      repairOrdersList.assignAll(orders);
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
@@ -20,3 +23,8 @@ class RepairOrderController extends GetxController {
     }
   }
 }
+
+
+
+
+

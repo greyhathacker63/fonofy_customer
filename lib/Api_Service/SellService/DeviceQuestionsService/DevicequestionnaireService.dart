@@ -16,8 +16,7 @@ class SellQuestionService {
     required String rom,
     required String basePrice,
   }) async {
-    final uri = Uri.parse(
-        '$_baseUrl?bid=$bid&pid=$pid&raid=$raid&roid=$roid&model=$model&ram=${ram.toString().trim()}&rom=$rom&baseprice=$basePrice');
+    final uri = Uri.parse('$_baseUrl?bid=$bid&pid=$pid&raid=$raid&roid=$roid&model=$model&ram=${ram.toString().trim()}&rom=$rom&baseprice=$basePrice');
     print(uri.toString());
     try {
       final response = await http.get(uri);

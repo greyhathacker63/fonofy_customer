@@ -27,8 +27,7 @@ Widget buildProductHighlightsCard(ProductDetailsModel product) {
           _buildProductHighlightRow("Color", product.colorName ?? ""),
           // _buildProductHighlightRow("OS", Platform.isAndroid?"android":"ios"),
           _buildProductHighlightRow("Rear Camera", product.rearCamera ?? ""),
-          _buildProductHighlightRow(
-              "Front Camera", product.frontCamera ?? ""),
+          _buildProductHighlightRow("Front Camera", product.frontCamera ?? ""),
           _buildProductHighlightRow("Display", product.display ?? ""),
         ],
       ),
@@ -37,7 +36,7 @@ Widget buildProductHighlightsCard(ProductDetailsModel product) {
 }
 Widget _buildProductHighlightRow(String title, String value) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 3),
+    padding:   EdgeInsets.symmetric(vertical: 3),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

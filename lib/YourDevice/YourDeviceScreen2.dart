@@ -63,9 +63,7 @@ class YourDeviceScreen2 extends StatelessWidget {
                   _buildStepBox("3", "Payment"),
                 ],
               ),
-
-              const SizedBox(height: 30),
-
+              SizedBox(height: 30),
                Row(
                 children: [
                   Image.asset("assets/images/location.png", height: 30),

@@ -38,7 +38,6 @@ class RepairBookingController extends GetxController {
     required String repairType,
     required String slotDate,
     required String remark,
-    required String paymentMode,
     required List<RepairDetail> repairDetails,
   }) async {
     isLoading.value = true;
@@ -59,8 +58,6 @@ class RepairBookingController extends GetxController {
       colorId: colorId,
       customerId: customerId,
       orderId: "",
-      servieCharge: 0,
-      couponId: couponId,
       shippingId: shippingId,
       shippingName: shippingName,
       shippingMobileNo: shippingMobileNo,
@@ -71,9 +68,6 @@ class RepairBookingController extends GetxController {
       shippingState: shippingState,
       shippingPincode: shippingPincode,
       workType: workType,
-      couponName: couponName,
-      couponDiscountType: couponDiscountType,
-      couponAmount: couponAmount,
       couponPercent: couponPercent,
       couponCode: couponCode,
       repairType: repairType,
@@ -84,11 +78,17 @@ class RepairBookingController extends GetxController {
       totalPrice: totalPrice,
       totalDiscount: totalDiscount,
       totalMrp: totalMRP,
-      mode: paymentMode,
       repairDetails: repairDetails,
+      servieCharge: null,
+      couponId: null,
+      couponName: '',
+      couponDiscountType: '',
+      couponAmount: null,
+      mode: '',
     );
 
-    final success = await RepairBookingService.fetchRepairBooking(repairBookingModel, token);
+    final success = await RepairBookingService.fetchRepairBooking(
+        repairBookingModel, token);
 
     if (success) {
       Get.snackbar("Success", "Repair Booking Successful",
