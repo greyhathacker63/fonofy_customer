@@ -21,7 +21,6 @@ class _SellOrderListScreenState extends State<SellOrderListScreen> {
     super.initState();
     sellOrderListController.fetchSellOrders(widget.customerId);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,11 +39,9 @@ class _SellOrderListScreenState extends State<SellOrderListScreen> {
                   child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
                 );
               }
-
               if (sellOrderListController.sellOrdersList.isEmpty) {
                 return const Center(child: Text('No orders found'));
               }
-
               return ListView.builder(
                 itemCount: sellOrderListController.sellOrdersList.length,
                 itemBuilder: (context, index) {
