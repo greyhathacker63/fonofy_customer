@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/YourDevice/SelectPickupSlot.dart';
-import 'package:fonofy/YourDevice/YourDeviceScreen3.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
