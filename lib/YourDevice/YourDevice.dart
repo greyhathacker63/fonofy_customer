@@ -7,8 +7,6 @@ import 'package:fonofy/controllers/SellControllers/SellCalculatorController.dart
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
-import '../model/SellDevice/DeviceQuestions.dart';
-
 class YourDeviceScreen extends StatefulWidget {
   final String baseprice;
   final String? pid;
@@ -37,16 +35,15 @@ class YourDeviceScreen extends StatefulWidget {
 
   @override
   State<YourDeviceScreen> createState() => _YourDeviceScreenState();
-
+  
 }
 
 class _YourDeviceScreenState extends State<YourDeviceScreen> {
   final SellCalculatorController controller =
-  Get.put(SellCalculatorController());
-  final SellQuestionController questionController = Get.put(SellQuestionController());
-
+      Get.put(SellCalculatorController());
+   final SellQuestionController questionController = Get.put(SellQuestionController());   
+  
   final RxDouble finalPrice = 0.0.obs;
-  late final daa= SellQuestion;
 
   @override
   void initState() {
@@ -59,7 +56,7 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
     await controller.calculatePrice(
       questWeights: [0.95, 0.85, 1.0, 0.65],
       basePrice: base,
-
+      
     );
 
     finalPrice.value = controller.mSellPhoneListData?.finalPrice ?? "Error";
@@ -126,22 +123,16 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.red))),
                               const Spacer(),
-                              // GestureDetector(
-                              //   onTap: _recalculatePrice,
-                              //   child: Text("",
-                              //     style: TextStyle(
-                              //         color: Colors.blue,
-                              //         fontSize: 11,
-                              //         decoration: TextDecoration.underline),
-                              //   ),
-                              //   // child: Text(
-                              //   //   "Recalculate",
-                              //   //   style: TextStyle(
-                              //   //       color: Colors.blue,
-                              //   //       fontSize: 11,
-                              //   //       decoration: TextDecoration.underline),
-                              //   // ),
-                              // ),
+                              GestureDetector(
+                                onTap: _recalculatePrice,
+                                child: const Text(
+                                  "Recalculate",
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 11,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -357,7 +348,7 @@ class _OfferCard extends StatelessWidget {
           Text(label,
               textAlign: TextAlign.center,
               style:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 5),
           Text(price,
               style: const TextStyle(

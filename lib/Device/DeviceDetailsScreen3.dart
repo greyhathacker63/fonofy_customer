@@ -16,6 +16,8 @@ class DeviceDetailsScreen3 extends StatefulWidget {
   final String ram;
   final String rom;
   final String modelName;
+  final List<String> thirdPageAns;
+
 
   const DeviceDetailsScreen3({
     Key? key,
@@ -27,7 +29,9 @@ class DeviceDetailsScreen3 extends StatefulWidget {
     this.selectedVariant,
     required this.modelNo,
     required this.ram,
-    required this.rom, required this.modelName,
+    required this.rom,
+    required this.modelName,
+    required this.thirdPageAns,
   }) : super(key: key);
 
   @override
@@ -46,20 +50,20 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
   ];
 
   void initState() {
-  super.initState();
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    controller.loadSellQuestions(
-       bid: int.parse(widget.bid),
-      pid: int.tryParse(widget.pid ?? '') ?? 1,
-      raid: int.parse(widget.raid),
-      roid: int.parse(widget.roid),
-      model: widget.modelNo,
-      ram: widget.ram,
-     rom: widget.rom,
-      basePrice: widget.baseprice,
-    );
-  });
-}
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.loadSellQuestions(
+        bid: int.parse(widget.bid),
+        pid: int.tryParse(widget.pid ?? '') ?? 1,
+        raid: int.parse(widget.raid),
+        roid: int.parse(widget.roid),
+        model: widget.modelNo,
+        ram: widget.ram,
+        rom: widget.rom,
+        basePrice: widget.baseprice,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +84,9 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
           return Center(child: Text(controller.errorMessage.value));
         }
 
-        final pageData = controller.sellQuestion.value?.data
-            ?.firstWhere((d) => d.pageId == 3, orElse: () => Datum(questions: []));
+        final pageData = controller.sellQuestion.value?.data?.firstWhere(
+            (d) => d.pageId == 3,
+            orElse: () => Datum(questions: []));
 
         final issues = pageData?.questions ?? [];
 
@@ -116,12 +121,14 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
                         ? staticImages[index]
                         : staticImages[index % staticImages.length];
 
-                    selectedIssues.putIfAbsent(question.questionId ?? '', () => false);
+                    selectedIssues.putIfAbsent(
+                        question.questionId ?? '', () => false);
 
                     return buildIssueTile(
                       question.questionId ?? '',
                       question.question ?? '',
                       imagePath,
+                      index,
                     );
                   },
                 ),
@@ -136,11 +143,13 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
                     ),
                   ),
                   onPressed: () {
-                    final anySelected = selectedIssues.values.any((v) => v == true);
+                    final anySelected =
+                        selectedIssues.values.any((v) => v == true);
 
                     if (!anySelected) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please select at least one issue.")),
+                        const SnackBar(
+                            content: Text("Please select at least one issue.")),
                       );
                       return;
                     }
@@ -155,12 +164,15 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
                           modelNo: widget.modelNo,
                           ram: widget.ram,
                           rom: widget.rom,
-                          modelName:widget.modelName,
+                          modelName: widget.modelName, fourthPageAns: widget.thirdPageAns,
                         ));
                   },
                   child: const Text(
                     "Continue",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ),
@@ -171,14 +183,31 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
     );
   }
 
-  Widget buildIssueTile(String key, String label, String imagePath) {
+  Widget buildIssueTile(String key, String label, String imagePath, int index) {
     final isSelected = selectedIssues[key] ?? false;
+    final pageData = controller.sellQuestion.value?.data
+        ?.firstWhere((d) => d.pageId ==3, orElse: () => Datum(questions: []));
+
+    final issues = pageData?.questions ?? [];
 
     return GestureDetector(
       onTap: () {
         setState(() {
           selectedIssues[key] = !isSelected;
         });
+        print("Selecteddefects" + selectedIssues.toString());
+        print("b" + isSelected.toString());
+        if (!isSelected) {
+          // On selecting a defect (i.e., was unselected before, now selected)
+          final selectedOptions = issues[index].options;
+
+          for (var opt in selectedOptions!) {
+            final weight = opt.weightage?.toString() ?? '1.0';
+            widget.thirdPageAns.add(weight);
+          }
+
+          print("Collected thirdPageAns: ${widget.thirdPageAns}");
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -202,7 +231,8 @@ class _DeviceDetailsScreen3State extends State<DeviceDetailsScreen3> {
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+                style:
+                    TextStyle(color: isSelected ? Colors.white : Colors.black),
               ),
             ),
           ],

@@ -76,19 +76,21 @@ class MyOrdersScreen extends StatelessWidget {
             )),
           ),
 
-          // Obx(() => selectedType.value.isNotEmpty
-          //     ? Text("Selected Type: ${selectedType.value}",
-          //   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          // )
-          //     : const SizedBox()),
 
-            SizedBox(height: 20),
+          Obx(() => selectedType.value.isNotEmpty
+              ? Text(
+            "Selected Type: ${selectedType.value}",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          )
+              : const SizedBox()),
+
+          const SizedBox(height: 20),
 
           // 📦 Orders List
           Expanded(
             child: Obx(() {
               if (orderController.isLoading.value) {
-                return   Center(
+                return const Center(
                   child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
                 );
               }
@@ -128,8 +130,10 @@ class MyOrdersScreen extends StatelessWidget {
       onPressed: () {
         selectedType.value = label;
         print("$label Clicked");
+
+        // 👇 Navigate if label is "Repair"
         if (label == "Repair") {
-          Get.to(() => RepairOrderListScreen(customerId: '',));
+          Get.to(() => RepairOrderScreen()); // Make sure this screen is imported
         }
       },
       child: Text(label),

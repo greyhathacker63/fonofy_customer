@@ -27,7 +27,8 @@ class DeviceDetailsScreen extends StatefulWidget {
     required this.bid,
     required this.raid,
     required this.roid,
-    required this.baseprice, required this.modelName,
+    required this.baseprice,
+    required this.modelName,
   });
 
   @override
@@ -37,6 +38,7 @@ class DeviceDetailsScreen extends StatefulWidget {
 class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
   final SellQuestionController controller = Get.put(SellQuestionController());
   final Map<String, String?> answers = {};
+  final List<String> firstPageAns = [];
 
   @override
   void initState() {
@@ -100,6 +102,22 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const SizedBox(height: 10),
+                  // ...questions.map(
+                  //   (q) => _buildQuestion(
+                  //     q.questionId ?? '',
+                  //     q.question ?? '',
+                  //     q.questionDescription ?? '',
+                  //     answers[q.questionId] ?? '',
+                  //     (value) {
+                  //       setState(() {
+                  //         answers[q.questionId ?? ''] = value;
+                  //         firstPageAns.add(q.options.first.weightage)
+
+                  //       });
+                  //       print("value" + value.toString());
+                  //     },
+                  //   ),
+                  // ),
                   ...questions.map(
                     (q) => _buildQuestion(
                       q.questionId ?? '',
@@ -109,10 +127,32 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                       (value) {
                         setState(() {
                           answers[q.questionId ?? ''] = value;
+
+                          print('Selected value: $value');
+                          print(
+                              'Available options: ${q.options?.map((o) => o.listOptionAns)}');
+
+                          final matchedOptions = q.options?.where(
+                            (o) =>
+                                o.listOptionAns?.toLowerCase() ==
+                                value.toString().toLowerCase(),
+                          );
+                          print('Matched options: $matchedOptions');
+
+                          final weights = matchedOptions
+                              ?.map((o) => (o.weightage ?? 5.0).toString());
+                          print('Weights: $weights');
+
+                          if (weights != null) {
+                            firstPageAns.addAll(weights);
+                          }
+
+                          print("Collected weights: $firstPageAns");
                         });
                       },
                     ),
                   ),
+
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
@@ -130,15 +170,14 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                         );
                         if (allAnswered) {
                           Get.to(() => DeviceDetailScreen2(
-                                baseprice: widget.baseprice,
-                                bid: widget.bid,
-                                raid: widget.raid,
-                                roid: widget.roid,
-                                modelNo: widget.modelNo,
-                                ram: widget.ram,
-                                rom: widget.rom,
-                                modelName:widget.modelName
-                              ));
+                              baseprice: widget.baseprice,
+                              bid: widget.bid,
+                              raid: widget.raid,
+                              roid: widget.roid,
+                              modelNo: widget.modelNo,
+                              ram: widget.ram,
+                              rom: widget.rom,
+                              modelName: widget.modelName, secondPageAns:firstPageAns,));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

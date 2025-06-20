@@ -5,17 +5,19 @@ import 'package:fonofy/Services/web_constants.dart';
 import '../../model/SellCalculationModel.dart';
 
 class SellCalculatorService {
-
+  
   Future<PriceEvaluation> calculateSellPrice({
     required List<double> questWeights,
     required double basePrice,
   }) async {
-
+    
 
     final token = await TokenHelper.getToken();
     print("Fetched token: $token");
 
     final url = Uri.parse("$baseurl$b2c$sellCalculator");
+
+   
 
     var request = http.Request('POST', Uri.parse(url.toString()));
 

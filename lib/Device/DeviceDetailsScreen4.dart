@@ -16,6 +16,7 @@ class DeviceDetailsScreen4 extends StatefulWidget {
   final String ram;
   final String rom;
   final String modelName;
+  final List<String> fourthPageAns;
 
   const DeviceDetailsScreen4({
     Key? key,
@@ -27,7 +28,9 @@ class DeviceDetailsScreen4 extends StatefulWidget {
     this.selectedVariant,
     required this.modelNo,
     required this.ram,
-    required this.rom, required this.modelName,
+    required this.rom,
+    required this.modelName,
+    required this.fourthPageAns,
   }) : super(key: key);
 
   @override
@@ -48,26 +51,27 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
   ];
 
   void initState() {
-  super.initState();
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    controller.loadSellQuestions(
-       bid: int.parse(widget.bid),
-      pid: int.tryParse(widget.pid ?? '') ?? 1,
-      raid: int.parse(widget.raid),
-      roid: int.parse(widget.roid),
-      model: widget.modelNo,
-      ram: widget.ram,
-     rom: widget.rom,
-      basePrice: widget.baseprice,
-    );
-  });
-}
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.loadSellQuestions(
+        bid: int.parse(widget.bid),
+        pid: int.tryParse(widget.pid ?? '') ?? 1,
+        raid: int.parse(widget.raid),
+        roid: int.parse(widget.roid),
+        model: widget.modelNo,
+        ram: widget.ram,
+        rom: widget.rom,
+        basePrice: widget.baseprice,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Device Details", style: TextStyle(color: Colors.black)),
+        title:
+            const Text("Device Details", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
@@ -84,8 +88,9 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
           return Center(child: Text(controller.errorMessage.value));
         }
 
-        final pageData = controller.sellQuestion.value?.data
-            ?.firstWhere((d) => d.pageId == 4, orElse: () => Datum(questions: []));
+        final pageData = controller.sellQuestion.value?.data?.firstWhere(
+            (d) => d.pageId == 4,
+            orElse: () => Datum(questions: []));
 
         final questions = pageData?.questions ?? [];
 
@@ -126,7 +131,8 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                     final qId = q.questionId ?? '';
                     final qText = q.question ?? '';
 
-                    if (qId.isEmpty) return const SizedBox(); // skip invalid entries
+                    if (qId.isEmpty)
+                      return const SizedBox(); // skip invalid entries
 
                     final imagePath = index < staticImages.length
                         ? staticImages[index]
@@ -134,16 +140,8 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
 
                     selectedAccessories.putIfAbsent(qId, () => false);
 
-                    return _buildAccessoryCard(
-                      imagePath,
-                      qText,
-                      selectedAccessories[qId]!,
-                      () {
-                        setState(() {
-                          selectedAccessories[qId] = !selectedAccessories[qId]!;
-                        });
-                      },
-                    );
+                    // ✅ Return the widget properly
+                    return _buildAccessoryCard(qId, qText, imagePath, index);
                   },
                 ),
               ),
@@ -153,6 +151,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                   onPressed: selectedAccessories.containsValue(true)
                       ? () {
                           Get.to(() => DeviceDetailsScreen5(
+
                                 baseprice: widget.baseprice,
                                 bid: widget.bid,
                                 raid: widget.raid,
@@ -160,7 +159,7 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                                 modelNo: widget.modelNo,
                                 ram: widget.ram,
                                 rom: widget.rom,
-                                modelName: widget.modelName,
+                                modelName: widget.modelName, fivePageAns: widget.fourthPageAns,
                               ));
                         }
                       : null,
@@ -183,13 +182,32 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
   }
 
   Widget _buildAccessoryCard(
-    String imagePath,
-    String label,
-    bool isSelected,
-    VoidCallback onTap,
-  ) {
+      String key, String label, String imagePath, int index) {
+    final isSelected = selectedAccessories[key] ?? false;
+    final pageData = controller.sellQuestion.value?.data
+        ?.firstWhere((d) => d.pageId == 4, orElse: () => Datum(questions: []));
+
+    final issues = pageData?.questions ?? [];
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        setState(() {
+          selectedAccessories[key] = !isSelected;
+        });
+        print("Selecteddefects" + selectedAccessories.toString());
+        print("b" + isSelected.toString());
+        if (!isSelected) {
+          // On selecting a defect (i.e., was unselected before, now selected)
+          final selectedOptions = issues[index].options;
+
+          for (var opt in selectedOptions!) {
+            final weight = opt.weightage?.toString() ?? '1.0';
+            widget.fourthPageAns.add(weight);
+          }
+
+          print("Collected fourthPageAns: ${widget.fourthPageAns}");
+        }
+      },
       child: Container(
         width: 140,
         decoration: BoxDecoration(
