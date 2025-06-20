@@ -17,9 +17,9 @@ class SellCalculatorController extends GetxController {
     required double basePrice}) {
     return _service.calculateSellPrice(basePrice: basePrice, questWeights: questWeights)
         .then((response) {
-          isLoading(true);
-          _getSellCalcData = response;
-        })
+      isLoading(true);
+      _getSellCalcData = response;
+    })
         .catchError(
             (err) => debugPrint('Error in Sell Price Data!!!!! : $err'))
         .whenComplete(() => isLoading(false));

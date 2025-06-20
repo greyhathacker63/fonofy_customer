@@ -117,12 +117,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../controllers/RepairController/ControllerRepairOrderProductDetails.dart';
 import '../utils/Colors.dart';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../controllers/RepairController/ControllerRepairOrderProductDetails.dart';
-import '../utils/Colors.dart';
 
 class ReapirOrderTrackingScreen extends StatefulWidget {
   const ReapirOrderTrackingScreen({super.key});
@@ -137,6 +132,7 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final dataTable2 = controller.detailsRepairOrderProduct.value?.table2 ?? [];
 
     List<TrackingStep> steps = [];
@@ -144,28 +140,25 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
     bool isCompleted = true;
 
     for (var item in dataTable2) {
-      final title = item.paymentStatus ?? '';
+      final title = item.orderStatus ?? '';
       // final isCompleted = !foundPending && (isCompleted);
-
       if (!isCompleted) {
-
       }
       foundPending = true;
 
       steps.add(TrackingStep(title, isCompleted));
     }
-
     if (foundPending) {
       steps.addAll([
-        TrackingStep('Shipped', false),
-        TrackingStep('Out for Delivery', false),
-        TrackingStep('Delivered', false),
+        TrackingStep('Agent Assigned', false),
+        TrackingStep('Order Confirmed', false),
+        TrackingStep('Order Complete', false),
       ]);
     } else {
        steps.addAll([
-        TrackingStep('Shipped', true),
-        TrackingStep('Out for Delivery', true),
-        TrackingStep('Delivered', true),
+        TrackingStep('Agent Assigned', true),
+        TrackingStep('Order Confirmed', true),
+        TrackingStep('Repair Complete', true),
       ]);
     }
 
@@ -176,7 +169,7 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 20, top: 30),
+        padding: EdgeInsets.only(left: 20, top: 60),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -194,7 +187,7 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
 
   Widget buildStatusItem(TrackingStep step, int index, int totalSteps) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 1.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

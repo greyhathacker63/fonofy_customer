@@ -315,24 +315,23 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                                 reasonRemark: enteredRemark,
 
                               );
-
-                              final message = cancelController.cancelMessage.value;
-                              print("Cancel Message: $message");
-
-                              if (message.isNotEmpty) {
-                                 Get.snackbar("Success",
-                                  message,
-                                  backgroundColor: ColorConstants.appBlueColor3,
-                                  colorText: Colors.white,
-                                );
-                              } else {
-                                Get.snackbar(
-                                  "Failed",
-                                  "Failed to cancel repair order",
-                                  backgroundColor: Colors.redAccent,
-                                  colorText: Colors.white,
-                                );
-                              }
+                            //   final message = cancelController.cancelMessage.value;
+                            //   print("Cancel Message: $message");
+                            //
+                            //   if (message.isNotEmpty) {
+                            //      Get.snackbar("Success",
+                            //       message,
+                            //       backgroundColor: ColorConstants.appBlueColor3,
+                            //       colorText: Colors.white,
+                            //     );
+                            //   } else {
+                            //     Get.snackbar(
+                            //       "Failed",
+                            //       "Failed to cancel repair order",
+                            //       backgroundColor: Colors.redAccent,
+                            //       colorText: Colors.white,
+                            //     );
+                            //   }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstants.appBlueColor3,

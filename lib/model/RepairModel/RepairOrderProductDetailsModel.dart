@@ -59,10 +59,10 @@ class Table {
   dynamic image;
   String? productAndModelName;
   String? colorName;
-  dynamic? totalAmount;
-  dynamic? totalDiscount;
-  dynamic? totalMrp;
-  dynamic? totalPrice;
+  dynamic totalAmount;
+  dynamic totalDiscount;
+  dynamic totalMrp;
+  dynamic totalPrice;
 
   Table({
     this.phoneNumber,
@@ -102,10 +102,10 @@ class Table {
     dynamic image,
     String? productAndModelName,
     String? colorName,
-    dynamic? totalAmount,
-    dynamic? totalDiscount,
-    dynamic? totalMrp,
-    dynamic? totalPrice,
+    dynamic totalAmount,
+    dynamic totalDiscount,
+    dynamic totalMrp,
+    dynamic totalPrice,
   }) =>
       Table(
         phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -198,11 +198,11 @@ class Table1 {
   Table1 copyWith({
     String? customerId,
     String? orderId,
-    dynamic? serviceAmount,
-    dynamic? serviceDiscount,
-    dynamic? servicePercent,
-    dynamic? serviceId,
-    String? serviceName,
+    dynamic serviceAmount,
+    dynamic serviceDiscount,
+    dynamic servicePercent,
+    dynamic serviceId,
+    dynamic serviceName,
     DateTime? createdDate,
   }) =>
       Table1(
@@ -241,28 +241,34 @@ class Table1 {
 
 class Table2 {
   dynamic assignId;
-  dynamic assignDate;
-  dynamic assignRemark;
+  DateTime? assignDate;
+  String? assignRemark;
   dynamic assignBy;
   String? workType;
-  dynamic rescheduleRemark;
-  dynamic reschedulelBy;
-  dynamic rescheduleDate;
-  dynamic cancelType;
-  dynamic cancelRemark;
-  dynamic cancelBy;
-  dynamic cancelDate;
-  dynamic confirmRemark;
+  DateTime? confirmDate;
   dynamic confirmBy;
-  dynamic confirmDate;
+  String? confirmRemark;
+  DateTime? cancelDate;
+  dynamic cancelBy;
+  dynamic cancelRemark;
+  dynamic cancelType;
+  dynamic rescheduleDate;
+  dynamic reschedulelBy;
+  dynamic rescheduleRemark;
+  String? deliverRemark;
+  DateTime? deliverDate;
+  dynamic deliverBy;
+  dynamic cancelReasonId;
+  String? cancelReasonRemark;
   String? paymentStatus;
-  dynamic? totalMrp;
-  dynamic? totalDiscount;
-  dynamic? totalPrice;
-  dynamic? deliveryCharge;
+  dynamic totalMrp;
+  dynamic totalDiscount;
+  dynamic totalPrice;
+  dynamic deliveryCharge;
   String? remark;
-  dynamic? totalAmount;
+  dynamic totalAmount;
   String? customerId;
+  String? orderStatus;
   String? orderId;
 
   Table2({
@@ -271,16 +277,21 @@ class Table2 {
     this.assignRemark,
     this.assignBy,
     this.workType,
-    this.rescheduleRemark,
-    this.reschedulelBy,
-    this.rescheduleDate,
-    this.cancelType,
-    this.cancelRemark,
-    this.cancelBy,
-    this.cancelDate,
-    this.confirmRemark,
-    this.confirmBy,
     this.confirmDate,
+    this.confirmBy,
+    this.confirmRemark,
+    this.cancelDate,
+    this.cancelBy,
+    this.cancelRemark,
+    this.cancelType,
+    this.rescheduleDate,
+    this.reschedulelBy,
+    this.rescheduleRemark,
+    this.deliverRemark,
+    this.deliverDate,
+    this.deliverBy,
+    this.cancelReasonId,
+    this.cancelReasonRemark,
     this.paymentStatus,
     this.totalMrp,
     this.totalDiscount,
@@ -289,33 +300,40 @@ class Table2 {
     this.remark,
     this.totalAmount,
     this.customerId,
+    this.orderStatus,
     this.orderId,
   });
 
   Table2 copyWith({
     dynamic assignId,
-    dynamic assignDate,
-    dynamic assignRemark,
+    DateTime? assignDate,
+    String? assignRemark,
     dynamic assignBy,
     String? workType,
-    dynamic rescheduleRemark,
-    dynamic reschedulelBy,
-    dynamic rescheduleDate,
-    dynamic cancelType,
-    dynamic cancelRemark,
-    dynamic cancelBy,
-    dynamic cancelDate,
-    dynamic confirmRemark,
+    DateTime? confirmDate,
     dynamic confirmBy,
-    dynamic confirmDate,
+    String? confirmRemark,
+    DateTime? cancelDate,
+    dynamic cancelBy,
+    dynamic cancelRemark,
+    dynamic cancelType,
+    dynamic rescheduleDate,
+    dynamic reschedulelBy,
+    dynamic rescheduleRemark,
+    String? deliverRemark,
+    DateTime? deliverDate,
+    dynamic deliverBy,
+    dynamic cancelReasonId,
+    String? cancelReasonRemark,
     String? paymentStatus,
-    dynamic? totalMrp,
-    dynamic? totalDiscount,
-    dynamic? totalPrice,
-    dynamic? deliveryCharge,
+    dynamic totalMrp,
+    dynamic totalDiscount,
+    dynamic totalPrice,
+    dynamic deliveryCharge,
     String? remark,
-    dynamic? totalAmount,
+    dynamic totalAmount,
     String? customerId,
+    String? orderStatus,
     String? orderId,
   }) =>
       Table2(
@@ -324,16 +342,21 @@ class Table2 {
         assignRemark: assignRemark ?? this.assignRemark,
         assignBy: assignBy ?? this.assignBy,
         workType: workType ?? this.workType,
-        rescheduleRemark: rescheduleRemark ?? this.rescheduleRemark,
-        reschedulelBy: reschedulelBy ?? this.reschedulelBy,
-        rescheduleDate: rescheduleDate ?? this.rescheduleDate,
-        cancelType: cancelType ?? this.cancelType,
-        cancelRemark: cancelRemark ?? this.cancelRemark,
-        cancelBy: cancelBy ?? this.cancelBy,
-        cancelDate: cancelDate ?? this.cancelDate,
-        confirmRemark: confirmRemark ?? this.confirmRemark,
-        confirmBy: confirmBy ?? this.confirmBy,
         confirmDate: confirmDate ?? this.confirmDate,
+        confirmBy: confirmBy ?? this.confirmBy,
+        confirmRemark: confirmRemark ?? this.confirmRemark,
+        cancelDate: cancelDate ?? this.cancelDate,
+        cancelBy: cancelBy ?? this.cancelBy,
+        cancelRemark: cancelRemark ?? this.cancelRemark,
+        cancelType: cancelType ?? this.cancelType,
+        rescheduleDate: rescheduleDate ?? this.rescheduleDate,
+        reschedulelBy: reschedulelBy ?? this.reschedulelBy,
+        rescheduleRemark: rescheduleRemark ?? this.rescheduleRemark,
+        deliverRemark: deliverRemark ?? this.deliverRemark,
+        deliverDate: deliverDate ?? this.deliverDate,
+        deliverBy: deliverBy ?? this.deliverBy,
+        cancelReasonId: cancelReasonId ?? this.cancelReasonId,
+        cancelReasonRemark: cancelReasonRemark ?? this.cancelReasonRemark,
         paymentStatus: paymentStatus ?? this.paymentStatus,
         totalMrp: totalMrp ?? this.totalMrp,
         totalDiscount: totalDiscount ?? this.totalDiscount,
@@ -342,25 +365,31 @@ class Table2 {
         remark: remark ?? this.remark,
         totalAmount: totalAmount ?? this.totalAmount,
         customerId: customerId ?? this.customerId,
+        orderStatus: orderStatus ?? this.orderStatus,
         orderId: orderId ?? this.orderId,
       );
 
   factory Table2.fromJson(Map<String, dynamic> json) => Table2(
     assignId: json["AssignId"],
-    assignDate: json["AssignDate"],
+    assignDate: json["AssignDate"] == null ? null : DateTime.parse(json["AssignDate"]),
     assignRemark: json["AssignRemark"],
     assignBy: json["AssignBy"],
     workType: json["WorkType"],
-    rescheduleRemark: json["RescheduleRemark"],
-    reschedulelBy: json["ReschedulelBy"],
-    rescheduleDate: json["RescheduleDate"],
-    cancelType: json["CancelType"],
-    cancelRemark: json["CancelRemark"],
-    cancelBy: json["CancelBy"],
-    cancelDate: json["CancelDate"],
-    confirmRemark: json["ConfirmRemark"],
+    confirmDate: json["ConfirmDate"] == null ? null : DateTime.parse(json["ConfirmDate"]),
     confirmBy: json["ConfirmBy"],
-    confirmDate: json["ConfirmDate"],
+    confirmRemark: json["ConfirmRemark"],
+    cancelDate: json["CancelDate"] == null ? null : DateTime.parse(json["CancelDate"]),
+    cancelBy: json["CancelBy"],
+    cancelRemark: json["CancelRemark"],
+    cancelType: json["CancelType"],
+    rescheduleDate: json["RescheduleDate"],
+    reschedulelBy: json["ReschedulelBy"],
+    rescheduleRemark: json["RescheduleRemark"],
+    deliverRemark: json["DeliverRemark"],
+    deliverDate: json["DeliverDate"] == null ? null : DateTime.parse(json["DeliverDate"]),
+    deliverBy: json["DeliverBy"],
+    cancelReasonId: json["CancelReasonId"],
+    cancelReasonRemark: json["CancelReasonRemark"],
     paymentStatus: json["PaymentStatus"],
     totalMrp: json["TotalMRP"],
     totalDiscount: json["TotalDiscount"],
@@ -369,25 +398,31 @@ class Table2 {
     remark: json["Remark"],
     totalAmount: json["TotalAmount"],
     customerId: json["CustomerId"],
+    orderStatus: json["OrderStatus"],
     orderId: json["OrderId"],
   );
 
   Map<String, dynamic> toJson() => {
     "AssignId": assignId,
-    "AssignDate": assignDate,
+    "AssignDate": assignDate?.toIso8601String(),
     "AssignRemark": assignRemark,
     "AssignBy": assignBy,
     "WorkType": workType,
-    "RescheduleRemark": rescheduleRemark,
-    "ReschedulelBy": reschedulelBy,
-    "RescheduleDate": rescheduleDate,
-    "CancelType": cancelType,
-    "CancelRemark": cancelRemark,
-    "CancelBy": cancelBy,
-    "CancelDate": cancelDate,
-    "ConfirmRemark": confirmRemark,
+    "ConfirmDate": confirmDate?.toIso8601String(),
     "ConfirmBy": confirmBy,
-    "ConfirmDate": confirmDate,
+    "ConfirmRemark": confirmRemark,
+    "CancelDate": cancelDate?.toIso8601String(),
+    "CancelBy": cancelBy,
+    "CancelRemark": cancelRemark,
+    "CancelType": cancelType,
+    "RescheduleDate": rescheduleDate,
+    "ReschedulelBy": reschedulelBy,
+    "RescheduleRemark": rescheduleRemark,
+    "DeliverRemark": deliverRemark,
+    "DeliverDate": deliverDate?.toIso8601String(),
+    "DeliverBy": deliverBy,
+    "CancelReasonId": cancelReasonId,
+    "CancelReasonRemark": cancelReasonRemark,
     "PaymentStatus": paymentStatus,
     "TotalMRP": totalMrp,
     "TotalDiscount": totalDiscount,
@@ -396,6 +431,7 @@ class Table2 {
     "Remark": remark,
     "TotalAmount": totalAmount,
     "CustomerId": customerId,
+    "OrderStatus": orderStatus,
     "OrderId": orderId,
   };
 }

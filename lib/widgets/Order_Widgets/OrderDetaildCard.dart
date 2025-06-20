@@ -48,7 +48,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
       orderId: widget.orderId,
     );
 
-    print("Fetched review data: $data"); // Add this
+    print("Fetched review data: $data");
     
     if (data != null) {
       setState(() {
@@ -75,12 +75,9 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
 
       final latestData = controller.trackingList.last;
 
-      final String orderDateFormatted =
-          latestData.createdDate?.toLocal().toString().split(' ')[0] ?? "N/A";
-      final String confirmDateFormatted =
-          latestData.confirmDate?.toLocal().toString().split(' ')[0] ?? "N/A";
-      final String dispatchDateFormatted =
-          latestData.dispatchDate?.toLocal().toString().split(' ')[0] ?? "N/A";
+      final String orderDateFormatted = latestData.createdDate?.toLocal().toString().split(' ')[0] ?? "N/A";
+      final String confirmDateFormatted = latestData.confirmDate?.toLocal().toString().split(' ')[0] ?? "N/A";
+      final String dispatchDateFormatted = latestData.dispatchDate?.toLocal().toString().split(' ')[0] ?? "N/A";
 
       Get.to(() => TrackOrdersScreen(
             orderId: widget.orderId,
@@ -155,8 +152,7 @@ class _OrderDetailsCardState extends State<OrderDetailsCard> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text(
-                'Confirm',
+              child: Text('Confirm',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,

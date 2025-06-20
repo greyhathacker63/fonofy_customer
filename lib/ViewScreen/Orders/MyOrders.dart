@@ -131,10 +131,9 @@ class MyOrdersScreen extends StatelessWidget {
         selectedType.value = label;
         print("$label Clicked");
 
-        // 👇 Navigate if label is "Repair"
         if (label == "Repair") {
-          Get.to(() => RepairOrderScreen()); // Make sure this screen is imported
-        }
+          Get.off(()=> RepairOrderListScreen(customerId: ''));
+         }
       },
       child: Text(label),
     );
