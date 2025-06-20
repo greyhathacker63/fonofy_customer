@@ -137,16 +137,15 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
 
     List<TrackingStep> steps = [];
     bool foundPending = false;
-    bool isCompleted = true;
+
 
     for (var item in dataTable2) {
       final title = item.orderStatus ?? '';
       // final isCompleted = !foundPending && (isCompleted);
-      if (!isCompleted) {
+      if (!foundPending) {
       }
       foundPending = true;
-
-      steps.add(TrackingStep(title, isCompleted));
+      steps.add(TrackingStep(title, foundPending));
     }
     if (foundPending) {
       steps.addAll([
@@ -247,4 +246,6 @@ class TrackingStep {
 
   TrackingStep(this.title, this.isCompleted);
 }
+
+
 
