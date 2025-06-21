@@ -11,7 +11,7 @@ class SellCancelOrderService {
   static Future<SellCancelOrderModel?> cancelSellOrder({
     required String orderId,
     required String customerId,
-    required String reasone,
+    required String reason,
     required dynamic reasonId,
     required String reasonRemark,
 
@@ -28,7 +28,7 @@ class SellCancelOrderService {
         body: jsonEncode({
           "OrderId": orderId,
           "CustomerId": customerId,
-          "Reasone": reasone,
+          "Reason": reason,
           "ReasonId": reasonId,
           "ReasonRemark": reasonRemark,
         }),

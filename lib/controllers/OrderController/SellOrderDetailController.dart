@@ -7,6 +7,8 @@ class SellOrderDetailController extends GetxController {
   var productDetail = Rxn<SellOrderDetailProduct>();
   var orderInfo = Rxn<SellOrderDetailInfo>();
 
+
+
   Future<void> fetchOrderDetails(String orderId, String customerId) async {
     try {
       isLoading.value = true;

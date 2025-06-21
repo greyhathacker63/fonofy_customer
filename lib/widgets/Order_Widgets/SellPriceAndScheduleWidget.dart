@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/controllers/OrderController/SellOrderDetailController.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,12 +16,13 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
 
   // final RepairOrderProductDetailsController repairOrderProductDetailsController = Get.put(RepairOrderProductDetailsController());
   final RepairOrderProductDetailsController repairOrderProductDetailsController = Get.put(RepairOrderProductDetailsController());
+  final SellOrderDetailController sellOrderDetailController = Get.put(SellOrderDetailController());
 
 
   @override
   Widget build(BuildContext context) {
-    final tableData1 = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table1 ?? [];
-     final tableData = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table ?? [];
+    final tableSellData1 = sellOrderDetailController.orderInfo;
+    // final tableSellData1 = sellOrderDetailController.detailsRepairOrderProduct.value?.table1 ?? [];
 
     return Column(
       children: [
@@ -99,7 +101,8 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CancelSellOrderScreen())
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CancelSellOrderScreen(orderId: tableSellData1.value?.orderId ?? '',
+                          customerId: tableSellData1.value?.customerId ?? '',))
                           );
                         },
                         child: Text('CANCEL',
