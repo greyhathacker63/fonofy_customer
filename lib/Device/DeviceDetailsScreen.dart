@@ -70,10 +70,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-
-        if (controller.errorMessage.isNotEmpty) {
-          return Center(child: Text(controller.errorMessage.value));
-        }
+        if (controller.errorMessage.isNotEmpty) {return Center(child: Text(controller.errorMessage.value));}
 
         final pageData = controller.sellQuestion.value?.data?.firstWhere(
             (d) => d.pageId == 1,
@@ -138,9 +135,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                                 value.toString().toLowerCase(),
                           );
                           print('Matched options: $matchedOptions');
-
-                          final weights = matchedOptions
-                              ?.map((o) => (o.weightage ?? 5.0).toString());
+                          final weights = matchedOptions?.map((o) => (o.weightage ?? 5.0).toString());
                           print('Weights: $weights');
 
                           if (weights != null) {

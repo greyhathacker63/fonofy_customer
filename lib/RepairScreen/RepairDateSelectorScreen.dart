@@ -220,6 +220,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
   // final ControllerProductDetails controllerProductDetails = Get.find();
 
   final RepairBookingController bookingController = Get.put(RepairBookingController());
+
   final ControllerProductDetails controllerProductDetails = Get.put(ControllerProductDetails());
 
   final AddressRepairController controllerAddressRepairDetails = Get.find<AddressRepairController>();
@@ -358,16 +359,48 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 backgroundColor: ColorConstants.appBlueColor3,
               ),
+              // In RepairDateSelectorScreen, inside the ElevatedButton's onPressed:
               onPressed: () async {
                 final selectedDate = DateFormat('yyyy-MM-dd').format(dateList[selectedIndex]);
+
+                // Validate required fields
+                if (controllerProductDetails.productDetails.value == null ||
+                    controllerAddressRepairDetails.addressRepair.value == null) {
+                  Get.snackbar('Error', 'Device or address details missing',
+                      backgroundColor: Colors.red, colorText: Colors.white);
+                  return;
+                }
+
+                // Map selected services to RepairDetail objects
+                final repairDetails = repairController.selectedServices.value.map((service) {
+                  return RepairDetail(
+                      customerId: '',
+                      orderId: '',
+                      serviceId: null,
+                      serviceName: '',
+                      serviceAmount: null,
+                      serviceDiscount: null,
+                      servicePercent: null
+                   );
+                }).toList();
+
+                if (repairDetails.isEmpty) {
+                  Get.snackbar('Error', 'No services selected',
+                      backgroundColor: Colors.red, colorText: Colors.white);
+                  return;
+                }
+                print('Submitting booking with:');
+                print('ModelId: ${controllerProductDetails.productDetails.value?.modelNo}');
+                print('ShippingId: ${controllerAddressRepairDetails.addressRepair.value?.shippmentId}');
+                print('RepairDetails: ${repairDetails.map((e) => e.toJson()).toList()}');
 
                 await bookingController.submitRepairBooking(
                   modelId: controllerProductDetails.productDetails.value?.modelNo ?? '',
                   romId: controllerProductDetails.productDetails.value?.romId ?? '',
                   ramId: controllerProductDetails.productDetails.value?.ramId ?? '',
                   colorId: controllerProductDetails.productDetails.value?.colorId ?? '',
-                  customerId: controllerAddressRepairDetails.addressRepair.value?. customerId ??'', // Replace this
-                  shippingName:controllerAddressRepairDetails.addressRepair.value?.name ?? '',
+                  customerId: controllerAddressRepairDetails.addressRepair.value?.customerId ?? '',
+                  shippingName: controllerAddressRepairDetails.addressRepair.value?.name ?? '',
                   shippingId: controllerAddressRepairDetails.addressRepair.value?.shippmentId ?? '',
                   shippingMobileNo: controllerAddressRepairDetails.addressRepair.value?.mobileNo ?? '',
                   shippingEmailId: controllerAddressRepairDetails.addressRepair.value?.emailId ?? '',
@@ -377,23 +410,22 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                   shippingState: controllerAddressRepairDetails.addressRepair.value?.state ?? '',
                   shippingPincode: controllerAddressRepairDetails.addressRepair.value?.pinCode ?? '',
                   workType: controllerAddressRepairDetails.addressRepair.value?.workType ?? '',
-                  totalMRP: bookingController.bookingDetails.value?.totalMrp ?? '',
-                  totalPrice: bookingController.bookingDetails.value?.totalPrice ?? '',
-                  totalAmount: bookingController.bookingDetails.value?.totalAmount ?? '',
-                  totalDiscount: bookingController.bookingDetails.value?.totalDiscount ?? '',
-                  deliveryCharge: 0,
+                  totalMRP: repairController.totalPrice.value.toDouble(),
+                  totalPrice: repairController.totalPrice.value.toDouble(),
+                  totalAmount: repairController.totalPrice.value.toDouble(),
+                  totalDiscount: 0.0, // Adjust based on your discount logic
+                  deliveryCharge: 0.0,
                   couponId: null,
                   couponName: '',
                   couponDiscountType: '',
-                  couponAmount: 0,
-                  couponPercent: 0,
+                  couponAmount: 0.0,
+                  couponPercent: 0.0,
                   couponCode: '',
                   repairType: 'Home',
                   slotDate: selectedDate,
-                  remark: 'Please be on time', repairDetails: [],
-                  // repairDetails:,
+                  remark: 'Please be on time',
+                  repairDetails: repairDetails,
                 );
-
                 if (!bookingController.isLoading.value) {
                   Get.off(() => ThankYouRepairScreen());
                 }

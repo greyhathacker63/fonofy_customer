@@ -20,7 +20,6 @@ class SelectRepairAddressScreen extends StatelessWidget {
     final AddressRepairController addressController = Get.put(AddressRepairController());
     final RepairControllerTable repairController = Get.find<RepairControllerTable>();
 
-
     void _navigateToAddNewAddressScreen() async {
       String? customerId = await TokenHelper.getUserCode();
       if (customerId == null || customerId.isEmpty) {

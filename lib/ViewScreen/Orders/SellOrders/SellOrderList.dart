@@ -15,8 +15,7 @@ class SellOrderListScreen extends StatefulWidget {
 }
 
 class _SellOrderListScreenState extends State<SellOrderListScreen> {
-  final SellOrderListController sellOrderListController =
-      Get.put(SellOrderListController());
+  final SellOrderListController sellOrderListController = Get.put(SellOrderListController());
 
   @override
   void initState() {

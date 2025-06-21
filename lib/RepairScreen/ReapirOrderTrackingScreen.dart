@@ -256,15 +256,11 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
     List<TrackingStep> steps = [];
     if (dataTable2.isNotEmpty) {
       steps = [
-        TrackingStep('Order Placed', dataTable2[0].assignRemark == "Order Placed" ? true : true,),
-        TrackingStep('Agent Assigned',dataTable2[0].assignRemark == "Assign" ? true : false,
-          date: dataTable2[0].assignDate.toString()),
-
-        TrackingStep('Order Confirmed', dataTable2[0].confirmRemark == "Assign" ? true : false,
-            date: dataTable2[0].confirmDate.toString()
-        ),
-        TrackingStep('Repair Complete', dataTable2[0].deliverRemark == "done" ? true : false,
-            date: dataTable2[0].deliverDate.toString()),
+         TrackingStep('Order Placed', true,),
+        TrackingStep('Agent Assigned',dataTable2[0].assignRemark == "Assign" ? true : false,),
+        TrackingStep('Order Confirmed', dataTable2[0].confirmRemark == "Assign" ? true : false,),
+        TrackingStep('Repair Complete', dataTable2[0].deliverRemark == "done" ? true : false,),
+        TrackingStep('Repair Cancel', dataTable2[0].cancelRemark == "CancelRemark" ? true : false,)
       ];
     }
 
@@ -317,13 +313,13 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(step.title, style: GoogleFonts.poppins(fontSize: 16)),
-                if (step.date != null && step.date!.isNotEmpty)
-                  Text(step.date!,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  ),
+                // if (step.date != null && step.date!.isNotEmpty)
+                //   Text(step.date!,
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 12,
+                //       color: Colors.grey,
+                //     ),
+                //   ),
               ],
             ),
           ),
@@ -365,7 +361,7 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
 class TrackingStep {
   final String title;
   final bool isCompleted;
-  final String? date;
+  // final String? date;
 
-  TrackingStep(this.title, this.isCompleted, {this.date});
+  TrackingStep(this.title, this.isCompleted,);
 }
