@@ -7,6 +7,8 @@ import 'package:fonofy/Api_Service/ShippingAddressService/ListShippingAddressSer
 class AddressRepairController extends GetxController {
   var isLoading = true.obs;
   var addressList = <ListShippingAddressModel>[].obs;
+
+   var addressRepair = Rxn<ListShippingAddressModel>();
   var selectedAddressIndex = (-1).obs;
   String? customerId;
   String? token;
@@ -53,37 +55,4 @@ class AddressRepairController extends GetxController {
     print('Selected address at index: $index');
     update();
   }
-
-  // Future<void> deleteAddress(ListShippingAddressModel address) async {
-  //   final confirm = await Get.defaultDialog<bool>(
-  //     title: "Delete Address",
-  //     content: const Text("Are you sure you want to delete this address?"),
-  //     textCancel: "Cancel",
-  //     textConfirm: "Delete",
-  //     confirmTextColor: Colors.white,
-  //     onConfirm: () => Get.back(result: true),
-  //     onCancel: () => Get.back(result: false),
-  //   );
-  //
-  //   if (confirm == true) {
-  //     final id = address.id;
-  //     final shipmentId = address.shippmentId;
-  //     if (id != null && shipmentId != null && shipmentId.isNotEmpty) {
-  //       print('Deleting address with id: $id, shipmentId: $shipmentId');
-  //       final result = await DeleteAddressService.deleteAddress(
-  //         id: id,
-  //         shipmentId: shipmentId,
-  //       );
-  //       if (result != null && result.status == true) {
-  //         Get.snackbar('Success', result.message ?? "Address deleted");
-  //         await fetchAddresses();
-  //       } else {
-  //         Get.snackbar('Error', result?.message ?? "Failed to delete address");
-  //       }
-  //     } else {
-  //       print('Invalid id or shipmentId: id=$id, shipmentId=$shipmentId');
-  //       Get.snackbar('Error', 'Invalid ID or Shipment ID');
-  //     }
-  //   }
-  // }
-}
+ }

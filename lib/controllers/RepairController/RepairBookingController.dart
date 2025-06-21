@@ -8,6 +8,7 @@ import '../../model/RepairModel/RepairBookingModel.dart';
 class RepairBookingController extends GetxController {
   RxBool isLoading = false.obs;
 
+  var bookingDetails = Rxn<RepairBookingModel>();
   Future<void> submitRepairBooking({
     required dynamic modelId,
     required dynamic romId,
