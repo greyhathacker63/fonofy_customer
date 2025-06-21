@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/model/SellModel/SellModel.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +19,7 @@ class SellOrderListService {
         'Content-Type': 'application/json',
       },
     );
+    print(url);
 //sell data
     if (response.statusCode == 200) {
       final List<dynamic> body = jsonDecode(response.body);
