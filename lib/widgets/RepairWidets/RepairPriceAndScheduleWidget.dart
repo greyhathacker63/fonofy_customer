@@ -199,7 +199,7 @@ import '../../utils/Colors.dart';
 class RepairPriceAndScheduleWidget extends StatelessWidget {
   RepairPriceAndScheduleWidget({super.key});
 
-  final RepairOrderProductDetailsController repairOrderProductDetailsController = Get.find();
+  final RepairOrderProductDetailsController repairOrderProductDetailsController = Get.put(RepairOrderProductDetailsController());
 
   @override
   Widget build(BuildContext context,) {

@@ -2,20 +2,22 @@
 import 'package:http/http.dart' as http;
 import 'package:fonofy/model/RepairModel/RepairOrderProductDetailsModel.dart';
 
+import '../../../TokenHelper/TokenHelper.dart';
 import '../../BaseUrl/AllBaseUrl.dart';
 
 class RepairOrderProductDetailsService {
   static Future<RepairOrderProductDetailsModel> fetchRepairOrderProductDetails({
     required String orderId,
     required String customerId,
-    required String token,
+    required String token, // ✅ use this token directly
   }) async {
     final uri = Uri.parse('$repairOrderProductDetailsUrl?OrderId=$orderId&CustomerId=$customerId');
+
     final response = await http.get(
       uri,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $token', // ✅ correctly use token passed from controller
       },
     );
 
