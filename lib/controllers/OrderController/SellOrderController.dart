@@ -5,7 +5,7 @@ import 'package:fonofy/model/SellModel/SellModel.dart';
 class SellOrderListController extends GetxController {
   var isLoading = true.obs;
   var sellOrdersList = <SellModel>[].obs;
-  var orderDetail = Rxn<SellModel>();
+  // var orderDetail = Rxn<SellModel>();
 
   Future<void> fetchSellOrders(String customerId) async {
     try {
