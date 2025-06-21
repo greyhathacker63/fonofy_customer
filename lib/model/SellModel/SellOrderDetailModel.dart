@@ -15,10 +15,10 @@ class SellOrderDetailProduct {
   final String? image;
   final String? productAndModelName;
   final String? colorName;
-  final double? totalAmount;
-  final double? totalDiscount;
-  final double? totalMRP;
-  final double? totalPrice;
+  final dynamic totalAmount;
+  final dynamic totalDiscount;
+  final dynamic totalMRP;
+  final dynamic totalPrice;
 
   SellOrderDetailProduct({
     this.phoneNumber,
