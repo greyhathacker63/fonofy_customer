@@ -20,8 +20,7 @@ class SellOrderListService {
       },
     );
     print(url);
-//sell data
-    if (response.statusCode == 200) {
+     if (response.statusCode == 200) {
       final List<dynamic> body = jsonDecode(response.body);
       return body.map((e) => SellModel.fromJson(e)).toList();
     } else {

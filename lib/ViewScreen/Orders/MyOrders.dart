@@ -132,7 +132,7 @@ class MyOrdersScreen extends StatelessWidget {
         selectedType.value = label;
         print("$label Clicked");
 
-        final customerId = await TokenHelper.getUserCode(); // Get customer ID
+        final customerId = await TokenHelper.getUserCode();
 
         if (customerId == null || customerId.isEmpty) {
           print("Customer ID not found!");
