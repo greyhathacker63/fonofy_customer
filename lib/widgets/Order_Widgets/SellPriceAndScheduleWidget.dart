@@ -2,6 +2,7 @@
 // import 'package:fonofy/RepairScreen/ReapirOrderTrackingScreen.dart';
 // import 'package:fonofy/ViewScreen/Orders/SellOrders/CancelSellOrderScreen.dart';
 // import 'package:fonofy/controllers/OrderController/SellOrderDetailController.dart';
+// import 'package:fonofy/controllers/RepairController/RepairCancelReasonListController.dart';
 // import 'package:fonofy/utils/Colors.dart';
 // import 'package:get/get.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -14,12 +15,12 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final table1 = sellOrderDetailController.productDetail.value?? [];
-//     final table = sellOrderDetailController.orderInfo.value?. [];
+//     final product = sellOrderDetailController.productDetail.value;
+//     final info = sellOrderDetailController.orderInfo.value;
 
 //     return Column(
 //       children: [
-//         if (table1.isNotEmpty)
+//         if (product != null)
 //           Card(
 //             color: Colors.white,
 //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -33,35 +34,18 @@
 //                   const SizedBox(height: 6),
 //                   Divider(thickness: 1, color: Colors.grey[300]),
 //                   const SizedBox(height: 6),
-//                   ListView.builder(
-//                     itemCount: table1.length,
-//                     shrinkWrap: true,
-//                     physics: const NeverScrollableScrollPhysics(),
-//                     itemBuilder: (context, index) {
-//                       final item = table1[index];
-//                       return Column(
-//                         children: [
-//                           _buildPriceRow(
-//                             item.serviceName ?? '',
-//                             '₹${(item.serviceAmount ?? 0).toStringAsFixed(2)}',
-//                           ),
-//                           _buildDashedLine(),
-//                         ],
-//                       );
-//                     },
-//                   ),
-//                   const SizedBox(height: 6),
-//                   _buildPriceRow(
-//                     'Total Amount',
-//                     '₹${table1.fold<double>(0, (sum, item) => sum + (item.serviceAmount ?? 0)).toStringAsFixed(2)}',
-//                     isBold: true,
-//                   ),
+//                   _buildPriceRow('MRP', '₹${(product.totalMRP ?? 0).toStringAsFixed(2)}'),
+//                   _buildDashedLine(),
+//                   _buildPriceRow('Discount', '- ₹${(product.totalDiscount ?? 0).toStringAsFixed(2)}'),
+//                   _buildDashedLine(),
+//                   _buildPriceRow('Final Price', '₹${(product.totalPrice ?? 0).toStringAsFixed(2)}',
+//                       isBold: true),
 //                 ],
 //               ),
 //             ),
 //           ),
 //         const SizedBox(height: 16),
-//         if (table.isNotEmpty)
+//         if (product != null)
 //           Card(
 //             color: Colors.white,
 //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -76,7 +60,7 @@
 //                           fontSize: 14,
 //                           fontWeight: FontWeight.bold)),
 //                   const SizedBox(height: 4),
-//                   Text(table.first.shippingAddress ?? '',
+//                   Text(product.shippingAddress ?? '',
 //                       style: GoogleFonts.poppins(fontSize: 12)),
 //                   const SizedBox(height: 12),
 //                   Text('Contact Number:',
@@ -85,7 +69,7 @@
 //                           fontSize: 14,
 //                           fontWeight: FontWeight.bold)),
 //                   const SizedBox(height: 4),
-//                   Text(table.first.shippingMobileNo ?? '',
+//                   Text(product.shippingMobileNo ?? '',
 //                       style: GoogleFonts.poppins(fontSize: 13)),
 //                   const SizedBox(height: 20),
 //                   Row(
@@ -99,11 +83,11 @@
 //                           onPressed: () {
 //                             Navigator.push(
 //                               context,
-//                               MaterialPageRoute(
-//                                 builder: (context) => CancelSellOrderScreen(
-//                                   orderId: table1.first.orderId ?? '',
-//                                   customerId: table1.first.customerId ?? '',
-//                                 ),
+//                               // MaterialPageRoute(
+//                                 // builder: (context) => CancelSellOrderScreen(
+//                                 //   orderId: product.orderId ?? '',
+//                                 //   customerId: info?.customerId ?? '',
+//                                 // ),
 //                               ),
 //                             );
 //                           },
@@ -175,7 +159,7 @@
 //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //           children: List.generate(
 //             dashCount,
-//                 (_) => Container(width: 3, height: 1, color: Colors.grey[400]),
+//             (_) => Container(width: 3, height: 1, color: Colors.grey[400]),
 //           ),
 //         );
 //       },

@@ -99,12 +99,8 @@
 //                                   '';
 //                               final enteredRemark = otherReasonController.text.trim();
 
-//                               final result = await controllerSellCancelReason.cancelSellOrder(
-//                                 orderId: widget.orderId,
-//                                 customerId: widget.customerId,
-//                                 reason: reasonText,
-//                                 reasonId: selectedReasonId ?? '',
-//                                 reasonRemark: enteredRemark,
+//                               final result = await controllerSellCancelReason.isRepairCancelReasonLoading(
+                                
 //                               );
 
 //                               if (result) {
