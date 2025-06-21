@@ -37,10 +37,7 @@ class AddressRepairController extends GetxController {
     try {
       isLoading(true);
       print('Fetching addresses for customerId: $customerId');
-      final addresses = await ListShippingAddressService().listShippingAddress(
-        customerId: customerId!,
-        token: token!,
-      );
+      final addresses = await ListShippingAddressService().listShippingAddress(customerId: customerId!,token: token!);
       addressList.assignAll(addresses ?? []);
       print('Fetched ${addressList.length} addresses');
     } catch (e) {
