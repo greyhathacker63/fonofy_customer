@@ -47,7 +47,8 @@ class RepairControllerTable extends GetxController {
       update();
     }
   }
-   void addService(Table1 service) {
+
+  void addService(Table1 service) {
     if (!selectedServices.contains(service)) {
       selectedServices.add(service);
 
@@ -58,6 +59,7 @@ class RepairControllerTable extends GetxController {
       update();
     }
   }
+
   void removeService(Table1 service) {
     if (selectedServices.contains(service)) {
       selectedServices.remove(service);
