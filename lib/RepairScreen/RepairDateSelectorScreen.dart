@@ -494,7 +494,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     modelId: widget.modelId?.toString() ?? '',
                     romId: 2.toString(),
                     ramId: 3.toString(),
-                    colorId: 5.toString(),
+                    colorId: widget.colorId,
                     customerId: widget.customerId ?? '',
                     shippingId: widget.selectedAddress.shippmentId ?? '',
                     shippingName: widget.selectedAddress.name ?? '',
@@ -532,9 +532,9 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                         serviceAmount:
                             (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                         serviceDiscount:
-                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
+                            (service.discountAmount as num?)?.toDouble() ?? 0.0,
                         servicePercent:
-                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
+                            (service.disPercentage as num?)?.toDouble() ?? 0.0,
                       );
                     }).toList(),
                   );
