@@ -139,10 +139,7 @@ class RepairServicesTableModel {
   List<RepairDeviceTable>? table;
   List<Table1>? table1;
 
-  RepairServicesTableModel({
-    this.table,
-    this.table1,
-  });
+  RepairServicesTableModel({this.table,this.table1,});
 
   factory RepairServicesTableModel.fromJson(Map<String, dynamic> json) =>
       RepairServicesTableModel(
