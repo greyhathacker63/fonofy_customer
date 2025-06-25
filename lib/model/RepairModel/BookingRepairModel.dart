@@ -21,14 +21,14 @@ class RepairBookingRequestModel {
   String workType;
   String couponName;
   String couponDiscountType;
-  double couponAmount;
-  double couponPercent;
+  dynamic couponAmount;
+  dynamic couponPercent;
   String couponCode;
   String repairType;
   String slotDate;
   String remark;
-  double deliveryCharge;
-  double totalAmount;
+  dynamic deliveryCharge;
+  dynamic totalAmount;
   double totalPrice;
   double totalDiscount;
   dynamic totalMRP;
