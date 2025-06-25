@@ -277,6 +277,8 @@ class RepairDateSelectorScreen extends StatefulWidget {
   final String? brandId;
   final String? modelId;
   final String? colorId;
+  final String? ramId;
+  final String? romId;
   final dynamic totalPrice;
   final List<Table1> selectedServices;
   final ListShippingAddressModel selectedAddress;
@@ -289,7 +291,7 @@ class RepairDateSelectorScreen extends StatefulWidget {
     required this.colorId,
     required this.totalPrice,
     required this.selectedAddress,
-    required this.selectedServices,
+    required this.selectedServices, this.ramId, this.romId,
   }) : super(key: key);
 
   @override
@@ -492,8 +494,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 try {
                   await bookingController.submitRepairBooking(
                     modelId: widget.modelId?.toString() ?? '',
-                    romId: 2.toString(),
-                    ramId: 3.toString(),
+                    romId: widget.romId,
+                    ramId: widget.ramId,
                     colorId: widget.colorId,
                     customerId: widget.customerId ?? '',
                     shippingId: widget.selectedAddress.shippmentId ?? '',
@@ -507,7 +509,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     shippingPincode: widget.selectedAddress.pinCode ?? '',
                     workType: widget.selectedAddress.workType ?? '',
                     couponId: 1.toString(),
-                    couponName: "Home",
+                    couponName: widget.selectedAddress.workType ?? '',
                     couponDiscountType: "sdf",
                     couponAmount: 21.0,
                     couponPercent: 22.0,
@@ -518,7 +520,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     totalPrice: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
                     totalAmount: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
                     totalDiscount: (7000).toDouble(),
-                    Mode: "ds",
+                    Mode: 'df',
                     repairType: "sample string 24",
                     slotDate: selectedDate,
                     slotTime: '',
@@ -541,7 +543,6 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 } catch (e) {
                   print("Error while booking: $e");
                 }
-
                 // repairDetails: widget.selectedServices.map((service) {
                 //   return RepairDetail(
                 //     customerId: widget.customerId ?? '',

@@ -394,7 +394,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
     super.initState();
     repairController.getTableRepairData(
         widget.brandId, widget.modelId, widget.colorId);
-    final List<Table1> selectedServices;
+    //final List<Table1> selectedServices;
   }
 
   @override
