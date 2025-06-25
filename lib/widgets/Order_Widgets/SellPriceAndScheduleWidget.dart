@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fonofy/controllers/OrderController/SellOrderDetailController.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../RepairScreen/CancelRepairOrderScreen.dart';
 import '../../RepairScreen/ReapirOrderTrackingScreen.dart';
 import '../../ViewScreen/Orders/SellOrders/CancelSellOrderScreen.dart';
+import '../../ViewScreen/Orders/SellOrders/SellOrderTrackingScreen.dart';
 import '../../controllers/RepairController/ControllerRepairOrderProductDetails.dart';
 import '../../controllers/RepairController/RepairOrderListController.dart';
 import '../../utils/Colors.dart';
@@ -13,68 +15,67 @@ import '../../utils/Colors.dart';
 class SellPriceAndScheduleWidget extends StatelessWidget {
   SellPriceAndScheduleWidget({super.key});
 
-  // final RepairOrderProductDetailsController repairOrderProductDetailsController = Get.put(RepairOrderProductDetailsController());
-  final RepairOrderProductDetailsController repairOrderProductDetailsController = Get.put(RepairOrderProductDetailsController());
-
+  final SellOrderDetailController sellOrderDetailController = Get.put(SellOrderDetailController());
 
   @override
   Widget build(BuildContext context) {
-    final tableData1 = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table1 ?? [];
-     final tableData = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table ?? [];
+    final tableSellData = sellOrderDetailController.productSellDetail.value?.table ?? [];
+
+    final tableSellData1 = sellOrderDetailController.productSellDetail.value?.table1 ?? [];
 
     return Column(
       children: [
-        Card(
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12)),
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Price Summary',
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600, fontSize: 16),
-                ),
-                SizedBox(height: 6),
-                Divider(thickness: 1, color: Colors.grey[300]),
-                const SizedBox(height: 6),
-                _buildPriceRow('SCREEN', '₹2,999'),
-                _buildDashedLine(),
-                _buildPriceRow('SCREEN', '₹10,999'),
-                _buildDashedLine(),
-                _buildPriceRow('Total Amount', '₹13,998', isBold: true),
-              ],
-            ),
-          ),
-        ),
+        // Card(
+        //   color: Colors.white,
+        //   shape:
+        //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        //   child: Padding(
+        //     padding: EdgeInsets.all(16),
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Text(
+        //           'Price Summary',
+        //           style: GoogleFonts.poppins(
+        //               fontWeight: FontWeight.w600, fontSize: 16),
+        //         ),
+        //         SizedBox(height: 6),
+        //         Divider(thickness: 1, color: Colors.grey[300]),
+        //         const SizedBox(height: 6),
+        //         _buildPriceRow('SCREEN', '₹2,999'),
+        //         _buildDashedLine(),
+        //         _buildPriceRow('SCREEN', '₹10,999'),
+        //         _buildDashedLine(),
+        //         _buildPriceRow('Total Amount', '₹13,998', isBold: true),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         const SizedBox(height: 16),
-
         Card(
           color: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                  SizedBox(height: 1),
-                Text('Address:',
+                SizedBox(height: 5),
+                Text(
+                  'Pickup Address:',
                   style: GoogleFonts.poppins(
                     color: ColorConstants.appBlueColor3,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'F-294, Sector 63, Noida, Uttar Pradesh, 201301',
+                const SizedBox(height: 6),
+                Text(tableSellData.isNotEmpty? tableSellData.first.shippingAddress ?? ''
+                      : '',
                   style: GoogleFonts.poppins(fontSize: 12),
                 ),
-                const SizedBox(height: 12),
+                  SizedBox(height: 15),
                 Text(
                   'Contact Number:',
                   style: GoogleFonts.poppins(
@@ -83,35 +84,120 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text('9554346561',
+                SizedBox(height: 6),
+                Text(
+                  tableSellData.isNotEmpty
+                      ? tableSellData.first.shippingMobileNo ?? ''
+                      : '',
                   style: GoogleFonts.poppins(fontSize: 13),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 14,),
+                Text('PickupSlotDate:',
+                  style: GoogleFonts.poppins(
+                    color: ColorConstants.appBlueColor3,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  tableSellData.isNotEmpty
+                      ? tableSellData.first.pickupslotDate ?? '' : '', style: GoogleFonts.poppins(fontSize: 13),
+                ),
+                SizedBox(height: 40),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: ElevatedButton(
+                //         style: ElevatedButton.styleFrom(
+                //           backgroundColor: ColorConstants.appBlueColor3,
+                //           shape: RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(6),
+                //           ),
+                //         ),
+                //         onPressed: () {
+                //         Navigator.push(context, MaterialPageRoute(builder: (context) => CancelSellOrderScreen(
+                //           orderId: tableSellData.isNotEmpty ? tableSellData.first.orderId ?? '' : '',
+                //           customerId: tableSellData1.isNotEmpty ? tableSellData1.first.customerId ?? '' : '',),
+                //         )
+                //           );
+                //         },
+                //         child: Text('CANCEL',
+                //           style: GoogleFonts.poppins(
+                //             color: Colors.white,
+                //             fontSize: 13,
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 13),
+                //     Expanded(
+                //       child: ElevatedButton(
+                //         style: ElevatedButton.styleFrom(
+                //           backgroundColor: ColorConstants.appBlueColor3,
+                //           shape: RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(6),
+                //           ),
+                //         ),
+                //         onPressed: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => SellOrderTrackingScreen(),
+                //             ),
+                //           );
+                //         },
+                //         child: Text('Tracking',
+                //           style: GoogleFonts.poppins(
+                //             color: Colors.white,
+                //             fontSize: 15,
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 Row(
                   children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorConstants.appBlueColor3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                    if (tableSellData1.isNotEmpty &&
+                        (tableSellData1.first.orderStatus?.toLowerCase() ==
+                            'pending')) ...[
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorConstants.appBlueColor3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CancelSellOrderScreen())
-                          );
-                        },
-                        child: Text('CANCEL',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CancelSellOrderScreen(
+                                  orderId: tableSellData.isNotEmpty
+                                      ? tableSellData.first.orderId ?? ''
+                                      : '',
+                                  customerId:
+                                      tableSellData1.first.customerId ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text('CANCEL',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 13),
+                        SizedBox(width: 13),
+                    ],
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -124,11 +210,12 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReapirOrderTrackingScreen(),
+                              builder: (context) => SellOrderTrackingScreen(),
                             ),
                           );
                         },
-                        child: Text('Tracking',
+                        child: Text(
+                          'Tracking',
                           style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 15,
@@ -138,7 +225,7 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
+                )
               ],
             ),
           ),
@@ -146,6 +233,7 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
       ],
     );
   }
+
   Widget _buildPriceRow(String title, String amount, {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -159,7 +247,8 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
               fontWeight: isBold ? FontWeight.w600 : FontWeight.w500,
             ),
           ),
-          Text(amount,
+          Text(
+            amount,
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: isBold ? FontWeight.w600 : FontWeight.w500,
@@ -178,12 +267,11 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
             dashCount,
-                (_) =>
-                Container(
-                  width: 3,
-                  height: 1,
-                  color: Colors.grey[400],
-                ),
+            (_) => Container(
+              width: 3,
+              height: 1,
+              color: Colors.grey[400],
+            ),
           ),
         );
       },
@@ -353,4 +441,3 @@ class SellPriceAndScheduleWidget extends StatelessWidget {
 //       },
 //     );
 //   }}
-

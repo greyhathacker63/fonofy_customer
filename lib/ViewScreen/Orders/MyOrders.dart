@@ -59,12 +59,14 @@ class MyOrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Orders'),
+        backgroundColor: Colors.white,
+        title:   Text('My Orders'),
       ),
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Padding(
-            padding:   EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            padding:   EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             child: Obx(() => Container(
               padding:  EdgeInsets.all(10),
               child: Row(
@@ -77,17 +79,14 @@ class MyOrdersScreen extends StatelessWidget {
               ),
             )),
           ),
-
-
           Obx(() => selectedType.value.isNotEmpty
               ? Text("",
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           )
               : const SizedBox()),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
 
-          // 📦 Orders List
           Expanded(
             child: Obx(() {
               if (orderController.isLoading.value) {
@@ -98,7 +97,6 @@ class MyOrdersScreen extends StatelessWidget {
               if (orderController.orders.isEmpty) {
                 return const Center(child: Text('No orders found'));
               }
-
                return ListView.builder(
                 itemCount: orderController.orders.length,
                 itemBuilder: (context, index) {

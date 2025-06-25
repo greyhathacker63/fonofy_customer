@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Api_Service/SellService/RepairColorModelService/CancelRepairOrderService.dart';
+import '../../utils/Colors.dart';
 
 class CancelRepairOrderController extends GetxController {
   var isLoading = false.obs;
@@ -27,7 +28,7 @@ class CancelRepairOrderController extends GetxController {
         cancelMessage.value = result.message;
         Get.snackbar("Success",
           result.message,
-          backgroundColor: Colors.green,
+          backgroundColor: ColorConstants.appBlueColor3,
           colorText: Colors.white,
         );
       } else {

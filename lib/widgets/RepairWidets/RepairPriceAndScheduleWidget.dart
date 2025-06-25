@@ -205,6 +205,7 @@ class RepairPriceAndScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context,) {
     final dataTable1 = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table1 ?? [];
     final dataTable = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table ?? [];
+    final dataTable2 = repairOrderProductDetailsController.detailsRepairOrderProduct.value?.table2 ?? [];
 
     return Column(
       children: [
@@ -213,7 +214,7 @@ class RepairPriceAndScheduleWidget extends StatelessWidget {
             color: Colors.white,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -250,7 +251,7 @@ class RepairPriceAndScheduleWidget extends StatelessWidget {
             ),
           ),
 
-        SizedBox(height: 16),
+        SizedBox(height: 10),
         if (dataTable.isNotEmpty)
           Card(
             color: Colors.white,
@@ -265,38 +266,57 @@ class RepairPriceAndScheduleWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
                   SizedBox(height: 4),
                   Text(dataTable.first.shippingAddress ?? '', style: GoogleFonts.poppins(fontSize: 12)),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text('Contact Number:',
                       style: GoogleFonts.poppins(
                           color: ColorConstants.appBlueColor3,
                           fontSize: 14,
                           fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(dataTable.first.shippingMobileNo ?? '',
+                      style: GoogleFonts.poppins(fontSize: 13)),
+                  Text('SlotDate:',
+                      style: GoogleFonts.poppins(
+                          color: ColorConstants.appBlueColor3,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  Text(dataTable.first.slotDate ?? '',
                       style: GoogleFonts.poppins(fontSize: 13)),
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorConstants.appBlueColor3,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context, MaterialPageRoute(
-                                builder: (context) => CancelRepairOrderScreen(orderId: dataTable1.first.orderId ?? '', customerId: dataTable1.first.customerId ?? '',
+                      if (dataTable2.isNotEmpty)
+                        if ((dataTable2.first.orderStatus?.toLowerCase().trim() ?? '') == 'pending')
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: ColorConstants.appBlueColor3,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CancelRepairOrderScreen(
+                                      orderId: dataTable1.first.orderId ?? '',
+                                      customerId: dataTable1.first.customerId ?? '',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text('CANCEL',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                            );
-                          },
-                          child: Text('CANCEL',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
-                        ),
-                      ),
-                      const SizedBox(width: 13),
+                            ),
+                          ),
+                      if (dataTable2.isNotEmpty &&
+                          (dataTable2.first.orderStatus?.toLowerCase().trim() ?? '') == 'pending')
+                        const SizedBox(width: 13),
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -311,13 +331,19 @@ class RepairPriceAndScheduleWidget extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Tracking',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500)),
+                          child: Text(
+                            'Tracking',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
+
                 ],
               ),
             ),

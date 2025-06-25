@@ -152,8 +152,6 @@ import '../widgets/RepairWidets/RepairPriceAndScheduleWidget.dart';
 //   }
 // }
 
-
-
 class OrderRepairDetailsScreen extends StatefulWidget {
   final String orderId;
   final String customerId;
@@ -167,7 +165,6 @@ class OrderRepairDetailsScreen extends StatefulWidget {
   @override
   State<OrderRepairDetailsScreen> createState() => _OrderRepairDetailsScreenState();
 }
-
 class _OrderRepairDetailsScreenState extends State<OrderRepairDetailsScreen> {
 
   final repairOrderProductDetailsController = Get.put(RepairOrderProductDetailsController());
@@ -196,14 +193,12 @@ class _OrderRepairDetailsScreenState extends State<OrderRepairDetailsScreen> {
         if (repairOrderProductDetailsController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-
         final data = repairOrderProductDetailsController.detailsRepairOrderProduct.value;
         final table = data?.table;
 
         if (table == null || table.isEmpty) {
           return const Center(child: Text('No order details found.'));
         }
-
         final item = table.first;
 
         return SingleChildScrollView(
@@ -305,7 +300,7 @@ class _OrderRepairDetailsScreenState extends State<OrderRepairDetailsScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 2),
               RepairPriceAndScheduleWidget(),
             ],
           ),

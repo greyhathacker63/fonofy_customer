@@ -294,9 +294,9 @@ Widget build(BuildContext context) {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: 3,
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin:EdgeInsets.symmetric(vertical: 8),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(4, (index) {

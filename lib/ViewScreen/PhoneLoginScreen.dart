@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import '../MainScreen.dart';
+import '../controllers/ControllerPhoneLogin/PhoneLoginController.dart';
 import 'RegisterScreen.dart';
 
 class PhoneLoginScreen extends StatefulWidget {
@@ -16,6 +17,9 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final PhoneLoginController loginController = Get.put(PhoneLoginController());
+
+
   bool isLoading = false;
   bool isPasswordVisible = false;
 
@@ -26,48 +30,10 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
     super.dispose();
   }
 
-  // Future<void> _handleLogin() async {
-  //   final phone = phoneController.text.trim();
-  //   final password = passwordController.text.trim();
-  //
-  //
-  //   if (phone.isEmpty || password.isEmpty) {
-  //     Get.to(()=>MainScreen());
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text("❌ Phone & Password can't be empty!"),
-  //         duration: Duration(seconds: 2),
-  //
-  //       ),
-  //     );
-  //     return;
-  //
-  //   }
-  //
-  //   setState(() => isLoading = true);
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? storedPhone = prefs.getString("Phone");
-  //   String? storedPassword = prefs.getString("Password");
-  //
-  //   await Future.delayed(Duration(seconds: 2));
-  //
-  //   if (storedPhone != null && storedPassword != null && storedPhone == phone && storedPassword == password) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("✅ Login Successful!"), duration: Duration(seconds: 2)),
-  //     );
-  //     Get.offAll(() => MainScreen());
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("❌ Invalid Phone  or Password!"), duration: Duration(seconds: 2)),
-  //     );
-  //     passwordController.clear();
-  //   }
-  //   setState(() => isLoading = false);
-  // }
-
   Future<void> _handleLogin() async {
     final phone = phoneController.text.trim();
     final password = passwordController.text.trim();
+
     if (phone.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -78,23 +44,23 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
       );
       return;
     }
+
     setState(() => isLoading = true);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? storedPhone = prefs.getString("Phone");
-    String? storedPassword = prefs.getString("Password");
+    bool isSuccess = await loginController.login(phone, password);
 
-    await Future.delayed(Duration(seconds: 2));
+    setState(() => isLoading = false);
 
-    if (storedPhone != null && storedPassword != null && storedPhone == phone && storedPassword == password) {
+    if (isSuccess) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("✅ Login Successful!"),
+          content: Text("✅ Phone Login Successful!"),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2),
         ),
       );
-      Get.offAll(() =>  MainScreen());
+
+      Get.offAll(() => MainScreen());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -105,8 +71,8 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
       );
       passwordController.clear();
     }
-    setState(() => isLoading = false);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +118,7 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
                   ),
                 ),
               ),
-                SizedBox(height: 20),
-
+              SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -164,9 +129,8 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
                   ),
                   onPressed: isLoading ? null : _handleLogin,
                   child: isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("SUBMIT",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      ?  CircularProgressIndicator(color: Colors.white)
+                      :  Text("SUBMIT",style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ),
@@ -178,10 +142,7 @@ class _EmailLoginScreenState extends State<PhoneLoginScreen> {
                   Text("Not a member? "),
                   GestureDetector(
                     onTap: () => Get.to(() => RegisterScreen(mobile: '')),
-                    child: Text(
-                      "Signup Now",
-                      style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                    ),
+                    child: Text("Signup Now",style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),),
                   ),
                 ],
               ),

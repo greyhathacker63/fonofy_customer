@@ -25,8 +25,7 @@ class SelectAddressSellScreen extends StatelessWidget {
         children: [
           const SizedBox(height: 10),
 
-          // Stepper UI with Adjusted Alignment
-          Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildStepBox("1", true),
@@ -74,11 +73,10 @@ class SelectAddressSellScreen extends StatelessWidget {
             ),
           ),
 
-          const Spacer(),
+            Spacer(),
 
-          // Bottom Price & Book Now Button
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+           Container(
+            padding:   EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               border: const Border(top: BorderSide(color: Colors.black12)),
@@ -86,7 +84,7 @@ class SelectAddressSellScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("₹99",
@@ -107,7 +105,7 @@ class SelectAddressSellScreen extends StatelessWidget {
                   onPressed: () {
                     // Get.to(() => CartScreen(customerId: '',));
                   },
-                  child: const Text("Book Now",
+                  child:   Text("Book Now",
                       style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ],

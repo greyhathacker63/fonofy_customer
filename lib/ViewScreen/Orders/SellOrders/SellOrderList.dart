@@ -50,8 +50,8 @@ class _SellOrderListScreenState extends State<SellOrderListScreen> {
                 itemBuilder: (context, index) {
                   final order = sellOrderListController.sellOrdersList[index];
                   return Card(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    color: Colors.white,
+                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                     elevation: 2,

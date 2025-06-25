@@ -13,6 +13,7 @@ class OrderItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       margin:   EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Padding(
         padding:   EdgeInsets.all(10.0),
