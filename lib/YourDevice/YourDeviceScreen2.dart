@@ -8,32 +8,68 @@ import '../TokenHelper/TokenHelper.dart';
 import '../controllers/ControllerProductDetails/AddressRepairController.dart';
 import '../model/ShippingAddressModel/ListShippingAddressModel.dart';
 
-class YourDeviceScreen2 extends StatelessWidget {
-  YourDeviceScreen2({super.key}) {
+class YourDeviceScreen2 extends StatefulWidget {
+  final double finalPrice;
+  final String baseprice;
+  final String? pid;
+  final String bid;
+  final String raid;
+  final String roid;
+  final String? selectedVariant;
+  final String modelNo;
+  final String ram;
+  final String rom;
+  final String modelName;
+  final List finalhPageAns;
+
+  const YourDeviceScreen2({
+    super.key,
+    required this.finalPrice,
+    required this.baseprice,
+    this.pid,
+    required this.bid,
+    required this.raid,
+    required this.roid,
+    this.selectedVariant,
+    required this.modelNo,
+    required this.ram,
+    required this.rom,
+    required this.modelName,
+    required this.finalhPageAns,
+  });
+
+  @override
+  State<YourDeviceScreen2> createState() => _YourDeviceScreen2State();
+}
+
+class _YourDeviceScreen2State extends State<YourDeviceScreen2> {
+  final AddressRepairController addressController = Get.put(AddressRepairController());
+
+  @override
+  void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       addressController.fetchAddresses();
     });
   }
 
-  final AddressRepairController addressController = Get.put(AddressRepairController());
-
   void _navigateToAddNewAddressScreen() async {
     String? customerId = await TokenHelper.getUserCode();
     if (customerId == null || customerId.isEmpty) {
-      Get.snackbar('Error', 'User not logged in',
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar('Error', 'User not logged in', backgroundColor: Colors.red, colorText: Colors.white);
       return;
     }
 
     final dataSell = await Get.to(() => AddNewAddressScreen(
-      customerId: customerId,
-      address: ListShippingAddressModel(),
-    ));
+          customerId: customerId,
+          address: ListShippingAddressModel(),
+        ));
 
     if (dataSell == true) {
       addressController.fetchAddresses();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +77,7 @@ class YourDeviceScreen2 extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text("Your Device", style: TextStyle(color: Colors.black)),
@@ -52,7 +88,6 @@ class YourDeviceScreen2 extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Stepper
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -64,18 +99,15 @@ class YourDeviceScreen2 extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30),
-               Row(
+              Row(
                 children: [
                   Image.asset("assets/images/location.png", height: 30),
                   const SizedBox(width: 10),
-                  const Text("Use My Current Location",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const Text("Use My Current Location", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ],
               ),
-
               const SizedBox(height: 30),
-
-               Center(
+              Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appBlueColor3,
@@ -83,19 +115,15 @@ class YourDeviceScreen2 extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: _navigateToAddNewAddressScreen,
-                  child: const Text("+ Add New Address",
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                  child: const Text("+ Add New Address", style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              /// Address List
               Obx(() {
                 if (addressController.isLoading.value) {
                   return ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: 3,
                     itemBuilder: (_, __) => _buildShimmerEffect(),
                   );
@@ -107,60 +135,47 @@ class YourDeviceScreen2 extends StatelessWidget {
                 } else {
                   return ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: addressController.addressList.length,
                     itemBuilder: (context, index) {
                       final address = addressController.addressList[index];
-                      return Obx(() => InkWell(
-                        onTap: () {
-                          addressController.selectAddress(index);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: addressController.selectedAddressIndex.value == index
-                                  ? ColorConstants.appBlueColor3
-                                  : Colors.black12,
-                              width: 2,
+                      return Obx(() {
+                        final isSelected = addressController.selectedAddressIndex.value == index;
+                        return InkWell(
+                          onTap: () => addressController.selectAddress(index),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: isSelected ? ColorConstants.appBlueColor3 : Colors.black12,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${address.name ?? ' '} | ${address.workType ?? ''}",
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  address.address ?? "No address provided",
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                                Text(
-                                  "${address.city ?? ''} - ${address.pinCode ?? ''}",
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                                Text("📞 ${address.mobileNo ?? ''}",
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${address.name ?? ' '} | ${address.workType ?? ''}",
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  Text(address.address ?? "No address provided", style: const TextStyle(fontSize: 14)),
+                                  Text("${address.city ?? ''} - ${address.pinCode ?? ''}",
+                                      style: const TextStyle(fontSize: 14)),
+                                  Text("📞 ${address.mobileNo ?? ''}", style: const TextStyle(fontSize: 14)),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ));
+                        );
+                      });
                     },
                   );
                 }
               }),
-
               const SizedBox(height: 250),
-
-               SizedBox(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -177,19 +192,41 @@ class YourDeviceScreen2 extends StatelessWidget {
                         colorText: Colors.white,
                       );
                     } else {
-                      Get.to(() =>PickupSlotPage());
+                      final selected = addressController.addressList[addressController.selectedAddressIndex.value];
+                      Get.to(() => PickupSlotPage(
+                            shippingId: selected.id.toString(),
+                            shippingName: selected.name ?? '',
+                            shippingMobileNo: selected.mobileNo ?? '',
+                            shippingEmailId: selected.emailId ?? '',
+                            shippingAddress: selected.address ?? '',
+                            shippingLandmark: selected.city ?? '',
+                            shippingCity: selected.city ?? '',
+                            shippingState: selected.state ?? '',
+                            shippingPincode: selected.pinCode ?? '',
+                            workType: selected.workType ?? '',
+                            finalPrice: widget.finalPrice.toString(),
+                            baseprice: widget.baseprice,
+                            pid: widget.pid.toString(),
+                            bid: widget.bid,
+                            raid: widget.raid,
+                            roid: widget.roid,
+                            selectedVariant: widget.selectedVariant.toString(),
+                            modelNo: widget.modelNo,
+                            ram: widget.ram,
+                            rom: widget.rom,
+                            modelName: widget.modelName,
+                            finalhPageAns: widget.finalhPageAns,
+                          ));
                     }
                   },
                   child: Text("Continue", style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),
         ),
       ),
-
     );
   }
 
@@ -207,20 +244,13 @@ class YourDeviceScreen2 extends StatelessWidget {
           ),
           child: Text(
             number,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: isActive ? Colors.blue : Colors.black,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, color: isActive ? Colors.blue : Colors.black),
           ),
         ),
         const SizedBox(height: 5),
         Text(
           title,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: isActive ? Colors.black : Colors.black54,
-          ),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isActive ? Colors.black : Colors.black54),
         ),
       ],
     );
@@ -264,3 +294,5 @@ class YourDeviceScreen2 extends StatelessWidget {
   }
 }
 
+
+  

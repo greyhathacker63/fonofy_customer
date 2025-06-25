@@ -142,7 +142,6 @@
 //   }
 // }
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
@@ -151,8 +150,6 @@ import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 import 'package:get/get.dart';
 import '../../controllers/RepairController/RepairServicesTableController.dart';
 import '../../utils/Colors.dart';
-
-
 
 class ServicePhoneItem extends StatelessWidget {
   final String image;
@@ -176,8 +173,7 @@ class ServicePhoneItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RepairControllerTable controller = Get.find<RepairControllerTable>();
-
+    final RepairControllerTable controller = Get.put(RepairControllerTable());
     return SizedBox(
       width: 330,
       child: Column(
@@ -198,13 +194,17 @@ class ServicePhoneItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(title,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Text('$discount%', style: const TextStyle(color: Colors.red)),
+                        Text('$discount%',
+                            style: const TextStyle(color: Colors.red)),
                         const SizedBox(width: 8),
-                        Text('₹$price', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Text('₹$price',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         const SizedBox(width: 6),
                         Text(
                           ' ₹$mrp',
@@ -219,45 +219,57 @@ class ServicePhoneItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              Obx(() => Container(
-                height: 40,
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 1),
-                decoration: BoxDecoration(
-                  color: controller.isServiceSelected(service) ? Colors.red : ColorConstants.appBlueColor3,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final token = await TokenHelper.getToken();
-                    if (token == null || token.isEmpty) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
-                    } else {
-                      if (controller.isServiceSelected(service)) {
-                        controller.removeService(service);
-                      } else {
-                        controller.addService(service);
-                      }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    controller.isServiceSelected(service) ? Colors.red : ColorConstants.appBlueColor3,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                  child: Text(
-                    controller.isServiceSelected(service) ? "Remove" : "Add +",
-                    style:   TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+              Obx(
+                () => Container(
+                    height: 40,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 1),
+                    decoration: BoxDecoration(
+                      color: controller.isServiceSelected(service)
+                          ? Colors.red
+                          : ColorConstants.appBlueColor3,
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                  ),
-                ),
-              )),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        print(
+                            "Service object: $service"); // 👈 This line will show what's being passed
+
+                        final token = await TokenHelper.getToken();
+                        if (token == null || token.isEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        } else {
+                          if (controller.isServiceSelected(service)) {
+                            controller.removeService(service);
+                          } else {
+                            controller.addService(service);
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: controller.isServiceSelected(service)
+                            ? Colors.red
+                            : ColorConstants.appBlueColor3,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: Text(
+                        controller.isServiceSelected(service)
+                            ? "Remove"
+                            : "Add +",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+              ),
             ],
           ),
           if (note != null)

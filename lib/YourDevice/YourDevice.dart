@@ -31,7 +31,8 @@ class YourDeviceScreen extends StatefulWidget {
     required this.modelNo,
     required this.ram,
     required this.rom,
-    required this.modelName, required this.finalhPageAns,
+    required this.modelName,
+    required this.finalhPageAns,
   });
 
   @override
@@ -69,10 +70,8 @@ class _YourDeviceScreenState extends State<YourDeviceScreen> {
       rom: widget.rom,
       basePrice: base.toString(),
     );
-final List<String> weights = List<String>.from(widget.finalhPageAns);
+    final List<String> weights = List<String>.from(widget.finalhPageAns);
 
-
-  
     await controller.calculatePrice(
       questWeights: weights,
       basePrice: base,
@@ -93,231 +92,246 @@ final List<String> weights = List<String>.from(widget.finalhPageAns);
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: Obx(
+        () {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        if (finalPrice.value > 0) {
-          print("Final Price (display): ${finalPrice.value}");
-        }
+          if (finalPrice.value > 0) {
+            print("Final Price (display): ${finalPrice.value}");
+          }
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Device info card
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(color: Colors.grey.shade300, blurRadius: 5),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Image.asset("assets/images/iphone.png", height: 73),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${widget.modelName.toString()} (${widget.ram}/${widget.rom})",
-                            style: const TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              const Text("Selling Price: ",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black54)),
-                              Obx(() => Text(finalPrice.value.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red))),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: _recalculatePrice,
-                                child: const Text(
-                                  "Recalculate",
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 8,
-                                      decoration: TextDecoration.underline),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              // Features
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  _FeatureIcon(icon: Icons.payment, label: "Fast Payments"),
-                  _FeatureIcon(
-                      icon: Icons.local_shipping, label: "Free Pickup"),
-                  _FeatureIcon(icon: Icons.security, label: "100% Safe"),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // Coupons container
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Row(
-                  children: const [
-                    Icon(Icons.local_offer, color: Colors.blue),
-                    SizedBox(width: 10),
-                    Text("Apply Coupons",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    Spacer(),
-                    Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.black54),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              const Text("Special Offers*",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const Text("Earn more with these offers and smile wider!",
-                  style: TextStyle(fontSize: 14, color: Colors.black54)),
-              const SizedBox(height: 12),
-
-              // Offer cards (first row)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _OfferCard("assets/images/iphone.png", "iPhone Voucher",
-                      finalPrice.value.toString()),
-                  _OfferCard("assets/images/amazon.png", "Amazon Pay Gift Card",
-                      finalPrice.value.toString()),
-                ],
-              ),
-              const SizedBox(height: 10),
-
-              // Offer cards (second row)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _OfferCard("assets/images/flipkart.png", "Flipkart Gift Card",
-                      finalPrice.value.toString()),
-                  _OfferCard("assets/images/croma.png", "Croma",
-                      finalPrice.value.toString()),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // WhatsApp switch
-              Row(
-                children: [
-                  const Expanded(
-                      child: Text("Get price alerts & updates on Whatsapp",
-                          style: TextStyle(fontSize: 14))),
-                  Switch(
-                    value: true,
-                    activeColor: ColorConstants.appBlueColor3,
-                    onChanged: (bool value) {},
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Device info card
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey.shade300, blurRadius: 5),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 12),
+                  child: Row(
+                    children: [
+                      Image.asset("assets/images/iphone.png", height: 73),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${widget.modelName.toString()} (${widget.ram}/${widget.rom})",
+                              style: const TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                const Text("Selling Price: ",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black54)),
+                                Obx(() => Text(finalPrice.value.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red))),
+                                const Spacer(),
+                                GestureDetector(
+                                  onTap: _recalculatePrice,
+                                  child: const Text(
+                                    "Recalculate",
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 11,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
 
-              // FAQs section
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("FAQs",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        _FAQItem("How did you calculate my device price?"),
-                        _FAQItem("Is it safe to sell my phone on Fonofy?"),
-                        _FAQItem("How does Voucher Payment work?"),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    const Text("Load More FAQs",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        )),
-                    const SizedBox(height: 16),
+                // Features
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [
+                    _FeatureIcon(icon: Icons.payment, label: "Fast Payments"),
+                    _FeatureIcon(
+                        icon: Icons.local_shipping, label: "Free Pickup"),
+                    _FeatureIcon(icon: Icons.security, label: "100% Safe"),
                   ],
                 ),
-              ),
+                const SizedBox(height: 12),
 
-              // Final price & button
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(color: Colors.grey.shade300, blurRadius: 5),
-                  ],
+                // Coupons container
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.local_offer, color: Colors.blue),
+                      SizedBox(width: 10),
+                      Text("Apply Coupons",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500)),
+                      Spacer(),
+                      Icon(Icons.arrow_forward_ios,
+                          size: 16, color: Colors.black54),
+                    ],
+                  ),
                 ),
-                child: Row(
+                const SizedBox(height: 12),
+
+                const Text("Special Offers*",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text("Earn more with these offers and smile wider!",
+                    style: TextStyle(fontSize: 14, color: Colors.black54)),
+                const SizedBox(height: 12),
+
+                // Offer cards (first row)
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(finalPrice.value.toString(),
-                            style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)),
-                        const Text("View Breakups",
-                            style: TextStyle(fontSize: 14, color: Colors.blue)),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        print(
-                            "Final Price (button tap): ₹ ${finalPrice.value}");
-                        Get.to(() => YourDeviceScreen2());
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorConstants.appBlueColor3,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 12),
-                      ),
-                      child: const Text("Sell Now",
-                          style: TextStyle(fontSize: 16, color: Colors.white)),
+                    _OfferCard("assets/images/iphone.png", "iPhone Voucher",
+                        finalPrice.value.toString()),
+                    _OfferCard("assets/images/amazon.png",
+                        "Amazon Pay Gift Card", finalPrice.value.toString()),
+                  ],
+                ),
+                const SizedBox(height: 10),
+
+                // Offer cards (second row)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _OfferCard("assets/images/flipkart.png",
+                        "Flipkart Gift Card", finalPrice.value.toString()),
+                    _OfferCard("assets/images/croma.png", "Croma",
+                        finalPrice.value.toString()),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                // WhatsApp switch
+                Row(
+                  children: [
+                    const Expanded(
+                        child: Text("Get price alerts & updates on Whatsapp",
+                            style: TextStyle(fontSize: 14))),
+                    Switch(
+                      value: true,
+                      activeColor: ColorConstants.appBlueColor3,
+                      onChanged: (bool value) {},
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        );
-      }),
+                const SizedBox(height: 12),
+
+                // FAQs section
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("FAQs",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          _FAQItem("How did you calculate my device price?"),
+                          _FAQItem("Is it safe to sell my phone on Fonofy?"),
+                          _FAQItem("How does Voucher Payment work?"),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      const Text("Load More FAQs",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          )),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+
+                // Final price & button
+                Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(color: Colors.grey.shade300, blurRadius: 5),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(finalPrice.value.toString(),
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                            const Text("View Breakups",
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.blue)),
+                          ],
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(() => YourDeviceScreen2(
+                                  finalPrice: finalPrice.value,
+                                  baseprice: widget.baseprice,
+                                  pid: widget.pid,
+                                  bid: widget.bid,
+                                  raid: widget.raid,
+                                  roid: widget.roid,
+                                  selectedVariant: widget.selectedVariant,
+                                  modelNo: widget.modelNo,
+                                  ram: widget.ram,
+                                  rom: widget.rom,
+                                  modelName: widget.modelName,
+                                  finalhPageAns: widget.finalhPageAns,
+                                ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorConstants.appBlueColor3,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 12),
+                          ),
+                          child: const Text("Sell Now",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
+                        ),
+                      ],
+                    ))
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
