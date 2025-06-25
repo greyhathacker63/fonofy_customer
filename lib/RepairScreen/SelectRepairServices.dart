@@ -509,6 +509,8 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                           totalPrice: repairController.totalPrice.value,
                           selectedServices:
                               repairController.selectedServices.toList(),
+                          ramId: repairController.ramId,  
+                          romId: repairController.romId, 
                         ),
                       ),
                     );

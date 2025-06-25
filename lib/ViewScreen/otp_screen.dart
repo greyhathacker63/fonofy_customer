@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:fonofy/Api_Service/mobileOtpService/login_service.dart';
+import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/ViewScreen/AccountsScreen.dart';
 import 'package:fonofy/Api_Service/mobileOtpService/TokenService.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
@@ -230,7 +231,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                       );
                       await Future.delayed(Duration(seconds: 1));
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(),));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("❌ Invalid OTP! Please try again.")),
