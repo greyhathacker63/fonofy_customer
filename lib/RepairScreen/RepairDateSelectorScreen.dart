@@ -301,7 +301,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
   int selectedIndex = 0;
 
   final RepairControllerTable repairController = Get.find();
-  final RepairBookingController bookingController = Get.put(RepairBookingController());
+  final RepairBookingController bookingController =
+      Get.put(RepairBookingController());
 
   List<DateTime> getNext7Days() =>
       List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
@@ -338,8 +339,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 final label = index == 0
                     ? "TODAY"
                     : index == 1
-                    ? "TOMORROW"
-                    : null;
+                        ? "TOMORROW"
+                        : null;
 
                 return GestureDetector(
                   onTap: () => setState(() => selectedIndex = index),
@@ -426,14 +427,14 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
                 backgroundColor: ColorConstants.appBlueColor3,
               ),
               onPressed: () async {
                 final selectedDate =
-                DateFormat('dd-MM-yyyy').format(dateList[selectedIndex]);
+                    DateFormat('dd-MM-yyyy').format(dateList[selectedIndex]);
 
                 if (widget.selectedServices.isEmpty) {
                   Get.snackbar('Error', 'No services selected',
@@ -529,17 +530,18 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                         serviceId: service.serviceId ?? 0,
                         serviceName: service.serviceName ?? '',
                         serviceAmount:
-                        (service.serviceAmount as num?)?.toDouble() ?? 0.0,
+                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                         serviceDiscount:
-                        (service.serviceAmount as num?)?.toDouble() ?? 0.0,
+                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                         servicePercent:
-                        (service.serviceAmount as num?)?.toDouble() ?? 0.0,
+                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                       );
                     }).toList(),
                   );
-                }catch (e) {
+                } catch (e) {
                   print("Error while booking: $e");
                 }
+
                 // repairDetails: widget.selectedServices.map((service) {
                 //   return RepairDetail(
                 //     customerId: widget.customerId ?? '',
@@ -560,12 +562,13 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 //       backgroundColor: Colors.red, colorText: Colors.white);
                 // }
               },
-              child:   Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 8),
-                    child: Text("Place Order", style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: Text("Place Order",
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                   SizedBox(width: 8),
                   Icon(Icons.arrow_forward, color: Colors.white, size: 20),

@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/model/RepairModel/BookingRepairModel.dart';
+import 'package:fonofy/model/RepairModel/RepairBookingModel.dart'; // <- Make sure correct model
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 
 class RepairBookingService {
+  static const String baseUrl = 'https://api.fonofy.in/api/forb2c/repair-booking';
 
   static Future<bool> fetchRepairBooking(RepairBookingRequestModel bookingData, String token) async {
     try {
       final response = await http.post(
-        Uri.parse(repairBookingdUrl),
+        Uri.parse(baseUrl), // <- Use correct URL
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -23,16 +23,14 @@ class RepairBookingService {
       print(response.body);
 
       if (response.statusCode == 200) {
-        return true;
+        final jsonResponse = jsonDecode(response.body);
+        return jsonResponse['message'] == 'Successful';
       } else {
-        Get.snackbar("Error", "Failed: ${response.body}",
-            backgroundColor: Colors.red, colorText: Colors.white);
+        print('Error Response: ${response.statusCode} - ${response.body}');
         return false;
       }
     } catch (e) {
-      print('❌ Exception: $e');
-      Get.snackbar("Error", "Something went wrong: $e",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      print("Exception during booking: $e");
       return false;
     }
   }

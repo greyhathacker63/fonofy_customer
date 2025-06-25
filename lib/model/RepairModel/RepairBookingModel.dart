@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final repairBookingModel = repairBookingModelFromJson(jsonString);
+
 import 'dart:convert';
 
 RepairBookingModel repairBookingModelFromJson(String str) => RepairBookingModel.fromJson(json.decode(str));

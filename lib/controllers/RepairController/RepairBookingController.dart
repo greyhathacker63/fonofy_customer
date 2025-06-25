@@ -7,14 +7,12 @@ import '../../TokenHelper/TokenHelper.dart';
 class RepairBookingController extends GetxController {
   RxBool isLoading = false.obs;
   var bookingDetails = Rxn<RepairBookingRequestModel>();
-  
- 
 
   Future<void> submitRepairBooking({
-    required String modelId,
-    required String romId,
-    required String ramId,
-    required String colorId,
+    required dynamic modelId,
+    required dynamic romId,
+    required dynamic ramId,
+    required dynamic colorId,
     required String customerId,
     required String shippingId,
     required String shippingName,
@@ -22,8 +20,8 @@ class RepairBookingController extends GetxController {
     required String shippingEmailId,
     required String shippingAddress,
     required String shippingLandmark,
-    required String shippingCity,
-    required String shippingState,
+    required dynamic shippingCity,
+    required dynamic shippingState,
     required String shippingPincode,
     required String workType,
     required dynamic totalMRP,
@@ -45,8 +43,6 @@ class RepairBookingController extends GetxController {
     required String Mode,
     // required List selectedServices,
     required List<RepairDetail> repairDetails,
-
-    
   }) async {
     isLoading.value = true;
 
@@ -90,8 +86,8 @@ class RepairBookingController extends GetxController {
       totalMRP: totalMRP,
       servieCharge: servieCharge,
       couponId: couponId,
-      Mode: '',
-      repairDetails:repairDetails,
+      Mode: Mode,
+      repairDetails: repairDetails,
     );
 
     bookingDetails.value = repairBookingModel;
