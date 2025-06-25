@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:fonofy/Api_Service/BaseUrl/AllBaseUrl.dart';
+import 'package:fonofy/model/RepairModel/BookingRepairModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
- import '../../../model/RepairModel/RepairBookingModel.dart';
+
 
 class RepairBookingService {
 
-  static Future<bool> fetchRepairBooking(RepairBookingModel bookingData, String token) async {
+  static Future<bool> fetchRepairBooking(RepairBookingRequestModel bookingData, String token) async {
     try {
       final response = await http.post(
         Uri.parse(repairBookingdUrl),

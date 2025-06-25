@@ -1,10 +1,12 @@
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ShippingAddressService/AddShippingAddressService.dart';
 import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
 import 'package:fonofy/RepairScreen/RepairDateSelectorScreen.dart';
+import 'package:fonofy/YourDevice/SelectAddressSellScreen.dart';
+import 'package:fonofy/model/RepairModel/BookingRepairModel.dart';
 import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
+import 'package:fonofy/model/table_banner_model/SelectProduct/SelectAddressScreen.dart';
 import '../Api_Service/ShippingAddressService/LocationService.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../model/LocationModel/CityModel.dart';
@@ -13,27 +15,18 @@ import '../model/LocationModel/LocationModel.dart';
 import '../utils/Colors.dart';
 import '../widgets/TextField.dart';
 
-
 class AddNewAddressScreen extends StatefulWidget {
-  final String ?customerId;
+  final String? customerId;
   final ListShippingAddressModel? address;
-  
 
   // Optional data from SelectServicesScreen
-  final String brandId;
-  final String productId;
-  final String colorId;
-  final dynamic totalPrice;
-  List<Table1> selectedServices;
-  
-   AddNewAddressScreen({
+
+
+  AddNewAddressScreen({
     super.key,
     this.customerId,
-   this.address,
-    required this.brandId,
-   required this.productId,
-    required this.colorId,
-    this.totalPrice, required this.selectedServices,
+    this.address,
+  
   });
 
   @override
@@ -66,6 +59,28 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   String token = "";
   String userCode = "";
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _initializeData();
+  //   fetchLocationData();
+
+  //   if (widget.address != null) {
+  //     nameController.text = widget.address?.name ?? "";
+  //     emailController.text = widget.address?.emailId ?? "";
+  //     mobileController.text = widget.address?.mobileNo ?? "";
+  //     pinCodeController.text = widget.address?.pinCode ?? "";
+  //     addressController.text = widget.address?.address ?? "";
+  //     selectedWorkType = widget.address?.workType;
+  //     workTypeController.text = selectedWorkType ?? "";
+  //     selectedState = widget.address?.state;
+  //     stateController.text = selectedState ?? "";
+  //     selectedCity = widget.address?.city;
+  //     cityController.text = selectedCity ?? "";
+
+  //     print('City :- ${widget.address?.city}');
+  //   }
+  // }
   @override
   void initState() {
     super.initState();
@@ -73,6 +88,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     fetchLocationData();
 
     if (widget.address != null) {
+      print('📦 Pre-filled Address detected! Populating fields...');
       nameController.text = widget.address?.name ?? "";
       emailController.text = widget.address?.emailId ?? "";
       mobileController.text = widget.address?.mobileNo ?? "";
@@ -85,7 +101,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       selectedCity = widget.address?.city;
       cityController.text = selectedCity ?? "";
 
-      print('City :- ${widget.address?.city}');
+      print('➡️ Loaded Address: ${widget.address}');
     }
   }
 
@@ -118,7 +134,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
   Future<void> fetchLocationData() async {
     try {
-      List<LocationModel> fetchedLocations = await LocationService().fetchLocations();
+      List<LocationModel> fetchedLocations =
+          await LocationService().fetchLocations();
       setState(() {
         locations = fetchedLocations;
         isLoading = false;
@@ -137,7 +154,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       cityController.clear();
     });
     try {
-      List<CityModel> fetchedCities = await LocationService().fetchCities(stateId);
+      List<CityModel> fetchedCities =
+          await LocationService().fetchCities(stateId);
       setState(() {
         cityList = fetchedCities;
         isCityLoading = false;
@@ -219,7 +237,10 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                 keyboardType: TextInputType.number,
                 maxLength: 10,
                 prefixText: '+91 ',
-                prefixStyle: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w500),
+                prefixStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500),
                 validator: validateMobile,
               ),
               Container(
@@ -228,7 +249,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   value: selectedState,
                   isExpanded: true,
                   hint: const Text("Select State"),
-                  decoration: const InputDecoration(border: OutlineInputBorder()),
+                  decoration:
+                      const InputDecoration(border: OutlineInputBorder()),
                   items: locations.map((state) {
                     return DropdownMenuItem<String>(
                       value: state.id.toString(),
@@ -244,7 +266,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     });
                     fetchCityData(int.parse(newValue!));
                   },
-                  validator: (value) => value == null ? "State is required" : null,
+                  validator: (value) =>
+                      value == null ? "State is required" : null,
                 ),
               ),
               Container(
@@ -253,13 +276,16 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   value: selectedCity,
                   hint: Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: Text(selectedCity ?? "Select City", overflow: TextOverflow.ellipsis),
+                    child: Text(selectedCity ?? "Select City",
+                        overflow: TextOverflow.ellipsis),
                   ),
-                  decoration: const InputDecoration(border: OutlineInputBorder()),
+                  decoration:
+                      const InputDecoration(border: OutlineInputBorder()),
                   items: cityList.map((city) {
                     return DropdownMenuItem<String>(
                       value: city.id.toString(),
-                      child: Text(city.cityname, overflow: TextOverflow.ellipsis),
+                      child:
+                          Text(city.cityname, overflow: TextOverflow.ellipsis),
                     );
                   }).toList(),
                   onChanged: (newValue) {
@@ -268,7 +294,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       cityController.text = newValue!;
                     });
                   },
-                  validator: (value) => value == null ? "City is required" : null,
+                  validator: (value) =>
+                      value == null ? "City is required" : null,
                 ),
               ),
               GlobalTextField(
@@ -283,7 +310,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                 child: DropdownButtonFormField2<String>(
                   value: selectedWorkType,
                   hint: const Text("Select Work Type"),
-                  decoration: const InputDecoration(border: OutlineInputBorder()),
+                  decoration:
+                      const InputDecoration(border: OutlineInputBorder()),
                   items: workTypes.map((workType) {
                     return DropdownMenuItem<String>(
                       value: workType,
@@ -296,7 +324,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       workTypeController.text = newValue!;
                     });
                   },
-                  validator: (value) => value == null ? "Work Type is required" : null,
+                  validator: (value) =>
+                      value == null ? "Work Type is required" : null,
                 ),
               ),
               GlobalTextField(
@@ -310,71 +339,121 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                 onPressed: () async {
-  if (_formKey.currentState!.validate()) {
-    try {
-      await AddShippingAddressService().addShippingAddress(
-        name: nameController.text,
-        emailId: emailController.text,
-        mobileNo: mobileController.text,
-        state: stateController.text,
-        city: cityController.text,
-        pinCode: pinCodeController.text,
-        workType: workTypeController.text,
-        address: addressController.text,
-        token: token,
-        userCode:widget.customerId!,
-      );
+                  // onPressed: () async {
+                  //   if (_formKey.currentState!.validate()) {
+                  //     try {
+                  //       await AddShippingAddressService().addShippingAddress(
+                  //         name: nameController.text,
+                  //         emailId: emailController.text,
+                  //         mobileNo: mobileController.text,
+                  //         state: stateController.text,
+                  //         city: cityController.text,
+                  //         pinCode: pinCodeController.text,
+                  //         workType: workTypeController.text,
+                  //         address: addressController.text,
+                  //         token: token,
+                  //         userCode: widget.customerId!,
+                  //       );
 
-      // Now go to Payment Screen
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => RepairDateSelectorScreen(
-      //       customerId: widget.customerId,
-      //       brandId: widget.brandId,
-      //       productId: widget.productId,
-      //       colorId: widget.colorId,
-      //       totalPrice: widget.totalPrice,
-      //       selectedServices: widget.selectedServices,
-      //       selectedAddress: ListShippingAddressModel(
-      //         name: nameController.text,
-      //         emailId: emailController.text,
-      //         mobileNo: mobileController.text,
-      //         state: stateController.text,
-      //         city: cityController.text,
-      //         pinCode: pinCodeController.text,
-      //         workType: workTypeController.text,
-      //         address: addressController.text,
-      //       ),
-      //     ),
-      //   ),
-      // );
+                  //       // Now go to Payment Screen
+                  //       Navigator.pushReplacement(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => RepairDateSelectorScreen(
+                  //             customerId: widget.customerId,
+                  //             brandId: widget.brandId,
+                  //             productId: widget.productId,
+                  //             colorId: widget.colorId,
+                  //             totalPrice: widget.totalPrice,
+                  //             selectedServices: widget.selectedServices,
+                  //             selectedAddress: ListShippingAddressModel(
+                  //               name: nameController.text,
+                  //               emailId: emailController.text,
+                  //               mobileNo: mobileController.text,
+                  //               state: stateController.text,
+                  //               city: cityController.text,
+                  //               pinCode: pinCodeController.text,
+                  //               workType: workTypeController.text,
+                  //               address: addressController.text,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       );
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      print('📝 Form validated, preparing to save address...');
+                      print('🧾 Collected Address Info:');
+                      print(' - Name: ${nameController.text}');
+                      print(' - Email: ${emailController.text}');
+                      print(' - Mobile: ${mobileController.text}');
+                      print(' - State: ${stateController.text}');
+                      print(' - City: ${cityController.text}');
+                      print(' - PIN Code: ${pinCodeController.text}');
+                      print(' - Work Type: ${workTypeController.text}');
+                      print(' - Address: ${addressController.text}');
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Shipping address inserted successfully!"),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Failed to save address: $e"),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-},
+                      try {
+                        await AddShippingAddressService().addShippingAddress(
+                          name: nameController.text,
+                          emailId: emailController.text,
+                          mobileNo: mobileController.text,
+                          state: stateController.text,
+                          city: cityController.text,
+                          pinCode: pinCodeController.text,
+                          workType: workTypeController.text,
+                          address: addressController.text,
+                          token: token,
+                          userCode: widget.customerId!,
+                        );
+                        print(
+                            '✅ Address added successfully. Navigating to RepairDateSelectorScreen...');
 
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SelectRepairAddressScreen(
+                            //  customerId: widget.customerId,                                                                                                               
+                            selectedAddress: ListShippingAddressModel(
+                                name: nameController.text,
+                                emailId: emailController.text,
+                                mobileNo: mobileController.text,
+                                state: stateController.text,
+                                city: cityController.text,
+                                pinCode: pinCodeController.text,
+                                workType: workTypeController.text,
+                                address: addressController.text,
+                              ), brandId: '', modelId: '', colorId: '', totalPrice: null, selectedServices: [],
+                            ),
+                          ),
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text("Shipping address inserted successfully!"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Failed to save address: $e"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstants.appBlueColor3,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: const Text("Save", style: TextStyle(fontSize: 17, color: Colors.white)),
+                  child: const Text("Save",
+                      style: TextStyle(fontSize: 17, color: Colors.white)),
                 ),
               ),
             ],

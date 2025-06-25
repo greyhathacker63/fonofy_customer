@@ -173,8 +173,7 @@ class ServicePhoneItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RepairControllerTable controller = Get.find<RepairControllerTable>();
-
+    final RepairControllerTable controller = Get.put(RepairControllerTable());
     return SizedBox(
       width: 330,
       child: Column(

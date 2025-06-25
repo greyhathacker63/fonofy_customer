@@ -1,19 +1,20 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fonofy/model/RepairModel/BookingRepairModel.dart'; // This has RepairBookingRequestModel
 import '../../Api_Service/SellService/RepairColorModelService/RepairBookingService.dart';
 import '../../TokenHelper/TokenHelper.dart';
-import '../../model/RepairModel/RepairBookingModel.dart';
 
 class RepairBookingController extends GetxController {
   RxBool isLoading = false.obs;
+  var bookingDetails = Rxn<RepairBookingRequestModel>();
+  
+ 
 
-  var bookingDetails = Rxn<RepairBookingModel>();
   Future<void> submitRepairBooking({
-    required dynamic modelId,
-    required dynamic romId,
-    required dynamic ramId,
-    required dynamic colorId,
+    required String modelId,
+    required String romId,
+    required String ramId,
+    required String colorId,
     required String customerId,
     required String shippingId,
     required String shippingName,
@@ -21,30 +22,35 @@ class RepairBookingController extends GetxController {
     required String shippingEmailId,
     required String shippingAddress,
     required String shippingLandmark,
-    required dynamic shippingCity,
-    required dynamic shippingState,
+    required String shippingCity,
+    required String shippingState,
     required String shippingPincode,
     required String workType,
-    required double totalMRP,
-    required double totalPrice,
-    required double totalAmount,
-    required double totalDiscount,
-    required double deliveryCharge,
-    required dynamic couponId,
+    required dynamic totalMRP,
+    required dynamic totalPrice,
+    required dynamic totalAmount,
+    required dynamic totalDiscount,
+    required dynamic deliveryCharge,
+    required String? couponId,
     required String couponName,
     required String couponDiscountType,
-    required double couponAmount,
-    required double couponPercent,
+    required dynamic couponAmount,
+    required dynamic couponPercent,
     required String couponCode,
     required String repairType,
     required String slotDate,
+    required String slotTime,
     required String remark,
+    required dynamic servieCharge,
+    required String Mode,
+    // required List selectedServices,
     required List<RepairDetail> repairDetails,
+
+    
   }) async {
     isLoading.value = true;
 
     final token = await TokenHelper.getToken();
-
     if (token == null || token.isEmpty) {
       isLoading.value = false;
       Get.snackbar("Error", "Authentication token missing",
@@ -52,13 +58,13 @@ class RepairBookingController extends GetxController {
       return;
     }
 
-    final repairBookingModel = RepairBookingModel(
+    final repairBookingModel = RepairBookingRequestModel(
       modelId: modelId,
       romId: romId,
       ramId: ramId,
       colorId: colorId,
       customerId: customerId,
-      orderId: "",
+      orderId: '',
       shippingId: shippingId,
       shippingName: shippingName,
       shippingMobileNo: shippingMobileNo,
@@ -69,6 +75,9 @@ class RepairBookingController extends GetxController {
       shippingState: shippingState,
       shippingPincode: shippingPincode,
       workType: workType,
+      couponName: couponName,
+      couponDiscountType: couponDiscountType,
+      couponAmount: couponAmount,
       couponPercent: couponPercent,
       couponCode: couponCode,
       repairType: repairType,
@@ -78,18 +87,17 @@ class RepairBookingController extends GetxController {
       totalAmount: totalAmount,
       totalPrice: totalPrice,
       totalDiscount: totalDiscount,
-      totalMrp: totalMRP,
-      repairDetails: repairDetails,
-      servieCharge: null,
-      couponId: null,
-      couponName: '',
-      couponDiscountType: '',
-      couponAmount: null,
-      mode: '',
+      totalMRP: totalMRP,
+      servieCharge: servieCharge,
+      couponId: couponId,
+      Mode: '',
+      repairDetails:repairDetails,
     );
 
+    bookingDetails.value = repairBookingModel;
+
     final success = await RepairBookingService.fetchRepairBooking(
-        repairBookingModel, token);
+        repairBookingModel, token); // ✅ Correct model passed here
 
     if (success) {
       Get.snackbar("Success", "Repair Booking Successful",

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fonofy/ManagePayments/MyPaymentsScreen.dart';
+
 import 'package:fonofy/YourDevice/SelectPaymentMethodScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
@@ -19,68 +19,116 @@ class PickupSlotController extends GetxController {
     return now.add(Duration(days: index + 1));
   });
 
-  // ✅ This enables the button only when both date and time are selected
   bool get isContinueEnabled =>
       selectedDate.value != null && selectedTimeSlot.value.isNotEmpty;
 }
 
 class PickupSlotPage extends StatelessWidget {
-  final PickupSlotController controller = Get.put(PickupSlotController());
+  final String shippingId;
+  final String shippingName;
+  final String shippingMobileNo;
+  final String shippingEmailId;
+  final String shippingAddress;
+  final String shippingLandmark;
+  final String shippingCity;
+  final String shippingState;
+  final String shippingPincode;
+  final String workType;
+  final String finalPrice;
+  final String baseprice;
+  final String pid;
+  final String bid;
+  final String raid;
+  final String roid;
+  final String selectedVariant;
+  final String modelNo;
+  final String ram;
+  final String rom;
+  final String modelName;
+  final List finalhPageAns;
+
+  const PickupSlotPage({
+    super.key,
+    required this.shippingId,
+    required this.shippingName,
+    required this.shippingMobileNo,
+    required this.shippingEmailId,
+    required this.shippingAddress,
+    required this.shippingLandmark,
+    required this.shippingCity,
+    required this.shippingState,
+    required this.shippingPincode,
+    required this.workType,
+    required this.finalPrice,
+    required this.baseprice,
+    required this.pid,
+    required this.bid,
+    required this.raid,
+    required this.roid,
+    required this.selectedVariant,
+    required this.modelNo,
+    required this.ram,
+    required this.rom,
+    required this.modelName,
+    required this.finalhPageAns,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final PickupSlotController controller = Get.put(PickupSlotController());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("Your Device", style: TextStyle(color: Colors.black)),
+        title: const Text("Your Device", style: TextStyle(color: Colors.black)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Obx(() => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// Stepper
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /// Stepper
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildStepBox("1", "Address"),
-                    _buildDivider(),
-                    _buildStepBox("2", "Pickup Slot", isActive: true),
-                    _buildDivider(),
-                    _buildStepBox("3", "Payment"),
-                  ],
-                ),
+                _buildStepBox("1", "Address"),
+                _buildDivider(),
+                _buildStepBox("2", "Pickup Slot", isActive: true),
+                _buildDivider(),
+                _buildStepBox("3", "Payment"),
+              ],
+            ),
 
-                SizedBox(height: 30),
+            const SizedBox(height: 30),
 
-                Text("Please select your preferable pickup date",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text("Please select your preferable pickup date",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
 
-                SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-                Row(
+            Obx(() => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: controller.nextDates.map((date) {
-                    bool isSelected = controller.selectedDate.value == date;
+                    final isSelected = controller.selectedDate.value == date;
                     return GestureDetector(
                       onTap: () => controller.selectedDate.value = date,
                       child: Container(
                         width: 65,
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           color: isSelected
                               ? ColorConstants.appBlueColor3
                               : Colors.grey.shade100,
                           border: Border.all(
-                              color: isSelected
-                                  ? ColorConstants.appBlueColor3
-                                  : Colors.grey),
+                            color: isSelected
+                                ? ColorConstants.appBlueColor3
+                                : Colors.grey,
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
@@ -91,42 +139,43 @@ class PickupSlotPage extends StatelessWidget {
                                     color: isSelected
                                         ? Colors.white
                                         : Colors.black)),
-                            Text(DateFormat.EEEE().format(date).substring(0, 3),
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Colors.black)),
+                            Text(
+                              DateFormat.EEEE().format(date).substring(0, 3),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      isSelected ? Colors.white : Colors.black),
+                            ),
                           ],
                         ),
                       ),
                     );
                   }).toList(),
-                ),
+                )),
 
-                SizedBox(height: 30),
+            const SizedBox(height: 30),
 
-                Text("Your availability on that day",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text("Your availability on that day",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
 
-                SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-                Row(
+            Obx(() => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: controller.timeSlots.map((slot) {
-                    bool selected = controller.selectedTimeSlot.value == slot;
+                    final isSelected =
+                        controller.selectedTimeSlot.value == slot;
                     return GestureDetector(
                       onTap: () => controller.selectedTimeSlot.value = slot,
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
-                          color: selected
+                          color: isSelected
                               ? ColorConstants.appBlueColor3.withOpacity(0.1)
                               : Colors.grey[100],
                           border: Border.all(
-                              color: selected
+                              color: isSelected
                                   ? ColorConstants.appBlueColor3
                                   : Colors.grey.shade400),
                           borderRadius: BorderRadius.circular(8),
@@ -134,104 +183,111 @@ class PickupSlotPage extends StatelessWidget {
                         child: Text(
                           slot,
                           style: TextStyle(
-                              color: selected
+                              color: isSelected
                                   ? ColorConstants.appBlueColor3
                                   : Colors.black),
                         ),
                       ),
                     );
                   }).toList(),
+                )),
+
+            const Spacer(),
+
+            Row(
+              children: [
+                Text("₹$finalPrice",
+                    style:
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    // show price breakup modal
+                  },
+                  child: const Text("View Breakup",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline)),
                 ),
+              ],
+            ),
 
-                Spacer(),
+            const SizedBox(height: 16),
 
-                Row(
-                  children: [
-                    Text("₹24,361",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(width: 8),
-                    GestureDetector(
-                      onTap: () {
-                        // Show price breakup
-                      },
-                      child: Text("View Breakup",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 14,
-                              decoration: TextDecoration.underline)),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 16),
-
-                SizedBox(
+            Obx(() => SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: controller.isContinueEnabled
                         ? () {
-                            Get.to(() => SelectPaymentMethodScreen());
+                            Get.to(() => SelectPaymentMethodScreen(
+                                  shippingId: shippingId,
+                                  shippingName: shippingName,
+                                  shippingMobileNo: shippingMobileNo,
+                                  shippingEmailId: shippingEmailId,
+                                  shippingAddress: shippingAddress,
+                                  shippingLandmark: shippingLandmark,
+                                  shippingCity: shippingCity,
+                                  shippingState: shippingState,
+                                  shippingPincode: shippingPincode,
+                                  workType: workType,
+                                  finalPrice: finalPrice,
+                                  baseprice: baseprice,
+                                  pid: pid,
+                                  bid: bid,
+                                  raid: raid,
+                                  roid: roid,
+                                  selectedVariant: selectedVariant,
+                                  modelNo: modelNo,
+                                  ram: ram,
+                                  rom: rom,
+                                  modelName: modelName,
+                                  finalhPageAns: finalhPageAns,
+                                  selectedDate: controller.selectedDate.value!,
+                                  selectedTimeSlot:
+                                      controller.selectedTimeSlot.value,
+                                ));
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: controller.isContinueEnabled
                           ? ColorConstants.appBlueColor3
                           : Colors.grey.shade400,
-                      padding: EdgeInsets.symmetric(vertical: 14),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Continue",
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-              ],
-            )),
+                )),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildStepBox(String number, String title, {bool isActive = false}) {
+  Widget _buildStepBox(String number, String label, {bool isActive = false}) {
     return Column(
       children: [
-        Container(
-          height: 30,
-          width: 30,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: isActive ? Colors.white : Colors.grey.shade300,
-            border: Border.all(
-              color: isActive ? Colors.blue : Colors.grey,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Text(
-            number,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: isActive ? Colors.blue : Colors.black,
-            ),
-          ),
+        CircleAvatar(
+          radius: 14,
+          backgroundColor: isActive ? Colors.blue : Colors.grey,
+          child: Text(number,
+              style: const TextStyle(color: Colors.white, fontSize: 12)),
         ),
-        SizedBox(height: 5),
-        Text(title,
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: isActive ? Colors.black : Colors.black54)),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
 
   Widget _buildDivider() {
     return Expanded(
-      child: Container(height: 2, color: Colors.grey.shade300),
+      child: Container(height: 1, color: Colors.grey[400]),
     );
   }
 }

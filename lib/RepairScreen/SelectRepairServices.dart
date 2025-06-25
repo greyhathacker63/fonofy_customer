@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
+import 'package:fonofy/model/RepairModel/BookingRepairModel.dart';
+import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 import 'package:get/get.dart';
 import '../controllers/RepairController/RepairServicesTableController.dart';
 import '../model/table_banner_model/SelectProduct/SelectAddressScreen.dart';
@@ -369,13 +371,13 @@ import '../widgets/RepairWidets/StatsColumn.dart';
 // }
 class SelectServicesScreen extends StatefulWidget {
   final String brandId;
-  final String productId;
+  final String modelId;
   final String colorId;
 
   const SelectServicesScreen({
     super.key,
     required this.brandId,
-    required this.productId,
+    required this.modelId,
     required this.colorId,
   });
 
@@ -391,7 +393,8 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
   void initState() {
     super.initState();
     repairController.getTableRepairData(
-        widget.brandId, widget.productId, widget.colorId);
+        widget.brandId, widget.modelId, widget.colorId);
+    final List<Table1> selectedServices;
   }
 
   @override
@@ -418,8 +421,8 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                         (service) => ListTile(
                           title: Text(service.serviceName ?? ''),
                           trailing: Obx(() {
-                            bool selected = repairController
-                                .isServiceSelected(service);
+                            bool selected =
+                                repairController.isServiceSelected(service);
                             return ElevatedButton(
                               onPressed: () {
                                 if (selected) {
@@ -447,8 +450,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                                       TextStyle(fontWeight: FontWeight.bold)),
                               const Divider(height: 20),
                               if (repairController.selectedServices.isEmpty)
-                                const Center(
-                                    child: Text("No Service Selected"))
+                                const Center(child: Text("No Service Selected"))
                               else
                                 ...repairController.selectedServices.map(
                                   (service) => Padding(
@@ -459,7 +461,8 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(service.serviceName ?? ''),
-                                        Text("₹${(service.price ?? 0).toInt()}"),
+                                        Text(
+                                            "₹${(service.price ?? 0).toInt()}"),
                                       ],
                                     ),
                                   ),
@@ -498,9 +501,9 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddNewAddressScreen(
+                        builder: (context) => SelectRepairAddressScreen(
                           brandId: widget.brandId,
-                          productId: widget.productId,
+                          modelId: widget.modelId,
                           colorId: widget.colorId,
                           totalPrice: repairController.totalPrice.value,
                           selectedServices:

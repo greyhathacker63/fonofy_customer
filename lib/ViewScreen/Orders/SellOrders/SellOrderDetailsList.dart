@@ -156,7 +156,8 @@ class _OrderSellDetailsScreenState extends State<OrderSellDetailsScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              RepairPriceAndScheduleWidget(), // Optionally replace with sell-specific widget
+              SellPriceAndScheduleWidget(),
+              // RepairPriceAndScheduleWidget(),
             ],
           ),
         );

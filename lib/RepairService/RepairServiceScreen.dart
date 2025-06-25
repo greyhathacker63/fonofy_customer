@@ -43,7 +43,7 @@ class RepairServiceScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 5),
-             Text(
+            Text(
               "Please share details of your query & our team will get in touch with you with the best solution",
               style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
@@ -67,7 +67,7 @@ class RepairServiceScreen extends StatelessWidget {
             _buildIssueTextField("Power Key FPC"),
 
             const SizedBox(height: 20),
-             Text(
+            Text(
               "Enter your pincode:",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
@@ -109,17 +109,26 @@ class RepairServiceScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF5A89B3), // Matching screenshot
+                  backgroundColor:
+                      const Color(0xFF5A89B3), // Matching screenshot
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () {
-                  Get.to (() => SelectRepairAddressScreen());
-                  // Submit action
-                },
-                child: const Text("Submit", style: TextStyle(fontSize: 16, color: Colors.white)),
+               onPressed: () {
+                //   Get.to(() => SelectRepairAddressScreen(
+                //         customerId: '',
+                //         brandId: '',
+                //         productId: '',
+                //         colorId: '',
+                //         totalPrice: null,
+                //         selectedServices: [],
+                //       ));
+                //   // Submit action
+                 },
+                child: const Text("Submit",
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
             ),
           ],
