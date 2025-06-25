@@ -373,12 +373,13 @@ class SelectServicesScreen extends StatefulWidget {
   final String brandId;
   final String modelId;
   final String colorId;
+  
 
   const SelectServicesScreen({
     super.key,
     required this.brandId,
     required this.modelId,
-    required this.colorId,
+    required this.colorId, 
   });
 
   @override

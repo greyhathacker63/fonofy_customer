@@ -19,6 +19,8 @@ class SelectRepairAddressScreen extends StatelessWidget {
   final String modelId;
   final String colorId;
   final dynamic totalPrice;
+  final dynamic ramId;
+  final dynamic romId;
   final List<Table1> selectedServices;
   final ListShippingAddressModel? address;
   final selectedAddress;
@@ -31,7 +33,7 @@ class SelectRepairAddressScreen extends StatelessWidget {
     required this.totalPrice,
     required this.selectedServices,
     this.address,
-    this.selectedAddress,
+    this.selectedAddress, this.ramId, this.romId,
   });
 
   @override
@@ -225,12 +227,10 @@ class SelectRepairAddressScreen extends StatelessWidget {
                         backgroundColor: Colors.red, colorText: Colors.white);
                     return;
                   }
-
-                  // Show BottomSheet
                   showModalBottomSheet(
                     backgroundColor: Colors.white,
                     context: context,
-                    shape: const RoundedRectangleBorder(
+                    shape:RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                     ),
                     builder: (context) {
@@ -268,6 +268,8 @@ class SelectRepairAddressScreen extends StatelessWidget {
                                       modelId: modelId,
                                       colorId: colorId,
                                       totalPrice: totalPrice,
+                                      ramId: ramId,
+                                      romId:romId ,
                                       selectedAddress: selectedAddressToSend,
                                       selectedServices: selectedServices,
                                     ),

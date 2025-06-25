@@ -168,6 +168,8 @@ class RepairDeviceTable {
   int? colorId;
   String? colorName;
   String? productAndModelName;
+  String? ramId;
+  String? romId;
 
   RepairDeviceTable({
     this.brand,
@@ -175,6 +177,8 @@ class RepairDeviceTable {
     this.colorId,
     this.colorName,
     this.productAndModelName,
+    this.ramId,
+    this.romId,
   });
 
   factory RepairDeviceTable.fromJson(Map<String, dynamic> json) =>
@@ -184,16 +188,21 @@ class RepairDeviceTable {
         colorId: json["ColorId"],
         colorName: json["ColorName"],
         productAndModelName: json["ProductAndModelName"],
+        ramId: json["RamId"],
+        romId: json["RomId"],
       );
 
   Map<String, dynamic> toJson() => {
-    "Brand": brand,
-    "ModelNo": modelNo,
-    "ColorId": colorId,
-    "ColorName": colorName,
-    "ProductAndModelName": productAndModelName,
-  };
+        "Brand": brand,
+        "ModelNo": modelNo,
+        "ColorId": colorId,
+        "ColorName": colorName,
+        "ProductAndModelName": productAndModelName,
+        "RamId": ramId,
+        "RomId": romId,
+      };
 }
+
 
 class Table1 {
   int? id;
