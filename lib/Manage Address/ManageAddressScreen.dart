@@ -13,11 +13,11 @@ class ManageAddressScreen extends StatefulWidget {
   @override
   _ManageAddressScreenState createState() => _ManageAddressScreenState();
 }
+
 class _ManageAddressScreenState extends State<ManageAddressScreen> {
   Future<List<ListShippingAddressModel>>? _addressFuture;
 
   String token = "";
-
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
   Future<void> _initializeData() async {
     String? storedToken = await TokenHelper.getToken();
     String? userCode = await TokenHelper.getUserCode();
-    if (storedToken != null && storedToken.isNotEmpty && userCode!= null) {
+    if (storedToken != null && storedToken.isNotEmpty && userCode != null) {
       token = storedToken;
       await _fetchAddressList();
     } else {
@@ -49,15 +49,15 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
 
   Future<void> _fetchAddressList() async {
     setState(() {
-      _addressFuture = ListShippingAddressService().listShippingAddress(
-        customerId: widget.customerId,
-        token: token,
-      );
+      _addressFuture = ListShippingAddressService().listShippingAddress();
     });
   }
 
   void _navigateToAddNewAddressScreen() async {
-    final result = await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddNewAddressScreen(
+    final result = await Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddNewAddressScreen(
           customerId: widget.customerId,
           address: ListShippingAddressModel(),
         ),
@@ -101,9 +101,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("✅ ${result.message}")),
           );
-
-        }
-        else {
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(result?.message ?? "Deleted successfully")),
           );
@@ -118,7 +116,6 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -164,90 +161,103 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
               child: _addressFuture == null
                   ? const Center(child: CircularProgressIndicator())
                   : FutureBuilder<List<ListShippingAddressModel>>(
-                future: _addressFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (_, i) => _buildShimmerEffect(),
-                    );
-                  } else if (snapshot.hasError || snapshot.data == null) {
-                    return const Center(child: Text("❌ No address found!"));
-                  } else if (snapshot.data!.isEmpty) {
-                    // return const Center(child: Text("📭 No addresses available."));
-                  }
-                  var addresses = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: addresses.length,
-                    itemBuilder: (context, index) {
-                      final address = addresses[index];
-                      return Container(
-                        margin: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 2, color: Colors.black12),
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${address.name} | ${address.workType}",
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                      future: _addressFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (_, i) => _buildShimmerEffect(),
+                          );
+                        } else if (snapshot.hasError || snapshot.data == null) {
+                          return const Center(
+                              child: Text("❌ No address found!"));
+                        } else if (snapshot.data!.isEmpty) {
+                          // return const Center(child: Text("📭 No addresses available."));
+                        }
+                        var addresses = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: addresses.length,
+                          itemBuilder: (context, index) {
+                            final address = addresses[index];
+                            return Container(
+                              margin: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                    Border.all(width: 2, color: Colors.black12),
                               ),
-                              Text(
-                                address.address ?? "",
-                                style: const TextStyle(fontSize: 14, color: Colors.black),
-                              ),
-                              Text(
-                                "${address.city ?? ""} - ${address.pinCode ?? ''}",
-                                style: const TextStyle(fontSize: 14, color: Colors.black),
-                              ),
-                              Text(
-                                "📞 ${address.mobileNo ?? ""}",
-                                style: const TextStyle(fontSize: 14, color: Colors.black),
-                              ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit, color: Colors.blue),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AddNewAddressScreen(
-                                              customerId: widget.customerId,
-                                              address: address,
-                                            ),
-                                          ),
-                                        );
-                                        print("Address Data Debug ${address.city}");
-                                        print("Address Data Debug ${address.state}");
-                                      },
+                                    Text(
+                                      "${address.name} | ${address.workType}",
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete, color: Colors.red),
-                                      onPressed: () async {
-                                        await deleteAddress(address);
-                                      },
+                                    Text(
+                                      address.address ?? "",
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.black),
+                                    ),
+                                    Text(
+                                      "${address.city ?? ""} - ${address.pinCode ?? ''}",
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.black),
+                                    ),
+                                    Text(
+                                      "📞 ${address.mobileNo ?? ""}",
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.black),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.edit,
+                                                color: Colors.blue),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AddNewAddressScreen(
+                                                    customerId:
+                                                        widget.customerId,
+                                                    address: address,
+                                                  ),
+                                                ),
+                                              );
+                                              print(
+                                                  "Address Data Debug ${address.city}");
+                                              print(
+                                                  "Address Data Debug ${address.state}");
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete,
+                                                color: Colors.red),
+                                            onPressed: () async {
+                                              await deleteAddress(address);
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
             ),
           ],
         ),

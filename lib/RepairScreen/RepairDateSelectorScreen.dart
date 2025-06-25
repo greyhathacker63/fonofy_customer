@@ -515,7 +515,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     workType: widget.selectedAddress.workType.toString(),
                     couponId: 1.toString(),
                     couponName: widget.selectedAddress.workType ?? '',
-                    couponDiscountType: "sdf",
+                    couponDiscountType: "",
                     couponAmount: 21.0,
                     couponPercent: 22.0,
                     couponCode: "sdsf",
@@ -533,7 +533,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     repairDetails: widget.selectedServices.map((service) {
                       final detail = RepairDetail(
                         customerId: widget.customerId ?? '',
-                        orderId: "Ord_11052025011028871",
+                        orderId: "",
                         serviceId: service.id,
                         serviceName: service.serviceName ?? '',
                         serviceAmount:
@@ -541,7 +541,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                         serviceDiscount:
                             (service.discountAmount as num?)?.toDouble() ?? 0.0,
                         servicePercent:
-                            (service.disPercentage as num?)?.toDouble() ?? 0.0,
+                            double.parse(service.disPercentage.toString())
+                                .round(),
                       );
 
                       // Log each detail before sending
