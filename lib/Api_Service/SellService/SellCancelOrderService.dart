@@ -39,7 +39,6 @@ class SellCancelOrderService {
 
         try {
           final dynamic decoded = json.decode(body);
-
           if (decoded is Map<String, dynamic>) {
             return SellCancelOrderModel.fromJson(decoded);
           } else if (decoded is String) {

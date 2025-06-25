@@ -4,14 +4,11 @@ import 'package:fonofy/model/SellModel/SellCancelOrderModel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
+import '../../utils/Colors.dart';
+
 class SellCancelOrderController extends GetxController {
   var isLoading = false.obs;
   var cancelSellMessage = ''.obs;
-
- var _appSellCancelReasonData;
-
-  SellCancelOrderModel? get sellCancelReasonData => _appSellCancelReasonData;
-
 
   Future<void> cancelSellOrder({
     required String orderId,
@@ -34,7 +31,7 @@ class SellCancelOrderController extends GetxController {
         cancelSellMessage.value = result.message;
         Get.snackbar("Success",
           result.message,
-          backgroundColor: Colors.green,
+          backgroundColor: ColorConstants.appBlueColor3,
           colorText: Colors.white,
         );
       } else {

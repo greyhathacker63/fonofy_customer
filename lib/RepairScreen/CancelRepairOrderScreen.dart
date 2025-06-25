@@ -294,13 +294,11 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                           child: ElevatedButton(
                             onPressed: () async {
                               Navigator.pop(context);
-
                               final reasonText = controllerRepairCancelReason.repairCancelReasonData?.table
                                   .firstWhereOrNull((item) => item.id.toString() == selectedReasonId)
                                   ?.reason ??
                                   '';
                               final enteredRemark = otherReasonController.text.trim();
-
                               print("Cancel Parameters: OrderId: ${widget.orderId}, CustomerId: ${widget.customerId}, Reason: $reasonText, ReasonId: $selectedReasonId, Remark: $enteredRemark");
 
                               await cancelController.cancelRepairOrder(
@@ -393,8 +391,7 @@ class _CancelRepairOrderScreenState extends State<CancelRepairOrderScreen> {
                   );
                 }),
 
-                // Text Field for other reason
-                Padding(
+                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 20),
                   child: TextField(
                     controller: otherReasonController,

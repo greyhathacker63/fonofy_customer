@@ -53,15 +53,15 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
         () => repairController.isRepairTableLoading.value
             ? const Center(
                 child: CircularProgressIndicator(
-                    strokeWidth: 2, color: Colors.blue))
+                    strokeWidth: 2, color: Colors.blue),
+        )
             : SingleChildScrollView(
                 child: Column(
                   children: [
                     // Device Info
                     if (repairController.tableRepairData?.table?.isNotEmpty ??
                         false)
-                      DevicePhoneInfoCard(
-                          repairTable: repairController.tableRepairData?.table)
+                      DevicePhoneInfoCard(repairTable: repairController.tableRepairData?.table)
                     else
                       const Padding(
                         padding: EdgeInsets.all(16.0),

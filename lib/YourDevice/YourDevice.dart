@@ -148,7 +148,7 @@ final List<String> weights = List<String>.from(widget.finalhPageAns);
                                   "Recalculate",
                                   style: TextStyle(
                                       color: Colors.blue,
-                                      fontSize: 11,
+                                      fontSize: 8,
                                       decoration: TextDecoration.underline),
                                 ),
                               ),

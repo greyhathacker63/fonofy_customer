@@ -129,6 +129,68 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
 
               SizedBox(height: 20),
+              // SizedBox(
+              //   width: double.infinity,
+              //   height: 50.0,
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: isOtpExpired ? Colors.grey : const Color(0xFF19628B),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(5),
+              //       ),
+              //     ),
+              //     onPressed: isLoading || isOtpExpired
+              //         ? null
+              //         : () async {
+              //       if (otpValue.isEmpty || otpValue.length < 4) {
+              //         ScaffoldMessenger.of(context).showSnackBar(
+              //           const SnackBar(content: Text("❌ Please enter a 4-digit OTP")),
+              //         );
+              //         return;
+              //       }
+              //       setState(() {
+              //         isLoading = true;
+              //       });
+              //       bool isVerified = await LoginService().verifyOTP(
+              //         userOTP: otpValue,
+              //         otp: currentOtp,
+              //         phoneNumber: widget.number,
+              //       );
+              //
+              //       if (isVerified) {
+              //         String? token = await tokenService.generateToken(widget.number);
+              //         await TokenHelper.saveToken(token.toString());
+              //
+              //         ScaffoldMessenger.of(context).showSnackBar(
+              //           const SnackBar(content: Text("✅ OTP Verified Successfully!"),backgroundColor: Colors.green,),
+              //         );
+              //
+              //         await Future.delayed(const Duration(seconds: 1));
+              //         Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => AccountScreen()),
+              //         );
+              //       } else {
+              //         ScaffoldMessenger.of(context).showSnackBar(
+              //             SnackBar(content: Text("❌ Invalid OTP! Please try again.")),
+              //         );
+              //       }
+              //       setState(() {
+              //         isLoading = false;
+              //         Navigator.pop(context);
+              //         Navigator.pop(context);
+              //       });
+              //     },
+              //     child: isLoading
+              //         ? const SizedBox(
+              //       width: 24,
+              //       height: 24,
+              //       child: CircularProgressIndicator(color: Colors.blue, strokeWidth: 2),
+              //     )
+              //         :   Text("Verify OTP",
+              //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              //     ),
+              //   ),
+              // ),
+
               SizedBox(
                 width: double.infinity,
                 height: 50.0,
@@ -148,6 +210,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       );
                       return;
                     }
+
                     setState(() {
                       isLoading = true;
                     });
@@ -156,28 +219,26 @@ class _OtpScreenState extends State<OtpScreen> {
                       otp: currentOtp,
                       phoneNumber: widget.number,
                     );
-
                     if (isVerified) {
                       String? token = await tokenService.generateToken(widget.number);
                       await TokenHelper.saveToken(token.toString());
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("✅ OTP Verified Successfully!"),backgroundColor: Colors.green,),
+                        const SnackBar(
+                          content: Text("✅ OTP Verified Successfully!"),
+                          backgroundColor: Colors.green,
+                        ),
                       );
-
-                      await Future.delayed(const Duration(seconds: 1));
-                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => AccountScreen()),
-                      );
+                      await Future.delayed(Duration(seconds: 1));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AccountScreen(),));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("❌ Invalid OTP! Please try again.")),
+                        const SnackBar(content: Text("❌ Invalid OTP! Please try again.")),
                       );
+                      setState(() {
+                        isLoading = false;
+                      });
                     }
-                    setState(() {
-                      isLoading = false;
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    });
                   },
                   child: isLoading
                       ? const SizedBox(
@@ -185,18 +246,22 @@ class _OtpScreenState extends State<OtpScreen> {
                     height: 24,
                     child: CircularProgressIndicator(color: Colors.blue, strokeWidth: 2),
                   )
-                      :   Text("Verify OTP",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      :  Text("Verify OTP",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
+              )
 
-              const SizedBox(height: 20),
+
+              , SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    timerSeconds > 0
+                  Text(timerSeconds > 0
                         ? "OTP is valid upto $timerSeconds sec"
                         : "",
                     style: const TextStyle(fontSize: 14, color: Colors.black),

@@ -32,14 +32,14 @@ class SelectProductRepairScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon:  Icon(Icons.search),
-            onPressed: () {
-              // Implement search functionality if needed
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon:  Icon(Icons.search),
+        //     onPressed: () {
+        //       // Implement search functionality if needed
+        //     },
+        //   ),
+        // ],
       ),
       body: Obx(() => Padding(
         padding: const EdgeInsets.all(8.0),

@@ -62,8 +62,10 @@ const String repairCancelReasonListUrl = "${baseUrl}api/forb2c/cancel-reason-lis
 const String cancelRepairOrderUrl = "${baseUrl}api/forb2c/cancel-repair-order";
 
 const String repairOrderProductDetailsUrl = "${baseUrl}api/forb2c/repair-order-product-details";
+const String phoneLoginUrl = "${baseUrl}api/forb2c/login";
 //sell//
 const String sellCancelOrderUrl = "${baseUrl}api/forb2c/cancel-sell-order";
+const String sellOrderProductDetails = "${baseUrl}api/forb2c/sell-order-product-details";
 
 
 

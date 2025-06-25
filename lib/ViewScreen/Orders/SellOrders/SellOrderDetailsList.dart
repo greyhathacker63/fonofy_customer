@@ -6,8 +6,6 @@ import 'package:fonofy/widgets/RepairWidets/RepairPriceAndScheduleWidget.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 class OrderSellDetailsScreen extends StatefulWidget {
   final String orderId;
   final String customerId;
@@ -39,28 +37,35 @@ class _OrderSellDetailsScreenState extends State<OrderSellDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: const BackButton(color: Colors.black),
+        leading: BackButton(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text('Order Details', style: TextStyle(color: Colors.black)),
+        title: const Text('Sell Order Details',
+            style: TextStyle(color: Colors.black)),
         centerTitle: false,
       ),
       body: Obx(() {
         if (sellOrderDetailController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: Colors.blue,
+          ));
         }
 
-        final item = sellOrderDetailController.productDetail.value;
-        final orderInfo = sellOrderDetailController.orderInfo.value;
+        final item =
+            sellOrderDetailController.productSellDetail.value?.table ?? [];
+        final orderInfo = sellOrderDetailController.productSellDetail.value?.table1 ?? [];
 
         if (item == null || orderInfo == null) {
           return const Center(child: Text('No order details found.'));
         }
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           child: Column(
             children: [
+              SizedBox(height: 100,),
               Card(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -68,22 +73,23 @@ class _OrderSellDetailsScreenState extends State<OrderSellDetailsScreen> {
                 ),
                 elevation: 2,
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding:   EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+
                     children: [
                       Row(
                         children: [
                           Text('Sell Order :-',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 15,
                               color: ColorConstants.appBlueColor3,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(width: 5),
+                            SizedBox(width: 5),
                           Text(
-                            ' ${item.orderId ?? ''}',
+                            ' ${item.isNotEmpty ? item.first.orderId ?? '' : ''}',
                             style: const TextStyle(fontSize: 13),
                           ),
                         ],
@@ -99,30 +105,34 @@ class _OrderSellDetailsScreenState extends State<OrderSellDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.productAndModelName ?? '',
+                                  item.isNotEmpty
+                                      ? item.first.productAndModelName ?? ''
+                                      : '',
                                   style: GoogleFonts.poppins(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Color: ${item.colorName ?? ""}',
+                                SizedBox(height: 18),
+                                Text('Color: ${item.isNotEmpty ? item.first.colorName : ""}',
                                   style: TextStyle(color: Colors.grey[600]),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Container(
-                            width: 70,
-                            height: 70,
+                            width: 90,
+                            height: 90,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               image: DecorationImage(
-                                image: (item.image != null && item.image!.isNotEmpty)
-                                    ? NetworkImage(item.image!)
-                                    : const AssetImage('assets/images/phone.png') as ImageProvider,
+                                image: (item.isNotEmpty &&
+                                        item.first.image != null &&
+                                        item.first.image!.isNotEmpty)
+                                    ? NetworkImage(item.first.image!)
+                                    : const AssetImage('assets/images/phone.png')
+                                        as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -140,7 +150,8 @@ class _OrderSellDetailsScreenState extends State<OrderSellDetailsScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: ' ₹${item.totalAmount?.toStringAsFixed(2) ?? "0.00"}',
+                              text:
+                                  ' ₹${item.isNotEmpty ? item.first.totalAmount?.toStringAsFixed(2) ?? '' : ''}',
                               style: TextStyle(
                                 color: ColorConstants.appBlueColor3,
                                 fontWeight: FontWeight.bold,
@@ -149,13 +160,13 @@ class _OrderSellDetailsScreenState extends State<OrderSellDetailsScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 25),
                       _buildDashedLine(),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               SellPriceAndScheduleWidget(),
               // RepairPriceAndScheduleWidget(),
             ],

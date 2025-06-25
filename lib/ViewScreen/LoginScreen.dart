@@ -267,6 +267,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../TokenHelper/TokenHelper.dart';
 import '../ViewModel/MobileOtpSend.dart';
+import '../utils/Colors.dart';
 import 'otp_screen.dart';
 
 import 'package:http/http.dart' as http;
@@ -382,28 +383,28 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child:  Text(
                                 "Signup Now",
-                                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: ColorConstants.appBlueColor3, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("or "),
-                            GestureDetector(
-                              onTap: () {
-                                // Get.to(EmailLoginScreen());
-                                Get.to(PhoneLoginScreen());
-                              },
-                              child: const Text(
-                                "Login with Phone",
-                                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     const Text("or "),
+                        //     GestureDetector(
+                        //       onTap: () {
+                        //         // Get.to(EmailLoginScreen());
+                        //         Get.to(PhoneLoginScreen());
+                        //       },
+                        //       child: Text(
+                        //         "Login with Phone",
+                        //         style: TextStyle(color: ColorConstants.appBlueColor3, fontWeight: FontWeight.bold),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ],

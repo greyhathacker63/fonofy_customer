@@ -1,5 +1,3 @@
-
-import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/SellService/RepairColorModelService/RepairColorsService.dart';
 import 'package:fonofy/model/RepairModel/RepairColorModel.dart';
 import 'package:get/get.dart';
@@ -12,13 +10,11 @@ class RepairColorsController extends GetxController {
 
   Future<void> getRepairColorsData(String brandId, String modelId) async {
     try {
-      // colorListRepair.value = true as List<RepairColorModel>;
       final data = await RepairColorService.fetchRepairColorList(brandId, modelId);
       colorListRepair.assignAll(data);
     } catch (e) {
       print("Error fetching tracking data: $e");
-      // Optionally show a snackbar or dialog
-    } finally {
+     } finally {
       isRepairColorsLoading.value = false;
     }
   }

@@ -112,37 +112,42 @@ class PickupSlotPage extends StatelessWidget {
 
                 SizedBox(height: 16),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: controller.timeSlots.map((slot) {
-                    bool selected = controller.selectedTimeSlot.value == slot;
-                    return GestureDetector(
-                      onTap: () => controller.selectedTimeSlot.value = slot,
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: selected
-                              ? ColorConstants.appBlueColor3.withOpacity(0.1)
-                              : Colors.grey[100],
-                          border: Border.all(
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: controller.timeSlots.map((slot) {
+                      bool selected = controller.selectedTimeSlot.value == slot;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0), // optional spacing
+                        child: GestureDetector(
+                          onTap: () => controller.selectedTimeSlot.value = slot,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            decoration: BoxDecoration(
                               color: selected
-                                  ? ColorConstants.appBlueColor3
-                                  : Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(8),
+                                  ? ColorConstants.appBlueColor3.withOpacity(0.1)
+                                  : Colors.grey[100],
+                              border: Border.all(
+                                color: selected
+                                    ? ColorConstants.appBlueColor3
+                                    : Colors.grey.shade400,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              slot,
+                              style: TextStyle(
+                                color: selected
+                                    ? ColorConstants.appBlueColor3
+                                    : Colors.black,
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Text(
-                          slot,
-                          style: TextStyle(
-                              color: selected
-                                  ? ColorConstants.appBlueColor3
-                                  : Colors.black),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  ),
                 ),
-
                 Spacer(),
 
                 Row(

@@ -217,7 +217,6 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
 
   final RepairControllerTable repairController = Get.find();
 
-  // final ControllerProductDetails controllerProductDetails = Get.find();
 
   final RepairBookingController bookingController = Get.put(RepairBookingController());
 

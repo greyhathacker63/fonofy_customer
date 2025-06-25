@@ -1,4 +1,7 @@
-import 'package:meta/meta.dart';
+// To parse this JSON data, do
+//
+//     final repairBookingModel = repairBookingModelFromJson(jsonString);
+
 import 'dart:convert';
 
 RepairBookingModel repairBookingModelFromJson(String str) => RepairBookingModel.fromJson(json.decode(str));
@@ -10,70 +13,70 @@ class RepairBookingModel {
   dynamic romId;
   dynamic ramId;
   dynamic colorId;
-  String customerId;
-  String orderId;
+  String? customerId;
+  String? orderId;
   dynamic servieCharge;
   dynamic couponId;
-  String shippingId;
-  String shippingName;
-  String shippingMobileNo;
-  String shippingEmailId;
-  String shippingAddress;
-  String shippingLandmark;
-  int shippingCity;
+  String? shippingId;
+  String? shippingName;
+  String? shippingMobileNo;
+  String? shippingEmailId;
+  String? shippingAddress;
+  String? shippingLandmark;
+  dynamic shippingCity;
   dynamic shippingState;
-  String shippingPincode;
-  String workType;
-  String couponName;
-  String couponDiscountType;
+  String? shippingPincode;
+  String? workType;
+  String? couponName;
+  String? couponDiscountType;
   dynamic couponAmount;
   dynamic couponPercent;
-  String couponCode;
-  String repairType;
-  String slotDate;
-  String remark;
+  String? couponCode;
+  String? repairType;
+  String? slotDate;
+  String? remark;
   dynamic deliveryCharge;
   dynamic totalAmount;
   dynamic totalPrice;
   dynamic totalDiscount;
   dynamic totalMrp;
-  String mode;
-  List<RepairDetail> repairDetails;
+  String? mode;
+  List<RepairDetail>? repairDetails;
 
   RepairBookingModel({
-    required this.modelId,
-    required this.romId,
-    required this.ramId,
-    required this.colorId,
-    required this.customerId,
-    required this.orderId,
-    required this.servieCharge,
-    required this.couponId,
-    required this.shippingId,
-    required this.shippingName,
-    required this.shippingMobileNo,
-    required this.shippingEmailId,
-    required this.shippingAddress,
-    required this.shippingLandmark,
-    required this.shippingCity,
-    required this.shippingState,
-    required this.shippingPincode,
-    required this.workType,
-    required this.couponName,
-    required this.couponDiscountType,
-    required this.couponAmount,
-    required this.couponPercent,
-    required this.couponCode,
-    required this.repairType,
-    required this.slotDate,
-    required this.remark,
-    required this.deliveryCharge,
-    required this.totalAmount,
-    required this.totalPrice,
-    required this.totalDiscount,
-    required this.totalMrp,
-    required this.mode,
-    required this.repairDetails,
+    this.modelId,
+    this.romId,
+    this.ramId,
+    this.colorId,
+    this.customerId,
+    this.orderId,
+    this.servieCharge,
+    this.couponId,
+    this.shippingId,
+    this.shippingName,
+    this.shippingMobileNo,
+    this.shippingEmailId,
+    this.shippingAddress,
+    this.shippingLandmark,
+    this.shippingCity,
+    this.shippingState,
+    this.shippingPincode,
+    this.workType,
+    this.couponName,
+    this.couponDiscountType,
+    this.couponAmount,
+    this.couponPercent,
+    this.couponCode,
+    this.repairType,
+    this.slotDate,
+    this.remark,
+    this.deliveryCharge,
+    this.totalAmount,
+    this.totalPrice,
+    this.totalDiscount,
+    this.totalMrp,
+    this.mode,
+    this.repairDetails,
   });
 
   RepairBookingModel copyWith({
@@ -180,7 +183,7 @@ class RepairBookingModel {
     totalDiscount: json["TotalDiscount"],
     totalMrp: json["TotalMRP"],
     mode: json["Mode"],
-    repairDetails: List<RepairDetail>.from(json["RepairDetails"].map((x) => RepairDetail.fromJson(x))),
+    repairDetails: json["RepairDetails"] == null ? [] : List<RepairDetail>.from(json["RepairDetails"]!.map((x) => RepairDetail.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -216,37 +219,37 @@ class RepairBookingModel {
     "TotalDiscount": totalDiscount,
     "TotalMRP": totalMrp,
     "Mode": mode,
-    "RepairDetails": List<dynamic>.from(repairDetails.map((x) => x.toJson())),
+    "RepairDetails": repairDetails == null ? [] : List<dynamic>.from(repairDetails!.map((x) => x.toJson())),
   };
 }
 
 class RepairDetail {
-  String customerId;
-  String orderId;
+  String? customerId;
+  String? orderId;
   dynamic serviceId;
-  String serviceName;
+  String? serviceName;
   dynamic serviceAmount;
   dynamic serviceDiscount;
   dynamic servicePercent;
 
   RepairDetail({
-    required this.customerId,
-    required this.orderId,
-    required this.serviceId,
-    required this.serviceName,
-    required this.serviceAmount,
-    required this.serviceDiscount,
-    required this.servicePercent,
+    this.customerId,
+    this.orderId,
+    this.serviceId,
+    this.serviceName,
+    this.serviceAmount,
+    this.serviceDiscount,
+    this.servicePercent,
   });
 
   RepairDetail copyWith({
     String? customerId,
     String? orderId,
-    int? serviceId,
+    dynamic serviceId,
     String? serviceName,
-    int? serviceAmount,
-    int? serviceDiscount,
-    int? servicePercent,
+    dynamic serviceAmount,
+    dynamic serviceDiscount,
+    dynamic servicePercent,
   }) =>
       RepairDetail(
         customerId: customerId ?? this.customerId,

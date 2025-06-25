@@ -247,6 +247,7 @@ class ReapirOrderTrackingScreen extends StatefulWidget {
 }
 
 class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
+
   final RepairOrderProductDetailsController controller = Get.find();
 
   @override
@@ -254,15 +255,42 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
     final dataTable2 = controller.detailsRepairOrderProduct.value?.table2 ?? [];
 
     List<TrackingStep> steps = [];
+
     if (dataTable2.isNotEmpty) {
-      steps = [
-         TrackingStep('Order Placed', true,),
-        TrackingStep('Agent Assigned',dataTable2[0].assignRemark == "Assign" ? true : false,),
-        TrackingStep('Order Confirmed', dataTable2[0].confirmRemark == "Assign" ? true : false,),
-        TrackingStep('Repair Complete', dataTable2[0].deliverRemark == "done" ? true : false,),
-        TrackingStep('Repair Cancel', dataTable2[0].cancelRemark == "CancelRemark" ? true : false,)
-      ];
+      String? status = dataTable2[0].orderStatus?.toLowerCase();
+
+      if (status == "cancelled") {
+        steps = [
+          TrackingStep('Order Placed', true),
+          TrackingStep('Cancelled', true),
+        ];
+      } else {
+        steps = [
+          TrackingStep('Order Placed', true),
+          TrackingStep('Agent Assigned', status == "assigned" || status == "confirmed" || status == "delivered"),
+          TrackingStep('Order Confirmed', status == "confirmed" || status == "delivered"),
+          TrackingStep('Repair Complete', status == "delivered"),
+        ];
+      }
     }
+
+    //  if (dataTable2.isNotEmpty) {
+    //   String? status = dataTable2[0].orderStatus?.toLowerCase();
+    //
+    //   if (status == "cancelled") {
+    //     steps = [
+    //       TrackingStep('Order Placed', true),
+    //       TrackingStep('Cancelled', true),
+    //     ];
+    //   } else {
+    //     steps = [
+    //       TrackingStep('Order Placed', true),
+    //       TrackingStep('Agent Assigned', dataTable2[0].assignRemark == "${dataTable2[0].orderStatus}"),
+    //       TrackingStep('Order Confirmed', dataTable2[0].confirmRemark == "${dataTable2[0].orderStatus}"),
+    //       TrackingStep('Repair Complete', dataTable2[0].deliverRemark == "${dataTable2[0].orderStatus}"),
+    //     ];
+    //   }
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -271,12 +299,28 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 60),
+        padding:   EdgeInsets.only(left: 20, top: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Center(
+              child: Row(
+                children: [
+                  Text(
+                    "Current Status", style: GoogleFonts.poppins(fontSize: 15,fontWeight: FontWeight.bold),
+                  ),
+                  Text(" : - ",
+                    style: GoogleFonts.poppins(fontSize: 12,fontWeight: FontWeight.bold),
+                  ),
+                  Text("${dataTable2.isNotEmpty ? dataTable2[0].orderStatus : ''}",
+                    style: GoogleFonts.poppins(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 25,),
             if (steps.isEmpty)
-              const Center(child: Text("No tracking steps found.")),
+                Center(child: Text("No tracking steps found.")),
             for (int i = 0; i < steps.length; i++)
               buildStatusItem(steps[i], i, steps.length),
             const SizedBox(height: 20),
@@ -339,7 +383,7 @@ class _OrderTrackingScreenState extends State<ReapirOrderTrackingScreen> {
               shape: BoxShape.circle,
               color: ColorConstants.appBlueColor3,
             ),
-            child: const Icon(
+            child:   Icon(
               Icons.question_mark,
               color: Colors.white,
               size: 18,
@@ -362,6 +406,5 @@ class TrackingStep {
   final String title;
   final bool isCompleted;
   // final String? date;
-
   TrackingStep(this.title, this.isCompleted,);
 }

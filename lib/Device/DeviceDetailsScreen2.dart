@@ -215,17 +215,17 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: isSelected ? Colors.blue : Colors.grey),
+          border: Border.all(color: isSelected ?  ColorConstants.appBlueColor3: Colors.grey),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imagePath, height: 80, width: 70),
+            Image.asset(imagePath, height: 60, width: 70),
             const SizedBox(height: 8),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 6),
-              color: isSelected ? Colors.blue : Colors.grey[300],
+              color: isSelected ?  ColorConstants.appBlueColor3 : Colors.grey[300],
               child: Text(
                 label,
                 textAlign: TextAlign.center,

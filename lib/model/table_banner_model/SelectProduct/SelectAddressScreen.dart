@@ -37,8 +37,6 @@ class SelectRepairAddressScreen extends StatelessWidget {
         addressController.fetchAddresses();
       }
     }
-
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -94,7 +92,7 @@ class SelectRepairAddressScreen extends StatelessWidget {
                   itemBuilder: (_, __) => _buildShimmerEffect(),
                 )
                     : addressController.addressList.isEmpty
-                    ? const Padding(
+                    ? Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(""),
                 )
@@ -163,8 +161,8 @@ class SelectRepairAddressScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Obx(
             () => Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          decoration: const BoxDecoration(
+          padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration:  BoxDecoration(
             color: Colors.white,
             border: Border(top: BorderSide(color: Colors.black12)),
           ),
@@ -175,21 +173,17 @@ class SelectRepairAddressScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    repairController.totalPrice.value > 0
-                        ? "₹${repairController.totalPrice.value}"
+                  Text(repairController.totalPrice.value > 0 ? "₹${repairController.totalPrice.value}"
                         : "₹0",
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                    Text(
-                    "Apply Coupon",
-                    style: TextStyle(fontSize: 12, color: ColorConstants.appBlueColor3),
+                    Text("Apply Coupon",style: TextStyle(fontSize: 12, color: ColorConstants.appBlueColor3),
                   ),
                 ],
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: addressController.selectedAddressIndex.value != -1 &&
+                      backgroundColor: addressController.selectedAddressIndex.value != -1 &&
                       repairController.totalPrice.value > 0 &&
                       repairController.selectedServices.isNotEmpty &&
                       repairController.selectedServices.value.isNotEmpty &&
@@ -255,9 +249,9 @@ class SelectRepairAddressScreen extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: 3,
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin:EdgeInsets.symmetric(vertical: 8),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(4, (index) {
@@ -290,8 +284,7 @@ class SelectRepairAddressScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Choose an Option",
+                 Text("Choose an Option",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 GestureDetector(
@@ -302,7 +295,7 @@ class SelectRepairAddressScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+             SizedBox(height: 20),
             _optionCard(
               icon: Icons.home_repair_service_outlined,
               title: "Repair at Home",
