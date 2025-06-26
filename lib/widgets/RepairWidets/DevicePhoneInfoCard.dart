@@ -54,8 +54,6 @@ import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 
 import 'package:flutter/material.dart';
 
-
-
 class DevicePhoneInfoCard extends StatefulWidget {
   final List<RepairDeviceTable>? repairTable;
 

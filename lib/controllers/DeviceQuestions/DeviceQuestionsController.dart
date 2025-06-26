@@ -6,12 +6,11 @@ class SellQuestionController extends GetxController {
   final SellQuestionService _service = SellQuestionService();
 
   var isLoading = false.obs;
-  var sellQuestion = SellQuestion().obs;
+  var sellQuestion = SellQuestionModel().obs;
 
   var errorMessage = ''.obs;
 
-  // Step 2: Track selected options for each question
-  final selectedOptions = <String, Option>{}.obs;
+   final selectedOptions = <String, Option>{}.obs;
 
   void selectOption(String questionId, Option option) {
     selectedOptions[questionId] = option;
@@ -49,7 +48,7 @@ class SellQuestionController extends GetxController {
       );
 
       if (result != null) {
-        sellQuestion.value = result; // ✅ No need to call fromJson again
+        sellQuestion.value = result;
       } else {
         errorMessage.value = 'Failed to fetch data';
       }

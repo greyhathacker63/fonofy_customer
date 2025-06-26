@@ -6,7 +6,7 @@ class SellQuestionService {
   static const String _baseUrl =
       'https://api.fonofy.in/api/common/sell-question-list';
 
-  Future<SellQuestion?> fetchSellQuestions({
+  Future<SellQuestionModel?> fetchSellQuestions({
     required int bid,
     required int pid,
     required int raid,
@@ -23,7 +23,7 @@ class SellQuestionService {
 
       if (response.statusCode == 200) {
         final jsonBody = json.decode(response.body);
-        return SellQuestion.fromJson(jsonBody);
+        return SellQuestionModel.fromJson(jsonBody);
       } else {
         print('Failed to load data. Status code: ${response.statusCode}');
         return null;

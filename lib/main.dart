@@ -43,8 +43,7 @@ class MyApp extends StatelessWidget {
         // You can use getPages or routes if needed
         getPages: [
           GetPage(name: '/main', page: () => MainScreen()),
-          // Add other screens here
-        ],
+         ],
       ),
     );
   }

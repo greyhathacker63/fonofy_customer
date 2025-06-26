@@ -281,7 +281,7 @@ class RepairDateSelectorScreen extends StatefulWidget {
   final String? romId;
   final dynamic totalPrice;
   final List<Table1> selectedServices;
-  final ListShippingAddressModel selectedAddress;
+   final ListShippingAddressModel selectedAddress;
 
   const RepairDateSelectorScreen({
     Key? key,
@@ -303,8 +303,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
   int selectedIndex = 0;
 
   final RepairControllerTable repairController = Get.find();
-  final RepairBookingController bookingController =
-      Get.put(RepairBookingController());
+  final RepairBookingController bookingController = Get.put(RepairBookingController());
+  final RepairControllerTable repairControllerTable = Get.find();
 
   List<DateTime> getNext7Days() =>
       List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
@@ -366,7 +366,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                       children: [
                         if (label != null)
                           Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding:   EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: ColorConstants.appBlueColor3,
@@ -457,8 +457,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 print("shippingEmailId: ${widget.selectedAddress.emailId}");
                 print("shippingAddress: ${widget.selectedAddress.address}");
                 print("shippingLandmark: ${widget.selectedAddress.address}");
-                print("shippingCity: ${widget.selectedAddress.address}");
-                print("shippingState: ${widget.selectedAddress.address}");
+                print("shippingCity: ${widget.selectedAddress.city}");
+                print("shippingState: ${widget.selectedAddress.state}");
                 print("shippingPincode: ${widget.selectedAddress.pinCode}");
                 print("workType: ${widget.selectedAddress.workType}");
 
@@ -520,7 +520,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     totalPrice: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
                     totalAmount: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
                     totalDiscount: (7000).toDouble(),
-                    Mode: 'df',
+                    Mode: widget.selectedAddress.workType ?? '',
                     repairType: "sample string 24",
                     slotDate: selectedDate,
                     slotTime: '',

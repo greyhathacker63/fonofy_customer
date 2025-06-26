@@ -1,5 +1,5 @@
 class SellVariantTableModel {
-  List<Table> table;
+  List<TableData> table;
   List<Table1> table1;
 
   SellVariantTableModel({
@@ -10,7 +10,7 @@ class SellVariantTableModel {
   factory SellVariantTableModel.fromJson(Map<String, dynamic> json) {
     return SellVariantTableModel(
       table: (json['Table'] as List<dynamic>?)
-          ?.map((e) => Table.fromJson(e))
+          ?.map((e) => TableData.fromJson(e))
           .toList() ??
           [],
       table1: (json['Table1'] as List<dynamic>?)
@@ -21,7 +21,7 @@ class SellVariantTableModel {
   }
 }
 
-class Table {
+class TableData {
   final int? romId;
   final int? ramId;
   final String romName;
@@ -30,7 +30,7 @@ class Table {
   final String modelName;
   final String image;
 
-  Table({
+  TableData({
     this.romId,
     this.ramId,
     required this.romName,
@@ -40,8 +40,8 @@ class Table {
     required this.image,
   });
 
-  factory Table.fromJson(Map<String, dynamic> json) {
-    return Table(
+  factory TableData.fromJson(Map<String, dynamic> json) {
+    return TableData(
       romId: json['ROMId'] is int ? json['ROMId'] : int.tryParse(json['ROMId'].toString()),
       ramId: json['RAMId'] is int ? json['RAMId'] : int.tryParse(json['RAMId'].toString()),
       romName: json['RomName'] ?? '',

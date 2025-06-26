@@ -33,7 +33,9 @@ class RepairControllerTable extends GetxController {
   var isRepairTableLoading = true.obs;
   var _appRepairTableData;
   var selectedServices = <Table1>[].obs;
-  var totalPrice = 0.obs;
+
+   var totalPrice = 0.obs;
+
 
   RepairServicesTableModel? get tableRepairData => _appRepairTableData;
 

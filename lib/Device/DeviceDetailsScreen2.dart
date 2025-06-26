@@ -110,7 +110,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
               Expanded(
                 child: GridView.builder(
                   itemCount: defects.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate:   SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
@@ -124,7 +124,6 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
 
                     selectedDefects.putIfAbsent(
                         question.questionId ?? '', () => false);
-
                     return buildDefectTile(
                       question.questionId ?? '',
                       question.question ?? '',
@@ -144,8 +143,7 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
                     ),
                   ),
                   onPressed: () {
-                    final anySelected =
-                        selectedDefects.values.any((v) => v == true);
+                    final anySelected = selectedDefects.values.any((v) => v == true);
 
                     if (!anySelected) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -165,16 +163,13 @@ class _DeviceDetailScreen2State extends State<DeviceDetailScreen2> {
                           modelNo: widget.modelNo,
                           ram: widget.ram,
                           rom: widget.rom,
-                          modelName: widget.modelName, thirdPageAns:widget.secondPageAns,
+                          modelName: widget.modelName,
+                          thirdPageAns:widget.secondPageAns,
                           
-                        ));
+                        ),
+                    );
                   },
-                  child: const Text(
-                    "Continue",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                  child:Text("Continue",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.white),
                   ),
                 ),
               ),
