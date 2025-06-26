@@ -8,6 +8,8 @@ import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/utils/Colors.dart';
 
+import '../model/ShippingAddressModel/ListShippingAddressModel.dart';
+
 class BottomNavigation extends StatefulWidget {
   final int upperTabIndex;
   const BottomNavigation({
@@ -22,6 +24,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
   late List<Widget?> screens;
+  ListShippingAddressModel? addressFuture1;
 
   @override
   void initState() {

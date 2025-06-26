@@ -56,7 +56,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   List<String> paymentMethods = [
     'Cash on Delivery',
     'Credit/Debit Cards',
-    // 'Bank Transfers',
     'Mobile Payments',
     'Digital Wallets',
   ];
@@ -87,10 +86,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         setState(() {
           cartList1 = [buyNowData];
         });
-      } else {
-        print("❌ No Buy Now data received");
-        Get.snackbar("Error", "Failed to load product details",
-            backgroundColor: Colors.red, colorText: Colors.white);
       }
     } else {
       print("❌ Missing userCode or cartRef");
@@ -130,14 +125,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     String? userCode = await TokenHelper.getUserCode();
     String? token = await TokenHelper.getToken();
     if (userCode == null || token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("User not logged in")),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("User not logged in")),);
       return;
     }
     final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
+      context, MaterialPageRoute(
         builder: (context) => AddNewAddressScreen(
           customerId: userCode,
           address: ListShippingAddressModel(),

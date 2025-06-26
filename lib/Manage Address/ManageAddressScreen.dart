@@ -122,19 +122,17 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          "My Addresses",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        title: const Text("My Addresses",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding:   EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -146,12 +144,11 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                side: const BorderSide(color: Colors.black),
+                side: BorderSide(color: Colors.black),
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: Text(
-                  "+ Add New",
+                child: Text("+ Add New",
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
@@ -159,18 +156,17 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
             const SizedBox(height: 10),
             Expanded(
               child: _addressFuture == null
-                  ? const Center(child: CircularProgressIndicator())
+                  ?  Center(child: CircularProgressIndicator())
                   : FutureBuilder<List<ListShippingAddressModel>>(
                       future: _addressFuture,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return ListView.builder(
                             itemCount: 5,
                             itemBuilder: (_, i) => _buildShimmerEffect(),
                           );
                         } else if (snapshot.hasError || snapshot.data == null) {
-                          return const Center(
+                          return Center(
                               child: Text("❌ No address found!"));
                         } else if (snapshot.data!.isEmpty) {
                           // return const Center(child: Text("📭 No addresses available."));
@@ -184,8 +180,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                               margin: const EdgeInsets.all(2),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                border:
-                                    Border.all(width: 2, color: Colors.black12),
+                                border: Border.all(width: 2, color: Colors.black12),
                               ),
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
@@ -195,23 +190,17 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                   children: [
                                     Text(
                                       "${address.name} | ${address.workType}",
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
+                                        style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
                                     ),
-                                    Text(
-                                      address.address ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 14, color: Colors.black),
-                                    ),
+                                    Text(address.address ?? "", style:TextStyle(fontSize: 14, color: Colors.black),),
                                     Text(
                                       "${address.city ?? ""} - ${address.pinCode ?? ''}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 14, color: Colors.black),
                                     ),
                                     Text(
                                       "📞 ${address.mobileNo ?? ""}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 14, color: Colors.black),
                                     ),
                                     Align(
@@ -220,28 +209,20 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           IconButton(
-                                            icon: const Icon(Icons.edit,
+                                            icon: Icon(Icons.edit,
                                                 color: Colors.blue),
                                             onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AddNewAddressScreen(
-                                                    customerId:
-                                                        widget.customerId,
-                                                    address: address,
-                                                  ),
+                                              Navigator.push(context,
+                                                MaterialPageRoute(builder: (context) =>
+                                                      AddNewAddressScreen(customerId: widget.customerId,address: address),
                                                 ),
                                               );
-                                              print(
-                                                  "Address Data Debug ${address.city}");
-                                              print(
-                                                  "Address Data Debug ${address.state}");
+                                              print("Address Data Debug ${address.city}");
+                                              print("Address Data Debug ${address.state}");
                                             },
                                           ),
                                           IconButton(
-                                            icon: const Icon(Icons.delete,
+                                            icon: Icon(Icons.delete,
                                                 color: Colors.red),
                                             onPressed: () async {
                                               await deleteAddress(address);
@@ -272,14 +253,14 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         elevation: 3,
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin:   EdgeInsets.symmetric(vertical: 8),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(4, (index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding: EdgeInsets.symmetric(vertical: 5),
                 child: Container(
                   height: 14,
                   width: index == 3 ? 100 : double.infinity,

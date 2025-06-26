@@ -7,11 +7,7 @@ import 'package:get/get.dart';
 import '../controllers/RepairController/RepairServicesTableController.dart';
 import '../model/table_banner_model/SelectProduct/SelectAddressScreen.dart';
 import '../widgets/RepairWidets/BookNowButton.dart';
-import '../widgets/RepairWidets/DevicePhoneInfoCard.dart';
-import '../widgets/RepairWidets/FeatureColumn.dart';
-import '../widgets/RepairWidets/OtherRepairTile.dart';
-import '../widgets/RepairWidets/ServicePhoneItem.dart';
-import '../widgets/RepairWidets/StatsColumn.dart';
+
 
 // class SelectServicesScreen extends StatefulWidget {
 //   final String brandId;

@@ -41,8 +41,7 @@ class _CompareScreenState extends State<CompareScreen> {
   @override
   void initState() {
     super.initState();
-    selectedProducts =
-        List<SearchCompareProductModel?>.from(widget.selectedProducts);
+    selectedProducts =List<SearchCompareProductModel?>.from(widget.selectedProducts);
     while (selectedProducts.length < 3) {
       selectedProducts.add(null);
     }

@@ -1,5 +1,5 @@
 
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
@@ -21,14 +21,14 @@ class ProductScreen extends StatefulWidget {
   final String? maxPrice;
   final String? underAmt;
 
-  const ProductScreen({
-    Key? key,
+    const ProductScreen({
+    super.key,
     this.name,
     this.productPage,
     this.ramName,
     this.maxPrice,
     this.underAmt,
-  }) : super(key: key);
+  });
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -58,19 +58,17 @@ class _ProductScreenState extends State<ProductScreen> {
       }
     });
   }
-
   void toggleCompareMode() {
     setState(() {
       showCheckboxes = true;
     });
   }
-
-  void navigateToCompareScreen() {
+  void navigateToCompareScreen(){
     if (selectedProducts.length < 2) {
       Get.snackbar("Select More Products",
           "Please select at least 2 products to compare",
           snackPosition: SnackPosition.BOTTOM);
-      return;
+          return;
     }
     Get.to(() => CompareScreen(selectedProducts: selectedProducts));
   }
@@ -79,8 +77,8 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     loadWishlist();
-    productController.isLoading = true.obs;
-    productController.fetchProducts(
+      productController.isLoading = true.obs;
+      productController.fetchProducts(
       category: widget.name,
       productpage: widget.productPage,
       ramName: widget.ramName,
@@ -164,7 +162,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       },
                       icon:
                       const Icon(Icons.compare_arrows, color: Colors.black),
-                      label: const Text("Compare",
+                      label:   Text("Compare",
                           style: TextStyle(color: Colors.black)),
                     ),
                   ],
@@ -178,12 +176,11 @@ class _ProductScreenState extends State<ProductScreen> {
                   final product = productController.productsList[index];
                   final productCompare = SearchCompareProductModel(
                     name: product.productAndModelName,
-                    // amount: product.amount,
-                    url: product.modelUrl,
+                     url: product.modelUrl,
                     image: product.image,
                   );
                   final isSelected = selectedProducts.contains(productCompare);
-                  final isWishlisted = wishlistedProductNames
+                  wishlistedProductNames
                       .contains(product.productAndModelName);
 
                   return GestureDetector(
@@ -208,7 +205,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       margin:   EdgeInsets.symmetric(
                           vertical: 10, horizontal: 15),
                       child: Padding(
-                        padding: const EdgeInsets.all(15),
+                        padding: EdgeInsets.all(15),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -226,11 +223,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                 const Icon(Icons.error),
                                 loadingBuilder:
                                     (context, child, loadingProgress) {
-                                  if (loadingProgress == null)
+                                  if (loadingProgress == null) {
                                     return child;
-                                  return const Center(
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2));
+                                  }
+                                  return Center(
+                                      child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
                                 },
                               ),
                             ),
@@ -241,7 +238,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 children: [
                                   Text(
                                     product.productAndModelName ?? '',
-                                    style: const TextStyle(
+                                    style:   TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                     maxLines: 2,
@@ -291,43 +288,32 @@ class _ProductScreenState extends State<ProductScreen> {
                                         onPressed: () async {
                                           final userCode =
                                           await TokenHelper.getUserCode();
-                                          if (userCode == null ||
-                                              userCode.isEmpty) {
-                                            Get.snackbar("Login Required",
-                                                "Please login to wishlist a product",
+                                          if (userCode == null || userCode.isEmpty) {
+                                            Get.snackbar("Login Required", "Please login to wishlist a product",
                                                 snackPosition:
                                                 SnackPosition.BOTTOM);
                                             Get.to(() => LoginScreen());
                                             return;
                                           }
 
-                                          final isWishlisted =
-                                              product.wishlistCount == 1;
+                                          final isWishlisted = product.wishlistCount == 1;
 
                                           if (isWishlisted) {
-                                            wishlistController
-                                                .removeFromWishlist(
-                                              wishlistId:
-                                              product.wishlistId.toString(),
-                                              modelId:
-                                              product.modelNo.toString(),
-                                              colorId:
-                                              product.colorId.toString(),
+                                            wishlistController.removeFromWishlist(
+                                              wishlistId: product.wishlistId.toString(),
+                                              modelId: product.modelNo.toString(),
+                                              colorId: product.colorId.toString(),
                                               ramId: product.ramId.toString(),
                                               romId: product.romId.toString(),
                                             );
                                           } else {
-                                            wishlistController
-                                                .addProductToWishlist(
-                                              productId:
-                                              product.modelNo.toString(),
-                                              colorId:
-                                              product.colorId.toString(),
+                                            wishlistController.addProductToWishlist(
+                                              productId: product.modelNo.toString(),
+                                              colorId: product.colorId.toString(),
                                               ramId: product.ramId.toString(),
                                               romId: product.romId.toString(),
                                             );
                                           }
-
                                           setState(() {
                                             productController.productsList[index].wishlistCount = isWishlisted ? 0 : 1;
                                           });
@@ -337,8 +323,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         onPressed: () {
                                           Get.snackbar("Added to Cart",
                                               "${product.productAndModelName} added successfully!",
-                                              snackPosition:
-                                              SnackPosition.BOTTOM);
+                                              snackPosition:SnackPosition.BOTTOM);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
@@ -348,7 +333,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             BorderRadius.circular(8),
                                           ),
                                         ),
-                                        child: const Text("Add to Cart",
+                                        child: Text("Add to Cart",
                                             style:
                                             TextStyle(color: Colors.white)),
                                       ),
@@ -362,8 +347,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                           onChanged: (_) =>
                                               toggleSelection(productCompare),
                                         ),
-                                        Text("Compare",
-                                            style: TextStyle(fontSize: 14)),
+                                        Text("Compare",style: TextStyle(fontSize: 14)),
                                       ],
                                     ),
                                 ],

@@ -21,10 +21,7 @@ class AddressRepairController extends GetxController {
   Future<void> initializeData() async {
     customerId = await TokenHelper.getUserCode();
     token = await TokenHelper.getToken();
-    if (customerId == null ||
-        token == null ||
-        customerId!.isEmpty ||
-        token!.isEmpty) {
+    if (customerId == null ||token == null || customerId!.isEmpty || token!.isEmpty) {
       print('Error: customerId or token is missing');
       Get.snackbar('Error', 'User not logged in');
       isLoading(false);
@@ -38,8 +35,7 @@ class AddressRepairController extends GetxController {
     //  if (customerId == null || token == null) return;
     try {
       isLoading(true);
-      final addresses =
-          await ListShippingAddressService().listShippingAddress();
+      final addresses = await ListShippingAddressService().listShippingAddress();
       addressList.assignAll(addresses ?? []);
       print('Fetched ${addressList.length} addresses');
     } catch (e) {
@@ -49,7 +45,6 @@ class AddressRepairController extends GetxController {
       isLoading(false);
     }
   }
-
   void selectAddress(int index) {
     selectedAddressIndex.value = index;
     print('Selected address at index: $index');

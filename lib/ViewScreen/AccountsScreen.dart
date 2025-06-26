@@ -12,6 +12,7 @@ import 'package:fonofy/changePassword/change_password_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../AccountApiService/DeleteAccountService.dart';
+import '../model/ShippingAddressModel/ListShippingAddressModel.dart';
 import '../utils/Colors.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -28,6 +29,8 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isLoading = true;
   String userCode = "";
   String token = "";
+ ListShippingAddressModel? addressFuture1;
+
 
   @override
   void initState() {
@@ -155,7 +158,8 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Image.asset("assets/images/Logo.png", height: 30),
+        automaticallyImplyLeading: false,
+        title: Image.asset("assets/images/Logo.png", height: 50),
         elevation: 0,
         backgroundColor: Colors.white,
       ),
@@ -166,8 +170,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 color: Colors.blue,
               ),
             )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+          :SingleChildScrollView(
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -214,7 +218,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       if (item == "Manage Address") {
                         Get.to(() => ManageAddressScreen(customerId: userCode));
                       } else if (item == "Manage Payments") {
-                        Get.to(() => MyPaymentsScreen()); // FIXED ✅
+                        Get.to(() => MyPaymentsScreen());
                       } else if (item == "Profile Account") {
                         Get.to(() => AccountDetailsScreen());
                       } else if (item == "Delete My Account") {
@@ -235,7 +239,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   _buildMenuItem("ChangePassword", onTap: () {
                     Get.to(() => ChangePasswordScreen());
                   }),
-                  const SizedBox(height: 50),
+                  SizedBox(height: 50),
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -250,12 +254,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           builder: (BuildContext alertContext) {
                             return AlertDialog(
                               backgroundColor: Colors.white,
-                              title: const Text(
-                                "Logout?",
+                              title: Text("Logout?",
                                 style: TextStyle(
                                     fontSize: 22, fontWeight: FontWeight.bold),
                               ),
-                              content: const Text(
+                              content: Text(
                                   "Are you sure you want to log out?"),
                               actions: [
                                 ElevatedButton(
@@ -265,7 +268,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   onPressed: () {
                                     Navigator.of(alertContext).pop();
                                   },
-                                  child: const Text("Cancel",
+                                  child: Text("Cancel",
                                       style: TextStyle(color: Colors.black)),
                                 ),
                                 ElevatedButton(
@@ -277,7 +280,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     Navigator.of(alertContext).pop();
                                     _logout();
                                   },
-                                  child: const Text("Logout",
+                                  child: Text("Logout",
                                       style: TextStyle(color: Colors.white)),
                                 ),
                               ],
@@ -285,7 +288,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           },
                         );
                       },
-                      child: const Text("Log Out",
+                      child: Text("Log Out",
                           style: TextStyle(color: Colors.white, fontSize: 16)),
                     ),
                   ),
@@ -298,27 +301,22 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget _buildUserInfo() {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: 25,
+          CircleAvatar(radius: 25,
           backgroundImage: AssetImage("assets/images/phone.png"),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text("FONOFY TECHNOLOGIES PVT.LTD.",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          children:   [
+            Text("FONOFY" '',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             Text("kuldeep@fonofy.in", style: TextStyle(color: Colors.grey)),
           ],
         ),
       ],
     );
   }
-
   Widget _buildSectionTitle(String title) {
-    return Text(title,
-        style: const TextStyle(
-            fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black));
+    return Text( title,style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black));
   }
 
   Widget _buildExpandableSection({
@@ -337,15 +335,12 @@ class _AccountScreenState extends State<AccountScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.black)),
-              Icon(
-                  isExpanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down,
-                  color: Colors.black),
+
+              Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.black),
             ],
           ),
         ),
@@ -354,7 +349,7 @@ class _AccountScreenState extends State<AccountScreen> {
             children: subItems.map((item) {
               return ListTile(
                 title: Text(item,
-                    style: const TextStyle(fontSize: 14, color: Colors.grey)),
+                    style:   TextStyle(fontSize: 14, color: Colors.grey)),
                 onTap: () => onItemTap?.call(item),
               );
             }).toList(),
@@ -368,10 +363,10 @@ class _AccountScreenState extends State<AccountScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: EdgeInsets.symmetric(vertical: 8),
         child: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),

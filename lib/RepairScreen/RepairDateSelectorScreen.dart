@@ -540,9 +540,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                             (service.price as num?)?.toDouble() ?? 0.0,
                         serviceDiscount:
                             (service.discountAmount as num?)?.toDouble() ?? 0.0,
-                        servicePercent:
-                            double.parse(service.disPercentage.toString())
-                                .round(),
+                        servicePercent: double.parse(service.disPercentage.toString()).round(),
                       );
 
                       // Log each detail before sending.
