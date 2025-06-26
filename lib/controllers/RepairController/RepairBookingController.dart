@@ -37,7 +37,6 @@ class RepairBookingController extends GetxController {
     required String couponCode,
     required String repairType,
     required String slotDate,
-    // required String slotTime,
     required String remark,
     required dynamic servieCharge,
     required String Mode,

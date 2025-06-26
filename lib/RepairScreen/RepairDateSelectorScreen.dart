@@ -523,7 +523,6 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     Mode: 'df',
                     repairType: "sample string 24",
                     slotDate: selectedDate,
-                    slotTime: '',
                     remark: 'Please be on time',
                     repairDetails: widget.selectedServices.map((service) {
                       return RepairDetail(
