@@ -291,9 +291,7 @@ class RepairDateSelectorScreen extends StatefulWidget {
     required this.colorId,
     required this.totalPrice,
     required this.selectedAddress,
-    required this.selectedServices,
-    this.ramId,
-    this.romId,
+    required this.selectedServices, this.ramId, this.romId,
   }) : super(key: key);
 
   @override
@@ -448,9 +446,9 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
 
                 print("=== SUBMITTING BOOKING ===");
                 print("modelId: ${widget.modelId}");
-                print("romId: ${widget.romId}");
-                print("ramId: ${widget.ramId}");
-                print("colorId: ${widget.colorId}");
+                print("romId: 2");
+                print("ramId: 3");
+                print("colorId: 5");
 
                 print("customerId: ${widget.customerId}");
                 print("shippingId: ${widget.selectedAddress.shippmentId}");
@@ -459,8 +457,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 print("shippingEmailId: ${widget.selectedAddress.emailId}");
                 print("shippingAddress: ${widget.selectedAddress.address}");
                 print("shippingLandmark: ${widget.selectedAddress.address}");
-                print("shippingCity: ${widget.selectedAddress.city}");
-                print("shippingState: ${widget.selectedAddress.state}");
+                print("shippingCity: ${widget.selectedAddress.address}");
+                print("shippingState: ${widget.selectedAddress.address}");
                 print("shippingPincode: ${widget.selectedAddress.pinCode}");
                 print("workType: ${widget.selectedAddress.workType}");
 
@@ -473,12 +471,10 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
 
                 print("servieCharge: 7.0");
                 print("deliveryCharge: 1.0");
-                print(
-                    "totalMRP: ${repairController.selectedServices.first.mrp}");
+                print("totalMRP: ${widget.totalPrice}");
                 print("totalPrice: ${widget.totalPrice}");
                 print("totalAmount: ${widget.totalPrice}");
-                print(
-                    "totalDiscount: ${repairController.selectedServices.first.discountAmount}");
+                print("totalDiscount: 7000");
                 print("mode: ds");
 
                 print("repairType: sample string 24");
@@ -487,13 +483,12 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                 print("remark: Please be on time");
 
                 print("repairDetails:");
-                widget.selectedServices.asMap().forEach((index, service) {
-                  print("  - SERVICE #$index");
-                  print("    serviceId: ${service.id}");
+                widget.selectedServices.forEach((service) {
+                  print("  - serviceId: ${service.serviceId}");
                   print("    serviceName: ${service.serviceName}");
-                  print("    serviceAmount: ${service.serviceAmount}");
-                  print("    serviceDiscount: ${service.discountAmount}");
-                  print("    servicePercent: ${service.disPercentage}");
+                  print("    serviceAmount: ${widget.totalPrice}");
+                  print("    serviceDiscount: ${widget.totalPrice}");
+                  print("    servicePercent: ${widget.totalPrice}");
                 });
 
                 try {
@@ -503,57 +498,69 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                     ramId: widget.ramId,
                     colorId: widget.colorId,
                     customerId: widget.customerId ?? '',
-                    shippingId: widget.selectedAddress.shippmentId.toString(),
-                    shippingName: widget.selectedAddress.name.toString(),
+                    shippingId: widget.selectedAddress.shippmentId ?? '',
+                    shippingName: widget.selectedAddress.name ?? '',
                     shippingMobileNo: widget.selectedAddress.mobileNo ?? '',
-                    shippingEmailId: widget.selectedAddress.emailId.toString(),
-                    shippingAddress: widget.selectedAddress.address.toString(),
-                    shippingLandmark: widget.selectedAddress.address.toString(),
-                    shippingCity: widget.selectedAddress.city.toString(),
-                    shippingState: widget.selectedAddress.state.toString(),
+                    shippingEmailId: widget.selectedAddress.emailId ?? '',
+                    shippingAddress: widget.selectedAddress.address ?? '',
+                    shippingLandmark: widget.selectedAddress.address ?? '',
+                    shippingCity: widget.selectedAddress.city ?? '',
+                    shippingState: widget.selectedAddress.state ?? '',
                     shippingPincode: widget.selectedAddress.pinCode ?? '',
-                    workType: widget.selectedAddress.workType.toString(),
+                    workType: widget.selectedAddress.workType ?? '',
                     couponId: 1.toString(),
                     couponName: widget.selectedAddress.workType ?? '',
-                    couponDiscountType: "",
+                    couponDiscountType: "sdf",
                     couponAmount: 21.0,
                     couponPercent: 22.0,
                     couponCode: "sdsf",
                     servieCharge: 7.0,
                     deliveryCharge: 1.0,
-                    totalMRP: repairController.selectedServices.first.mrp,
+                    totalMRP: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
                     totalPrice: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
                     totalAmount: (widget.totalPrice as num?)?.toDouble() ?? 0.0,
-                    totalDiscount:
-                        repairController.selectedServices.first.discountAmount,
-                    Mode: 'Home',
+                    totalDiscount: (7000).toDouble(),
+                    Mode: 'df',
                     repairType: "sample string 24",
                     slotDate: selectedDate,
                     remark: 'Please be on time',
                     repairDetails: widget.selectedServices.map((service) {
-                      final detail = RepairDetail(
+                      return RepairDetail(
                         customerId: widget.customerId ?? '',
-                        orderId: "",
-                        serviceId: service.id,
+                        orderId: "Ord_11052025011028871",
+                        serviceId: service.serviceId ?? 0,
                         serviceName: service.serviceName ?? '',
                         serviceAmount:
-                            (service.price as num?)?.toDouble() ?? 0.0,
+                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                         serviceDiscount:
-                            (service.discountAmount as num?)?.toDouble() ?? 0.0,
+                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                         servicePercent:
-                            double.parse(service.disPercentage.toString())
-                                .round(),
+                            (service.serviceAmount as num?)?.toDouble() ?? 0.0,
                       );
-
-                      // Log each detail before sending
-                      print("  - TO SEND: ${detail.toJson()}");
-                      return detail;
                     }).toList(),
                   );
                 } catch (e) {
                   print("Error while booking: $e");
-                };
-                
+                }
+                // repairDetails: widget.selectedServices.map((service) {
+                //   return RepairDetail(
+                //     customerId: widget.customerId ?? '',
+                //     orderId: "Ord_11052025011028871",
+                //     serviceId: service.serviceId ?? 0,
+                //     serviceName: service.serviceName ?? '',
+                //     serviceAmount:
+                //         (service.serviceAmount as num?)?.toDouble() ?? 0.0,
+                //     serviceDiscount: 6.0,
+                //     servicePercent: 7.0,
+                //   );
+
+                //   Get.snackbar("Success", "Repair booking submitted!",
+                //       backgroundColor: Colors.green, colorText: Colors.white);
+                // } catch (e) {
+                //   print('Booking failed: $e');
+                //   Get.snackbar("Error", "Booking submission failed",
+                //       backgroundColor: Colors.red, colorText: Colors.white);
+                // }
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
