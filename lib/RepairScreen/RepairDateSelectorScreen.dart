@@ -545,7 +545,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                                 .round(),
                       );
 
-                      // Log each detail before sending
+                      // Log each detail before sending.
                       print("  - TO SEND: ${detail.toJson()}");
                       return detail;
                     }).toList(),
