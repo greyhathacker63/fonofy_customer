@@ -552,27 +552,8 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
                   );
                 } catch (e) {
                   print("Error while booking: $e");
-                }
-
-                // repairDetails: widget.selectedServices.map((service) {
-                //   return RepairDetail(
-                //     customerId: widget.customerId ?? '',
-                //     orderId: "Ord_11052025011028871",
-                //     serviceId: service.serviceId ?? 0,
-                //     serviceName: service.serviceName ?? '',
-                //     serviceAmount:
-                //         (service.serviceAmount as num?)?.toDouble() ?? 0.0,
-                //     serviceDiscount: 6.0,
-                //     servicePercent: 7.0,
-                //   );
-
-                //   Get.snackbar("Success", "Repair booking submitted!",
-                //       backgroundColor: Colors.green, colorText: Colors.white);
-                // } catch (e) {
-                //   print('Booking failed: $e');
-                //   Get.snackbar("Error", "Booking submission failed",
-                //       backgroundColor: Colors.red, colorText: Colors.white);
-                // }
+                };
+                
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
