@@ -253,7 +253,7 @@ class SelectRepairAddressScreen extends StatelessWidget {
                               ],
                             ),
 
-                              SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             ListTile(
                               onTap: () {
                                 Navigator.pop(context); // Close bottom sheet
@@ -282,8 +282,8 @@ class SelectRepairAddressScreen extends StatelessWidget {
                                 Get.snackbar("Repair at Store", "Store flow coming soon!",
                                     backgroundColor: Colors.green, colorText: Colors.white);
                               },
-                              leading:    Icon(Icons.store, color: Colors.deepPurple),
-                              title:   Text("Repair at Store"),
+                              leading: const Icon(Icons.store, color: Colors.deepPurple),
+                              title: const Text("Repair at Store"),
                               subtitle: const Text("Get Extra ₹300 OFF at our store."),
                               trailing: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),

@@ -1,26 +1,23 @@
-
 import 'package:flutter/material.dart';
- import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
+import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:fonofy/Api_Service/ShippingAddressService/ListShippingAddressService.dart';
 import 'package:fonofy/Manage%20Address/AddNewAddressScreen.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/controllers/ControllerProductDetails/GetBuyNowController.dart';
- import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
+import 'package:fonofy/model/AddToCartModel/CartListModel.dart';
 import 'package:fonofy/model/ShippingAddressModel/ListShippingAddressModel.dart';
- import 'package:get/get.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../Api_Service/AddToCartService/ShippingChargeService.dart';
 import '../Api_Service/ShippingAddressService/DeleteShippingAddressService.dart';
 import '../ViewScreen/LoginScreen.dart';
- import '../controllers/CreateOrder/CreateOrderController.dart';
+import '../controllers/CreateOrder/CreateOrderController.dart';
 import '../model/AddToCartModel/GetBuynowModel.dart';
 import '../model/AddToCartModel/ShippingChargeModel.dart';
 import '../model/CreateOrderModel/CreateOrderModel.dart';
 import 'dart:io';
 
 import '../utils/Colors.dart';
-
-
 
 class CheckoutScreen extends StatefulWidget {
   final List<CartListModel>? cartList;
@@ -41,13 +38,12 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-
   late Future<List<ListShippingAddressModel>> _addressFuture;
   String token = "";
   final controllerGetBuy = Get.put(ControllerGetBuyNowDetails());
 
-  final CreateOrderController orderController = Get.put(CreateOrderController());
-
+  final CreateOrderController orderController =
+      Get.put(CreateOrderController());
 
   ListShippingAddressModel? selectedAddress;
   ShippingChargeModel? shippingChargeData;
@@ -70,9 +66,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void initState() {
     super.initState();
     _initializeData();
-     _loadAddresses();
+    _loadAddresses();
     fetchShippingData();
-     if (widget.isSingleProduct) {
+    if (widget.isSingleProduct) {
       loadBuyNowData();
     } else {
       setState(() {
@@ -80,8 +76,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       });
     }
   }
-
-
 
   void loadBuyNowData() async {
     final userCode = await TokenHelper.getUserCode();
@@ -110,15 +104,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     String? token = await TokenHelper.getToken();
     if (userCode != null && token != null) {
       setState(() {
-         _addressFuture = ListShippingAddressService().listShippingAddress(
-          customerId: userCode,
-          token: token,
-        );
+        _addressFuture = ListShippingAddressService().listShippingAddress();
       });
     } else {
-      Get.snackbar(
-          "Error", "Unable to load addresses", backgroundColor: Colors.red,
-          colorText: Colors.white);
+      Get.snackbar("Error", "Unable to load addresses",
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
@@ -128,16 +118,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (storedToken != null && storedToken.isNotEmpty && userCode != null) {
       token = storedToken;
       setState(() {
-        _addressFuture = ListShippingAddressService().listShippingAddress(
-          customerId: userCode,
-          token: token,
-        );
+        _addressFuture = ListShippingAddressService().listShippingAddress();
       });
     } else {
       Get.snackbar("Error", "User not logged in or token missing",
           backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
+
   void _navigateToAddNewAddressScreen() async {
     String? userCode = await TokenHelper.getUserCode();
     String? token = await TokenHelper.getToken();
@@ -150,11 +138,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            AddNewAddressScreen(
-              customerId: userCode,
-              address: ListShippingAddressModel(),
-            ),
+        builder: (context) => AddNewAddressScreen(
+          customerId: userCode,
+          address: ListShippingAddressModel(),
+        ),
       ),
     );
     if (result != null) {
@@ -183,16 +170,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
+
   double calculateSubtotal() {
     if (widget.isSingleProduct) {
       return cartList1.fold(0.0, (sum, item) {
-        double price = double.tryParse(item.sellingPrice?.toString() ?? '0') ?? 0.0;
+        double price =
+            double.tryParse(item.sellingPrice?.toString() ?? '0') ?? 0.0;
         return sum + (price * (item.quantity ?? 1));
       });
     } else {
       return cartList.fold(0.0, (sum, item) {
-        double price = double.tryParse(item.sellingPrice?.toString() ?? '0') ??
-            0.0;
+        double price =
+            double.tryParse(item.sellingPrice?.toString() ?? '0') ?? 0.0;
         return sum + (price * (item.quantity ?? 0));
       });
     }
@@ -204,14 +193,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return 0.0;
     }
     if (totalAmount >= (shippingChargeData?.maxAmount ?? 0)) {
-      int multiples = (totalAmount / (shippingChargeData?.maxAmount ?? 1))
-          .floor();
+      int multiples =
+          (totalAmount / (shippingChargeData?.maxAmount ?? 1)).floor();
       return multiples * (shippingChargeData?.shippingCharge ?? 0);
     }
     return 0.0;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +206,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         (widget.cartList == null || widget.cartList!.isEmpty)) {
       return Scaffold(
         appBar: AppBar(
-          title:   Text("Checkout"),
+          title: Text("Checkout"),
           centerTitle: true,
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -235,7 +222,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title:   Text("Checkout"),
+        title: Text("Checkout"),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -252,8 +239,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Order Summary
-                    const Text("Order Summary",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    const Text(
+                      "Order Summary",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 15),
                     widget.isSingleProduct
@@ -266,7 +255,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Expanded(
-                          child: Text("Delivery Address",
+                          child: Text(
+                            "Delivery Address",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                             overflow: TextOverflow.ellipsis,
@@ -274,9 +264,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                         TextButton(
                           onPressed: _navigateToAddNewAddressScreen,
-                          child:   Text(
+                          child: Text(
                             "+ Add New Address",
-                            style: TextStyle(fontSize: 15,color: ColorConstants.appBlueColor3),
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: ColorConstants.appBlueColor3),
                           ),
                         ),
                       ],
@@ -290,15 +282,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           return ListView.builder(
                             itemCount: 3,
                             shrinkWrap: true,
-                            physics:   NeverScrollableScrollPhysics(),
+                            physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (_, i) => _buildShimmerEffect(),
                           );
                         } else if (snapshot.hasError || snapshot.data == null) {
-                          return   Center(child: Text("No address found!"));
+                          return Center(child: Text("No address found!"));
                         } else if (snapshot.data!.isEmpty) {
-                          return const Center(
-                              child: Text(" "));
-                              // child: Text("📭 No addresses available."));
+                          return const Center(child: Text(" "));
+                          // child: Text("📭 No addresses available."));
                         }
                         var addresses = snapshot.data!;
                         if (selectedAddressIndex < addresses.length &&
@@ -309,16 +300,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             setState(() {
                               selectedAddressIndex =
-                              addresses.isNotEmpty ? 0 : -1;
+                                  addresses.isNotEmpty ? 0 : -1;
                               selectedAddress =
-                              addresses.isNotEmpty ? addresses[0] : null;
+                                  addresses.isNotEmpty ? addresses[0] : null;
                             });
                           });
                         }
                         return ListView.builder(
                           itemCount: addresses.length,
                           shrinkWrap: true,
-                          physics:   NeverScrollableScrollPhysics(),
+                          physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (_, index) =>
                               _buildAddressTile(addresses[index], index),
                         );
@@ -326,9 +317,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     const SizedBox(height: 16),
                     // Payment Method
-                      Text("Payment Method",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
+                    Text(
+                      "Payment Method",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -344,8 +336,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           items: paymentMethods.map((String method) {
                             return DropdownMenuItem<String>(
                               value: method,
-                              child: Text(method, style: const TextStyle(
-                                  color: Colors.black87)),
+                              child: Text(method,
+                                  style:
+                                      const TextStyle(color: Colors.black87)),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -356,11 +349,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                     ),
-                      SizedBox(height: 16),
+                    SizedBox(height: 16),
                     // Price Details
-                      Text("Price Details",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
+                    Text(
+                      "Price Details",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     Column(
@@ -371,30 +365,38 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         _priceRow("Total", total, isBold: true, isTotal: true),
                       ],
                     ),
-                     SizedBox(height: 24),
+                    SizedBox(height: 24),
 
                     ElevatedButton(
                       onPressed: () async {
                         final userCode = await TokenHelper.getUserCode();
                         final token = await TokenHelper.getToken();
-                        if (token == null || token.isEmpty || userCode == null || userCode.isEmpty) {
+                        if (token == null ||
+                            token.isEmpty ||
+                            userCode == null ||
+                            userCode.isEmpty) {
                           Get.to(() => LoginScreen());
                           return;
                         }
                         if (orderController.isLoading.value) return;
                         if (selectedAddress == null) {
-                          Get.snackbar("Error", "Please select a delivery address",
-                              backgroundColor: Colors.red, colorText: Colors.white);
+                          Get.snackbar(
+                              "Error", "Please select a delivery address",
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white);
                           return;
                         }
-                        final getBuyNow = controllerGetBuy.getBuyNowDetails.value;
+                        final getBuyNow =
+                            controllerGetBuy.getBuyNowDetails.value;
 
                         List<OrderProductList> productList = [];
                         if (widget.isSingleProduct && getBuyNow != null) {
-
-                          double sellingPrice =
-                              double.tryParse(getBuyNow.sellingPrice?.toString() ?? '0') ?? 0.0;
-                          double mrp = double.tryParse(getBuyNow.mrp?.toString() ?? '0') ?? 0.0;
+                          double sellingPrice = double.tryParse(
+                                  getBuyNow.sellingPrice?.toString() ?? '0') ??
+                              0.0;
+                          double mrp = double.tryParse(
+                                  getBuyNow.mrp?.toString() ?? '0') ??
+                              0.0;
                           int quantity = getBuyNow.quantity ?? 1;
                           double discount = mrp - sellingPrice;
                           productList = [
@@ -403,7 +405,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ramId: getBuyNow.ramId ?? '',
                               romId: getBuyNow.romId ?? '',
                               colorId: getBuyNow.colorId ?? '',
-                              orderOn: Platform.isAndroid?"android":"ios",
+                              orderOn: Platform.isAndroid ? "android" : "ios",
                               quantity: quantity,
                               discount: discount > 0 ? discount : 0.0,
                               totalMrp: mrp * quantity,
@@ -416,8 +418,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ];
                         } else {
                           productList = cartList.map((cartItem) {
-                            double sellingPrice = double.tryParse(cartItem.sellingPrice?.toString() ?? '0') ?? 0.0;
-                            double mrp = double.tryParse(cartItem.mrp?.toString() ?? '0') ?? 0.0;
+                            double sellingPrice = double.tryParse(
+                                    cartItem.sellingPrice?.toString() ?? '0') ??
+                                0.0;
+                            double mrp = double.tryParse(
+                                    cartItem.mrp?.toString() ?? '0') ??
+                                0.0;
                             int quantity = cartItem.quantity ?? 1;
 
                             double discount = mrp - sellingPrice;
@@ -440,10 +446,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           }).toList();
                         }
                         if (productList.isEmpty) {
-                          Get.snackbar("Error", "No products to order",backgroundColor: Colors.red, colorText: Colors.white);
+                          Get.snackbar("Error", "No products to order",
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white);
                           return;
                         }
-                        print("Placing order with productList: ${productList.map((p) => p.toJson())}");
+                        print(
+                            "Placing order with productList: ${productList.map((p) => p.toJson())}");
                         print("Selected Address: ${selectedAddress?.toJson()}");
 
                         await orderController.placeOrder(
@@ -458,14 +467,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           state: selectedAddress?.state?.toString() ?? '',
                           pincode: selectedAddress?.pinCode ?? '',
                           workType: selectedAddress?.workType ?? '',
-                          totalMRP: (getBuyNow?.totalMrp ?? calculateSubtotal()).toDouble(),
+                          totalMRP: (getBuyNow?.totalMrp ?? calculateSubtotal())
+                              .toDouble(),
                           totalPrice: subtotal,
                           totalAmount: total,
-                          totalDiscount: (getBuyNow?.totalDiscount ?? 0).toDouble(),
-                          deliveryCharge: (shippingChargeData?.shippingCharge ?? 0).toDouble(),
+                          totalDiscount:
+                              (getBuyNow?.totalDiscount ?? 0).toDouble(),
+                          deliveryCharge:
+                              (shippingChargeData?.shippingCharge ?? 0)
+                                  .toDouble(),
                           couponId: null,
                           couponAmount: 0.0,
-                          productList: productList, selectedPaymentMethod: selectedPaymentMethod,
+                          productList: productList,
+                          selectedPaymentMethod: selectedPaymentMethod,
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -477,13 +491,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       child: Obx(() {
                         return orderController.isLoading.value
-                            ? const CircularProgressIndicator(color: Colors.blue,strokeWidth: 2,)
-                            : const Text("Place Order",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        );
+                            ? const CircularProgressIndicator(
+                                color: Colors.blue,
+                                strokeWidth: 2,
+                              )
+                            : const Text(
+                                "Place Order",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              );
                       }),
                     ),
-                   ],
+                  ],
                 ),
               ),
             ),
@@ -498,7 +517,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       final productData = controllerGetBuy.getBuyNowDetails.value;
 
       if (controllerGetBuy.isLoading.value) {
-        return   Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
+        return Center(
+            child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.blue,
+        ));
       }
       if (productData == null) {
         return const Center(child: Text("No product data found."));
@@ -515,7 +538,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               height: 70,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) =>
-              const Icon(Icons.broken_image, size: 80),
+                  const Icon(Icons.broken_image, size: 80),
             ),
           ),
           const SizedBox(width: 12),
@@ -530,24 +553,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "(${productData.ramName.toString()}/${productData.romName
-                      .toString()}) | Color: ${productData.colorName
-                      .toString()}",
+                  "(${productData.ramName.toString()}/${productData.romName.toString()}) | Color: ${productData.colorName.toString()}",
                   style: const TextStyle(color: Colors.grey, fontSize: 14),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
-                      "₹${double.tryParse(productData.f2.toString())
-                          ?.toStringAsFixed(2) ?? '0.00'}",
+                      "₹${double.tryParse(productData.f2.toString())?.toStringAsFixed(2) ?? '0.00'}",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(width: 15),
                     Text(
-                      "₹${double.tryParse(productData.mrp.toString())
-                          ?.toStringAsFixed(2) ?? '0.00'}",
+                      "₹${double.tryParse(productData.mrp.toString())?.toStringAsFixed(2) ?? '0.00'}",
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -563,15 +582,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     });
   }
+
   Widget _buildCartProductsSummary() {
     return ListView.builder(
       shrinkWrap: true,
-      physics:   NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemCount: widget.cartList!.length,
       itemBuilder: (context, index) {
         final cartItem = widget.cartList![index];
-        double price = double.tryParse(
-            cartItem.sellingPrice?.toString() ?? '0') ?? 0.0;
+        double price =
+            double.tryParse(cartItem.sellingPrice?.toString() ?? '0') ?? 0.0;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
@@ -584,8 +604,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                    Icon(Icons.image, size: 80,color: ColorConstants.appBlueColor3,),
+                  errorBuilder: (context, error, stackTrace) => Icon(
+                    Icons.image,
+                    size: 80,
+                    color: ColorConstants.appBlueColor3,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -650,22 +673,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         } else {
           final confirm = await showDialog<bool>(
             context: context,
-            builder: (context) =>
-                AlertDialog(
-                  title: const Text("Delete Address"),
-                  content: const Text(
-                      "Are you sure you want to delete this address?"),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: const Text("Cancel"),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: const Text("Delete"),
-                    ),
-                  ],
+            builder: (context) => AlertDialog(
+              title: const Text("Delete Address"),
+              content:
+                  const Text("Are you sure you want to delete this address?"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text("Cancel"),
                 ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text("Delete"),
+                ),
+              ],
+            ),
           );
           if (confirm == true) {
             final id = address.id;
@@ -687,10 +709,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               }
               setState(() {
                 _addressFuture =
-                    ListShippingAddressService().listShippingAddress(
-                      customerId: widget.customerId,
-                      token: token,
-                    );
+                    ListShippingAddressService().listShippingAddress();
               });
               return true;
             } else {
@@ -727,14 +746,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
         title: Text("Name: ${address.name ?? ''} | ${address.workType ?? ''}"),
         subtitle: Text(
-          "${address.address ?? ''}\n${address.city ?? ''} - ${address
-              .pinCode ?? ''}\nPhone: ${address.mobileNo ?? ''}",
+          "${address.address ?? ''}\n${address.city ?? ''} - ${address.pinCode ?? ''}\nPhone: ${address.mobileNo ?? ''}",
         ),
         isThreeLine: true,
       ),
     );
   }
-  
+
   Widget _buildShimmerEffect() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
@@ -764,6 +782,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
+
   Widget _priceRow(String label, double amount,
       {bool isBold = false, bool isTotal = false}) {
     return Padding(
@@ -778,7 +797,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               fontSize: isTotal ? 16 : 14,
             ),
           ),
-          Text("₹${amount.toStringAsFixed(2)}", style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: isTotal ? 16 : 14,),
+          Text(
+            "₹${amount.toStringAsFixed(2)}",
+            style: TextStyle(
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              fontSize: isTotal ? 16 : 14,
+            ),
           ),
         ],
       ),

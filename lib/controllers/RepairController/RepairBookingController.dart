@@ -37,7 +37,7 @@ class RepairBookingController extends GetxController {
     required String couponCode,
     required String repairType,
     required String slotDate,
-    required String slotTime,
+    // required String slotTime,
     required String remark,
     required dynamic servieCharge,
     required String Mode,
@@ -55,10 +55,10 @@ class RepairBookingController extends GetxController {
     }
 
     final repairBookingModel = RepairBookingRequestModel(
-      modelId: modelId,
+      modelId: int.parse(modelId.toString()),
       romId: romId,
       ramId: ramId,
-      colorId: colorId,
+      colorId: int.parse(colorId.toString()),
       customerId: customerId,
       orderId: '',
       shippingId: shippingId,
@@ -85,7 +85,7 @@ class RepairBookingController extends GetxController {
       totalDiscount: totalDiscount,
       totalMRP: totalMRP,
       servieCharge: servieCharge,
-      couponId: couponId,
+      couponId: int.parse(couponId.toString()),
       Mode: Mode,
       repairDetails: repairDetails,
     );

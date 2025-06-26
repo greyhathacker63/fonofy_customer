@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:fonofy/model/RepairModel/RepairServicesTableModel.dart';
 
 class RepairBookingRequestModel {
@@ -152,9 +154,9 @@ class RepairDetail {
   String orderId;
   dynamic serviceId;
   String serviceName;
-  double serviceAmount;
-  double serviceDiscount;
-  double servicePercent;
+  dynamic serviceAmount;
+  dynamic serviceDiscount;
+  dynamic servicePercent;
 
   RepairDetail({
     required this.customerId,

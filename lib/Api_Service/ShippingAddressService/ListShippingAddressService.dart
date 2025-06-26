@@ -1,19 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import '../../model/ShippingAddressModel/ListShippingAddressModel.dart';
 
 class ListShippingAddressService {
-  Future<List<ListShippingAddressModel>> listShippingAddress({
-    required String customerId,
-    required String token,
-  }) async {
-    final String apiUrl = 'https://api.fonofy.in/api/forb2c/list-shipping-address?CustomerId=$customerId';
+  Future<List<ListShippingAddressModel>> listShippingAddress() async {
+    //String customerIds = (await TokenHelper.getUserCode()) ?? "";
+    String? customerId = await TokenHelper.getUserCode();
+    String? token = await TokenHelper.getToken();
+    print("data to load " + customerId.toString());
+    final String apiUrl =
+        'https://api.fonofy.in/api/forb2c/list-shipping-address?CustomerId=$customerId';
 
     try {
       HttpClient httpClient = HttpClient();
-      httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      httpClient.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
 
       HttpClientRequest request = await httpClient.getUrl(Uri.parse(apiUrl));
       request.headers.set('Content-Type', 'application/json');
@@ -24,7 +28,9 @@ class ListShippingAddressService {
 
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(responseBody);
-        return data.map((item) => ListShippingAddressModel.fromJson(item)).toList();
+        return data
+            .map((item) => ListShippingAddressModel.fromJson(item))
+            .toList();
       } else {
         debugPrint("❌ API Error (${response.statusCode}): $responseBody");
         return [];

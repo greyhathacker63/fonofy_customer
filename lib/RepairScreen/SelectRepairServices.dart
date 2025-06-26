@@ -373,12 +373,13 @@ class SelectServicesScreen extends StatefulWidget {
   final String brandId;
   final String modelId;
   final String colorId;
+  
 
   const SelectServicesScreen({
     super.key,
     required this.brandId,
     required this.modelId,
-    required this.colorId,
+    required this.colorId, 
   });
 
   @override
@@ -394,7 +395,7 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
     super.initState();
     repairController.getTableRepairData(
         widget.brandId, widget.modelId, widget.colorId);
-    final List<Table1> selectedServices;
+    //final List<Table1> selectedServices;
   }
 
   @override
@@ -508,6 +509,8 @@ class _SelectServicesScreenState extends State<SelectServicesScreen> {
                           totalPrice: repairController.totalPrice.value,
                           selectedServices:
                               repairController.selectedServices.toList(),
+                          ramId: repairController.ramId,  
+                          romId: repairController.romId, 
                         ),
                       ),
                     );
