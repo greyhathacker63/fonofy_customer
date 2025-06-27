@@ -40,6 +40,7 @@ class DeviceDetailsScreen5 extends StatefulWidget {
 class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
   final SellQuestionController controller = Get.put(SellQuestionController());
   final Map<String, bool> selectedAccessories = {};
+  final Map<String, String> radioSelections = {}; // questionId -> "Yes" / "No"
   final List<String> fivePageAns = [];
   var pageNumber = "0".obs;
   var totalPages = "0".obs;
@@ -162,29 +163,27 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      print("Page");
-                      print(totalPages.value);
+                      print(
+                          "Page: ${pageNumber.value} / Total: ${totalPages.value}");
                       if (totalPages.value != "0") {
                         if (int.parse(pageNumber.value) ==
                             int.parse(totalPages.value) - 1) {
-                          print("all question submitted");
-                          // selectedAccessories.containsValue(true)
-                          //     ? () {
+                          print("All questions submitted");
 
-                          //         Get.to(() => YourDeviceScreen(
-                          //               baseprice: widget.baseprice,
-                          //               bid: widget.bid,
-                          //               raid: widget.raid,
-                          //               roid: widget.roid,
-                          //               modelNo: widget.modelNo,
-                          //               ram: widget.ram,
-                          //               rom: widget.rom,
-                          //               modelName: widget.modelName,
-                          //               finalhPageAns: fivePageAns,
-                          //             ));
-                          //       }
-                          //     : null,
+                          // Navigate to YourDeviceScreen with all required values
+                          Get.to(() => YourDeviceScreen(
+                                baseprice: widget.baseprice,
+                                bid: widget.bid,
+                                raid: widget.raid,
+                                roid: widget.roid,
+                                modelNo: widget.modelNo,
+                                ram: widget.ram,
+                                rom: widget.rom,
+                                modelName: widget.modelName,
+                                finalhPageAns: fivePageAns,
+                              ));
                         } else {
+                          // Go to next page
                           pageNumber.value =
                               (int.parse(pageNumber.value) + 1).toString();
                         }
@@ -209,51 +208,150 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
     );
   }
 
-  Widget _buildRadioButton(
-      // String questionId,
-      // String title,
-      // String description,
-      // String? selectedValue,
+  // Widget _buildRadioButton(
+  //     // String questionId,
+  //     // String title,
+  //     // String description,
+  //     // String? selectedValue,
 
-      {Datum? radioButtonDetails}
-      // Function(String?) onChanged,
-      ) {
-    return ListView.builder(
-      itemCount: radioButtonDetails?.questions?.length ?? 0,
-      itemBuilder: (context, index) {
-        final redioButtonQuestionData = radioButtonDetails?.questions?[index];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              redioButtonQuestionData?.question ?? "",
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              redioButtonQuestionData?.questionDescription ?? "",
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            const SizedBox(height: 10),
+  //     {Datum? radioButtonDetails}
+  //     // Function(String?) onChanged,
+  //     ) {
+  //   return ListView.builder(
+  //     itemCount: radioButtonDetails?.questions?.length ?? 0,
+  //     itemBuilder: (context, index) {
+  //       final redioButtonQuestionData = radioButtonDetails?.questions?[index];
+  //       return Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             redioButtonQuestionData?.question ?? "",
+  //             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //           ),
+  //           const SizedBox(height: 5),
+  //           Text(
+  //             redioButtonQuestionData?.questionDescription ?? "",
+  //             style: const TextStyle(fontSize: 14, color: Colors.grey),
+  //           ),
+  //           const SizedBox(height: 10),
 
-            Row(children: [
+  //           Row(children: [
+  //             Expanded(
+  //               child: GestureDetector(
+  //                 onTap: () {
+  //                   final yesOptionStore =
+  //                       redioButtonQuestionData!.options!.firstWhere(
+  //                     (element) => element.amount == 100,
+  //                     // Provide an orElse callback to handle cases where no match is found
+  //                     // (though .any() already confirms one exists here)
+  //                   );
+  //                   print("object");
+  //                   print(yesOptionStore.weightage);
+  //                 },
+  //                 child: Row(
+  //                   children: [
+  //                     Icon(Icons.check_box_rounded),
+  //                     SizedBox(width: 10),
+  //                     Text('Yes')
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //             Expanded(
+  //               child: GestureDetector(
+  //                 onTap: () {
+  //                   final noOptionStore =
+  //                       redioButtonQuestionData!.options!.firstWhere(
+  //                     (element) => element.amount != 100,
+  //                     // Provide an orElse callback to handle cases where no match is found
+  //                     // (though .any() already confirms one exists here)
+  //                   );
+  //                   print("object");
+  //                   print(noOptionStore.weightage);
+  //                 },
+  //                 child: Row(
+  //                   children: [
+  //                     Icon(Icons.check_box_rounded),
+  //                     SizedBox(width: 10),
+  //                     Text('No')
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ]),
+
+  //           // ),
+
+  //           // Row(
+  //           //   children: [
+  //           //     Expanded(
+  //           //       child: RadioListTile<String>(
+  //           //         title: const Text("Yes"),
+  //           //         value: "Yes",
+  //           //         groupValue: selectedValue,
+  //           //         onChanged: onChanged,
+  //           //       ),
+  //           //     ),
+  //           //     Expanded(
+  //           //       child: RadioListTile<String>(
+  //           //         title: const Text("No"),
+  //           //         value: "No",
+  //           //         groupValue: selectedValue,
+  //           //         onChanged: onChanged,
+  //           //       ),
+  //           //     ),
+  //           //   ],
+  //           // ),
+  //           const SizedBox(height: 10),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+  Widget _buildRadioButton({Datum? radioButtonDetails}) {
+  return ListView.builder(
+    itemCount: radioButtonDetails?.questions?.length ?? 0,
+    itemBuilder: (context, index) {
+      final question = radioButtonDetails!.questions![index];
+      final questionId = question.questionId ?? '';
+
+      final selectedValue = radioSelections[questionId];
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            question.question ?? "",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            question.questionDescription ?? "",
+            style: const TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    final yesOptionStore =
-                        redioButtonQuestionData!.options!.firstWhere(
-                      (element) => element.amount == 100,
-                      // Provide an orElse callback to handle cases where no match is found
-                      // (though .any() already confirms one exists here)
-                    );
-                    print("object");
-                    print(yesOptionStore.weightage);
+                    setState(() {
+                      radioSelections[questionId] = "Yes";
+                      final yesOption = question.options!
+                          .firstWhere((opt) => opt.amount == 100);
+                      fivePageAns.add(yesOption.weightage?.toString() ?? '0');
+                    });
                   },
                   child: Row(
                     children: [
-                      Icon(Icons.check_box_rounded),
-                      SizedBox(width: 10),
-                      Text('Yes')
+                      Icon(
+                        radioSelections[questionId] == "Yes"
+                            ? Icons.radio_button_checked
+                            : Icons.radio_button_unchecked,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(width: 8),
+                      const Text("Yes"),
                     ],
                   ),
                 ),
@@ -261,54 +359,36 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    final noOptionStore =
-                        redioButtonQuestionData!.options!.firstWhere(
-                      (element) => element.amount != 100,
-                      // Provide an orElse callback to handle cases where no match is found
-                      // (though .any() already confirms one exists here)
-                    );
-                    print("object");
-                    print(noOptionStore.weightage);
+                    setState(() {
+                      radioSelections[questionId] = "No";
+                      final noOption = question.options!
+                          .firstWhere((opt) => opt.amount != 100);
+                      fivePageAns.add(noOption.weightage?.toString() ?? '0');
+                    });
                   },
                   child: Row(
                     children: [
-                      Icon(Icons.check_box_rounded),
-                      SizedBox(width: 10),
-                      Text('No')
+                      Icon(
+                        radioSelections[questionId] == "No"
+                            ? Icons.radio_button_checked
+                            : Icons.radio_button_unchecked,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(width: 8),
+                      const Text("No"),
                     ],
                   ),
                 ),
               ),
-            ]),
+            ],
+          ),
+          const SizedBox(height: 16),
+        ],
+      );
+    },
+  );
+}
 
-            // ),
-
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: RadioListTile<String>(
-            //         title: const Text("Yes"),
-            //         value: "Yes",
-            //         groupValue: selectedValue,
-            //         onChanged: onChanged,
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: RadioListTile<String>(
-            //         title: const Text("No"),
-            //         value: "No",
-            //         groupValue: selectedValue,
-            //         onChanged: onChanged,
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            const SizedBox(height: 10),
-          ],
-        );
-      },
-    );
-  }
 
   Widget _buildAccessoryCard(
       String key, String label, String imagePath, int index) {
