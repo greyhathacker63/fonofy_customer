@@ -111,6 +111,54 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                // Expanded(
+                //   child: controller
+                //               .mQuestionListData!
+                //               .data![int.parse(pageNumber.value)]
+                //               .questions!
+                //               .first
+                //               .questionSelection
+                //               .toString() ==
+                //           "Radio Button(Yes/No)"
+                //       ? _buildRadioButton(
+                //           radioButtonDetails: controller.mQuestionListData
+                //               ?.data?[int.parse(pageNumber.value)])
+                //       : GridView.builder(
+                //           itemCount: controller
+                //                   .mQuestionListData
+                //                   ?.data?[int.parse(pageNumber.value)]
+                //                   .questions
+                //                   ?.length ??
+                //               0,
+                //           gridDelegate:
+                //               const SliverGridDelegateWithFixedCrossAxisCount(
+                //             crossAxisCount: 2,
+                //             mainAxisSpacing: 16,
+                //             crossAxisSpacing: 16,
+                //             childAspectRatio: 0.9,
+                //           ),
+                //           itemBuilder: (context, index) {
+                //             final q = controller
+                //                 .mQuestionListData
+                //                 ?.data?[int.parse(pageNumber.value)]
+                //                 .questions?[index];
+                //             final qId = q?.questionId ?? '';
+                //             final qText = q?.question ?? '';
+
+                //             if (qId.isEmpty) return const SizedBox();
+
+                //             final imagePath = index < staticImages.length
+                //                 ? staticImages[index]
+                //                 : "assets/images/default.png";
+                //             selectedAccessories.putIfAbsent(qId, () => false);
+
+                //             // ✅ Return the widget properly
+
+                //             return _buildAccessoryCard(
+                //                 qId, qText, imagePath, index);
+                //           },
+                //         ),
+                // ),
                 Expanded(
                   child: controller
                               .mQuestionListData!
@@ -120,9 +168,12 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
                               .questionSelection
                               .toString() ==
                           "Radio Button(Yes/No)"
-                      ? _buildRadioButton(
-                          radioButtonDetails: controller.mQuestionListData
-                              ?.data?[int.parse(pageNumber.value)])
+                      ? SingleChildScrollView(
+                          child: _buildRadioButton(
+                            radioButtonDetails: controller.mQuestionListData
+                                ?.data?[int.parse(pageNumber.value)],
+                          ),
+                        )
                       : GridView.builder(
                           itemCount: controller
                                   .mQuestionListData
@@ -152,13 +203,12 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
                                 : "assets/images/default.png";
                             selectedAccessories.putIfAbsent(qId, () => false);
 
-                            // ✅ Return the widget properly
-
                             return _buildAccessoryCard(
                                 qId, qText, imagePath, index);
                           },
                         ),
                 ),
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -208,187 +258,169 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
     );
   }
 
-  // Widget _buildRadioButton(
-  //     // String questionId,
-  //     // String title,
-  //     // String description,
-  //     // String? selectedValue,
+//   Widget _buildRadioButton({Datum? radioButtonDetails}) {
+//   return ListView.builder(
+//     itemCount: radioButtonDetails?.questions?.length ?? 0,
+//     itemBuilder: (context, index) {
+//       final question = radioButtonDetails!.questions![index];
+//       final questionId = question.questionId ?? '';
 
-  //     {Datum? radioButtonDetails}
-  //     // Function(String?) onChanged,
-  //     ) {
-  //   return ListView.builder(
-  //     itemCount: radioButtonDetails?.questions?.length ?? 0,
-  //     itemBuilder: (context, index) {
-  //       final redioButtonQuestionData = radioButtonDetails?.questions?[index];
-  //       return Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             redioButtonQuestionData?.question ?? "",
-  //             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //           ),
-  //           const SizedBox(height: 5),
-  //           Text(
-  //             redioButtonQuestionData?.questionDescription ?? "",
-  //             style: const TextStyle(fontSize: 14, color: Colors.grey),
-  //           ),
-  //           const SizedBox(height: 10),
+//       final selectedValue = radioSelections[questionId];
 
-  //           Row(children: [
-  //             Expanded(
-  //               child: GestureDetector(
-  //                 onTap: () {
-  //                   final yesOptionStore =
-  //                       redioButtonQuestionData!.options!.firstWhere(
-  //                     (element) => element.amount == 100,
-  //                     // Provide an orElse callback to handle cases where no match is found
-  //                     // (though .any() already confirms one exists here)
-  //                   );
-  //                   print("object");
-  //                   print(yesOptionStore.weightage);
-  //                 },
-  //                 child: Row(
-  //                   children: [
-  //                     Icon(Icons.check_box_rounded),
-  //                     SizedBox(width: 10),
-  //                     Text('Yes')
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //             Expanded(
-  //               child: GestureDetector(
-  //                 onTap: () {
-  //                   final noOptionStore =
-  //                       redioButtonQuestionData!.options!.firstWhere(
-  //                     (element) => element.amount != 100,
-  //                     // Provide an orElse callback to handle cases where no match is found
-  //                     // (though .any() already confirms one exists here)
-  //                   );
-  //                   print("object");
-  //                   print(noOptionStore.weightage);
-  //                 },
-  //                 child: Row(
-  //                   children: [
-  //                     Icon(Icons.check_box_rounded),
-  //                     SizedBox(width: 10),
-  //                     Text('No')
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ]),
-
-  //           // ),
-
-  //           // Row(
-  //           //   children: [
-  //           //     Expanded(
-  //           //       child: RadioListTile<String>(
-  //           //         title: const Text("Yes"),
-  //           //         value: "Yes",
-  //           //         groupValue: selectedValue,
-  //           //         onChanged: onChanged,
-  //           //       ),
-  //           //     ),
-  //           //     Expanded(
-  //           //       child: RadioListTile<String>(
-  //           //         title: const Text("No"),
-  //           //         value: "No",
-  //           //         groupValue: selectedValue,
-  //           //         onChanged: onChanged,
-  //           //       ),
-  //           //     ),
-  //           //   ],
-  //           // ),
-  //           const SizedBox(height: 10),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+//       return Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             question.question ?? "",
+//             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+//           ),
+//           const SizedBox(height: 5),
+//           Text(
+//             question.questionDescription ?? "",
+//             style: const TextStyle(fontSize: 14, color: Colors.grey),
+//           ),
+//           const SizedBox(height: 10),
+//           Row(
+//             children: [
+//               Expanded(
+//                 child: GestureDetector(
+//                   onTap: () {
+//                     setState(() {
+//                       radioSelections[questionId] = "Yes";
+//                       final yesOption = question.options!
+//                           .firstWhere((opt) => opt.amount == 100);
+//                       fivePageAns.add(yesOption.weightage?.toString() ?? '0');
+//                     });
+//                   },
+//                   child: Row(
+//                     children: [
+//                       Icon(
+//                         radioSelections[questionId] == "Yes"
+//                             ? Icons.radio_button_checked
+//                             : Icons.radio_button_unchecked,
+//                         color: Colors.blue,
+//                       ),
+//                       const SizedBox(width: 8),
+//                       const Text("Yes"),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//               Expanded(
+//                 child: GestureDetector(
+//                   onTap: () {
+//                     setState(() {
+//                       radioSelections[questionId] = "No";
+//                       final noOption = question.options!
+//                           .firstWhere((opt) => opt.amount != 100);
+//                       fivePageAns.add(noOption.weightage?.toString() ?? '0');
+//                     });
+//                   },
+//                   child: Row(
+//                     children: [
+//                       Icon(
+//                         radioSelections[questionId] == "No"
+//                             ? Icons.radio_button_checked
+//                             : Icons.radio_button_unchecked,
+//                         color: Colors.blue,
+//                       ),
+//                       const SizedBox(width: 8),
+//                       const Text("No"),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           const SizedBox(height: 16),
+//         ],
+//       );
+//     },
+//   );
+// }
   Widget _buildRadioButton({Datum? radioButtonDetails}) {
-  return ListView.builder(
-    itemCount: radioButtonDetails?.questions?.length ?? 0,
-    itemBuilder: (context, index) {
-      final question = radioButtonDetails!.questions![index];
-      final questionId = question.questionId ?? '';
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: radioButtonDetails?.questions?.length ?? 0,
+      itemBuilder: (context, index) {
+        final question = radioButtonDetails!.questions![index];
+        final questionId = question.questionId ?? '';
+        final selected = radioSelections[questionId];
 
-      final selectedValue = radioSelections[questionId];
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            question.question ?? "",
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            question.questionDescription ?? "",
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-          const SizedBox(height: 10),
-          Row(
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      radioSelections[questionId] = "Yes";
-                      final yesOption = question.options!
-                          .firstWhere((opt) => opt.amount == 100);
-                      fivePageAns.add(yesOption.weightage?.toString() ?? '0');
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        radioSelections[questionId] == "Yes"
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
-                        color: Colors.blue,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text("Yes"),
-                    ],
-                  ),
-                ),
+              Text(
+                "${index + 1}. ${question.question ?? ''}",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      radioSelections[questionId] = "No";
-                      final noOption = question.options!
-                          .firstWhere((opt) => opt.amount != 100);
-                      fivePageAns.add(noOption.weightage?.toString() ?? '0');
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        radioSelections[questionId] == "No"
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
-                        color: Colors.blue,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text("No"),
-                    ],
+              if (question.questionDescription?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    question.questionDescription!,
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ),
+              const SizedBox(height: 12),
+              Column(
+                children: ["Yes", "No"].map((option) {
+                  bool isSelected = selected == option;
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        radioSelections[questionId] = option;
+                        final matchedOption = question.options!.firstWhere(
+                          (opt) => option == "Yes"
+                              ? opt.amount == 100
+                              : opt.amount != 100,
+                        );
+                        fivePageAns
+                            .add(matchedOption.weightage?.toString() ?? '0');
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isSelected
+                              ? ColorConstants.appBlueColor3
+                              : Colors.grey.shade300,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            isSelected
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_off,
+                            color: isSelected
+                                ? ColorConstants.appBlueColor3
+                                : Colors.grey,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(option, style: const TextStyle(fontSize: 15)),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-        ],
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 
   Widget _buildAccessoryCard(
       String key, String label, String imagePath, int index) {

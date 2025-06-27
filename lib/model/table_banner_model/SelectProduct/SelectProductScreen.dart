@@ -37,7 +37,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
         ),
       ),
       body: Obx(() => sellVariantController.isVariantTableLoading.value
-          ?   Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,))
+          ?   Center(child: CircularProgressIndicator(strokeWidth: 2,color: ColorConstants.appBlueColor3,))
           : Padding(
               padding: const EdgeInsets.all(15.0),
               child: SingleChildScrollView(
@@ -76,7 +76,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                     Center(
                       child: TextButton(
                         onPressed: () {},
-                        child: Text("Load More FAQs",style: TextStyle(color: Colors.blue),
+                        child: Text("Load More FAQs",style: TextStyle(color: ColorConstants.appBlueColor3),
                         ),
                       ),
                     ),

@@ -209,7 +209,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
                           child: TextButton(
                             onPressed: () {},
                             child: const Text("Load More FAQs",
-                                style: TextStyle(color: Colors.blue)),
+                                style: TextStyle(color: Colors.lightBlueAccent)),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -310,7 +310,7 @@ class _SelectProduct2State extends State<SelectProduct2> {
                 child: Center(
                     child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Colors.blue,
+                  color: ColorConstants.appBlueColor3,
                 )),
               );
             },

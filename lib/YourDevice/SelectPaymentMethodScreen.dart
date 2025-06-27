@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/controllers/SellControllers/SellBookingController.dart';
 import 'package:fonofy/model/SellDevice/SellBookingModel.dart';
+import 'package:fonofy/utils/Colors.dart';
 import 'package:fonofy/widgets/thankYouWidget.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/controllers/ManagePaymentController/BankDetialsController.dart';
@@ -194,7 +195,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                 : () => _submitSellBooking(),
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  _selectedMethod != null ? Colors.blue : Colors.grey,
+                  _selectedMethod != null ? ColorConstants.appBlueColor3 : Colors.grey,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

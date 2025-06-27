@@ -122,7 +122,7 @@ class SelectAddressSellScreen extends StatelessWidget {
       width: 35,
       height: 35,
       decoration: BoxDecoration(
-        border: Border.all(color: isActive ? Colors.blue : Colors.black45),
+        border: Border.all(color: isActive ? ColorConstants.appBlueColor3 : Colors.black45),
         color: isActive ? Colors.white : Colors.black26,
         borderRadius: BorderRadius.circular(5),
       ),
@@ -132,7 +132,7 @@ class SelectAddressSellScreen extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: isActive ? Colors.blue : Colors.white,
+          color: isActive ? ColorConstants.appBlueColor3 : Colors.white,
         ),
       ),
     );
