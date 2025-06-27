@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get_connect/http/src/utils/utils.dart';
+
 SellQuestion sellQuestionFromJson(String str) =>
     SellQuestion.fromJson(json.decode(str));
 
@@ -8,17 +10,20 @@ String sellQuestionToJson(SellQuestion data) => json.encode(data.toJson());
 class SellQuestion {
   bool? status;
   String? message;
+  dynamic totalPageNumber;
   List<Datum>? data;
 
   SellQuestion({
     this.status,
     this.message,
+    this.totalPageNumber,
     this.data,
   });
 
   factory SellQuestion.fromJson(Map<String, dynamic> json) => SellQuestion(
         status: json["status"],
         message: json["message"],
+        totalPageNumber: json["TotalPageNumber"],
         data: json["data"] == null
             ? []
             : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
@@ -27,6 +32,7 @@ class SellQuestion {
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
+        "TotalPageNumber": totalPageNumber,
         "data": data == null
             ? []
             : List<dynamic>.from(data!.map((x) => x.toJson())),
@@ -36,6 +42,7 @@ class SellQuestion {
 class Datum {
   dynamic pageId;
   String? pageTitle;
+  String? pageDescription;
   String? refNo;
   dynamic rowUCode;
   List<Question>? questions;
@@ -44,6 +51,7 @@ class Datum {
     this.pageId,
     this.pageTitle,
     this.refNo,
+    this.pageDescription,
     this.rowUCode,
     this.questions,
   });
@@ -51,6 +59,7 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         pageId: json["PageId"],
         pageTitle: json["PageTitle"],
+        pageDescription: json["PageDescription"],
         refNo: json["RefNo"],
         rowUCode: json["RowUCode"],
         questions: json["Questions"] == null
@@ -62,6 +71,7 @@ class Datum {
   Map<String, dynamic> toJson() => {
         "PageId": pageId,
         "PageTitle": pageTitle,
+        "PageDescription": pageDescription,
         "RefNo": refNo,
         "RowUCode": rowUCode,
         "Questions": questions == null
@@ -75,6 +85,7 @@ class Question {
   String? question;
   String? questionDescription;
   String? refNo;
+  String? questionSelection;
   dynamic rowUCode;
   List<Option>? options;
 
@@ -82,6 +93,7 @@ class Question {
     this.questionId,
     this.question,
     this.questionDescription,
+    this.questionSelection,
     this.refNo,
     this.rowUCode,
     this.options,
@@ -91,6 +103,7 @@ class Question {
         questionId: json["QuestionId"],
         question: json["Question"],
         questionDescription: json["QuestionDescription"],
+        questionSelection: json["QuestionSelection"],
         refNo: json["RefNo"],
         rowUCode: ["RowUCode"],
         options: json["Options"] == null
@@ -102,6 +115,7 @@ class Question {
   Map<String, dynamic> toJson() => {
         "QuestionId": questionId,
         "Question": question,
+        "QuestionSelection": questionSelection,
         "QuestionDescription": questionDescription,
         "RefNo": refNo,
         "RowUCode": [rowUCode],
@@ -124,8 +138,7 @@ class Option {
   String? checkStatus;
   String? refNo;
   dynamic rowUCode;
-  bool? selected; 
-
+  bool? selected;
 
   Option({
     this.pageId,
@@ -140,7 +153,6 @@ class Option {
     this.checkStatus,
     this.refNo,
     this.rowUCode,
-    
   });
 
   factory Option.fromJson(Map<String, dynamic> json) => Option(

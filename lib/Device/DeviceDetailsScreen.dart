@@ -70,7 +70,9 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (controller.errorMessage.isNotEmpty) {return Center(child: Text(controller.errorMessage.value));}
+        if (controller.errorMessage.isNotEmpty) {
+          return Center(child: Text(controller.errorMessage.value));
+        }
 
         final pageData = controller.sellQuestion.value?.data?.firstWhere(
             (d) => d.pageId == 1,
@@ -135,7 +137,8 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                                 value.toString().toLowerCase(),
                           );
                           print('Matched options: $matchedOptions');
-                          final weights = matchedOptions?.map((o) => (o.weightage ?? 5.0).toString());
+                          final weights = matchedOptions
+                              ?.map((o) => (o.weightage ?? 5.0).toString());
                           print('Weights: $weights');
 
                           if (weights != null) {
@@ -165,14 +168,16 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
                         );
                         if (allAnswered) {
                           Get.to(() => DeviceDetailScreen2(
-                              baseprice: widget.baseprice,
-                              bid: widget.bid,
-                              raid: widget.raid,
-                              roid: widget.roid,
-                              modelNo: widget.modelNo,
-                              ram: widget.ram,
-                              rom: widget.rom,
-                              modelName: widget.modelName, secondPageAns:firstPageAns,));
+                                baseprice: widget.baseprice,
+                                bid: widget.bid,
+                                raid: widget.raid,
+                                roid: widget.roid,
+                                modelNo: widget.modelNo,
+                                ram: widget.ram,
+                                rom: widget.rom,
+                                modelName: widget.modelName,
+                                secondPageAns: firstPageAns,
+                              ));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

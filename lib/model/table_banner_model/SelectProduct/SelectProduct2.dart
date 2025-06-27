@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fonofy/Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import 'package:fonofy/Device/DeviceDetailsScreen.dart';
+import 'package:fonofy/Device/DeviceDetailsScreen5.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 import '../../../controllers/SellControllers/SellVariantPriceControllers.dart';
@@ -224,26 +225,30 @@ class _SelectProduct2State extends State<SelectProduct2> {
           height: 50,
           child: ElevatedButton(
             onPressed: () {
-              log({
-                "baseprice": sellVariantPriceController
-                    .priceVariantData!.basePrice
-                    .toString(),
-                "bid": sellVariantPriceController.priceVariantData!.brandId
-                    .toString(),
-                "modelNo": sellVariantPriceController.priceVariantData!.modelId
-                    .toString(),
-                "ram": sellVariantPriceController.priceVariantData!.modelId
-                    .toString(),
-                "rom": sellVariantPriceController.priceVariantData!.romName
-                    .toString(),
-                "raid": sellVariantPriceController.priceVariantData!.ramId
-                    .toString(),
-                "roid": sellVariantPriceController.priceVariantData!.romId
-                    .toString(),
-              }.toString());
-              Get.to(() => DeviceDetailsScreen(
+              // Get.to(() => DeviceDetailsScreen(
+              //       baseprice: sellVariantPriceController
+              //           .priceVariantData!.basePrice.toString(),
+              //       bid: sellVariantPriceController.priceVariantData!.brandId
+              //           .toString(),
+              //       modelNo: sellVariantPriceController
+              //           .priceVariantData!.modelId
+              //           .toString(),
+              //       ram: sellVariantPriceController.priceVariantData!.ramName
+              //           .toString(), // ✅ corrected
+              //       rom: sellVariantPriceController.priceVariantData!.romName
+              //           .toString(),
+              //       raid: sellVariantPriceController.priceVariantData!.ramId
+              //           .toString(),
+              //       roid: sellVariantPriceController.priceVariantData!.romId
+              //           .toString(), modelName:sellVariantPriceController.priceVariantData!.modelName
+              //           .toString() ,
+
+              //     ));
+
+              Get.to(() => DeviceDetailsScreen5(
                     baseprice: sellVariantPriceController
-                        .priceVariantData!.basePrice.toString(),
+                        .priceVariantData!.basePrice
+                        .toString(),
                     bid: sellVariantPriceController.priceVariantData!.brandId
                         .toString(),
                     modelNo: sellVariantPriceController
@@ -256,9 +261,10 @@ class _SelectProduct2State extends State<SelectProduct2> {
                     raid: sellVariantPriceController.priceVariantData!.ramId
                         .toString(),
                     roid: sellVariantPriceController.priceVariantData!.romId
-                        .toString(), modelName:sellVariantPriceController.priceVariantData!.modelName
-                        .toString() ,
-                        
+                        .toString(),
+                    modelName: sellVariantPriceController
+                        .priceVariantData!.modelName
+                        .toString(),
                   ));
             },
             style: ElevatedButton.styleFrom(

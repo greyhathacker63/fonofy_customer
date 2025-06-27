@@ -151,7 +151,6 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                   onPressed: selectedAccessories.containsValue(true)
                       ? () {
                           Get.to(() => DeviceDetailsScreen5(
-
                                 baseprice: widget.baseprice,
                                 bid: widget.bid,
                                 raid: widget.raid,
@@ -159,7 +158,8 @@ class _DeviceDetailsScreen4State extends State<DeviceDetailsScreen4> {
                                 modelNo: widget.modelNo,
                                 ram: widget.ram,
                                 rom: widget.rom,
-                                modelName: widget.modelName, fivePageAns: widget.fourthPageAns,
+                                modelName: widget.modelName,
+                                //fivePageAns: widget.fourthPageAns,
                               ));
                         }
                       : null,

@@ -23,6 +23,47 @@ class SellQuestionController extends GetxController {
         .toList();
   }
 
+  // Future<void> loadSellQuestions({
+  //   required dynamic bid,
+  //   required dynamic pid,
+  //   required dynamic raid,
+  //   required dynamic roid,
+  //   required String model,
+  //   required String ram,
+  //   required String rom,
+  //   required String basePrice,
+  // }) async {
+  //   try {
+  //     isLoading.value = true;
+  //     errorMessage.value = '';
+
+  //     final result = await _service.fetchSellQuestions(
+  //       bid: bid,
+  //       pid: pid,
+  //       raid: raid,
+  //       roid: roid,
+  //       model: model,
+  //       ram: ram,
+  //       rom: rom,
+  //       basePrice: basePrice,
+  //     );
+
+  //     if (result != null) {
+  //       sellQuestion.value = result; // ✅ No need to call fromJson again
+  //     } else {
+  //       errorMessage.value = 'Failed to fetch data';
+  //     }
+  //   } catch (e) {
+  //     errorMessage.value = 'Error: $e';
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
+  var _sellingQuestionList;
+
+  SellQuestion? get mQuestionListData => _sellingQuestionList;
+
   Future<void> loadSellQuestions({
     required dynamic bid,
     required dynamic pid,
@@ -34,10 +75,9 @@ class SellQuestionController extends GetxController {
     required String basePrice,
   }) async {
     try {
-      isLoading.value = true;
+      isLoading(true);
       errorMessage.value = '';
-
-      final result = await _service.fetchSellQuestions(
+      final response = await _service.fetchSellQuestions(
         bid: bid,
         pid: pid,
         raid: raid,
@@ -47,16 +87,11 @@ class SellQuestionController extends GetxController {
         rom: rom,
         basePrice: basePrice,
       );
-
-      if (result != null) {
-        sellQuestion.value = result; // ✅ No need to call fromJson again
-      } else {
-        errorMessage.value = 'Failed to fetch data';
-      }
-    } catch (e) {
-      errorMessage.value = 'Error: $e';
+      _sellingQuestionList = response;
+    } catch (err) {
+      errorMessage.value = err.toString();
     } finally {
-      isLoading.value = false;
+      isLoading(false);
     }
   }
 }

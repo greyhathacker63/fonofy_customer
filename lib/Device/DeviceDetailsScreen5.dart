@@ -16,7 +16,7 @@ class DeviceDetailsScreen5 extends StatefulWidget {
   final String ram;
   final String rom;
   final String modelName;
-  final List<String> fivePageAns;
+  //final List<String> fivePageAns;
 
   const DeviceDetailsScreen5({
     Key? key,
@@ -30,7 +30,7 @@ class DeviceDetailsScreen5 extends StatefulWidget {
     required this.ram,
     required this.rom,
     required this.modelName,
-    required this.fivePageAns,
+    //required this.fivePageAns,
   }) : super(key: key);
 
   @override
@@ -40,6 +40,9 @@ class DeviceDetailsScreen5 extends StatefulWidget {
 class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
   final SellQuestionController controller = Get.put(SellQuestionController());
   final Map<String, bool> selectedAccessories = {};
+  final List<String> fivePageAns = [];
+  var pageNumber = "0".obs;
+  var totalPages = "0".obs;
 
   final List<String> staticImages = [
     "assets/images/charger.png",
@@ -50,19 +53,12 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
     "assets/images/default2.png",
   ];
 
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.loadSellQuestions(
-        bid: int.parse(widget.bid),
-        pid: int.tryParse(widget.pid ?? '') ?? 1,
-        raid: int.parse(widget.raid),
-        roid: int.parse(widget.roid),
-        model: widget.modelNo,
-        ram: widget.ram,
-        rom: widget.rom,
-        basePrice: widget.baseprice,
-      );
+      controller.isLoading = true.obs;
+      callApiForGettingQUestion();
     });
   }
 
@@ -70,6 +66,7 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title:
             const Text("Device Details", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
@@ -80,111 +77,247 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
         ),
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
         if (controller.errorMessage.isNotEmpty) {
           return Center(child: Text(controller.errorMessage.value));
-        }
-
-        final pageData = controller.sellQuestion.value.data?.firstWhere(
-            (d) => d.pageId == 5,
-            orElse: () => Datum(questions: []));
-
-        final questions = pageData?.questions ?? [];
-
-        if (questions.isEmpty) {
-          return const Center(child: Text("No accessory questions found."));
-        }
-
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Text(
-                  "Do you have the following?",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Center(
-                child: Text(
-                  "Please select accessories which are available",
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: GridView.builder(
-                  itemCount: questions.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 0.9,
+        } else if (controller.isLoading.value) {
+          return const Center(
+              child: CircularProgressIndicator(
+            color: Colors.black,
+          ));
+        } else {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    controller.mQuestionListData
+                            ?.data?[int.parse(pageNumber.value)].pageTitle ??
+                        "",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  itemBuilder: (context, index) {
-                    final q = questions[index];
-                    final qId = q.questionId ?? '';
-                    final qText = q.question ?? '';
-
-                    if (qId.isEmpty) return const SizedBox();
-
-                    final imagePath = index < staticImages.length
-                        ? staticImages[index]
-                        : "assets/images/default.png";
-
-                    selectedAccessories.putIfAbsent(qId, () => false);
-
-                    // ✅ Return the widget properly
-                    return _buildAccessoryCard(qId, qText, imagePath, index);
-                  },
                 ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: selectedAccessories.containsValue(true)
-                      ? () {
-                          Get.to(() => YourDeviceScreen(
-                                baseprice: widget.baseprice,
-                                bid: widget.bid,
-                                raid: widget.raid,
-                                roid: widget.roid,
-                                modelNo: widget.modelNo,
-                                ram: widget.ram,
-                                rom: widget.rom,
-                                modelName: widget.modelName, finalhPageAns: widget.fivePageAns,
-                              ));
+                const SizedBox(height: 8),
+                Center(
+                  child: Text(
+                    controller
+                            .mQuestionListData
+                            ?.data?[int.parse(pageNumber.value)]
+                            .pageDescription ??
+                        "",
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: controller
+                              .mQuestionListData!
+                              .data![int.parse(pageNumber.value)]
+                              .questions!
+                              .first
+                              .questionSelection
+                              .toString() ==
+                          "Radio Button(Yes/No)"
+                      ? _buildRadioButton(
+                          radioButtonDetails: controller.mQuestionListData
+                              ?.data?[int.parse(pageNumber.value)])
+                      : GridView.builder(
+                          itemCount: controller
+                                  .mQuestionListData
+                                  ?.data?[int.parse(pageNumber.value)]
+                                  .questions
+                                  ?.length ??
+                              0,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 0.9,
+                          ),
+                          itemBuilder: (context, index) {
+                            final q = controller
+                                .mQuestionListData
+                                ?.data?[int.parse(pageNumber.value)]
+                                .questions?[index];
+                            final qId = q?.questionId ?? '';
+                            final qText = q?.question ?? '';
+
+                            if (qId.isEmpty) return const SizedBox();
+
+                            final imagePath = index < staticImages.length
+                                ? staticImages[index]
+                                : "assets/images/default.png";
+                            selectedAccessories.putIfAbsent(qId, () => false);
+
+                            // ✅ Return the widget properly
+
+                            return _buildAccessoryCard(
+                                qId, qText, imagePath, index);
+                          },
+                        ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print("Page");
+                      print(totalPages.value);
+                      if (totalPages.value != "0") {
+                        if (int.parse(pageNumber.value) ==
+                            int.parse(totalPages.value) - 1) {
+                          print("all question submitted");
+                          // selectedAccessories.containsValue(true)
+                          //     ? () {
+
+                          //         Get.to(() => YourDeviceScreen(
+                          //               baseprice: widget.baseprice,
+                          //               bid: widget.bid,
+                          //               raid: widget.raid,
+                          //               roid: widget.roid,
+                          //               modelNo: widget.modelNo,
+                          //               ram: widget.ram,
+                          //               rom: widget.rom,
+                          //               modelName: widget.modelName,
+                          //               finalhPageAns: fivePageAns,
+                          //             ));
+                          //       }
+                          //     : null,
+                        } else {
+                          pageNumber.value =
+                              (int.parse(pageNumber.value) + 1).toString();
                         }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorConstants.appBlueColor3,
-                    disabledBackgroundColor: ColorConstants.appBlueColor3,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorConstants.appBlueColor3,
+                      disabledBackgroundColor: ColorConstants.appBlueColor3,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: const Text(
+                      "Continue",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
                   ),
-                  child: const Text(
-                    "Continue",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ],
+            ),
+          );
+        }
+      }),
+    );
+  }
+
+  Widget _buildRadioButton(
+      // String questionId,
+      // String title,
+      // String description,
+      // String? selectedValue,
+
+      {Datum? radioButtonDetails}
+      // Function(String?) onChanged,
+      ) {
+    return ListView.builder(
+      itemCount: radioButtonDetails?.questions?.length ?? 0,
+      itemBuilder: (context, index) {
+        final redioButtonQuestionData = radioButtonDetails?.questions?[index];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              redioButtonQuestionData?.question ?? "",
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              redioButtonQuestionData?.questionDescription ?? "",
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 10),
+
+            Row(children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    final yesOptionStore =
+                        redioButtonQuestionData!.options!.firstWhere(
+                      (element) => element.amount == 100,
+                      // Provide an orElse callback to handle cases where no match is found
+                      // (though .any() already confirms one exists here)
+                    );
+                    print("object");
+                    print(yesOptionStore.weightage);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_box_rounded),
+                      SizedBox(width: 10),
+                      Text('Yes')
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    final noOptionStore =
+                        redioButtonQuestionData!.options!.firstWhere(
+                      (element) => element.amount != 100,
+                      // Provide an orElse callback to handle cases where no match is found
+                      // (though .any() already confirms one exists here)
+                    );
+                    print("object");
+                    print(noOptionStore.weightage);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_box_rounded),
+                      SizedBox(width: 10),
+                      Text('No')
+                    ],
+                  ),
+                ),
+              ),
+            ]),
+
+            // ),
+
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: RadioListTile<String>(
+            //         title: const Text("Yes"),
+            //         value: "Yes",
+            //         groupValue: selectedValue,
+            //         onChanged: onChanged,
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: RadioListTile<String>(
+            //         title: const Text("No"),
+            //         value: "No",
+            //         groupValue: selectedValue,
+            //         onChanged: onChanged,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            const SizedBox(height: 10),
+          ],
         );
-      }),
+      },
     );
   }
 
   Widget _buildAccessoryCard(
       String key, String label, String imagePath, int index) {
     final isSelected = selectedAccessories[key] ?? false;
-    final pageData = controller.sellQuestion.value?.data
-        ?.firstWhere((d) => d.pageId == 4, orElse: () => Datum(questions: []));
+    //final pageData = controller.sellQuestion.value?.data
+    //   ?.firstWhere((d) => d.pageId == 4, orElse: () => Datum(questions: []));
 
+    final pageData =
+        controller.mQuestionListData?.data?[int.parse(pageNumber.value)];
     final issues = pageData?.questions ?? [];
 
     return GestureDetector(
@@ -192,18 +325,16 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
         setState(() {
           selectedAccessories[key] = !isSelected;
         });
-        print("Selecteddefects" + selectedAccessories.toString());
-        print("b" + isSelected.toString());
         if (!isSelected) {
           // On selecting a defect (i.e., was unselected before, now selected)
           final selectedOptions = issues[index].options;
 
           for (var opt in selectedOptions!) {
             final weight = opt.weightage?.toString() ?? '1.0';
-            widget.fivePageAns.add(weight);
+            fivePageAns.add(weight);
           }
 
-          print("Collected finalhPageAns: ${widget.fivePageAns}");
+          print("Collected finalhPageAns: ${fivePageAns}");
         }
       },
       child: Container(
@@ -236,5 +367,21 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
         ),
       ),
     );
+  }
+
+  Future<void> callApiForGettingQUestion() async {
+    await controller.loadSellQuestions(
+      bid: int.parse(widget.bid),
+      pid: int.tryParse(widget.pid ?? "0"),
+      raid: int.parse(widget.raid),
+      roid: int.parse(widget.roid),
+      model: widget.modelNo,
+      ram: widget.ram,
+      rom: widget.rom,
+      basePrice: widget.baseprice,
+    );
+
+    totalPages.value =
+        controller.mQuestionListData?.totalPageNumber.toString() ?? "0";
   }
 }
