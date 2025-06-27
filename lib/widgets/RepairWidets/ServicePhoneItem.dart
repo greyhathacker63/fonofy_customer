@@ -226,7 +226,7 @@ class ServicePhoneItem extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 1),
                     decoration: BoxDecoration(
                       color: controller.isServiceSelected(service)
-                          ? Colors.red
+                          ? Colors.blueGrey
                           : ColorConstants.appBlueColor3,
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -252,7 +252,7 @@ class ServicePhoneItem extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: controller.isServiceSelected(service)
-                            ? Colors.red
+                            ? Colors.grey
                             : ColorConstants.appBlueColor3,
                         elevation: 0,
                         shape: RoundedRectangleBorder(

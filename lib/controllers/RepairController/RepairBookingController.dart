@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/model/table_banner_model/SelectProduct/ThankYouRepairScreen.dart';
 import 'package:get/get.dart';
 import 'package:fonofy/model/RepairModel/BookingRepairModel.dart'; // This has RepairBookingRequestModel
 import '../../Api_Service/SellService/RepairColorModelService/RepairBookingService.dart';
@@ -94,6 +95,10 @@ class RepairBookingController extends GetxController {
 
     final success = await RepairBookingService.fetchRepairBooking(
         repairBookingModel, token); // ✅ Correct model passed here
+
+    if (success) {
+      Get.to(() => ThankYouRepairScreen());
+    }
 
     if (success) {
       Get.snackbar("Success", "Repair Booking Successful",
