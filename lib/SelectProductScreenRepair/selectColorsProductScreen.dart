@@ -37,6 +37,7 @@ class _SelectColorsProductScreenState extends State<SelectColorsProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+         backgroundColor: Colors.white,
         title: const Text("Select Color"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

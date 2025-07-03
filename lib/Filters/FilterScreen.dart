@@ -170,7 +170,7 @@ class _FilterScreenState extends State<FilterScreen> {
       "Color",
       "Brand",
     ];
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Filters"),
         actions: [

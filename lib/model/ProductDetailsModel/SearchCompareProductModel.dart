@@ -15,19 +15,30 @@ class SearchCompareProductModel {
   });
 
   factory SearchCompareProductModel.fromJson(Map<String, dynamic> json) {
-    print('Parsing JSON: $json'); // Debug print to inspect raw JSON
+    print('Parsing JSON: $json');
     return SearchCompareProductModel(
-      name: json['Name']?.toString(), // Match API's capitalized "Name"
-      amount: json['Amount']?.toDouble(), // Match API's capitalized "Amount"
-      url: json['Url']?.toString(), // Match API's capitalized "Url"
-      image: json['Image']?.toString(), // Match API's capitalized "Image"
+      name: json['Name']?.toString(),
+      amount: json['Amount']?.toDouble(),
+      url: json['Url']?.toString(),
+      image: json['Image']?.toString(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'Name': name,
-    'Amount': amount,
-    'Url': url,
-    'Image': image,
-  };
+        'Name': name,
+        'Amount': amount,
+        'Url': url,
+        'Image': image,
+      };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SearchCompareProductModel &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          url == other.url;
+
+  @override
+  int get hashCode => name.hashCode ^ url.hashCode;
 }

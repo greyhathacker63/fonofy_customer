@@ -121,7 +121,7 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(title: Text("Processing Payment...")),
       body:  Center(
         child: CircularProgressIndicator(),

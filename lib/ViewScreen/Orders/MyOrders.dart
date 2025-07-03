@@ -58,11 +58,12 @@ class MyOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title:   Text('My Orders'),
       ),
-      backgroundColor: Colors.white,
+     
       body: Column(
         children: [
           Padding(

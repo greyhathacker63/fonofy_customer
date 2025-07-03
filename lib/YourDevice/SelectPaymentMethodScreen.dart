@@ -101,46 +101,74 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     }
 
     final model = Sellbookingmodel(
-      modelId: int.tryParse(widget.modelNo),
-      romId: int.tryParse(widget.roid),
-      ramId: int.tryParse(widget.raid),
-      colorId: 5,
-      orderId: "",
-      shippingId: widget.shippingId,
-      shippingName: widget.shippingName,
-      shippingMobileNo: widget.shippingMobileNo,
-      shippingEmailId: widget.shippingEmailId,
-      shippingAddress: widget.shippingAddress,
-      shippingLandmark: widget.shippingState,
-      shippingCity: int.tryParse(widget.shippingCity),
-      shippingState: int.tryParse(widget.shippingState),
-      shippingPincode: widget.shippingPincode,
-      workType: widget.workType,
-      pickupslotDate:
-          "${widget.selectedDate.day.toString().padLeft(2, '0')}-${widget.selectedDate.month.toString().padLeft(2, '0')}-${widget.selectedDate.year.toString().substring(2)}",
-      pickupslotTime: widget.selectedTimeSlot,
-      accountId: int.tryParse(accountId!),
-      accountType: accountType!,
-      remark: "good",
-      pickupCharge: 0,
-      processingFee: 0,
-      totalAmount: double.tryParse(widget.finalPrice),
-      totalPrice: double.tryParse(widget.baseprice),
-      totalDiscount: 0,
-      totalMRP:
-          double.tryParse(widget.baseprice), // or pass another widget param
-      sellquestionlists: [
-        SellQuestionList(
-          questionRefno: "8fb62eae-50a2-4a1b-9314-b39868691bf8",
-          question: "Is your phone's screen original?",
-          questionId: 5,
-          answerId: 3,
-          answer: "NO",
-          weightage: 6.0,
-        ),
-      ],
-//List<SellQuestionList>.from(widget.finalhPageAns),
-    );
+  modelId: int.tryParse(widget.modelNo),
+  romId: int.tryParse(widget.roid),
+  ramId: int.tryParse(widget.raid),
+  colorId: 5,
+  orderId: "",
+  shippingId: widget.shippingId,
+  shippingName: widget.shippingName,
+  shippingMobileNo: widget.shippingMobileNo,
+  shippingEmailId: widget.shippingEmailId.trim(),
+  shippingAddress: widget.shippingAddress,
+  shippingLandmark: widget.shippingState,
+  shippingCity: 123,
+  shippingState: 23,
+  shippingPincode: widget.shippingPincode,
+  workType: widget.workType,
+  pickupslotDate:
+      "${widget.selectedDate.day.toString().padLeft(2, '0')}-${widget.selectedDate.month.toString().padLeft(2, '0')}-${widget.selectedDate.year.toString().substring(2)}",
+  pickupslotTime: widget.selectedTimeSlot,
+  accountId: int.tryParse(accountId!),
+  accountType: accountType!,
+  remark: "good",
+  pickupCharge: 0,
+  processingFee: 0,
+  totalAmount: double.tryParse(widget.finalPrice),
+  totalPrice: double.tryParse(widget.baseprice),
+  totalDiscount: 0,
+  totalMRP: double.tryParse(widget.baseprice),
+  sellquestionlists: [
+    SellQuestionList(
+      questionRefno: "8fb62eae-50a2-4a1b-9314-b39868691bf8",
+      question: "Is your phone's screen original?",
+      questionId: 5,
+      answerId: 3,
+      answer: "NO",
+      weightage: 6.0,
+    ),
+  ],
+);
+
+// ✅ ADD DEBUG PRINTS HERE
+print('--- DEBUG Sellbookingmodel Data ---');
+print('ModelId: ${int.tryParse(widget.modelNo)}');
+print('ROMId: ${int.tryParse(widget.roid)}');
+print('RAMId: ${int.tryParse(widget.raid)}');
+print('ColorId: 5');
+print('OrderId: ""');
+print('ShippingId: ${widget.shippingId}');
+print('ShippingName: ${widget.shippingName}');
+print('ShippingMobileNo: ${widget.shippingMobileNo}');
+print('ShippingEmailId: "${widget.shippingEmailId}"');
+print('ShippingAddress: ${widget.shippingAddress}');
+print('ShippingLandmark: ${widget.shippingState}');
+print('ShippingCity: ${int.tryParse(widget.shippingCity)}');
+print('ShippingState: ${int.tryParse(widget.shippingState)}');
+print('ShippingPincode: ${widget.shippingPincode}');
+print('WorkType: ${widget.workType}');
+print('PickupslotDate: ${model.pickupslotDate}');
+print('PickupslotTime: ${widget.selectedTimeSlot}');
+print('AccountId: $accountId');
+print('AccountType: $accountType');
+print('TotalAmount: ${widget.finalPrice}');
+print('TotalPrice: ${widget.baseprice}');
+print('TotalMRP: ${widget.baseprice}');
+//print('Sell Question List: ${jsonEncode(model.sellquestionlists.map((e) => e.toJson()).toList())}');
+
+// Optional: Print final JSON payload
+//print('📦 Final JSON Payload: ${jsonEncode(model.toJson())}');
+
 
     final result = await _sellBookingController.submitSellBooking(model);
     if (result) {
@@ -151,6 +179,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text("Select Payment Method")),
       body: Obx(() {
         final banks = _bankController.bankDetailsList;

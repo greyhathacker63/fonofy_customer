@@ -57,6 +57,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       body: IndexedStack(
         index: currentIndex,
         children: List.generate(
@@ -65,6 +66,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+         backgroundColor: Colors.white,
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,

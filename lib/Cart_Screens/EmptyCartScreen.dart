@@ -6,7 +6,7 @@ class EmptyCartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: Image.asset("assets/images/Logo.png", height: 40),
         actions: [

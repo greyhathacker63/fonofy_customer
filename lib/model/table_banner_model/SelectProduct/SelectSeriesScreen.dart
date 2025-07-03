@@ -26,7 +26,7 @@ class _SelectSeriesModelScreenState extends State<SelectSeriesModelScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Select Model"),
         leading: BackButton(),

@@ -73,6 +73,7 @@ class _YourDeviceScreen2State extends State<YourDeviceScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -200,8 +201,8 @@ class _YourDeviceScreen2State extends State<YourDeviceScreen2> {
                             shippingEmailId: selected.emailId ?? '',
                             shippingAddress: selected.address ?? '',
                             shippingLandmark: selected.city ?? '',
-                            shippingCity: selected.city ?? '',
-                            shippingState: selected.state ?? '',
+                            shippingCity: selected.city.toString(),
+                            shippingState: selected.state.toString(),
                             shippingPincode: selected.pinCode ?? '',
                             workType: selected.workType ?? '',
                             finalPrice: widget.finalPrice.toString(),

@@ -204,7 +204,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     if (!widget.isSingleProduct &&
         (widget.cartList == null || widget.cartList!.isEmpty)) {
-      return Scaffold(
+      return Scaffold(backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text("Checkout"),
           centerTitle: true,
@@ -220,7 +220,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     double shippingCharge = calculateShippingCharge(subtotal);
     double total = subtotal + shippingCharge;
 
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Checkout"),
         centerTitle: true,

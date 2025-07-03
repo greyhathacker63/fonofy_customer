@@ -11,8 +11,8 @@ class Sellbookingmodel {
   final String? shippingEmailId;
   final String? shippingAddress;
   final String? shippingLandmark;
-  final int? shippingCity;
-  final int? shippingState;
+  final dynamic shippingCity;
+  final dynamic shippingState;
   final String? shippingPincode;
   final String? workType;
   final String? pickupslotDate;

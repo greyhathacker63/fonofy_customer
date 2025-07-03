@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fonofy/ManagePayments/MyPaymentsScreen.dart';
 import 'package:fonofy/ReferAndEarnScreen/ReferAndEarnScreen.dart';
+import 'package:fonofy/ViewScreen/AboutUs/AboutUsScreen.dart';
+import 'package:fonofy/ViewScreen/AboutUs/Common_web_page_screen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
 import 'package:fonofy/MainScreen.dart';
 import 'package:fonofy/Manage%20Address/ManageAddressScreen.dart';
@@ -153,7 +155,6 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Image.asset("assets/images/Logo.png", height: 30),
         elevation: 0,
@@ -226,9 +227,25 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: "ABOUT",
                     isExpanded: aboutExpanded,
                     onTap: () => setState(() => aboutExpanded = !aboutExpanded),
-                    subItems: ["About Us", "Contact Us", "Career"],
+                    subItems: ["About Us", "Contact Us", ],
+                    onItemTap: (item) {
+                      if (item == "About Us") {
+                        Get.to(() => const CommonWebPageScreen(
+                              title: 'About Us',
+                              url: 'https://demo.fonofy.in/about',
+                            ));
+                      } else if (item == "Contact Us") {
+                        Get.to(() => const CommonWebPageScreen(
+                              title: 'Contact Us',
+                              url: 'https://demo.fonofy.in/contact-us',
+                            ));
+                      }
+                      // You can handle "Career" here too
+                    },
                   ),
-                  _buildMenuItem("REFER & EARN", onTap: (){Get.to(() => ReferAndEarnScreen());}),
+                  _buildMenuItem("REFER & EARN", onTap: () {
+                    Get.to(() => ReferAndEarnScreen());
+                  }),
                   _buildMenuItem("NEW OFFERS"),
                   _buildMenuItem("MY EARNINGS"),
                   _buildMenuItem("HELP"),
@@ -308,7 +325,7 @@ class _AccountScreenState extends State<AccountScreen> {
           children: const [
             Text("FONOFY TECHNOLOGIES PVT.LTD.",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            Text("kuldeep@fonofy.in", style: TextStyle(color: Colors.grey)),
+           // Text("kuldeep@fonofy.in", style: TextStyle(color: Colors.grey)),
           ],
         ),
       ],

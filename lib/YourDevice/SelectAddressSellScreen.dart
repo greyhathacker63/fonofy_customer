@@ -3,8 +3,6 @@ import 'package:fonofy/Cart_Screens/CartScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:get/get.dart';
 
-
-
 class SelectAddressSellScreen extends StatelessWidget {
   const SelectAddressSellScreen({super.key});
 

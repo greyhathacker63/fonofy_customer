@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fonofy/ViewScreen/bottom_navgation.dart';
 import 'package:fonofy/utils/Colors.dart';
+import 'package:get/get.dart';
 
 void showThankYouDialog(BuildContext context, String name) {
   showDialog(
@@ -34,7 +36,9 @@ void showThankYouDialog(BuildContext context, String name) {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Get.offAll(BottomNavigation(
+                      upperTabIndex:
+                          0)); // Replace with your actual screen widget
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorConstants.appBlueColor3,

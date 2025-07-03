@@ -38,22 +38,6 @@ class _TabScreenState extends State<TabScreen>
       initialIndex: _selectedIndex,
     );
 
-    // _tabController.addListener(() {
-    //   if (_tabController.index != _selectedIndex) {
-    //     setState(() {
-    //       _selectedIndex = _tabController.index;
-    //     });
-    //     if (_selectedIndex == 1) {
-    //       final testimonialCtrl = Get.find<TestimonialListController>();
-    //       testimonialCtrl.refreshTestimonials();
-    //     }
-    //   }
-    //   if (_selectedIndex == 2) {
-    //     final testimonial = Get.find<RepairTestimonialController>();
-    //     testimonial.refreshRepairTestimonials();
-    //   }
-    // }
-
     _tabController.addListener(() {
       if (_tabController.index != _selectedIndex) {
         setState(() {
@@ -81,64 +65,73 @@ class _TabScreenState extends State<TabScreen>
     });
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: Image.asset("assets/images/Logo.png", height: 30),
-        centerTitle: true,
-        title: Text(
-          _getTitle(_selectedIndex),
-          style: const TextStyle(color: Colors.black),
+      toolbarHeight: 80,
+      surfaceTintColor: Colors.transparent,
+
+      // Logo on the left
+      leadingWidth: 100, // give space to show full logo
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 12.0, top: 10, bottom: 10),
+        child: Image.asset(
+          "assets/images/Logo.png",
+          height: 60,
+          fit: BoxFit.contain,
         ),
-        actions: [
-          if (_selectedIndex == 0) ...[
-            IconButton(
-              icon: const Icon(Icons.favorite_border, color: Colors.redAccent),
-              onPressed: () {
-                Get.to(() => WishlistScreen()); // Navigate to wishlist screen
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.shopping_cart, color: Colors.black),
-              onPressed: () {
-                Get.to(() => CartScreen());
-              },
-            ),
-          ],
+      ),
+
+      // Title centered
+      centerTitle: true,
+      title: Text(
+        _getTitle(_selectedIndex),
+        style: const TextStyle(color: Colors.black),
+      ),
+
+      // Icons on the right
+      actions: [
+        if (_selectedIndex == 0) ...[
+          IconButton(
+            icon: const Icon(Icons.favorite_border, color: Colors.redAccent),
+            onPressed: () => Get.to(() => WishlistScreen()),
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart, color: Colors.black),
+            onPressed: () => Get.to(() => CartScreen()),
+          ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Container(
-            color: ColorConstants.appBlueColor2,
-            child: TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(
-                color: ColorConstants.appBlueColor3,
-              ),
-              unselectedLabelColor: Colors.white70,
-              tabs: [
-                _buildTab("BUY", 0),
-                _buildTab("SELL", 1),
-                _buildTab("REPAIR", 2),
-              ],
+      ],
+
+      // TabBar at bottom
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: Container(
+          color: ColorConstants.appBlueColor2,
+          child: TabBar(
+            controller: _tabController,
+            indicator: BoxDecoration(
+              color: ColorConstants.appBlueColor3,
             ),
+            unselectedLabelColor: Colors.white70,
+            tabs: [
+              _buildTab("BUY", 0),
+              _buildTab("SELL", 1),
+              _buildTab("REPAIR", 2),
+            ],
           ),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [BuyScreen(), Sellscreen(), RepairScreen()],
-      ),
-    );
-  }
+    ),
+    body: TabBarView(
+      controller: _tabController,
+      children: [BuyScreen(), Sellscreen(), RepairScreen()],
+    ),
+  );
+}
 
   // ✅ Helper function to build tabs dynamically
   Widget _buildTab(String title, int index) {

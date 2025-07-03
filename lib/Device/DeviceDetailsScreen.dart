@@ -58,7 +58,7 @@ class _DeviceDetailsScreenState extends State<DeviceDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Device Details"),
         leading: IconButton(

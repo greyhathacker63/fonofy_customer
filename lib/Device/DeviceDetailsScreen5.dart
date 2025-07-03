@@ -65,7 +65,7 @@ class _DeviceDetailsScreen5State extends State<DeviceDetailsScreen5> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
         title:

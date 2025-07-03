@@ -25,6 +25,7 @@ class SelectProductRepairScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+         backgroundColor: Colors.white,
         title: Text("Select $brandName Model"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

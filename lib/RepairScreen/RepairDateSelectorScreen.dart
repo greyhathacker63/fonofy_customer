@@ -317,6 +317,7 @@ class _RepairDateSelectorScreenState extends State<RepairDateSelectorScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Select Date")),
+       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -1,5 +1,5 @@
-
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:fonofy/Api_Service/AddToCartService/AddToCartService.dart';
 import 'package:fonofy/TokenHelper/TokenHelper.dart';
 import 'package:fonofy/ViewScreen/BuyRefurbishedProductScreen.dart';
 import 'package:fonofy/ViewScreen/LoginScreen.dart';
@@ -10,6 +10,7 @@ import 'package:fonofy/Filters/CompareScreen.dart';
 import 'package:fonofy/Filters/FilterScreen.dart';
 import 'package:fonofy/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import '../Api_Service/ImageBaseUrl/ImageAllBaseUrl.dart';
 import '../Bottom_Sheet/SortBy..dart';
 import '../model/ProductDetailsModel/SearchCompareProductModel.dart';
@@ -37,7 +38,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   String sortBy = "None";
   List<SearchCompareProductModel> selectedProducts = [];
-  bool showCheckboxes =  false;
+  bool showCheckboxes = false;
 
   Set<String> wishlistedProductNames = {};
 
@@ -105,7 +106,11 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Obx(() {
         if (productController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,));
+          return const Center(
+              child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: Colors.blue,
+          ));
         }
 
         if (productController.productsList.isEmpty) {
@@ -136,7 +141,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     OutlinedButton.icon(
                       onPressed: () async {
                         final selectedFilters =
-                        await Get.to(() => FilterScreen());
+                            await Get.to(() => FilterScreen());
                         if (selectedFilters != null &&
                             selectedFilters is Map<String, dynamic>) {
                           productController.fetchProducts(
@@ -163,7 +168,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         }
                       },
                       icon:
-                      const Icon(Icons.compare_arrows, color: Colors.black),
+                          const Icon(Icons.compare_arrows, color: Colors.black),
                       label: const Text("Compare",
                           style: TextStyle(color: Colors.black)),
                     ),
@@ -182,7 +187,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     url: product.modelUrl,
                     image: product.image,
                   );
-                  final isSelected = selectedProducts.contains(productCompare);
+                  bool isSelected = selectedProducts.contains(productCompare);
                   final isWishlisted = wishlistedProductNames
                       .contains(product.productAndModelName);
 
@@ -193,9 +198,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
                       if (refNo.isNotEmpty && url.isNotEmpty) {
                         Get.to(() => BuyRefurbishedProductScreen(
-                          refNo: refNo,
-                          url: url,
-                        ));
+                              refNo: refNo,
+                              url: url,
+                            ));
                       } else {
                         Get.snackbar("Invalid Product",
                             "Missing reference number or URL");
@@ -205,8 +210,8 @@ class _ProductScreenState extends State<ProductScreen> {
                       elevation: 5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
-                      margin:   EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Row(
@@ -217,157 +222,254 @@ class _ProductScreenState extends State<ProductScreen> {
                               height: 140,
                               child: (product.image ?? '').startsWith('assets/')
                                   ? Image.asset(product.image!,
-                                  fit: BoxFit.contain)
+                                      fit: BoxFit.contain)
                                   : Image.network(
-                                '$imageAllBaseUrl${product.image ?? ""}',
-                                fit: BoxFit.contain,
-                                errorBuilder:
-                                    (context, error, stackTrace) =>
-                                const Icon(Icons.error),
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null)
-                                    return child;
-                                  return const Center(
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2));
-                                },
-                              ),
+                                      '$imageAllBaseUrl${product.image ?? ""}',
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(Icons.error),
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return const Center(
+                                            child: CircularProgressIndicator(
+                                                strokeWidth: 2));
+                                      },
+                                    ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product.productAndModelName ?? '',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    "₹${product.amount ?? ''}",
-                                    style: const TextStyle(
-                                        fontSize: 15, color: Colors.green),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    '${product.discountPercentage ?? 0} % Discount',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w500,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.productAndModelName ?? '',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                  Text(
-                                    "₹${product.newModelAmt ?? 'Discounted Amount'}",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.lineThrough,
+                                    Text(
+                                      '${product.ramName ?? 'Ram'} | ${product.romName ?? 'Rom'}',
+                                      style: const TextStyle(fontSize: 16),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(
-                                          product.wishlistCount == 1
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          color: product.wishlistCount == 1
-                                              ? Colors.red
-                                              : Colors.grey,
-                                        ),
-                                        onPressed: () async {
-                                          final userCode =
-                                          await TokenHelper.getUserCode();
-                                          if (userCode == null ||
-                                              userCode.isEmpty) {
-                                            Get.snackbar("Login Required",
-                                                "Please login to wishlist a product",
-                                                snackPosition:
-                                                SnackPosition.BOTTOM);
-                                            Get.to(() => LoginScreen());
-                                            return;
-                                          }
-
-                                          final isWishlisted =
-                                              product.wishlistCount == 1;
-
-                                          if (isWishlisted) {
-                                            wishlistController
-                                                .removeFromWishlist(
-                                              wishlistId:
-                                              product.wishlistId.toString(),
-                                              modelId:
-                                              product.modelNo.toString(),
-                                              colorId:
-                                              product.colorId.toString(),
-                                              ramId: product.ramId.toString(),
-                                              romId: product.romId.toString(),
-                                            );
-                                          } else {
-                                            wishlistController
-                                                .addProductToWishlist(
-                                              productId:
-                                              product.modelNo.toString(),
-                                              colorId:
-                                              product.colorId.toString(),
-                                              ramId: product.ramId.toString(),
-                                              romId: product.romId.toString(),
-                                            );
-                                          }
-
-                                          setState(() {
-                                            productController.productsList[index].wishlistCount = isWishlisted ? 0 : 1;
-                                          });
-                                        },
+                                    Text(
+                                      "₹${product.amount ?? ''}",
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.green),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      '${product.discountPercentage ?? 0} % Discount',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Get.snackbar("Added to Cart",
-                                              "${product.productAndModelName} added successfully!",
-                                              snackPosition:
-                                              SnackPosition.BOTTOM);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                          ColorConstants.appBlueColor3,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8),
+                                    ),
+                                    Text(
+                                      "₹${product.newModelAmt ?? 'Discounted Amount'}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            product.wishlistCount == 1
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color: product.wishlistCount == 1
+                                                ? Colors.red
+                                                : Colors.grey,
+                                          ),
+                                          onPressed: () async {
+                                            final userCode =
+                                                await TokenHelper.getUserCode();
+                                            if (userCode == null ||
+                                                userCode.isEmpty) {
+                                              Get.snackbar("Login Required",
+                                                  "Please login to wishlist a product",
+                                                  snackPosition:
+                                                      SnackPosition.BOTTOM);
+                                              Get.to(() => LoginScreen());
+                                              return;
+                                            }
+
+                                            final isWishlisted =
+                                                product.wishlistCount == 1;
+
+                                            if (isWishlisted) {
+                                              wishlistController
+                                                  .removeFromWishlist(
+                                                wishlistId: product.wishlistId
+                                                    .toString(),
+                                                modelId:
+                                                    product.modelNo.toString(),
+                                                colorId:
+                                                    product.colorId.toString(),
+                                                ramId: product.ramId.toString(),
+                                                romId: product.romId.toString(),
+                                              );
+                                            } else {
+                                              wishlistController
+                                                  .addProductToWishlist(
+                                                productId:
+                                                    product.modelNo.toString(),
+                                                colorId:
+                                                    product.colorId.toString(),
+                                                ramId: product.ramId.toString(),
+                                                romId: product.romId.toString(),
+                                              );
+                                            }
+
+                                            setState(() {
+                                              productController
+                                                      .productsList[index]
+                                                      .wishlistCount =
+                                                  isWishlisted ? 0 : 1;
+                                            });
+                                          },
+                                        ),
+                                        Expanded(
+                                          child: OutlinedButton(
+                                            onPressed: () async {
+                                              try {
+                                                final userCode =
+                                                    await TokenHelper
+                                                        .getUserCode();
+                                                final token = await TokenHelper
+                                                    .getToken();
+                                                if (userCode == null ||
+                                                    token == null) {
+                                                  Get.to(() =>
+                                                      const LoginScreen());
+                                                  return;
+                                                }
+
+                                                if (product == null ||
+                                                    product.amount == null) {
+                                                  Get.snackbar("Error",
+                                                      "Product details are incomplete.");
+                                                  return;
+                                                }
+
+                                                final ramId = product.ramId;
+                                                final romId = product.romId;
+                                                final colorId = product.colorId;
+                                                final modelId = product.modelNo;
+                                                final quantity = 1; // default 1
+                                                final price = product.amount;
+                                                final cartRef =
+                                                    const Uuid().v4();
+
+                                                print(
+                                                    "🛒 Add to Cart: $userCode, $ramId, $romId, $quantity, $colorId, $modelId, $price");
+
+                                                final addToCartService =
+                                                    AddToCartService();
+                                                final response =
+                                                    await addToCartService
+                                                        .fetchAddToCartData(
+                                                  userCode,
+                                                  ramId,
+                                                  romId,
+                                                  quantity,
+                                                  colorId,
+                                                  modelId,
+                                                  price,
+                                                  cartRef,
+                                                );
+
+                                                if (response != null) {
+                                                  Get.snackbar(
+                                                    "Success",
+                                                    "Product added to cart!",
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM,
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    colorText: Colors.white,
+                                                  );
+                                                } else {
+                                                  Get.snackbar(
+                                                    "Error",
+                                                    "Failed to add product to cart.",
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM,
+                                                    backgroundColor:
+                                                        Colors.redAccent,
+                                                    colorText: Colors.white,
+                                                  );
+                                                }
+                                              } catch (e) {
+                                                print(
+                                                    "❌ Add to Cart Error: $e");
+                                                Get.snackbar(
+                                                  "Error",
+                                                  "An error occurred: $e",
+                                                  snackPosition:
+                                                      SnackPosition.BOTTOM,
+                                                  backgroundColor:
+                                                      Colors.redAccent,
+                                                  colorText: Colors.white,
+                                                );
+                                              }
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              foregroundColor:
+                                                  ColorConstants.appBlueColor3,
+                                              side: BorderSide(
+                                                  color: ColorConstants
+                                                      .appBlueColor3),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            child: const Text(
+                                              "Add to Cart",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                        child: const Text("Add to Cart",
-                                            style:
-                                            TextStyle(color: Colors.white)),
-                                      ),
-                                    ],
-                                  ),
-                                  if (showCheckboxes)
-                                    Column(
-                                      children: [
-                                        Checkbox(
-                                          value: isSelected,
-                                          onChanged: (_) =>
-                                              toggleSelection(productCompare),
-                                        ),
-                                        Text("Compare",
-                                            style: TextStyle(fontSize: 14)),
+                                        if (showCheckboxes)
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Checkbox(
+                                                value: selectedProducts
+                                                    .contains(productCompare),
+                                                onChanged: (_) =>
+                                                    toggleSelection(
+                                                        productCompare),
+                                                checkColor: Colors.white,
+                                                activeColor: ColorConstants.appBlueColor3,
+                                              ),
+                                              const SizedBox(height: 4),
+                                              // const Text("Compare",
+                                              //     style:
+                                              //         TextStyle(fontSize: 14)),
+                                            ],
+                                          ),
                                       ],
                                     ),
-                                ],
-                              ),
+                                  ]),
                             ),
                           ],
                         ),

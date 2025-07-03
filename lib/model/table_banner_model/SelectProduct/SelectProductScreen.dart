@@ -28,7 +28,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Select Product"),
         leading: IconButton(

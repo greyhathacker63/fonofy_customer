@@ -206,7 +206,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Add Address", style: TextStyle(color: Colors.white)),
         backgroundColor: ColorConstants.appBlueColor3,
